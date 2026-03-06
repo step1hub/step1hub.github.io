@@ -180,53 +180,49 @@ input, select, textarea { font-family: inherit; }
   background: linear-gradient(150deg, var(--cd-bg) 0%, var(--cd-bg-end) 100%);
   border: 1.5px solid var(--cd-border);
   border-radius: var(--r-xl);
-  padding: 28px 30px 24px;
+  padding: 32px 30px 26px;
   box-shadow: var(--cd-shadow);
   min-width: 230px; max-width: 270px;
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
   align-self: center;
+  gap: 0;
 }
 .hero-countdown::after {
   content: '';
-  position: absolute; top: -48px; right: -48px;
-  width: 140px; height: 140px; border-radius: 50%;
+  position: absolute; top: -50px; right: -50px;
+  width: 150px; height: 150px; border-radius: 50%;
   background: radial-gradient(circle, var(--cd-glow) 0%, transparent 68%);
   pointer-events: none;
 }
 .cd-eyebrow {
   font-size: 9px; font-weight: 700; letter-spacing: 2.5px;
   text-transform: uppercase; color: var(--sakura2);
-  opacity: .75; margin-bottom: 10px;
+  opacity: .7; margin-bottom: 14px;
 }
 .cd-number-row {
-  display: flex; align-items: baseline; gap: 7px;
-  margin-bottom: 6px;
+  display: flex; align-items: baseline; justify-content: center; gap: 7px;
+  margin-bottom: 10px;
 }
-.cd-days {
+.hero-countdown .cd-days {
   font-family: 'Playfair Display', serif;
-  font-size: 64px; font-weight: 700; line-height: 1;
+  font-size: 60px; font-weight: 700; line-height: 1;
   color: var(--sakura2); letter-spacing: -2px;
 }
-.cd-unit {
-  font-size: 13px; font-weight: 600;
-  color: var(--sakura); padding-bottom: 5px;
+.hero-countdown .cd-unit {
+  font-size: 13px; font-weight: 500;
+  color: var(--muted); padding-bottom: 4px;
 }
-.cd-date-row {
-  display: flex; align-items: center; gap: 8px;
-  margin-bottom: 22px;
+.hero-countdown .cd-date {
+  font-size: 13px; font-weight: 600; color: var(--ink2);
+  margin-bottom: 24px; letter-spacing: .1px;
 }
-.cd-date-line {
-  width: 16px; height: 1.5px; border-radius: 2px;
-  background: var(--sakura); opacity: .5; flex-shrink: 0;
+.hero-countdown .cd-date-empty {
+  font-size: 12px; color: var(--dim); font-style: italic; font-weight: 400;
 }
-.cd-date {
-  font-size: 12.5px; font-weight: 600; color: var(--ink2);
-}
-.cd-date-empty {
-  font-size: 12px; color: var(--dim); font-style: italic;
-}
+/* Primary CTA — shown before date is set */
 .hero-countdown .cd-edit {
-  margin-left: 0; width: 100%; text-align: center;
+  width: 100%; text-align: center;
   background: var(--sakura2); color: #fff;
   border: none; border-radius: 11px;
   padding: 11px 16px;
@@ -235,8 +231,19 @@ input, select, textarea { font-family: inherit; }
   transition: opacity var(--t), transform var(--t), box-shadow var(--t);
 }
 .hero-countdown .cd-edit:hover {
-  opacity: .92; transform: translateY(-1px);
+  opacity: .9; transform: translateY(-1px);
   box-shadow: var(--cd-shadow-hover);
+}
+/* Edit state — compact ghost button shown after date is set */
+.hero-countdown .cd-edit.cd-edit-set {
+  background: transparent; color: var(--sakura2);
+  border: 1px solid var(--sakura); border-radius: 99px;
+  padding: 6px 16px; font-size: 10px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  box-shadow: none; width: auto;
+}
+.hero-countdown .cd-edit.cd-edit-set:hover {
+  background: var(--sakura-light); transform: none; box-shadow: none; opacity: 1;
 }
 
 /* ── External card accent classes (no more inline --ea) ─── */
@@ -244,26 +251,26 @@ input, select, textarea { font-family: inherit; }
 .ext-uworld  { --ea: var(--ext-uworld); }
 .ext-pathoma { --ea: var(--ext-pathoma); }
 
-/* ── Countdown Wrap (other pages) ────────────────────────── */
+/* ── Countdown Wrap (other pages) — scoped to avoid cascade ─ */
 .countdown-wrap {
   display: flex; align-items: center; gap: 24px;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--r-lg); padding: 20px 28px;
   box-shadow: var(--shadow); flex-wrap: wrap;
 }
-.cd-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.cd-days { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; line-height: 1; color: var(--sakura2); }
-.cd-unit { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.countdown-wrap .cd-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.countdown-wrap .cd-days  { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; line-height: 1; color: var(--sakura2); }
+.countdown-wrap .cd-unit  { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .cd-divider { width: 1px; height: 60px; background: var(--border); }
-.cd-date-lbl { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.cd-date { font-size: 18px; font-weight: 600; color: var(--ink); }
-.cd-edit {
+.countdown-wrap .cd-date-lbl { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.countdown-wrap .cd-date { font-size: 18px; font-weight: 600; color: var(--ink); }
+.countdown-wrap .cd-edit {
   margin-left: auto;
   background: var(--sakura2); color: #fff;
   border-radius: var(--r); padding: 10px 20px; font-size: 13px; font-weight: 600;
   transition: opacity var(--t), transform var(--t);
 }
-.cd-edit:hover { opacity: .88; transform: translateY(-1px); }
+.countdown-wrap .cd-edit:hover { opacity: .88; transform: translateY(-1px); }
 
 /* ── Unified card interaction base ───────────────────────── */
 .tool-card, .ref-card {

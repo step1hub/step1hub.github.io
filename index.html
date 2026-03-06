@@ -258,11 +258,8 @@
         <span class="cd-days" id="cd-days">—</span>
         <span class="cd-unit">days</span>
       </div>
-      <div class="cd-date-row">
-        <span class="cd-date-line"></span>
-        <span class="cd-date" id="cd-date"><span class="cd-date-empty">Exam date not set</span></span>
-      </div>
-      <button class="cd-edit" onclick="openDateModal()">Set Exam Date ✦</button>
+      <div class="cd-date" id="cd-date"><span class="cd-date-empty">No exam date set</span></div>
+      <button class="cd-edit" id="cd-edit-btn" onclick="openDateModal()">Set Exam Date ✦</button>
     </div>
   </header>
 
@@ -627,8 +624,47 @@ document.addEventListener('keydown', e => {
   }
 });
 
+/* ── Patch saveExamDate to refresh countdown after save ─── */
+const _origSaveExamDate = typeof saveExamDate === 'function' ? saveExamDate : null;
+document.addEventListener('DOMContentLoaded', () => {
+  // Wrap after app.js has loaded
+  const origSave = window.saveExamDate;
+  if (origSave) {
+    window.saveExamDate = function() {
+      origSave();
+      renderCountdown();
+      renderUWorld();
+    };
+  }
+});
+
+/* ── Countdown display ───────────────────────────────────── */
+function renderCountdown() {
+  const days = getDaysRemaining();
+  const dateStr = Store.get('exam-date', '');
+  const btn = document.getElementById('cd-edit-btn');
+  const dateEl = document.getElementById('cd-date');
+  const daysEl = document.getElementById('cd-days');
+
+  if (days !== null && days >= 0 && dateStr) {
+    daysEl.textContent = days;
+    // Format the date nicely
+    const d = new Date(dateStr + 'T12:00:00');
+    dateEl.textContent = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    // Switch to compact edit button
+    btn.textContent = 'Edit ✦';
+    btn.classList.add('cd-edit-set');
+  } else {
+    daysEl.textContent = '—';
+    dateEl.innerHTML = '<span class="cd-date-empty">No exam date set</span>';
+    btn.textContent = 'Set Exam Date ✦';
+    btn.classList.remove('cd-edit-set');
+  }
+}
+
 /* ── Init ────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+  renderCountdown();
   initDotd();
   initOotd();
   renderUWorld();
