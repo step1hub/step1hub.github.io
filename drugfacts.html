@@ -160,7 +160,48 @@
   line-height: 1.2; margin-bottom: 3px;
 }
 .modal-sub-line {
-  font-size: 12px; color: var(--muted); font-style: italic;
+  font-size: 12.5px; color: var(--muted); font-style: italic;
+  margin-bottom: 0; line-height: 1.5;
+}
+
+/* ── Drug section rows — each as a distinct block ────────── */
+#ddm-content {
+  display: flex; flex-direction: column; gap: 0;
+  margin-top: 18px;
+}
+#ddm-content .drug-row {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  margin-bottom: 6px;
+}
+#ddm-content .drug-label {
+  display: block;
+  font-size: 9px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 5px; opacity: .85;
+}
+#ddm-content .drug-text {
+  font-size: 13.5px; color: var(--ink2); line-height: 1.65;
+}
+#ddm-content .drug-text strong { color: var(--ink); font-weight: 600; }
+
+/* Pearl box — standout accent block */
+#ddm-content .pearl-box {
+  background: var(--accent-light);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 2px; margin-bottom: 6px;
+}
+#ddm-content .pearl-box .drug-label {
+  color: var(--accent); opacity: 1;
+}
+
+/* Header divider below aka */
+.modal-header-divider {
+  height: 1px; background: var(--border2); margin: 14px 0 0;
 }
 /* ── Drug-specific accent ────────────────────────────────── */
 :root {
@@ -230,6 +271,7 @@
       </div>
       <button class="modal-close-btn" onclick="closeModal('drug-detail-modal')" aria-label="Close">&times;</button>
     </div>
+    <div class="modal-header-divider"></div>
     <div id="ddm-content" style="max-height:62vh;overflow-y:auto;padding-right:4px;"></div>
     <div class="modal-btns" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
       <button class="btn-cancel" onclick="closeModal('drug-detail-modal')">Close</button>
