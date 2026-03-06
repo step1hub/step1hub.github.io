@@ -7,71 +7,51 @@
 <link rel="stylesheet" href="style.css"/>
 <title>Step 1 Study Hub</title>
 <style>
-/* ── Index page layout ───────────────────────────────────── */
-
-/* Hero: text left, countdown card right */
+/* ── Hero — centered dramatic countdown ─────────────────── */
 .hero {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 32px;
-  align-items: end;
-  padding: 52px 0 40px;
+  text-align: center;
+  padding: 52px 0 36px;
 }
-.hero-left {}
 .hero-eyebrow {
   font-size: 11px; font-weight: 600; letter-spacing: 2.5px;
   text-transform: uppercase; color: var(--sakura2);
-  margin-bottom: 14px;
+  margin-bottom: 20px;
 }
-.hero-name {
+.hero-countdown {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(32px, 4.5vw, 52px);
-  font-weight: 700; line-height: 1.15;
+  font-size: clamp(40px, 7vw, 80px);
+  font-weight: 700; line-height: 1.1;
   color: var(--ink);
+  margin-bottom: 10px;
 }
-.hero-name em { font-style: italic; color: var(--sakura2); }
-
-/* Countdown card — right side of hero */
-.countdown-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 22px 26px;
-  box-shadow: var(--shadow);
-  display: flex; flex-direction: column; gap: 14px;
-  min-width: 210px; flex-shrink: 0;
+.hero-countdown em { font-style: italic; color: var(--sakura2); }
+.cd-num { transition: color .3s; }
+.hero-sub {
+  font-size: 15px; color: var(--muted); margin-bottom: 20px; line-height: 1.5;
 }
-.cd-label     { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
-.cd-days      { font-family: 'Playfair Display', serif; font-size: 50px; font-weight: 700; line-height: 1; color: var(--fuji); }
-.cd-unit      { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.cd-divider   { height: 1px; background: var(--border2); }
-.cd-date-lbl  { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
-.cd-date      { font-size: 15px; font-weight: 600; color: var(--ink); }
-.cd-edit {
+.hero-sub span { color: var(--ink2); font-weight: 600; }
+.hero-actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.hero-set-btn {
   background: transparent; color: var(--sakura2);
-  border: 1px solid var(--sakura);
-  border-radius: var(--r); padding: 7px 14px;
-  font-size: 12px; font-weight: 600;
-  transition: background .15s; text-align: center;
+  border: 1px solid var(--sakura); border-radius: var(--r);
+  padding: 8px 18px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: background .15s; font-family: inherit;
 }
-.cd-edit:hover { background: var(--sakura-light); }
+.hero-set-btn:hover { background: var(--sakura-light); }
 
-/* Stats strip — shows when exam date is set */
+/* ── Stats strip ─────────────────────────────────────────── */
 .stats-strip {
   display: none;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 0;
-  margin-bottom: 32px;
   overflow: hidden;
+  margin-bottom: 28px;
 }
 .stats-strip.visible { display: flex; }
 .strip-stat {
-  flex: 1;
-  padding: 16px 22px;
-  border-right: 1px solid var(--border2);
-  min-width: 0;
+  flex: 1; padding: 16px 22px;
+  border-right: 1px solid var(--border2); min-width: 0;
 }
 .strip-stat:last-of-type { border-right: none; }
 .strip-label { font-size: 10px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
@@ -79,47 +59,74 @@
 .strip-sub   { font-size: 11px; color: var(--muted); margin-top: 3px; }
 .strip-cta   { display: flex; align-items: center; padding: 16px 22px; flex-shrink: 0; }
 
-/* Drug of the Day — featured banner */
-.dotd-banner {
-  display: none; /* shown by JS */
-  align-items: center; gap: 20px;
+/* ── Today's Focus banner ────────────────────────────────── */
+.focus-banner {
+  display: flex; align-items: center; gap: 16px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 4px solid var(--sakura2);
   border-radius: var(--r-lg);
-  padding: 20px 24px;
-  margin-bottom: 32px;
-  cursor: pointer;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  text-decoration: none; color: inherit;
   transition: box-shadow .2s, transform .15s;
 }
-.dotd-banner:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.dotd-eyebrow {
-  font-size: 10px; font-weight: 700; letter-spacing: 1.8px;
-  text-transform: uppercase; color: var(--sakura2);
-  background: var(--sakura-light);
-  padding: 3px 10px; border-radius: 99px;
-  white-space: nowrap; flex-shrink: 0;
+.focus-banner:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.focus-icon-wrap {
+  width: 42px; height: 42px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
 }
-.dotd-body    { flex: 1; min-width: 0; }
-.dotd-name    { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 600; margin-bottom: 3px; }
-.dotd-pearl   { font-size: 13px; color: var(--ink2); font-style: italic; line-height: 1.5; }
-.dotd-arrow   { font-size: 13px; font-weight: 600; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+.focus-meta { flex: 1; min-width: 0; }
+.focus-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.8px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
+}
+.focus-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; }
+.focus-desc  { font-size: 12px; color: var(--muted); margin-top: 1px; }
+.focus-arrow { font-size: 13px; font-weight: 600; color: var(--muted); flex-shrink: 0; }
 
-/* Section labels */
+/* ── Featured daily grid — DOTD + OOTD side-by-side ─────── */
+.featured-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.feat-banner {
+  display: flex; flex-direction: column; gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: box-shadow .2s, transform .15s;
+  background: var(--surface);
+  position: relative; overflow: hidden;
+}
+.feat-banner::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.feat-banner.feat-drug::before  { background: var(--sakura2); }
+.feat-banner.feat-micro::before { background: var(--sage); }
+.feat-banner:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.feat-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.8px;
+  text-transform: uppercase; padding: 3px 10px; border-radius: 99px;
+  white-space: nowrap; align-self: flex-start;
+}
+.feat-eyebrow.ey-drug  { color: var(--sakura2); background: var(--sakura-light); }
+.feat-eyebrow.ey-micro { color: var(--sage);    background: var(--sage-light); }
+.feat-name  { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; }
+.feat-pearl { font-size: 12px; color: var(--ink2); font-style: italic; line-height: 1.5; flex: 1; }
+.feat-link  { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+
+/* ── Section labels ──────────────────────────────────────── */
 .sec-label {
   font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
   text-transform: uppercase; color: var(--muted);
-  margin: 36px 0 14px;
+  margin: 32px 0 14px;
 }
 
-/* Reference tools grid — 2-up, taller cards */
-.tool-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 14px;
-}
-
-/* Progress trackers — compact 3-col strip */
+/* ── Tracker row — with progress bars ───────────────────── */
 .tracker-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -129,39 +136,45 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 18px 20px;
+  padding: 18px 20px 16px;
   display: block;
   position: relative; overflow: hidden;
   transition: transform .18s, box-shadow .18s, border-color .18s;
+  text-decoration: none;
 }
 .tracker-tile::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
   background: var(--card-accent, var(--sakura2));
   transform: scaleX(0); transform-origin: left;
   transition: transform .2s ease;
 }
 .tracker-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--card-accent, var(--sakura)); }
 .tracker-tile:hover::after { transform: scaleX(1); }
-.tile-label  { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-.tile-title  { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; margin-bottom: 4px; color: var(--ink); }
-.tile-desc   { font-size: 12px; color: var(--muted); line-height: 1.45; }
+.tile-label  { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.tile-title  { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; margin-bottom: 3px; color: var(--ink); }
+.tile-desc   { font-size: 12px; color: var(--muted); line-height: 1.45; margin-bottom: 14px; }
 .tile-arrow  { position: absolute; top: 16px; right: 16px; font-size: 13px; color: var(--dim); transition: color .18s; }
 .tracker-tile:hover .tile-arrow { color: var(--card-accent, var(--sakura2)); }
+.tile-prog-bar  { height: 5px; background: var(--border2); border-radius: 99px; overflow: hidden; margin-bottom: 5px; }
+.tile-prog-fill { height: 100%; border-radius: 99px; background: var(--card-accent, var(--sakura2)); transition: width .5s ease; }
+.tile-prog-label { font-size: 10px; color: var(--muted); display: flex; justify-content: space-between; }
 
-/* External links — compact list */
+/* ── Reference tools grid ────────────────────────────────── */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+/* ── External links ──────────────────────────────────────── */
 .ext-list {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); overflow: hidden;
 }
 .ext-row {
   display: flex; align-items: center; gap: 16px;
-  padding: 13px 20px;
-  border-bottom: 1px solid var(--border2);
-  text-decoration: none; color: inherit;
-  transition: background .12s;
+  padding: 13px 20px; border-bottom: 1px solid var(--border2);
+  text-decoration: none; color: inherit; transition: background .12s;
 }
 .ext-row:last-child { border-bottom: none; }
 .ext-row:hover { background: var(--surface2); }
@@ -176,36 +189,41 @@
 }
 .ext-arrow { font-size: 12px; color: var(--dim); flex-shrink: 0; }
 
-/* Motivational footer block */
-.motive-block {
-  margin-top: 32px;
+/* ── Slim quote footer ───────────────────────────────────── */
+.quote-footer {
+  margin-top: 36px;
+  padding: 18px 26px;
   background: linear-gradient(135deg, var(--sakura-light) 0%, var(--lav-light) 100%);
   border: 1px solid var(--sakura);
   border-radius: var(--r-lg);
-  padding: 28px 32px;
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr;
-  gap: 28px;
-  align-items: center;
+  display: flex; align-items: center; gap: 20px;
 }
-.motive-divider { background: var(--sakura); opacity: .3; height: 100%; }
-.motive-callout { font-size: 14px; color: var(--ink2); line-height: 1.65; }
-.motive-callout strong { color: var(--ink); }
-.motive-quote { text-align: center; }
-.motive-q-text { font-family: 'Playfair Display', serif; font-size: 16px; font-style: italic; color: var(--ink2); line-height: 1.7; }
-.motive-q-attr { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); display: block; margin-top: 8px; }
+.quote-footer-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px; font-style: italic;
+  color: var(--ink2); line-height: 1.6; flex: 1;
+}
+.quote-footer-attr {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--muted);
+  white-space: nowrap; flex-shrink: 0;
+}
+.quote-ganbatte {
+  font-size: 20px; flex-shrink: 0;
+}
 
+/* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 780px) {
-  .hero { grid-template-columns: 1fr; }
-  .countdown-wrap { flex-direction: row; flex-wrap: wrap; min-width: unset; }
-  .tracker-row { grid-template-columns: 1fr 1fr; }
-  .motive-block { grid-template-columns: 1fr; }
-  .motive-divider { display: none; }
+  .featured-grid { grid-template-columns: 1fr; }
+  .tracker-row   { grid-template-columns: 1fr 1fr; }
+  .quote-footer  { flex-wrap: wrap; gap: 10px; }
 }
 @media (max-width: 480px) {
-  .tracker-row { grid-template-columns: 1fr; }
+  .tracker-row         { grid-template-columns: 1fr; }
   .stats-strip.visible { flex-direction: column; }
-  .strip-stat { border-right: none; border-bottom: 1px solid var(--border2); }
+  .strip-stat          { border-right: none; border-bottom: 1px solid var(--border2); }
+  .focus-banner        { flex-wrap: wrap; }
+  .hero-countdown      { font-size: clamp(32px, 9vw, 60px); }
 }
 </style>
 </head>
@@ -222,28 +240,19 @@
 
 <div class="wrap">
 
-  <!-- ── Hero ── -->
+  <!-- ── 3. Dramatic centered hero countdown ── -->
   <header class="hero">
-    <div class="hero-left">
-      <div class="hero-eyebrow">USMLE Step 1 Study Hub</div>
-      <h1 class="hero-name">Your <em>Study Resources,</em><br/>All in One Place</h1>
+    <div class="hero-eyebrow">USMLE Step 1 Study Hub</div>
+    <div class="hero-countdown">
+      <span class="cd-num" id="cd-days">—</span> days until <em>Step 1</em>
     </div>
-    <div class="countdown-wrap">
-      <div>
-        <div class="cd-label">Days Remaining</div>
-        <div class="cd-days" id="cd-days">—</div>
-        <div class="cd-unit">days</div>
-      </div>
-      <div class="cd-divider"></div>
-      <div>
-        <div class="cd-date-lbl">Exam Date</div>
-        <div class="cd-date" id="cd-date">Not set</div>
-      </div>
-      <button class="cd-edit" onclick="openDateModal()">Set Date ✦</button>
+    <div class="hero-sub" id="hero-sub">Set your exam date to start the countdown.</div>
+    <div class="hero-actions" id="hero-actions">
+      <button class="hero-set-btn" onclick="openDateModal()">Set Exam Date ✦</button>
     </div>
   </header>
 
-  <!-- ── Stats Strip (visible when exam date is set) ── -->
+  <!-- ── 2. Smarter stats strip ── -->
   <div class="stats-strip" id="stats-strip">
     <div class="strip-stat">
       <div class="strip-label">UWorld Q / Day</div>
@@ -256,26 +265,77 @@
       <div class="strip-sub">Stay consistent</div>
     </div>
     <div class="strip-stat">
-      <div class="strip-label">Today</div>
-      <div class="strip-value" id="strip-today" style="color:var(--ink); font-size:20px;">—</div>
-      <div class="strip-sub">頑張って</div>
+      <div class="strip-label">Sketchy Reviewed</div>
+      <div class="strip-value" id="strip-sketchy" style="color:var(--sage);">—</div>
+      <div class="strip-sub" id="strip-sketchy-sub">of all videos</div>
+    </div>
+    <div class="strip-stat">
+      <div class="strip-label">Studied This Week</div>
+      <div class="strip-value" id="strip-streak" style="color:var(--gold);">—</div>
+      <div class="strip-sub">days with sessions</div>
     </div>
     <div class="strip-cta">
-      <a href="dashboard.html" class="btn-save" style="text-decoration:none; white-space:nowrap;">Dashboard ↗</a>
+      <a href="dashboard.html" class="btn-save" style="text-decoration:none;white-space:nowrap;">Dashboard ↗</a>
     </div>
   </div>
 
-  <!-- ── Drug of the Day — featured ── -->
-  <div class="dotd-banner" id="dotd-banner" onclick="openDotdModal()">
-    <div class="dotd-eyebrow">Drug of the Day</div>
-    <div class="dotd-body">
-      <div class="dotd-name" id="dotd-name">Loading…</div>
-      <div class="dotd-pearl" id="dotd-pearl"></div>
+  <!-- ── 4. Today's Focus banner ── -->
+  <a class="focus-banner" id="focus-banner" href="#">
+    <div class="focus-icon-wrap" id="focus-icon"></div>
+    <div class="focus-meta">
+      <div class="focus-eyebrow">Today's Focus</div>
+      <div class="focus-title" id="focus-title"></div>
+      <div class="focus-desc"  id="focus-desc"></div>
     </div>
-    <div class="dotd-arrow">View full card ↗</div>
+    <div class="focus-arrow">Study now ↗</div>
+  </a>
+
+  <!-- ── 1. Drug of the Day + Organism of the Day ── -->
+  <div class="featured-grid">
+    <div class="feat-banner feat-drug" id="dotd-banner" onclick="openDotdModal()" style="display:none;">
+      <span class="feat-eyebrow ey-drug">Drug of the Day</span>
+      <div class="feat-name"  id="dotd-name">Loading…</div>
+      <div class="feat-pearl" id="dotd-pearl"></div>
+      <div class="feat-link">View full card ↗</div>
+    </div>
+    <div class="feat-banner feat-micro" id="ootd-banner" onclick="openOotdModal()" style="display:none;">
+      <span class="feat-eyebrow ey-micro">Organism of the Day</span>
+      <div class="feat-name"  id="ootd-name">Loading…</div>
+      <div class="feat-pearl" id="ootd-pearl"></div>
+      <div class="feat-link">View full card ↗</div>
+    </div>
   </div>
 
-  <!-- ── Reference ── -->
+  <!-- ── 6. Trackers first — with live progress bars ── -->
+  <div class="sec-label">Progress Trackers</div>
+  <div class="tracker-row">
+    <a class="tracker-tile card-spharm" href="sketchy-pharm.html">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Sketchy</div>
+      <div class="tile-title">Pharm</div>
+      <div class="tile-desc">Track watched and reviewed videos across all organ systems.</div>
+      <div class="tile-prog-bar"><div class="tile-prog-fill" id="prog-spharm" style="width:0%;"></div></div>
+      <div class="tile-prog-label"><span id="prog-spharm-label">No progress yet</span><span id="prog-spharm-pct"></span></div>
+    </a>
+    <a class="tracker-tile card-smicro" href="sketchy-micro.html">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Sketchy</div>
+      <div class="tile-title">Micro</div>
+      <div class="tile-desc">Bacteria, viruses, fungi, and parasites with yield ratings.</div>
+      <div class="tile-prog-bar"><div class="tile-prog-fill" id="prog-smicro" style="width:0%;"></div></div>
+      <div class="tile-prog-label"><span id="prog-smicro-label">No progress yet</span><span id="prog-smicro-pct"></span></div>
+    </a>
+    <a class="tracker-tile card-pix" href="pixorize.html">
+      <span class="tile-arrow">↗</span>
+      <div class="tile-label">Pixorize</div>
+      <div class="tile-title">Biochem &amp; Immuno</div>
+      <div class="tile-desc">Biochemistry, immunology, genetics, and embryology videos.</div>
+      <div class="tile-prog-bar"><div class="tile-prog-fill" id="prog-pix" style="width:0%;"></div></div>
+      <div class="tile-prog-label"><span id="prog-pix-label">No progress yet</span><span id="prog-pix-pct"></span></div>
+    </a>
+  </div>
+
+  <!-- ── Reference tools ── -->
   <div class="sec-label">Reference</div>
   <div class="tool-grid">
     <a class="tool-card card-pharm" href="drugfacts.html">
@@ -304,29 +364,6 @@
       <h2 class="card-title">Dashboard</h2>
       <p class="card-desc">Log UWorld sessions, track practice exam scores, find weak points, and calculate your daily question goal.</p>
       <div class="card-pills"><span class="pill">UWorld</span><span class="pill">NBMEs</span><span class="pill">Weak Points</span></div>
-    </a>
-  </div>
-
-  <!-- ── Progress Trackers ── -->
-  <div class="sec-label">Progress Trackers</div>
-  <div class="tracker-row">
-    <a class="tracker-tile card-spharm" href="sketchy-pharm.html">
-      <span class="tile-arrow">↗</span>
-      <div class="tile-label">Sketchy</div>
-      <div class="tile-title">Pharm</div>
-      <div class="tile-desc">Track watched and reviewed videos across all organ systems.</div>
-    </a>
-    <a class="tracker-tile card-smicro" href="sketchy-micro.html">
-      <span class="tile-arrow">↗</span>
-      <div class="tile-label">Sketchy</div>
-      <div class="tile-title">Micro</div>
-      <div class="tile-desc">Bacteria, viruses, fungi, and parasites with yield ratings.</div>
-    </a>
-    <a class="tracker-tile card-pix" href="pixorize.html">
-      <span class="tile-arrow">↗</span>
-      <div class="tile-label">Pixorize</div>
-      <div class="tile-title">Biochem &amp; Immuno</div>
-      <div class="tile-desc">Biochemistry, immunology, genetics, and embryology videos.</div>
     </a>
   </div>
 
@@ -363,17 +400,11 @@
     </a>
   </div>
 
-  <!-- ── Motivational block: callout + quote side by side ── -->
-  <div class="motive-block">
-    <div class="motive-callout">
-      <div style="font-size:22px; margin-bottom:10px;">🗻</div>
-      <strong>Japan after Step 1 —</strong> Cherry blossoms, Mount Fuji, ramen at 2am. Every page you study now is a step closer. 頑張って (Ganbatte) — you've got this.
-    </div>
-    <div class="motive-divider"></div>
-    <div class="motive-quote">
-      <p class="motive-q-text" id="daily-quote"></p>
-      <span class="motive-q-attr" id="quote-attr"></span>
-    </div>
+  <!-- ── 7. Slim motivational quote footer ── -->
+  <div class="quote-footer">
+    <div class="quote-ganbatte">🗻</div>
+    <div class="quote-footer-text" id="daily-quote"></div>
+    <div class="quote-footer-attr" id="quote-attr"></div>
   </div>
 
   <footer class="footer">
@@ -382,7 +413,7 @@
   </footer>
 </div>
 
-<!-- Drug of the Day Modal -->
+<!-- ── Drug of the Day Modal ── -->
 <div class="modal-overlay" id="dotd-modal">
   <div class="modal detail-modal" style="max-width:560px;">
     <div class="modal-header">
@@ -401,9 +432,62 @@
   </div>
 </div>
 
+<!-- ── Organism of the Day Modal ── -->
+<div class="modal-overlay" id="ootd-modal">
+  <div class="modal detail-modal" style="max-width:560px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:4px;" id="om-group"></div>
+        <div class="modal-title" id="om-name"></div>
+        <div style="font-size:12px;color:var(--muted);font-style:italic;" id="om-gram"></div>
+      </div>
+      <button onclick="closeModal('ootd-modal')" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--dim);">&times;</button>
+    </div>
+    <div id="om-content" style="max-height:65vh;overflow-y:auto;padding-right:6px;"></div>
+    <div class="modal-btns" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+      <button class="btn-cancel" onclick="closeModal('ootd-modal')">Close</button>
+      <a href="microfacts.html" class="btn-save" style="text-decoration:none;display:inline-block;">All Micro Facts ↗</a>
+    </div>
+  </div>
+</div>
+
 <script src="drug_data.js"></script>
+<script src="micro_data.js"></script>
+<script src="pharm_categories.js"></script>
+<script src="micro_categories.js"></script>
+<script src="pixorize_categories.js"></script>
 <script src="app.js"></script>
 <script>
+
+/* ─────────────────────────────────────────────────────────
+   Today's Focus — rotates by day of week
+   Deep-links into filtered Drug Facts / Micro Facts pages
+───────────────────────────────────────────────────────── */
+const FOCUS_SCHEDULE = [
+  { day:'Sunday',    emoji:'🧬', label:'Microbiology',     desc:'Bacteria, viruses, fungi — all categories',          href:'microfacts.html',          color:'var(--sage)',    bg:'var(--sage-light)' },
+  { day:'Monday',    emoji:'❤️', label:'Cardiovascular',   desc:'CV drugs, cardiac physiology, arrhythmias',           href:'drugfacts.html?cat=cv',    color:'var(--sakura2)', bg:'var(--sakura-light)' },
+  { day:'Tuesday',   emoji:'🧠', label:'Neurology / Psych',desc:'CNS drugs, neuropharmacology, psychiatry',            href:'drugfacts.html?cat=neuro', color:'var(--fuji)',    bg:'var(--lav-light)' },
+  { day:'Wednesday', emoji:'🦠', label:'Antimicrobials',   desc:'Antibiotics, antivirals, antifungals',                href:'drugfacts.html?cat=micro', color:'var(--sky)',     bg:'var(--sky-light)' },
+  { day:'Thursday',  emoji:'🩺', label:'Endocrine',        desc:'Diabetes, thyroid, adrenal, reproductive drugs',      href:'drugfacts.html?cat=endo',  color:'var(--gold)',    bg:'var(--gold-light)' },
+  { day:'Friday',    emoji:'💊', label:'Pharmacology',     desc:'High-yield Tier 1 drugs across all systems',          href:'drugfacts.html',           color:'var(--sakura2)', bg:'var(--sakura-light)' },
+  { day:'Saturday',  emoji:'🔬', label:'Full Review',      desc:'Mixed Micro + Pharm — quiz yourself on everything',   href:'microfacts.html',          color:'var(--sage)',    bg:'var(--sage-light)' },
+];
+
+function initFocus() {
+  const f = FOCUS_SCHEDULE[new Date().getDay()];
+  const banner = document.getElementById('focus-banner');
+  const icon   = document.getElementById('focus-icon');
+  banner.href = f.href;
+  banner.style.borderColor = f.color;
+  icon.textContent        = f.emoji;
+  icon.style.background   = f.bg;
+  document.getElementById('focus-title').textContent = f.label;
+  document.getElementById('focus-desc').textContent  = f.desc;
+}
+
+/* ─────────────────────────────────────────────────────────
+   Drug of the Day
+───────────────────────────────────────────────────────── */
 let dotdDrug = null;
 
 function initDotd() {
@@ -411,55 +495,210 @@ function initDotd() {
   const all = [];
   Object.values(DRUGS).forEach(cat => {
     cat.forEach(grp => {
-      grp.drugs.filter(d => d.tier === 1).forEach(d => all.push({...d, groupName: grp.group}));
+      grp.drugs.filter(d => d.tier === 1).forEach(d => all.push({ ...d, groupName: grp.group }));
     });
   });
   if (!all.length) return;
   const today = new Date();
-  const seed = today.getFullYear() * 10000 + (today.getMonth()+1) * 100 + today.getDate();
+  const seed  = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
   dotdDrug = all[seed % all.length];
   document.getElementById('dotd-name').textContent = dotdDrug.name;
-  const raw = dotdDrug.pearl ? dotdDrug.pearl.replace(/\*\*/g,'') : 'High-yield concept — tap to review.';
-  document.getElementById('dotd-pearl').textContent = raw.length > 120 ? raw.substring(0,120) + '…' : raw;
+  const raw = dotdDrug.pearl ? dotdDrug.pearl.replace(/\*\*/g, '') : 'High-yield concept — tap to review.';
+  document.getElementById('dotd-pearl').textContent = raw.length > 110 ? raw.substring(0, 110) + '…' : raw;
   document.getElementById('dotd-banner').style.display = 'flex';
 }
 
 function openDotdModal() {
   if (!dotdDrug) return;
-  document.getElementById('dm-name').textContent    = dotdDrug.name;
-  document.getElementById('dm-aka').textContent     = dotdDrug.aka || '';
-  document.getElementById('dm-group').textContent   = dotdDrug.groupName || 'Pharmacology';
-  const fmt = t => t ? t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>') : '—';
+  document.getElementById('dm-name').textContent  = dotdDrug.name;
+  document.getElementById('dm-aka').textContent   = dotdDrug.aka || '';
+  document.getElementById('dm-group').textContent = dotdDrug.groupName || 'Pharmacology';
+  const fmt = t => t ? t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') : '—';
   document.getElementById('dm-content').innerHTML = `
     <div class="drug-row"><span class="drug-label">Mechanism</span><div class="drug-text">${fmt(dotdDrug.moa)}</div></div>
     <div class="drug-row"><span class="drug-label">Clinical Use</span><div class="drug-text">${fmt(dotdDrug.use)}</div></div>
     <div class="drug-row"><span class="drug-label">Side Effects</span><div class="drug-text">${fmt(dotdDrug.se)}</div></div>
-    ${dotdDrug.ci ? `<div class="drug-row"><span class="drug-label">Contraindications</span><div class="drug-text">${fmt(dotdDrug.ci)}</div></div>` : ''}
-    ${dotdDrug.pearl ? `<div class="pearl-box"><span class="drug-label">Pearl</span><div class="drug-text">${fmt(dotdDrug.pearl)}</div></div>` : ''}
+    ${dotdDrug.ci    ? `<div class="drug-row"><span class="drug-label">Contraindications</span><div class="drug-text">${fmt(dotdDrug.ci)}</div></div>` : ''}
+    ${dotdDrug.pearl ? `<div class="pearl-box"><span class="drug-label">💎 Pearl</span><div class="drug-text">${fmt(dotdDrug.pearl)}</div></div>` : ''}
   `;
   openModal('dotd-modal');
 }
 
+/* ─────────────────────────────────────────────────────────
+   Organism of the Day
+───────────────────────────────────────────────────────── */
+let ootdOrganism = null;
+
+function initOotd() {
+  if (typeof MICRO === 'undefined') return;
+  const all = [];
+  Object.entries(MICRO).forEach(([cat, groups]) => {
+    groups.forEach(grp => {
+      grp.organisms.filter(o => o.tier === 1).forEach(o => all.push({ ...o, category: cat, groupName: grp.group }));
+    });
+  });
+  if (!all.length) return;
+  // Offset by 1 day so OOTD is always a different organism than DOTD
+  const today = new Date();
+  const seed  = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate() + 1;
+  ootdOrganism = all[seed % all.length];
+  document.getElementById('ootd-name').textContent = ootdOrganism.name;
+  const raw = ootdOrganism.pearl
+    ? ootdOrganism.pearl.replace(/\*\*/g, '')
+    : (ootdOrganism.summary || 'High-yield organism — tap to review.');
+  document.getElementById('ootd-pearl').textContent = raw.length > 110 ? raw.substring(0, 110) + '…' : raw;
+  document.getElementById('ootd-banner').style.display = 'flex';
+}
+
+function openOotdModal() {
+  if (!ootdOrganism) return;
+  const o = ootdOrganism;
+  document.getElementById('om-name').textContent  = o.name;
+  document.getElementById('om-gram').textContent  = o.gram || '';
+  document.getElementById('om-group').textContent = (o.category || '').toUpperCase() + (o.groupName ? ' · ' + o.groupName : '');
+  const fmt  = t => t ? t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') : '—';
+  const rows = [
+    ['Virulence Factors', o.virulence],
+    ['Diseases',          o.disease],
+    ['Treatment',         o.tx],
+  ].filter(r => r[1]);
+  document.getElementById('om-content').innerHTML =
+    rows.map(([label, val]) =>
+      `<div class="drug-row"><span class="drug-label">${label}</span><div class="drug-text">${fmt(val)}</div></div>`
+    ).join('') +
+    (o.pearl
+      ? `<div class="pearl-box" style="background:var(--sage-light);border-color:var(--sage);">
+           <span class="drug-label" style="color:var(--sage);">💎 Pearl</span>
+           <div class="drug-text">${fmt(o.pearl)}</div>
+         </div>`
+      : '');
+  openModal('ootd-modal');
+}
+
+/* ─────────────────────────────────────────────────────────
+   Tracker totals — computed dynamically from the loaded
+   CATEGORIES data files (pharm/micro/pixorize_categories.js).
+   Never hardcoded — always reflects the real video count.
+───────────────────────────────────────────────────────── */
+function countVideos(categoriesArr) {
+  if (!Array.isArray(categoriesArr)) return 0;
+  return categoriesArr.reduce((sum, cat) => sum + (cat.videos ? cat.videos.length : 0), 0);
+}
+
+function getTrackerTotal(key) {
+  if (key === 'sketchy-pharm') return countVideos(typeof PHARM_CATEGORIES    !== 'undefined' ? PHARM_CATEGORIES    : null);
+  if (key === 'sketchy-micro') return countVideos(typeof MICRO_CATEGORIES    !== 'undefined' ? MICRO_CATEGORIES    : null);
+  if (key === 'pixorize')      return countVideos(typeof PIXORIZE_CATEGORIES !== 'undefined' ? PIXORIZE_CATEGORIES : null);
+  return 0;
+}
+
+function renderTrackerProgress() {
+  [
+    { key: 'sketchy-pharm', fillId: 'prog-spharm', labelId: 'prog-spharm-label', pctId: 'prog-spharm-pct' },
+    { key: 'sketchy-micro', fillId: 'prog-smicro', labelId: 'prog-smicro-label', pctId: 'prog-smicro-pct' },
+    { key: 'pixorize',      fillId: 'prog-pix',    labelId: 'prog-pix-label',    pctId: 'prog-pix-pct'    },
+  ].forEach(({ key, fillId, labelId, pctId }) => {
+    const progress = Store.get(key, {});
+    const total    = getTrackerTotal(key) || 1;
+    const reviewed = Object.values(progress).filter(s => s.r).length;
+    const watched  = Object.values(progress).filter(s => s.w).length;
+    const pct      = Math.round((reviewed / total) * 100);
+    document.getElementById(fillId).style.width = pct + '%';
+    if (reviewed > 0 || watched > 0) {
+      document.getElementById(labelId).textContent = `${reviewed} / ${total} reviewed · ${watched} watched`;
+      document.getElementById(pctId).textContent   = pct + '%';
+    } else {
+      document.getElementById(labelId).textContent = `0 / ${total} reviewed`;
+      document.getElementById(pctId).textContent   = '0%';
+    }
+  });
+}
+
+/* ─────────────────────────────────────────────────────────
+   Smarter stats strip
+───────────────────────────────────────────────────────── */
 function renderStatsStrip() {
   const days = getDaysRemaining();
   if (!days || days <= 0) return;
 
-  const done     = Store.get('uw-unique-done', 0);
-  const uwSet    = Store.get('uw-settings', { total: 3661 });
+  // UWorld pace
+  const done      = Store.get('uw-unique-done', 0);
+  const uwSet     = Store.get('uw-settings', { total: 3661 });
   const remaining = Math.max(0, uwSet.total - done);
-  const qPerDay   = Math.ceil(remaining / days);
-
-  document.getElementById('strip-qday').textContent = qPerDay;
+  document.getElementById('strip-qday').textContent = Math.ceil(remaining / days);
   document.getElementById('strip-qsub').textContent = `${done.toLocaleString()} / ${uwSet.total.toLocaleString()} done`;
+
+  // Days until exam
   document.getElementById('strip-days').textContent = days;
-  document.getElementById('strip-today').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
+
+  // Sketchy combined reviewed % — totals computed from loaded CATEGORIES data
+  const pharmProg  = Store.get('sketchy-pharm', {});
+  const microProg  = Store.get('sketchy-micro', {});
+  const pharmRev   = Object.values(pharmProg).filter(s => s.r).length;
+  const microRev   = Object.values(microProg).filter(s => s.r).length;
+  const pharmTotal = getTrackerTotal('sketchy-pharm');
+  const microTotal = getTrackerTotal('sketchy-micro');
+  const totalVids  = pharmTotal + microTotal;
+  const skPct      = totalVids > 0 ? Math.round(((pharmRev + microRev) / totalVids) * 100) : 0;
+  document.getElementById('strip-sketchy').textContent     = skPct + '%';
+  document.getElementById('strip-sketchy-sub').textContent = `${pharmRev + microRev} of ${totalVids} reviewed`;
+
+  // Days studied this week (unique dates with logged sessions in last 7 days)
+  const entries    = Store.get('uw-entries', []);
+  const cutoff     = new Date(); cutoff.setDate(cutoff.getDate() - 6); cutoff.setHours(0, 0, 0, 0);
+  const cutoffStr  = cutoff.toISOString().split('T')[0];
+  const daysThisWk = new Set(entries.filter(e => e.date >= cutoffStr).map(e => e.date)).size;
+  document.getElementById('strip-streak').textContent = daysThisWk;
+
   document.getElementById('stats-strip').classList.add('visible');
 }
 
+/* ─────────────────────────────────────────────────────────
+   Hero countdown rendering
+───────────────────────────────────────────────────────── */
+function renderHero() {
+  const days     = getDaysRemaining();
+  const examDate = getExamDate();
+  const sub      = document.getElementById('hero-sub');
+  const actions  = document.getElementById('hero-actions');
+  const numEl    = document.getElementById('cd-days');
+
+  if (days === null) {
+    numEl.textContent      = '—';
+    numEl.style.color      = 'var(--fuji)';
+    sub.innerHTML          = 'Set your exam date to start the countdown.';
+    actions.style.display  = 'flex';
+  } else {
+    numEl.textContent     = days;
+    numEl.style.color     = days <= 30 ? 'var(--sakura2)' : days <= 60 ? 'var(--gold)' : 'var(--fuji)';
+    const d               = new Date(examDate + 'T12:00:00');
+    const formatted       = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    sub.innerHTML         = `Exam on <span>${formatted}</span>`;
+    actions.style.display = 'flex'; // keep Edit button visible
+    // Swap button label to Edit
+    const btn = actions.querySelector('.hero-set-btn');
+    if (btn) btn.textContent = 'Edit Date ✦';
+  }
+}
+
+/* ─────────────────────────────────────────────────────────
+   Init
+───────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+  renderHero();
+  initFocus();
   initDotd();
+  initOotd();
+  renderTrackerProgress();
   renderStatsStrip();
 });
+
+// Re-render after Firebase sync so data is always fresh on sign-in
+window.onCloudSyncComplete = function () {
+  renderHero();
+  renderTrackerProgress();
+  renderStatsStrip();
+};
 </script>
 </body>
 </html>
