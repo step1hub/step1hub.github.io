@@ -83,9 +83,9 @@
     <div class="overall-top">
       <span class="overall-title">Overall Progress</span>
       <div class="overall-stats">
-        <span class="overall-stat">👁 <strong id="tot-w">0</strong> Watched</span>
-        <span class="overall-stat">🔁 <strong id="tot-r">0</strong> Reviewed</span>
-        <span class="overall-stat">⭐ <strong id="tot-m">0</strong> Mastered</span>
+        <span class="overall-stat">W <strong id="tot-w">0</strong> Watched</span>
+        <span class="overall-stat">R <strong id="tot-r">0</strong> Reviewed</span>
+        <span class="overall-stat">M <strong id="tot-m">0</strong> Mastered</span>
       </div>
     </div>
     <div class="overall-bar-bg"><div class="overall-bar-fill" id="overall-bar" style="width:0%;"></div></div>
@@ -100,9 +100,9 @@
     <div class="filter-chips">
       <div class="filter-chip active" data-filter="all" onclick="setFilter('all',this)">All</div>
       <div class="filter-chip f-watched" data-filter="unwatched" onclick="setFilter('unwatched',this)">Not Watched</div>
-      <div class="filter-chip f-watched" data-filter="watched" onclick="setFilter('watched',this)">👁 Watched</div>
-      <div class="filter-chip f-reviewed" data-filter="reviewed" onclick="setFilter('reviewed',this)">🔁 Reviewed</div>
-      <div class="filter-chip f-mastered" data-filter="mastered" onclick="setFilter('mastered',this)">⭐ Mastered</div>
+      <div class="filter-chip f-watched" data-filter="watched" onclick="setFilter('watched',this)">W Watched</div>
+      <div class="filter-chip f-reviewed" data-filter="reviewed" onclick="setFilter('reviewed',this)">R Reviewed</div>
+      <div class="filter-chip f-mastered" data-filter="mastered" onclick="setFilter('mastered',this)">M Mastered</div>
     </div>
     <div class="toolbar-right">
       <button class="toolbar-btn" onclick="expandAll()">Expand All</button>
@@ -113,7 +113,7 @@
   </div>
 
   <div class="tracker-legend">
-    <span style="font-size:12px;color:var(--muted);">👁 = Watched &nbsp;·&nbsp; 🔁 = Reviewed &nbsp;·&nbsp; ⭐ = Mastered</span>
+    <span style="font-size:12px;color:var(--muted);">W = Watched &nbsp;·&nbsp; R = Reviewed &nbsp;·&nbsp; M = Mastered</span>
   </div>
 
   <div id="tracker-container"></div>
