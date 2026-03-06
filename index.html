@@ -94,7 +94,7 @@
   border-radius: var(--r-lg);
   padding: 22px 24px;
   cursor: pointer;
-  transition: box-shadow .2s, transform .15s;
+  transition: transform .18s, box-shadow .18s, border-color .18s;
   border: 1px solid var(--card-border, var(--border));
   background: var(--card-bg, var(--surface));
   position: relative; overflow: hidden;
@@ -103,9 +103,9 @@
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: var(--card-accent, var(--sakura2));
-  opacity: 0; transition: opacity .2s;
+  opacity: 0; transition: opacity .18s;
 }
-.daily-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.daily-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--card-accent, var(--sakura)); }
 .daily-card:hover::before { opacity: 1; }
 .daily-card-eyebrow {
   font-size: 10px; font-weight: 700; letter-spacing: 1.8px;
@@ -135,6 +135,45 @@
   margin: 36px 0 14px;
 }
 
+
+/* ── Unified card header ─────────────────────────────── */
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.card-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--muted);
+  background: var(--surface2); padding: 3px 9px;
+  border-radius: 99px; border: 1px solid var(--border2);
+}
+.card-arrow {
+  font-size: 15px; color: var(--dim);
+  transition: color .18s, transform .18s;
+}
+.tool-card:hover .card-arrow {
+  color: var(--card-accent, var(--sakura2));
+  transform: translate(1px, -1px);
+}
+.card-desc { font-size: 13.5px; color: var(--ink2); line-height: 1.55; }
+
+
+/* ── Tool card hover — unified timing ───────────────── */
+.tool-card {
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+}
+.tool-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--card-accent, var(--sakura));
+}
+.tool-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--card-accent, var(--sakura2));
+  opacity: 0; transition: opacity .18s;
+}
+.tool-card:hover::before { opacity: 1; }
 /* Reference tools grid — 2-up, taller cards */
 .tool-grid {
   display: grid;
@@ -155,13 +194,13 @@
   padding: 18px 20px 16px;
   display: block;
   position: relative; overflow: hidden;
-  transition: transform .18s, box-shadow .18s, border-color .18s;
+  transition: transform .18s, box-shadow .18s, border-color .18s, opacity .18s;
 }
 .tracker-tile::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--card-accent, var(--sakura)), transparent);
-  opacity: 0; transition: opacity .2s;
+  background: var(--card-accent, var(--sakura2));
+  opacity: 0; transition: opacity .18s;
 }
 .tracker-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--card-accent, var(--sakura)); }
 .tracker-tile:hover::before { opacity: 1; }
@@ -184,13 +223,14 @@
 }
 .ext-row {
   display: flex; align-items: center; gap: 16px;
-  padding: 13px 20px;
+  padding: 13px 17px 13px 17px;
   border-bottom: 1px solid var(--border2);
+  border-left: 3px solid transparent;
   text-decoration: none; color: inherit;
-  transition: background .12s;
+  transition: background .15s, border-color .15s;
 }
 .ext-row:last-child { border-bottom: none; }
-.ext-row:hover { background: var(--surface2); }
+.ext-row:hover { background: var(--surface2); border-left-color: var(--ext-accent, var(--gold)); }
 .ext-dot  { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .ext-name { font-size: 13.5px; font-weight: 600; min-width: 120px; }
 .ext-desc { font-size: 13px; color: var(--muted); flex: 1; }
@@ -306,31 +346,19 @@
   <div class="sec-label">Reference</div>
   <div class="tool-grid">
     <a class="tool-card card-pharm" href="drugfacts.html">
-      <div class="card-top">
-        <div class="card-icon">💊</div>
-        <div class="card-meta"><span class="card-tag">Pharmacology</span><span class="card-arrow">↗</span></div>
-      </div>
+      <div class="card-header"><span class="card-tag">Pharmacology</span><span class="card-arrow">↗</span></div>
       <h2 class="card-title">Drug Facts</h2>
       <p class="card-desc">Complete Step 1 pharmacology — mechanism, side effects, clinical pearls, and tier ratings across all systems.</p>
-      <div class="card-pills"><span class="pill">MOA</span><span class="pill">Side Effects</span><span class="pill">Pearls</span></div>
     </a>
     <a class="tool-card card-micro" href="microfacts.html">
-      <div class="card-top">
-        <div class="card-icon">🔬</div>
-        <div class="card-meta"><span class="card-tag">Microbiology</span><span class="card-arrow">↗</span></div>
-      </div>
+      <div class="card-header"><span class="card-tag">Microbiology</span><span class="card-arrow">↗</span></div>
       <h2 class="card-title">Micro Facts</h2>
       <p class="card-desc">Bacteria, viruses, fungi, and parasites — virulence factors, diseases, treatments, and high-yield pearls.</p>
-      <div class="card-pills"><span class="pill">Gram Stain</span><span class="pill">Treatment</span><span class="pill">Pearls</span></div>
     </a>
     <a class="tool-card card-dash" href="dashboard.html">
-      <div class="card-top">
-        <div class="card-icon">📊</div>
-        <div class="card-meta"><span class="card-tag">Analytics</span><span class="card-arrow">↗</span></div>
-      </div>
+      <div class="card-header"><span class="card-tag">Analytics</span><span class="card-arrow">↗</span></div>
       <h2 class="card-title">Dashboard</h2>
       <p class="card-desc">Log UWorld sessions, track practice exam scores, find weak points, and calculate your daily question goal.</p>
-      <div class="card-pills"><span class="pill">UWorld</span><span class="pill">NBMEs</span><span class="pill">Weak Points</span></div>
     </a>
   </div>
 
@@ -363,28 +391,28 @@
   <!-- ── External Resources ── -->
   <div class="sec-label">External Resources</div>
   <div class="ext-list">
-    <a class="ext-row" href="https://bootcamp.com/med-school/usmle-step-1-question-of-the-day" target="_blank" rel="noopener">
+    <a class="ext-row" style="--ext-accent:var(--sakura2);" href="https://bootcamp.com/med-school/usmle-step-1-question-of-the-day" target="_blank" rel="noopener">
       <div class="ext-dot" style="background:var(--sakura2);"></div>
       <div class="ext-name">Question of the Day</div>
       <div class="ext-desc">Bootcamp's daily Step 1 question — keep your streak alive.</div>
       <div class="ext-pill">Daily Practice</div>
       <div class="ext-arrow">↗</div>
     </a>
-    <a class="ext-row" href="https://www.uworld.com" target="_blank" rel="noopener">
+    <a class="ext-row" style="--ext-accent:var(--sky);" href="https://www.uworld.com" target="_blank" rel="noopener">
       <div class="ext-dot" style="background:var(--sky);"></div>
       <div class="ext-name">UWorld</div>
       <div class="ext-desc">The gold standard Step 1 question bank with detailed explanations.</div>
       <div class="ext-pill">QBank</div>
       <div class="ext-arrow">↗</div>
     </a>
-    <a class="ext-row" href="https://www.pathoma.com" target="_blank" rel="noopener">
+    <a class="ext-row" style="--ext-accent:var(--sage);" href="https://www.pathoma.com" target="_blank" rel="noopener">
       <div class="ext-dot" style="background:var(--sage);"></div>
       <div class="ext-name">Pathoma</div>
       <div class="ext-desc">Dr. Sattar's high-yield pathology videos. Essential for Step 1 Path.</div>
       <div class="ext-pill">Pathology</div>
       <div class="ext-arrow">↗</div>
     </a>
-    <a class="ext-row" href="https://www.bootcamp.com" target="_blank" rel="noopener">
+    <a class="ext-row" style="--ext-accent:var(--gold);" href="https://www.bootcamp.com" target="_blank" rel="noopener">
       <div class="ext-dot" style="background:var(--gold);"></div>
       <div class="ext-name">Bootcamp</div>
       <div class="ext-desc">High-yield question bank with daily practice and subject reviews.</div>
@@ -396,7 +424,6 @@
   <!-- ── Motivational block: callout + quote side by side ── -->
   <div class="motive-block">
     <div class="motive-callout">
-      <div style="font-size:22px; margin-bottom:10px;">🗻</div>
       <strong>Japan after Step 1 —</strong> Cherry blossoms, Mount Fuji, ramen at 2am. Every page you study now is a step closer. 頑張って (Ganbatte) — you've got this.
     </div>
     <div class="motive-divider"></div>
