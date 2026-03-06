@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<title>Sketchy Micro · Step 1 Hub</title>
+<style>
+.tracker-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px;}
+.tracker-search{flex:1;min-width:160px;padding:7px 12px;border:1px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink2);outline:none;transition:border-color .15s;box-shadow:none;}
+.tracker-search:focus{border-color:var(--dim);}
+.filter-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.filter-chip{padding:6px 14px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.filter-chip.active{background:var(--sky);color:#fff;border-color:var(--sky);}
+.filter-chip.f-watched.active{background:var(--sakura2);border-color:var(--sakura2);}
+.filter-chip.f-reviewed.active{background:var(--gold);border-color:var(--gold);color:#fff;}
+.toolbar-right{display:flex;gap:8px;margin-left:auto;}
+.toolbar-btn{padding:7px 14px;border-radius:var(--r);font-size:12px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--ink2);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.toolbar-btn:hover{background:var(--surface2);}
+.overall-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 26px;margin-bottom:20px;}
+.overall-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px;}
+.overall-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;}
+.overall-stats{display:flex;gap:18px;font-size:13px;}
+.overall-stat{color:var(--muted);font-size:12px;}
+.overall-stat strong{color:var(--ink2);font-size:14px;}
+.overall-bar-bg{background:var(--border2);border-radius:99px;height:8px;overflow:hidden;}
+.overall-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--sky),var(--fuji));transition:width .5s ease;}
+.overall-sub{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px;}
+.cat-section{border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:10px;overflow:hidden;background:var(--surface);}
+.cat-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;user-select:none;gap:12px;transition:background .12s;}
+.cat-header:hover{background:var(--surface2);}
+.cat-header-left{display:flex;align-items:center;gap:12px;flex:1;min-width:0;}
+.cat-accent{width:4px;height:36px;border-radius:99px;flex-shrink:0;}
+.cat-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;}
+.cat-why{font-size:12px;color:var(--muted);margin-top:2px;}
+.cat-header-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.cat-count{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;}
+.cat-mini-bar{width:80px;height:5px;background:var(--border2);border-radius:99px;overflow:hidden;}
+.cat-mini-fill{height:100%;border-radius:99px;transition:width .4s;}
+.cat-chevron{font-size:11px;color:var(--dim);transition:transform .2s;}
+.cat-section.open .cat-chevron{transform:rotate(180deg);}
+.cat-body{display:none;border-top:1px solid var(--border2);}
+.cat-section.open .cat-body{display:block;}
+.video-header-row{display:flex;align-items:center;padding:8px 20px;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border2);background:var(--bg);}
+.video-row{display:flex;align-items:center;padding:11px 20px;border-bottom:1px solid var(--border2);gap:12px;transition:background .1s;}
+.video-row:last-child{border-bottom:none;}
+.video-row:hover{background:var(--surface2);}
+.video-row.hidden-row{display:none;}
+.video-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);min-width:36px;}
+.video-name{flex:1;font-size:13.5px;color:var(--ink2);line-height:1.4;}
+.video-row.is-reviewed .video-name{text-decoration:line-through;color:var(--dim);}
+.video-time{font-size:11px;color:var(--dim);min-width:52px;text-align:right;font-family:'DM Mono',monospace;}
+.check-btns{display:flex;gap:6px;}
+.icon-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .15s;line-height:1;flex-shrink:0;color:var(--dim);}
+.icon-btn:hover{transform:scale(1.1);}
+.icon-btn.active-w{background:var(--sage);border-color:var(--sage);color:#fff;}
+.icon-btn.active-r{background:var(--gold);border-color:var(--gold);color:#fff;}
+.tracker-legend{display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:16px;}
+.no-results{text-align:center;padding:40px;color:var(--muted);font-size:14px;}
+.accent-0{background:var(--sakura2);}
+.accent-1{background:var(--sky);}
+.accent-2{background:var(--gold);}
+.accent-3{background:var(--sage);}
+.accent-4{background:var(--fuji);}
+.accent-5{background:var(--peach);}
+.accent-6{background:var(--lavender);}
+.accent-7{background:#7ba8cf;}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:10px 22px;border-radius:99px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+<div class="wrap">
+  <header class="hero" style="padding:36px 0 16px;">
+    <div class="hero-eyebrow" style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sakura2);margin-bottom:10px;">Progress Tracker</div>
+    <h1 class="hero-name" style="font-size:clamp(30px,4vw,46px);letter-spacing:-0.5px;font-weight:700;line-height:1.1;margin-bottom:6px;">Sketchy <em>Micro</em></h1>
+  </header>
+
+  <div class="overall-card">
+    <div class="overall-top">
+      <span class="overall-title">Overall Progress</span>
+      <div class="overall-stats">
+        <span class="overall-stat" style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;background:var(--sage);color:#fff;font-size:10px;">✔</span><strong id="tot-w">0</strong> Watched</span>
+        <span class="overall-stat" style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;background:var(--gold);color:#fff;font-size:10px;">✦</span><strong id="tot-r">0</strong> Reviewed</span>
+      </div>
+    </div>
+    <div class="overall-bar-bg"><div class="overall-bar-fill" id="overall-bar" style="width:0%;"></div></div>
+    <div class="overall-sub">
+      <span id="overall-note">0% reviewed</span>
+      <span id="overall-total">0 / 0 videos</span>
+    </div>
+  </div>
+
+  <div class="tracker-toolbar">
+    <input class="tracker-search" id="search-input" type="text" placeholder="🔍  Search organisms…" oninput="applyFilters()"/>
+    <div class="filter-chips">
+      <div class="filter-chip active" data-filter="all" onclick="setFilter('all',this)">All</div>
+      <div class="filter-chip f-watched" data-filter="unwatched" onclick="setFilter('unwatched',this)">Not Watched</div>
+      <div class="filter-chip f-watched" data-filter="watched" onclick="setFilter('watched',this)">Watched</div>
+      <div class="filter-chip f-reviewed" data-filter="reviewed" onclick="setFilter('reviewed',this)">Reviewed</div>
+    </div>
+    <div class="toolbar-right">
+      <button class="toolbar-btn" id="toggle-expand-btn" onclick="toggleExpand()">Expand All</button>
+    </div>
+  </div>
+
+  <div class="tracker-legend">
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;background:var(--sage);color:#fff;font-size:11px;font-weight:700;">✔</span>
+      <span>Watched (left button)</span>
+    </span>
+    <span style="color:var(--dim);">·</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;background:var(--gold);color:#fff;font-size:11px;font-weight:700;">✦</span>
+      <span>Reviewed (right button)</span>
+    </span>
+  </div>
+
+  <div id="tracker-container"></div>
+  <div class="no-results" id="no-results" style="display:none;">No videos match your search.</div>
+
+  <footer class="footer"><div>Step 1 Study Hub · 🌸</div><div id="footer-date"></div></footer>
+</div>
+<script src="app.js"></script>
+<script>
+const STORE_KEY = 'sm-progress';
+
+const CATEGORIES = [
+  {id:"gpc",name:"Gram Positive Cocci",why:"S. aureus and Streptococci are among the most tested organisms",time:"51 min",
+   videos:[
+    {id:"b1",num:"1.1",name:"Staph aureus",time:"11min"},
+    {id:"b2",num:"1.2",name:"Staph epidermidis & Staph saprophyticus",time:"7min"},
+    {id:"b3",num:"1.3",name:"Strep pyogenes",time:"14.5min"},
+    {id:"b4",num:"1.4",name:"Strep agalactiae",time:"5.5min"},
+    {id:"b5",num:"1.5",name:"Strep pneumoniae & Strep viridans",time:"9min"},
+    {id:"b6",num:"1.6",name:"Enterococcus",time:"4min"}
+  ]},
+  {id:"gpb",name:"Gram Positive Bacilli",why:"Clostridium toxins and Listeria are classic vignettes",time:"49 min",
+   videos:[
+    {id:"b7",num:"2.1",name:"Bacillus anthracis and cereus",time:"10min"},
+    {id:"b8",num:"2.2",name:"Clostridium tetani",time:"7min"},
+    {id:"b9",num:"2.3",name:"Clostridium botulinum",time:"7.5min"},
+    {id:"b10",num:"2.4",name:"Clostridium difficile",time:"8min"},
+    {id:"b11",num:"2.5",name:"Clostridium perfringens",time:"5.5min"},
+    {id:"b12",num:"2.6",name:"Corynebacterium diphtheriae",time:"7min"},
+    {id:"b13",num:"2.7",name:"Listeria monocytogenes",time:"4min"}
+  ]},
+  {id:"gpfr",name:"GP Branching Filamentous Rods",why:"Actinomyces vs Nocardia distinction is a classic board comparison",time:"10 min",
+   videos:[
+    {id:"b14",num:"3.1",name:"Actinomyces",time:"3min"},
+    {id:"b15",num:"3.2",name:"Nocardia",time:"7min"}
+  ]},
+  {id:"gnc",name:"Gram Negative Cocci",why:"Neisseria species cause meningitis and STIs",time:"22 min",
+   videos:[
+    {id:"b16",num:"4.1",name:"Neisseria species overview",time:"5min"},
+    {id:"b17",num:"4.2",name:"Neisseria meningitidis",time:"9min"},
+    {id:"b18",num:"4.3",name:"Neisseria gonorrhoeae",time:"7.5min"}
+  ]},
+  {id:"gne",name:"GN Bacilli - Enteric",why:"Enteric bacteria cause the majority of GI and UTI vignettes",time:"70 min",
+   videos:[
+    {id:"b19",num:"5.1",name:"Klebsiella, Enterobacter, Serratia",time:"8.5min"},
+    {id:"b20",num:"5.2",name:"Salmonella",time:"8min"},
+    {id:"b21",num:"5.3",name:"Shigella",time:"6.5min"},
+    {id:"b22",num:"5.4",name:"Escherichia coli",time:"9min"},
+    {id:"b23",num:"5.5",name:"Yersinia enterocolitica",time:"8min"},
+    {id:"b24",num:"5.6",name:"Campylobacter",time:"5.5min"},
+    {id:"b25",num:"5.7",name:"Vibrio",time:"6min"},
+    {id:"b26",num:"5.8",name:"Helicobacter pylori",time:"5.5min"},
+    {id:"b27",num:"5.9",name:"Pseudomonas",time:"10min"},
+    {id:"b28",num:"5.10",name:"Proteus mirabilis",time:"3.5min"}
+  ]},
+  {id:"gnr",name:"GN Bacilli - Respiratory",why:"Pertussis, H. flu, and Legionella are frequently tested",time:"24 min",
+   videos:[
+    {id:"b29",num:"6.1",name:"Bordetella pertussis",time:"7.5min"},
+    {id:"b30",num:"6.2",name:"Haemophilus influenzae",time:"9min"},
+    {id:"b31",num:"6.3",name:"Legionella",time:"7.5min"}
+  ]},
+  {id:"gnz",name:"GN Bacilli - Zoonotics",why:"Francisella and Brucella appear as classic vignettes",time:"18 min",
+   videos:[
+    {id:"b32",num:"7.1",name:"Bartonella henselae",time:"4min"},
+    {id:"b33",num:"7.2",name:"Brucella",time:"5min"},
+    {id:"b34",num:"7.3",name:"Francisella tularensis",time:"4min"},
+    {id:"b35",num:"7.4",name:"Pasteurella multocida",time:"5min"}
+  ]},
+  {id:"myco",name:"Mycobacteria",why:"TB is one of the most tested organisms",time:"26 min",
+   videos:[
+    {id:"b36",num:"8.1",name:"Mycobacterium tuberculosis",time:"16.5min"},
+    {id:"b37",num:"8.2",name:"Mycobacterium leprae",time:"9min"}
+  ]},
+  {id:"spiro",name:"Spirochetes",why:"Syphilis and Lyme disease are classic clinical vignettes",time:"26 min",
+   videos:[
+    {id:"b38",num:"9.1",name:"Borrelia burgdorferi",time:"8min"},
+    {id:"b39",num:"9.2",name:"Leptospirosis",time:"5min"},
+    {id:"b40",num:"9.3",name:"Treponema pallidum",time:"13min"}
+  ]},
+  {id:"gi_bact",name:"Gram-Indeterminate (Atypicals)",why:"Chlamydia, Mycoplasma, and Rickettsia are high-yield atypicals",time:"43 min",
+   videos:[
+    {id:"b41",num:"10.1",name:"Chlamydia",time:"15min"},
+    {id:"b42",num:"10.2",name:"Coxiella burnetii",time:"5min"},
+    {id:"b43",num:"10.3",name:"Gardnerella vaginalis",time:"5.5min"},
+    {id:"b44",num:"10.4",name:"Mycoplasma pneumoniae",time:"6min"},
+    {id:"b45",num:"10.5",name:"Rickettsia species overview",time:"3.5min"},
+    {id:"b46",num:"10.6",name:"Rickettsia prowazekii",time:"4min"},
+    {id:"b47",num:"10.7",name:"Rickettsia rickettsii",time:"4min"}
+  ]},
+  {id:"rna_pos",name:"RNA Viruses: Positive Sense",why:"HIV and Hepatitis viruses are heavily tested",time:"101 min",
+   videos:[
+    {id:"v1",num:"1.1",name:"Picornavirus overview",time:"11min"},
+    {id:"v2",num:"1.2",name:"Poliovirus",time:"7min"},
+    {id:"v3",num:"1.3",name:"Coxsackievirus",time:"5min"},
+    {id:"v4",num:"1.4",name:"Rhinovirus",time:"5min"},
+    {id:"v5",num:"1.5",name:"Hepatitis A",time:"7min"},
+    {id:"v6",num:"1.6",name:"Calicivirus (Norovirus)",time:"5.5min"},
+    {id:"v7",num:"1.7",name:"Flavivirus (Dengue, WNV, Yellow Fever)",time:"8min"},
+    {id:"v8",num:"1.8",name:"Hepatitis C",time:"10.5min"},
+    {id:"v9",num:"1.9",name:"Togavirus (Rubella)",time:"11.5min"},
+    {id:"v10",num:"1.10",name:"Coronavirus",time:"14min"},
+    {id:"v11",num:"1.11",name:"HIV",time:"16.5min"}
+  ]},
+  {id:"rna_neg",name:"RNA Viruses: Negative Sense",why:"Influenza and paramyxoviruses are classic respiratory pathogens",time:"67 min",
+   videos:[
+    {id:"v12",num:"2.1",name:"Orthomyxovirus (Influenza)",time:"18.5min"},
+    {id:"v13",num:"2.2",name:"Paramyxovirus (Measles, Mumps)",time:"16min"},
+    {id:"v14",num:"2.3",name:"Rhabdovirus",time:"9min"},
+    {id:"v15",num:"2.4",name:"Filovirus (Ebola)",time:"5min"},
+    {id:"v16",num:"2.5",name:"Bunyavirus (California Encephalitis)",time:"6min"},
+    {id:"v17",num:"2.6",name:"Arenavirus",time:"5min"},
+    {id:"v18",num:"2.7",name:"Reovirus (Rotavirus)",time:"7min"}
+  ]},
+  {id:"dna_virus",name:"DNA Viruses",why:"Herpesviruses and Hepatitis B are heavily tested",time:"120 min",
+   videos:[
+    {id:"v19",num:"3.1",name:"HSV-1 and HSV-2",time:"11min"},
+    {id:"v20",num:"3.2",name:"HHV-4 (Epstein-Barr Virus)",time:"13.5min"},
+    {id:"v21",num:"3.3",name:"HHV-5 (Cytomegalovirus)",time:"12min"},
+    {id:"v22",num:"3.4",name:"HHV-3 (Varicella Zoster Virus)",time:"12min"},
+    {id:"v23",num:"3.5",name:"HHV-6 (Roseola)",time:"5min"},
+    {id:"v24",num:"3.6",name:"HHV-8 (Kaposi's Sarcoma)",time:"7min"},
+    {id:"v25",num:"3.7",name:"Polyomavirus (JC virus)",time:"6.5min"},
+    {id:"v26",num:"3.8",name:"Papillomavirus",time:"14min"},
+    {id:"v27",num:"3.9",name:"Parvovirus",time:"7min"},
+    {id:"v28",num:"3.10",name:"Adenovirus",time:"5min"},
+    {id:"v29",num:"3.11",name:"Poxvirus",time:"8.5min"},
+    {id:"v30",num:"3.12",name:"Hepatitis B (DNA) & Hep D",time:"18.5min"}
+  ]},
+  {id:"proto_int",name:"Protozoa - Intestinal",why:"Classic diarrhea vignettes in immunocompromised",time:"18 min",
+   videos:[
+    {id:"p1",num:"1.1",name:"Giardia lamblia",time:"5.5min"},
+    {id:"p2",num:"1.2",name:"Entamoeba histolytica",time:"8min"},
+    {id:"p3",num:"1.3",name:"Cryptosporidium",time:"4.5min"}
+  ]},
+  {id:"proto_cns",name:"Protozoa - CNS",why:"Toxoplasma is extremely high-yield in HIV and pregnancy contexts",time:"22 min",
+   videos:[
+    {id:"p4",num:"2.1",name:"Toxoplasma gondii",time:"10.5min"},
+    {id:"p5",num:"2.2",name:"Trypanosoma brucei",time:"5min"},
+    {id:"p6",num:"2.3",name:"Naegleria fowleri",time:"6min"}
+  ]},
+  {id:"proto_blood",name:"Protozoa - Blood",why:"Plasmodium (malaria) is the most tested parasite on Step 1",time:"33 min",
+   videos:[
+    {id:"p7",num:"3.1",name:"Trypanosoma cruzi (Chagas Disease)",time:"6min"},
+    {id:"p8",num:"3.2",name:"Babesia",time:"7min"},
+    {id:"p9",num:"3.3",name:"Plasmodium species",time:"14min"},
+    {id:"p10",num:"3.4",name:"Leishmaniasis",time:"6min"}
+  ]},
+  {id:"proto_other",name:"Protozoa - Other",why:"Trichomonas is a high-yield STI comparison question",time:"6 min",
+   videos:[
+    {id:"p11",num:"4.1",name:"Trichomonas vaginalis",time:"6min"}
+  ]},
+  {id:"helm_nem",name:"Helminths - Nematodes",why:"Intestinal and tissue nematode vignettes appear occasionally",time:"25 min",
+   videos:[
+    {id:"p12",num:"5.1",name:"Intestinal nematodes",time:"13min"},
+    {id:"p13",num:"5.2",name:"Tissue nematodes",time:"11.5min"}
+  ]},
+  {id:"helm_tc",name:"Helminths - Trematodes & Cestodes",why:"Schistosoma and tapeworm lifecycle questions",time:"22 min",
+   videos:[
+    {id:"p14",num:"6.1",name:"Cestodes",time:"10.5min"},
+    {id:"p15",num:"6.2",name:"Trematodes",time:"11min"}
+  ]},
+  {id:"fungi_sys",name:"Systemic Mycoses",why:"Geographic fungi are classic board vignettes based on travel history",time:"28 min",
+   videos:[
+    {id:"f1",num:"1.1",name:"Histoplasmosis",time:"9.5min"},
+    {id:"f2",num:"1.2",name:"Blastomycosis",time:"6min"},
+    {id:"f3",num:"1.3",name:"Coccidioidomycosis",time:"7.5min"},
+    {id:"f4",num:"1.4",name:"Paracoccidioidomycosis",time:"5min"}
+  ]},
+  {id:"fungi_cut",name:"Cutaneous Mycoses",why:"Dermatophyte and Sporothrix vignettes test morphology",time:"16 min",
+   videos:[
+    {id:"f5",num:"2.1",name:"Malassezia furfur",time:"5min"},
+    {id:"f6",num:"2.2",name:"Dermatophytes",time:"6min"},
+    {id:"f7",num:"2.3",name:"Sporothrix schenckii",time:"4.5min"}
+  ]},
+  {id:"fungi_opp",name:"Opportunistic Fungal Infections",why:"Extremely tested in HIV/immunocompromised patients",time:"44 min",
+   videos:[
+    {id:"f8",num:"3.1",name:"Candida albicans",time:"13min"},
+    {id:"f9",num:"3.2",name:"Aspergillus fumigatus",time:"11min"},
+    {id:"f10",num:"3.3",name:"Cryptococcus neoformans",time:"9min"},
+    {id:"f11",num:"3.4",name:"Mucormycosis",time:"6min"},
+    {id:"f12",num:"3.5",name:"Pneumocystis pneumonia",time:"5min"}
+  ]}
+];
+
+const ACCENTS = ['accent-0','accent-1','accent-2','accent-3','accent-4','accent-5','accent-6','accent-7'];
+let progress = {};
+let activeFilter = 'all';
+
+function load() { progress = Store.get(STORE_KEY, {}); }
+function save() { Store.set(STORE_KEY, progress); }
+function getState(id) { return progress[id] || {w:false,r:false}; }
+
+function toggle(id, field) {
+  const s = getState(id);
+  if (field === 'w') { 
+    s.w = !s.w; 
+    if (!s.w) s.r = false; 
+  } else { 
+    s.r = !s.r; 
+    if (s.r) s.w = true; 
+  }
+  progress[id] = s; 
+  save(); 
+  updateVideoRow(id); 
+  updateSummary();
+}
+
+function updateVideoRow(id) {
+  const s = getState(id);
+  const wb = document.getElementById('btn-w-'+id);
+  const rb = document.getElementById('btn-r-'+id);
+  if(wb) wb.className = `icon-btn${s.w ? ' active-w' : ''}`;
+  if(rb) rb.className = `icon-btn${s.r ? ' active-r' : ''}`;
+  const row = document.getElementById('row-'+id);
+  if(row) row.classList.toggle('hidden-row', !rowVisible(id));
+  if(row) row.classList.toggle('is-reviewed', s.r);
+}
+
+function rowVisible(id) {
+  const s = getState(id);
+  if(activeFilter === 'all') return true;
+  if(activeFilter === 'unwatched') return !s.w;
+  if(activeFilter === 'watched') return s.w;
+  if(activeFilter === 'reviewed') return s.r;
+  return true;
+}
+
+function setFilter(f,el) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = document.getElementById('search-input').value.toLowerCase().trim();
+  let anyVisible = false;
+  CATEGORIES.forEach(cat => {
+    let catHasVisible = false;
+    cat.videos.forEach(v => {
+      const ms = !q || v.name.toLowerCase().includes(q) || v.num.toLowerCase().includes(q);
+      const mf = rowVisible(v.id);
+      const visible = ms && mf;
+      const row = document.getElementById('row-'+v.id);
+      if(row) row.classList.toggle('hidden-row', !visible);
+      if(visible) { catHasVisible = true; anyVisible = true; }
+    });
+    const sec = document.getElementById('sec-'+cat.id);
+    if(sec) sec.style.display = catHasVisible ? '' : 'none';
+    if(catHasVisible && q) sec.classList.add('open');
+  });
+  document.getElementById('no-results').style.display = anyVisible ? 'none' : 'block';
+  updateCatHeaders();
+}
+
+function updateCatHeaders() {
+  CATEGORIES.forEach(cat => {
+    const w = cat.videos.filter(v => getState(v.id).w).length;
+    const r = cat.videos.filter(v => getState(v.id).r).length;
+    const total = cat.videos.length;
+    const pct = total ? Math.round((r / total) * 100) : 0;
+    const el = document.getElementById('cat-count-'+cat.id);
+    if(el) el.textContent = `${w}w · ${r}/${total} reviewed`;
+    const fill = document.getElementById('cat-fill-'+cat.id);
+    if(fill) fill.style.width = pct + '%';
+  });
+}
+
+function updateSummary() {
+  const all = CATEGORIES.flatMap(c => c.videos);
+  const tw = all.filter(v => getState(v.id).w).length;
+  const tr = all.filter(v => getState(v.id).r).length;
+  const total = all.length;
+  const pct = total ? Math.round((tr / total) * 100) : 0;
+  
+  document.getElementById('tot-w').textContent = tw;
+  document.getElementById('tot-r').textContent = tr;
+  document.getElementById('overall-bar').style.width = pct + '%';
+  document.getElementById('overall-note').textContent = pct + '% reviewed';
+  document.getElementById('overall-total').textContent = tr + ' / ' + total + ' videos';
+  updateCatHeaders();
+}
+
+function toggleExpand() {
+  const sections = document.querySelectorAll('.cat-section');
+  const anyClosed = Array.from(sections).some(s => !s.classList.contains('open'));
+  sections.forEach(s => s.classList.toggle('open', anyClosed));
+  document.getElementById('toggle-expand-btn').textContent = anyClosed ? 'Collapse All' : 'Expand All';
+}
+
+function resetAll() { if(!confirm('Reset ALL progress?')) return; progress={}; save(); renderAll(); showToast('Progress reset'); }
+
+function renderAll() {
+  const container = document.getElementById('tracker-container');
+  container.innerHTML = CATEGORIES.map((cat, idx) => {
+    const accent = ACCENTS[idx % ACCENTS.length];
+    const rows = cat.videos.map(v => {
+      const s = getState(v.id);
+      return `<div class="video-row${s.r ? ' is-reviewed' : ''}" id="row-${v.id}">
+        <div class="video-num">${v.num}</div>
+        <div class="video-name">${v.name}</div>
+        <div class="video-time">${v.time}</div>
+        <div class="check-btns">
+          <button id="btn-w-${v.id}" class="icon-btn${s.w ? ' active-w' : ''}" onclick="toggle('${v.id}','w')" title="Watched">✔</button>
+          <button id="btn-r-${v.id}" class="icon-btn${s.r ? ' active-r' : ''}" onclick="toggle('${v.id}','r')" title="Reviewed">✦</button>
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="cat-section" id="sec-${cat.id}">
+      <div class="cat-header" onclick="document.getElementById('sec-${cat.id}').classList.toggle('open')">
+        <div class="cat-header-left">
+          <div class="cat-accent ${accent}"></div>
+          <div>
+            <div class="cat-name">${cat.name}</div>
+            <div class="cat-why">${cat.why} · ${cat.time}</div>
+          </div>
+        </div>
+        <div class="cat-header-right">
+          <span class="cat-count" id="cat-count-${cat.id}">0w · 0/${cat.videos.length} reviewed</span>
+          <div class="cat-mini-bar"><div class="cat-mini-fill ${accent}" id="cat-fill-${cat.id}" style="width:0%;"></div></div>
+          <span class="cat-chevron">▼</span>
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="video-header-row">
+          <div style="min-width:36px;">No.</div>
+          <div style="flex:1;">Organism / Video</div>
+          <div style="min-width:52px;text-align:right;">Time</div>
+          <div style="min-width:74px;text-align:center;">Status</div>
+        </div>
+        ${rows}
+      </div>
+    </div>`;
+  }).join('');
+  updateSummary();
+  applyFilters();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast') || (() => { const el = document.createElement('div'); el.id = 'toast'; el.className = 'toast'; document.body.appendChild(el); return el; })();
+  t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+document.addEventListener('DOMContentLoaded', () => { load(); renderAll(); });
+</script>
+</body>
+</html>
