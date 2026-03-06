@@ -139,19 +139,19 @@
 
   <div class="tab-bar" id="tab-bar">
     <button class="tab-btn active" onclick="setTab('biochem',this)">
-      <span class="tab-label">⚗️ Biochemistry</span>
+      <span class="tab-label">Biochemistry</span>
       <span class="tab-sub">Vitamins · Pathways · Metabolism</span>
     </button>
     <button class="tab-btn" onclick="setTab('genetics',this)">
-      <span class="tab-label">🧬 Genetics & Disease</span>
+      <span class="tab-label">Genetics & Disease</span>
       <span class="tab-sub">Chromosomes · Collagen · Neuro</span>
     </button>
     <button class="tab-btn" onclick="setTab('immuno',this)">
-      <span class="tab-label">🛡️ Immunology</span>
+      <span class="tab-label">Immunology</span>
       <span class="tab-sub">Cells · Cytokines · Reactions</span>
     </button>
     <button class="tab-btn" onclick="setTab('misc',this)">
-      <span class="tab-label">🧩 Behavioral & Misc</span>
+      <span class="tab-label">Behavioral & Misc</span>
       <span class="tab-sub">Psych · Embryo · Cytoskeleton</span>
     </button>
   </div>
@@ -166,7 +166,7 @@
 const STORE_KEY = 'px-progress';
 
 const CATEGORIES = [
-  {id:"vitamins",name:"Vitamins",icon:"🍊",why:"Vitamin deficiencies are among the most frequently tested biochem topics",
+  {id:"vitamins",name:"Vitamins",why:"Vitamin deficiencies are among the most frequently tested biochem topics",
    videos:[
     {id:"v01",name:"Vitamin B1 (Thiamine) Biochemistry",time:"7:20"},
     {id:"v02",name:"Vitamin B1 (Thiamine) Deficiency",time:"10:51"},
@@ -192,7 +192,7 @@ const CATEGORIES = [
     {id:"v22",name:"Kwashiorkor and Marasmus",time:"5:57"},
     {id:"v23",name:"Zinc",time:"6:59"}
   ]},
-  {id:"biochempathways",name:"Biochemical Pathways",icon:"⚗️",why:"Metabolic pathway questions thread through every organ system",
+  {id:"biochempathways",name:"Biochemical Pathways",why:"Metabolic pathway questions thread through every organ system",
    videos:[
     {id:"bp01",name:"Cori Cycle",time:"6:41"},
     {id:"bp02",name:"De Novo Purine Synthesis",time:"8:49"},
@@ -212,12 +212,12 @@ const CATEGORIES = [
     {id:"bp16",name:"Galactose Metabolism",time:"11:14"},
     {id:"bp17",name:"HMP Shunt (Pentose Phosphate Pathway)",time:"—"}
   ]},
-  {id:"porphyrias",name:"Porphyrias",icon:"🔴",why:"AIP and PCT are classic vignettes — know urine changes and precipitating drugs",
+  {id:"porphyrias",name:"Porphyrias",why:"AIP and PCT are classic vignettes — know urine changes and precipitating drugs",
    videos:[
     {id:"po01",name:"Acute Intermittent Porphyria (AIP)",time:"8:53"},
     {id:"po02",name:"Porphyria Cutanea Tarda (PCT)",time:"6:36"}
   ]},
-  {id:"autosomal_dom",name:"Autosomal Dominant Diseases",icon:"🧬",why:"Know the key finding and inheritance pattern for each",
+  {id:"autosomal_dom",name:"Autosomal Dominant Diseases",why:"Know the key finding and inheritance pattern for each",
    videos:[
     {id:"ad01",name:"Marfan Syndrome",time:"4:45"},
     {id:"ad02",name:"Li-Fraumeni Syndrome (LFS)",time:"5:04"},
@@ -234,7 +234,7 @@ const CATEGORIES = [
     {id:"ad13",name:"Myotonic Dystrophy",time:"3:51"},
     {id:"ad14",name:"ADPKD",time:"6:27"}
   ]},
-  {id:"metabolic",name:"Metabolic Disorders",icon:"🧪",why:"Amino acid disorders and sugar metabolism defects are high-yield",
+  {id:"metabolic",name:"Metabolic Disorders",why:"Amino acid disorders and sugar metabolism defects are high-yield",
    videos:[
     {id:"md01",name:"Albinism",time:"5:40"},
     {id:"md02",name:"Cystinuria",time:"7:38"},
@@ -251,7 +251,7 @@ const CATEGORIES = [
     {id:"md13",name:"Pyruvate Dehydrogenase Deficiency",time:"5:49"},
     {id:"md14",name:"Propionic Acidemia",time:"7:54"}
   ]},
-  {id:"lysosomal",name:"Lysosomal Storage Diseases",icon:"🫙",why:"High-yield for enzyme deficiencies, substrate accumulation, and ethnic associations",
+  {id:"lysosomal",name:"Lysosomal Storage Diseases",why:"High-yield for enzyme deficiencies, substrate accumulation, and ethnic associations",
    videos:[
     {id:"ls01",name:"Krabbe Disease",time:"4:43"},
     {id:"ls02",name:"Hurler and Hunter Syndromes",time:"7:54"},
@@ -261,14 +261,14 @@ const CATEGORIES = [
     {id:"ls06",name:"Metachromatic Leukodystrophy",time:"4:45"},
     {id:"ls07",name:"I-Cell Disease",time:"8:52"}
   ]},
-  {id:"glycogen",name:"Glycogen Storage Diseases",icon:"🔋",why:"Pompe, Von Gierke, Cori, and McArdle are the four to know",
+  {id:"glycogen",name:"Glycogen Storage Diseases",why:"Pompe, Von Gierke, Cori, and McArdle are the four to know",
    videos:[
     {id:"gs01",name:"Pompe Disease (Type II)",time:"5:16"},
     {id:"gs02",name:"Von Gierke (Type I)",time:"5:05"},
     {id:"gs03",name:"Cori Disease (Type III)",time:"5:00"},
     {id:"gs04",name:"McArdle Disease (Type V)",time:"5:06"}
   ]},
-  {id:"chromosomal",name:"Chromosomal Abnormalities",icon:"🔬",why:"Trisomies and sex chromosome disorders appear on every exam",
+  {id:"chromosomal",name:"Chromosomal Abnormalities",why:"Trisomies and sex chromosome disorders appear on every exam",
    videos:[
     {id:"ch01",name:"Down Syndrome (Trisomy 21)",time:"10:53"},
     {id:"ch02",name:"Edwards Syndrome (Trisomy 18)",time:"7:54"},
@@ -279,7 +279,7 @@ const CATEGORIES = [
     {id:"ch07",name:"Cri du Chat Syndrome",time:"3:38"},
     {id:"ch08",name:"Imprinting",time:"5:31"}
   ]},
-  {id:"collagen",name:"Collagen Related Disorders",icon:"🦴",why:"Collagen synthesis steps and associated diseases are very high-yield",
+  {id:"collagen",name:"Collagen Related Disorders",why:"Collagen synthesis steps and associated diseases are very high-yield",
    videos:[
     {id:"co01",name:"Alport Syndrome",time:"5:39"},
     {id:"co02",name:"Menkes Disease",time:"7:32"},
@@ -288,7 +288,7 @@ const CATEGORIES = [
     {id:"co05",name:"Ehlers-Danlos Syndrome",time:"9:45"},
     {id:"co06",name:"Goodpasture Syndrome",time:"6:12"}
   ]},
-  {id:"dnarepair",name:"DNA Repair",icon:"🔧",why:"DNA repair pathway disorders are classic vignette setups",
+  {id:"dnarepair",name:"DNA Repair",why:"DNA repair pathway disorders are classic vignette setups",
    videos:[
     {id:"dr01",name:"Lynch Syndrome",time:"9:40"},
     {id:"dr02",name:"Xeroderma Pigmentosum",time:"5:54"},
@@ -296,7 +296,7 @@ const CATEGORIES = [
     {id:"dr04",name:"Bloom Syndrome",time:"4:39"},
     {id:"dr05",name:"G6PD Deficiency",time:"—"}
   ]},
-  {id:"misc",name:"Miscellaneous",icon:"📋",why:"These span multiple systems and are all individually high-yield",
+  {id:"misc",name:"Miscellaneous",why:"These span multiple systems and are all individually high-yield",
    videos:[
     {id:"mi01",name:"Chediak-Higashi Syndrome",time:"10:09"},
     {id:"mi02",name:"Bruton (X-linked) Agammaglobulinemia",time:"9:06"},
@@ -338,7 +338,7 @@ const CATEGORIES = [
     {id:"mi38",name:"BMP (Chem7) Fishbone",time:"7:41"},
     {id:"mi39",name:"CBC",time:"7:06"}
   ]},
-  {id:"neuro_disorders",name:"Neurological Disorders",icon:"🧠",why:"CNS tumors are classic one-liners — histology, location, and patient age distinguish them",
+  {id:"neuro_disorders",name:"Neurological Disorders",why:"CNS tumors are classic one-liners — histology, location, and patient age distinguish them",
    videos:[
     {id:"nd01",name:"Craniopharyngioma",time:"8:09"},
     {id:"nd02",name:"Ependymoma",time:"7:04"},
@@ -350,7 +350,7 @@ const CATEGORIES = [
     {id:"nd08",name:"Charcot-Marie-Tooth Disease",time:"7:35"},
     {id:"nd09",name:"Tension Headache",time:"6:31"}
   ]},
-  {id:"toxicology",name:"Toxicology",icon:"☠️",why:"Toxidromes and antidotes — know the mechanism and the antidote",
+  {id:"toxicology",name:"Toxicology",why:"Toxidromes and antidotes — know the mechanism and the antidote",
    videos:[
     {id:"tx01",name:"Cyanide Poisoning",time:"10:09"},
     {id:"tx02",name:"Tetrodotoxin",time:"6:22"},
@@ -361,18 +361,18 @@ const CATEGORIES = [
     {id:"tx07",name:"Carbon Monoxide Poisoning",time:"11:11"},
     {id:"tx08",name:"Amanita Phalloides",time:"—"}
   ]},
-  {id:"peroxisome",name:"Peroxisome Disorders",icon:"🔬",why:"Zellweger and adrenoleukodystrophy are the key peroxisomal diseases",
+  {id:"peroxisome",name:"Peroxisome Disorders",why:"Zellweger and adrenoleukodystrophy are the key peroxisomal diseases",
    videos:[
     {id:"px01",name:"Zellweger Syndrome",time:"4:09"},
     {id:"px02",name:"Adrenoleukodystrophy",time:"6:16"},
     {id:"px03",name:"Refsum Disease",time:"9:19"}
   ]},
-  {id:"mitochondrial",name:"Mitochondrial Diseases",icon:"⚡",why:"Mitochondrial inheritance (maternal) and MELAS are classic board questions",
+  {id:"mitochondrial",name:"Mitochondrial Diseases",why:"Mitochondrial inheritance (maternal) and MELAS are classic board questions",
    videos:[
     {id:"mt01",name:"Leber Hereditary Optic Neuropathy",time:"3:49"},
     {id:"mt02",name:"Mitochondrial Myopathies",time:"9:30"}
   ]},
-  {id:"immunoglobulins",name:"Immunoglobulins",icon:"🛡️",why:"Ig class functions, switching, and deficiency syndromes are tested frequently",
+  {id:"immunoglobulins",name:"Immunoglobulins",why:"Ig class functions, switching, and deficiency syndromes are tested frequently",
    videos:[
     {id:"ig01",name:"IgA",time:"6:45"},
     {id:"ig02",name:"IgG",time:"8:56"},
@@ -380,14 +380,14 @@ const CATEGORIES = [
     {id:"ig04",name:"IgE",time:"9:25"},
     {id:"ig05",name:"IgD",time:"2:25"}
   ]},
-  {id:"complement",name:"Complement System",icon:"💥",why:"Complement pathways, C3b opsonization, MAC, and deficiency diseases appear on nearly every exam",
+  {id:"complement",name:"Complement System",why:"Complement pathways, C3b opsonization, MAC, and deficiency diseases appear on nearly every exam",
    videos:[
     {id:"cp01",name:"Common Complement Pathway",time:"13:41"},
     {id:"cp02",name:"Classical Complement Pathway",time:"7:04"},
     {id:"cp03",name:"Alternative Complement Pathway",time:"7:04"},
     {id:"cp04",name:"Lectin Complement Pathway",time:"5:44"}
   ]},
-  {id:"celltypes",name:"Other Cell Types",icon:"🔵",why:"Neutrophil oxidative burst, mast cell mediators, and NK cell mechanisms are all high-yield",
+  {id:"celltypes",name:"Other Cell Types",why:"Neutrophil oxidative burst, mast cell mediators, and NK cell mechanisms are all high-yield",
    videos:[
     {id:"ct01",name:"Neutrophils - Overview",time:"11:32"},
     {id:"ct02",name:"Neutrophils - Granules",time:"9:35"},
@@ -399,7 +399,7 @@ const CATEGORIES = [
     {id:"ct08",name:"Natural Killer (NK) Cells",time:"13:08"},
     {id:"ct09",name:"Dendritic Cells",time:"5:11"}
   ]},
-  {id:"bcells_tcells",name:"B Cells and T Cells",icon:"🎯",why:"Lymphocyte activation, MHC restriction, and T cell differentiation form the backbone of immunology",
+  {id:"bcells_tcells",name:"B Cells and T Cells",why:"Lymphocyte activation, MHC restriction, and T cell differentiation form the backbone of immunology",
    videos:[
     {id:"bt01",name:"MHC I",time:"7:56"},
     {id:"bt02",name:"MHC II",time:"10:13"},
@@ -417,7 +417,7 @@ const CATEGORIES = [
     {id:"bt14",name:"Th17 Cells",time:"6:27"},
     {id:"bt15",name:"Regulatory T Cells (Tregs)",time:"11:15"}
   ]},
-  {id:"cytokines",name:"Cytokines",icon:"📡",why:"Cytokine functions are tested directly — memorize what each one does",
+  {id:"cytokines",name:"Cytokines",why:"Cytokine functions are tested directly — memorize what each one does",
    videos:[
     {id:"cy01",name:"TNF-alpha",time:"6:04"},
     {id:"cy02",name:"IL-1",time:"7:07"},
@@ -433,7 +433,7 @@ const CATEGORIES = [
     {id:"cy12",name:"IFN-alpha and IFN-beta",time:"2:54"},
     {id:"cy13",name:"IFN-gamma",time:"8:09"}
   ]},
-  {id:"immunodef",name:"Immunodeficiencies",icon:"🚫",why:"Primary immunodeficiencies are a guaranteed multi-question topic",
+  {id:"immunodef",name:"Immunodeficiencies",why:"Primary immunodeficiencies are a guaranteed multi-question topic",
    videos:[
     {id:"id01",name:"Selective IgA Deficiency",time:"5:27"},
     {id:"id02",name:"DiGeorge Syndrome",time:"10:07"},
@@ -444,28 +444,28 @@ const CATEGORIES = [
     {id:"id07",name:"IL-12 Receptor Deficiency",time:"8:58"},
     {id:"id08",name:"Wiskott-Aldrich Syndrome",time:"7:40"}
   ]},
-  {id:"hypersensitivity",name:"Hypersensitivity Reactions",icon:"⚠️",why:"Types I–IV — know the mechanism, timing, and prototypical disease",
+  {id:"hypersensitivity",name:"Hypersensitivity Reactions",why:"Types I–IV — know the mechanism, timing, and prototypical disease",
    videos:[
     {id:"hs01",name:"Type 1 Hypersensitivity Reactions",time:"9:42"},
     {id:"hs02",name:"Type 2 Hypersensitivity Reactions",time:"7:33"},
     {id:"hs03",name:"Type 3 Hypersensitivity Reactions",time:"6:06"},
     {id:"hs04",name:"Type 4 Hypersensitivity Reactions",time:"5:16"}
   ]},
-  {id:"transfusion",name:"Transfusion Reactions",icon:"🩸",why:"ABO incompatibility, TRALI, and febrile reactions are all independently tested",
+  {id:"transfusion",name:"Transfusion Reactions",why:"ABO incompatibility, TRALI, and febrile reactions are all independently tested",
    videos:[
     {id:"tr01",name:"Anaphylactic Transfusion Reactions",time:"4:36"},
     {id:"tr02",name:"Acute Hemolytic Transfusion Reaction",time:"10:56"},
     {id:"tr03",name:"Febrile Nonhemolytic Transfusion Reaction",time:"5:55"},
     {id:"tr04",name:"TRALI",time:"5:34"}
   ]},
-  {id:"transplant",name:"Transplant Rejection",icon:"🫀",why:"Hyperacute/acute/chronic rejection and GVHD are high-yield",
+  {id:"transplant",name:"Transplant Rejection",why:"Hyperacute/acute/chronic rejection and GVHD are high-yield",
    videos:[
     {id:"tp01",name:"Hyperacute Transplant Rejection",time:"5:00"},
     {id:"tp02",name:"Acute Transplant Rejection",time:"5:29"},
     {id:"tp03",name:"Chronic Transplant Rejection",time:"7:15"},
     {id:"tp04",name:"Graft vs Host Disease (GVHD)",time:"9:04"}
   ]},
-  {id:"germlayer",name:"Germ Layer Derivatives",icon:"🐣",why:"Embryology questions hinge on knowing which germ layer gives rise to which tissue",
+  {id:"germlayer",name:"Germ Layer Derivatives",why:"Embryology questions hinge on knowing which germ layer gives rise to which tissue",
    videos:[
     {id:"gl01",name:"Ectoderm Derivatives",time:"9:56"},
     {id:"gl02",name:"Mesoderm Derivatives",time:"11:52"},
@@ -475,7 +475,7 @@ const CATEGORIES = [
     {id:"gl06",name:"Tight Junctions",time:"7:51"},
     {id:"gl07",name:"Desmosomes",time:"4:44"}
   ]},
-  {id:"personality",name:"Personality Disorders & Conditioning",icon:"🧩",why:"Cluster A/B/C and conditioning types are bread-and-butter behavioral science",
+  {id:"personality",name:"Personality Disorders & Conditioning",why:"Cluster A/B/C and conditioning types are bread-and-butter behavioral science",
    videos:[
     {id:"ps01",name:"Cluster A Personality Disorders",time:"7:31"},
     {id:"ps02",name:"Cluster B Personality Disorders",time:"8:03"},
@@ -483,14 +483,14 @@ const CATEGORIES = [
     {id:"ps04",name:"Classical Conditioning",time:"4:47"},
     {id:"ps05",name:"Operant Conditioning",time:"4:48"}
   ]},
-  {id:"cytoskeleton",name:"Cytoskeleton",icon:"🔩",why:"Microtubule/microfilament function underlies several drug MOAs (colchicine, vinca alkaloids)",
+  {id:"cytoskeleton",name:"Cytoskeleton",why:"Microtubule/microfilament function underlies several drug MOAs (colchicine, vinca alkaloids)",
    videos:[
     {id:"cs01",name:"Cytoskeleton",time:"9:41"},
     {id:"cs02",name:"Microfilaments (Actin Filaments)",time:"6:21"},
     {id:"cs03",name:"Intermediate Filaments",time:"3:20"},
     {id:"cs04",name:"Microtubules",time:"—"}
   ]},
-  {id:"dyslipidemias",name:"Dyslipidemias",icon:"💛",why:"Lipoprotein disorders, apolipoproteins, and familial dyslipidemias connect to CV risk",
+  {id:"dyslipidemias",name:"Dyslipidemias",why:"Lipoprotein disorders, apolipoproteins, and familial dyslipidemias connect to CV risk",
    videos:[
     {id:"dl01",name:"Dyslipidemias (Overview)",time:"21:56"}
   ]}
@@ -647,7 +647,7 @@ function renderAll() {
         <div class="cat-header-left">
           <div class="cat-accent ${accent}"></div>
           <div>
-            <div class="cat-name">${cat.icon} ${cat.name}</div>
+            <div class="cat-name">${cat.name}</div>
             <div class="cat-why">${cat.why}</div>
           </div>
         </div>
