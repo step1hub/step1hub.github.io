@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<title>Pixorize · Step 1 Hub</title>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="wrap">
+  <header class="hero" style="padding:40px 0 28px;">
+    <div class="hero-eyebrow">Progress Tracker</div>
+    <h1 class="hero-name" style="font-size:clamp(28px,4vw,42px);"><em>Pixorize</em></h1>
+  </header>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 28px;margin-bottom:28px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;">Overall Progress</div>
+      <div style="display:flex;gap:16px;font-size:13px;color:var(--muted);">
+        <span>👁 <strong id="total-watched">0</strong> Watched</span>
+        <span>⭐ <strong id="total-mastered">0</strong> Mastered</span>
+      </div>
+    </div>
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="overall-bar" style="width:0%;background:linear-gradient(90deg,var(--lavender),var(--sky));"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);">
+      <span id="overall-pct">0% complete</span>
+      <span id="overall-frac">0 / 0 videos</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;font-size:12px;font-weight:600;color:var(--ink2);">
+    <span>👁 = Watched &nbsp; ⭐ = Mastered</span>
+    <button onclick="resetAll()" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:99px;padding:4px 14px;font-size:12px;color:var(--muted);cursor:pointer;">Reset All</button>
+    <button onclick="exportProgress()" style="background:none;border:1px solid var(--border);border-radius:99px;padding:4px 14px;font-size:12px;color:var(--muted);cursor:pointer;">Export CSV</button>
+  </div>
+
+  <div id="sections-container"></div>
+  <footer class="footer"><div>Step 1 Study Hub · 🌸</div><div id="footer-date"></div></footer>
+</div>
+
+<script src="app.js"></script>
+<script>
+const PIXORIZE_SECTIONS = [
+  {
+    title: "Biochemistry",
+    icon: "🧪",
+    videos: [
+      "Amino Acids: Structure & Properties","Essential Amino Acids Mnemonics","Enzyme Kinetics","Glycolysis Overview","TCA Cycle & Oxidative Phosphorylation","Gluconeogenesis","Glycogen Synthesis & Breakdown","Fatty Acid Synthesis & Beta-Oxidation","Ketone Bodies","Cholesterol Synthesis & Regulation","Urea Cycle","Purine & Pyrimidine Synthesis","Nucleotide Salvage Pathways","DNA Replication","Transcription & Translation","DNA Repair Mechanisms","Vitamins: Fat-Soluble (A, D, E, K)","Vitamins: Water-Soluble B Vitamins","Vitamin B12 & Folate","Vitamin C","Lysosomal Storage Diseases","Glycogen Storage Diseases","Phenylketonuria & Amino Acid Disorders","Maple Syrup Urine Disease","Homocystinuria","Alkaptonuria","Fabry, Gaucher, Niemann-Pick","Tay-Sachs & GM2 Gangliosidoses","Mucopolysaccharidoses","Porphyrias"
+    ]
+  },
+  {
+    title: "Immunology",
+    icon: "🛡️",
+    videos: [
+      "Innate vs Adaptive Immunity","Complement System: Classical Pathway","Complement System: Lectin & Alternative","MHC Class I & II","T Cell Development & Activation","CD4 Helper T Cell Subsets","CD8 Cytotoxic T Cells","B Cell Development & Activation","Antibody Classes (IgG, IgM, IgA, IgE, IgD)","Hypersensitivity Type I (IgE-mediated)","Hypersensitivity Type II (Cytotoxic)","Hypersensitivity Type III (Immune Complex)","Hypersensitivity Type IV (Delayed-Type)","Primary Immunodeficiencies: B Cell","Primary Immunodeficiencies: T Cell","Combined Immunodeficiencies","Phagocyte Defects","Transplant Rejection","Autoimmunity Mechanisms","Key Cytokines (IL-1, 2, 4, 5, 6, 8, 10, 12)"
+    ]
+  },
+  {
+    title: "Microbiology — Bacteria",
+    icon: "🦠",
+    videos: [
+      "Gram-Positive Cocci: Staph","Gram-Positive Cocci: Strep","Gram-Negative Rods: Enterobacteriaceae","Gram-Negative Rods: H. influenzae & Others","Gram-Negative Cocci: Neisseria","Anaerobes: Clostridium","Anaerobes: Bacteroides & Others","Atypical Bacteria: Mycoplasma & Chlamydia","Spirochetes: Treponema & Borrelia","Mycobacteria: TB & Leprosy"
+    ]
+  },
+  {
+    title: "Microbiology — Viruses",
+    icon: "🧬",
+    videos: [
+      "DNA Viruses Overview","RNA Viruses Overview","Herpesviruses (HSV, VZV, EBV, CMV)","HIV Life Cycle & Pathogenesis","Influenza & Paramyxoviruses","Picornaviruses (Polio, Coxsackie, Rhino)","Hepatitis Viruses A–E","HPV & Papillomaviruses","Arboviruses & Hemorrhagic Fever Viruses","Prions"
+    ]
+  },
+  {
+    title: "Embryology",
+    icon: "🐣",
+    videos: [
+      "Fertilization & Early Embryogenesis","Germ Layers & Gastrulation","Placenta Development","Cardiac Embryology & Congenital Heart Defects","Vascular Development","Gut Tube & GI Embryology","Renal Development","Genital Development & Disorders","Neural Tube Defects","Branchial Arches & Pharyngeal Pouches","Face & Palate Development","Limb Development"
+    ]
+  },
+  {
+    title: "Genetics",
+    icon: "🧬",
+    videos: [
+      "Autosomal Dominant Disorders","Autosomal Recessive Disorders","X-Linked Disorders","Chromosomal Abnormalities (Trisomies)","Chromosomal Structural Abnormalities","Imprinting: Prader-Willi & Angelman","Trinucleotide Repeat Disorders","Mitochondrial Genetics","Hardy-Weinberg Principles","Population Genetics"
+    ]
+  },
+  {
+    title: "Pathology — Cell Injury",
+    icon: "🫀",
+    videos: [
+      "Cell Death: Necrosis vs Apoptosis","Types of Necrosis","Free Radicals & Oxidative Stress","Cellular Adaptations","Reversible vs Irreversible Injury","Inflammation: Acute","Inflammation: Chronic","Wound Healing & Repair","Granuloma Formation","Neoplasia: Benign vs Malignant","Oncogenes & Tumor Suppressors","Metastasis Mechanisms"
+    ]
+  },
+  {
+    title: "Pharmacology — Key Concepts",
+    icon: "💊",
+    videos: [
+      "Pharmacokinetics: ADME","Volume of Distribution & Half-Life","Drug Receptor Interactions","Agonists, Antagonists & Partial Agonists","Enzyme Inducers & Inhibitors","Phase I & Phase II Metabolism","First-Pass Effect","Autonomic Pharmacology Overview"
+    ]
+  }
+];
+
+const STORAGE_KEY = 'pixorize-progress';
+function loadProgress() { return Store.get(STORAGE_KEY, {}); }
+function saveProgress(p) { Store.set(STORAGE_KEY, p); }
+function getKey(si, vi) { return `${si}-${vi}`; }
+function getState(prog, key) { return prog[key] || {w:false, m:false}; }
+
+function toggleState(si, vi, field) {
+  const prog = loadProgress();
+  const key = getKey(si, vi);
+  if (!prog[key]) prog[key] = {w:false, m:false};
+  prog[key][field] = !prog[key][field];
+  if (field === 'm' && prog[key][field]) prog[key].w = true;
+  if (field === 'w' && !prog[key][field]) prog[key].m = false;
+  saveProgress(prog);
+  renderAll();
+}
+
+function resetAll() {
+  if (!confirm('Reset all Pixorize progress?')) return;
+  Store.set(STORAGE_KEY, {}); renderAll();
+}
+
+function exportProgress() {
+  const prog = loadProgress();
+  let csv = 'Section,Video,Watched,Mastered\n';
+  PIXORIZE_SECTIONS.forEach((sec, si) => {
+    sec.videos.forEach((vid, vi) => {
+      const s = getState(prog, getKey(si, vi));
+      csv += `"${sec.title}","${vid}",${s.w},${s.m}\n`;
+    });
+  });
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'pixorize_progress.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function renderAll() {
+  const prog = loadProgress();
+  let totalVids = 0, totalW = 0, totalM = 0;
+
+  const container = document.getElementById('sections-container');
+  container.innerHTML = PIXORIZE_SECTIONS.map((sec, si) => {
+    let secW = 0, secM = 0;
+    const rows = sec.videos.map((vid, vi) => {
+      const key = getKey(si, vi);
+      const s = getState(prog, key);
+      totalVids++; if (s.w) { totalW++; secW++; } if (s.m) { totalM++; secM++; }
+      return `
+        <tr>
+          <td style="width:100%;">${vid}</td>
+          <td>
+            <div class="check-wrap">
+              <button class="check-btn ${s.w?'on':''}" onclick="toggleState(${si},${vi},'w')" title="Watched">👁</button>
+              <button class="check-btn ${s.m?'on-sage':''}" onclick="toggleState(${si},${vi},'m')" title="Mastered">⭐</button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+
+    const pct = sec.videos.length ? Math.round(secM/sec.videos.length*100) : 0;
+    return `
+      <div class="prog-section">
+        <div class="prog-section-header">
+          <div class="prog-section-title">${sec.icon} ${sec.title}</div>
+          <span class="prog-count">${secM}/${sec.videos.length} mastered</span>
+        </div>
+        <div class="prog-bar-wrap">
+          <div class="prog-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--lavender),var(--sky));"></div>
+        </div>
+        <table class="tracker-table">
+          <thead><tr><th>Video</th><th>Status</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  }).join('');
+
+  const pct = totalVids ? Math.round(totalM/totalVids*100) : 0;
+  document.getElementById('overall-bar').style.width = pct + '%';
+  document.getElementById('overall-pct').textContent = pct + '% mastered';
+  document.getElementById('overall-frac').textContent = `${totalM} / ${totalVids} videos`;
+  document.getElementById('total-watched').textContent = totalW;
+  document.getElementById('total-mastered').textContent = totalM;
+}
+
+document.addEventListener('DOMContentLoaded', renderAll);
+</script>
+</body>
+</html>

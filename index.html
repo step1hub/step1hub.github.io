@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<title>Step 1 Study Hub</title>
+</head>
+<body>
+
+<div class="petals" aria-hidden="true">
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div>
+</div>
+
+<script src="nav.js"></script>
+
+<div class="wrap">
+
+  <!-- ── Hero ── -->
+  <header class="hero">
+    <div class="hero-eyebrow">USMLE Step 1 Study Hub</div>
+    <h1 class="hero-name">Your <em>Study Resources,</em><br/>All in One Place</h1>
+    <div class="countdown-wrap">
+      <div>
+        <div class="cd-label">Days Remaining</div>
+        <div class="cd-days" id="cd-days">—</div>
+        <div class="cd-unit">days</div>
+      </div>
+      <div class="cd-divider"></div>
+      <div>
+        <div class="cd-date-lbl">Target Exam Date</div>
+        <div class="cd-date" id="cd-date">Not set</div>
+      </div>
+      <button class="cd-edit" onclick="openDateModal()">Set Date ✦</button>
+    </div>
+  </header>
+
+  <!-- ── Daily Goals Banner ── -->
+  <div id="daily-goals-banner" style="display:none;
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg);
+    padding:18px 24px; margin-bottom:24px; gap:24px; flex-wrap:wrap; align-items:center;">
+  </div>
+
+  <!-- ── My Tools ── -->
+  <div class="sec-label">🌸 &nbsp;My Study Tools</div>
+  <div class="tool-grid">
+
+    <!-- Drug of the Day -->
+    <div class="tool-card card-dotd" id="dotd-card" onclick="openDotdModal()" style="cursor:pointer;">
+      <div class="card-top">
+        <div class="card-icon">💊</div>
+        <div class="card-meta">
+          <span class="card-tag" style="background:var(--sakura-light);color:var(--sakura2);">Daily High Yield</span>
+          <span class="card-arrow">↗</span>
+        </div>
+      </div>
+      <h2 class="card-title" id="dotd-name" style="font-size:17px;">Loading…</h2>
+      <p class="card-desc" id="dotd-pearl" style="font-style:italic;font-size:13px;"></p>
+      <div class="card-pills"><span class="pill">Drug of the Day</span><span class="pill">View Full Card</span></div>
+    </div>
+
+    <a class="tool-card card-pharm" href="drugfacts.html">
+      <div class="card-top">
+        <div class="card-icon">💊</div>
+        <div class="card-meta"><span class="card-tag">Pharmacology</span><span class="card-arrow">↗</span></div>
+      </div>
+      <h2 class="card-title">Drug Facts</h2>
+      <p class="card-desc">Complete Step 1 pharmacology — MOA, side effects, clinical pearls, and tier ratings across all systems.</p>
+      <div class="card-pills"><span class="pill">MOA</span><span class="pill">Side Effects</span><span class="pill">Pearls</span></div>
+    </a>
+
+    <a class="tool-card card-micro" href="microfacts.html">
+      <div class="card-top">
+        <div class="card-icon">🦠</div>
+        <div class="card-meta"><span class="card-tag">Microbiology</span><span class="card-arrow">↗</span></div>
+      </div>
+      <h2 class="card-title">Micro Facts</h2>
+      <p class="card-desc">Bacteria, viruses, fungi, and parasites — virulence factors, diseases, treatments, and high-yield pearls.</p>
+      <div class="card-pills"><span class="pill">Gram Stain</span><span class="pill">Treatment</span><span class="pill">Pearls</span></div>
+    </a>
+
+    <a class="tool-card card-spharm" href="sketchy-pharm.html">
+      <div class="card-top">
+        <div class="card-icon">🎨</div>
+        <div class="card-meta"><span class="card-tag">Progress Tracker</span><span class="card-arrow">↗</span></div>
+      </div>
+      <h2 class="card-title">Sketchy Pharm</h2>
+      <p class="card-desc">Track which Sketchy Pharm videos you've watched, reviewed, and mastered across all organ systems.</p>
+    </a>
+
+    <a class="tool-card card-smicro" href="sketchy-micro.html">
+      <div class="card-top">
+        <div class="card-icon">🦠</div>
+        <div class="card-meta"><span class="card-tag">Progress Tracker</span><span class="card-arrow">↗</span></div>
+      </div>
+      <h2 class="card-title">Sketchy Micro</h2>
+      <p class="card-desc">Track your progress through bacteria, viruses, fungi, and parasites with yield ratings.</p>
+    </a>
+
+    <a class="tool-card card-pix" href="pixorize.html">
+      <div class="card-top">
+        <div class="card-icon">🎯</div>
+        <div class="card-meta"><span class="card-tag">Progress Tracker</span><span class="card-arrow">↗</span></div>
+      </div>
+      <h2 class="card-title">Pixorize</h2>
+      <p class="card-desc">Track all Pixorize videos across biochemistry, immunology, embryology, and more.</p>
+    </a>
+
+    <a class="tool-card card-dash" href="dashboard.html">
+      <div class="card-top">
+        <div class="card-icon">📊</div>
+        <div class="card-meta"><span class="card-tag">Dashboard</span><span class="card-arrow">↗</span></div>
+      </div>
+      <h2 class="card-title">Performance Dashboard</h2>
+      <p class="card-desc">Upload scores, find weak points, track UWorld progress, and calculate daily question goals.</p>
+    </a>
+  </div>
+
+  <!-- ── External Resources ── -->
+  <div class="sec-label" style="margin-top:44px;">🔗 &nbsp;External Resources</div>
+  <div class="tool-grid">
+    <a class="tool-card card-ext" href="https://www.uworld.com" target="_blank" rel="noopener">
+      <div class="card-top">
+        <div class="card-icon">📝</div>
+        <div class="card-meta"><span class="card-tag">Question Bank</span><span class="card-arrow">↗</span></div>
+      </div>
+      <h2 class="card-title">UWorld</h2>
+      <p class="card-desc">The gold standard Step 1 question bank with detailed explanations and high-yield diagrams.</p>
+      <div class="card-pills"><span class="pill">QBank</span><span class="pill">Gold Standard</span></div>
+    </a>
+    <a class="tool-card card-ext" href="https://www.pathoma.com" target="_blank" rel="noopener">
+      <div class="card-top">
+        <div class="card-icon">🫀</div>
+        <div class="card-meta"><span class="card-tag">Pathology</span><span class="card-arrow">↗</span></div>
+      </div>
+      <h2 class="card-title">Pathoma</h2>
+      <p class="card-desc">Dr. Sattar's high-yield pathology videos and textbook. Essential foundation for Step 1 Path.</p>
+      <div class="card-pills"><span class="pill">Videos</span><span class="pill">High-Yield</span></div>
+    </a>
+    <a class="tool-card card-ext" href="https://www.bootcamp.com" target="_blank" rel="noopener">
+      <div class="card-top">
+        <div class="card-icon">🏕️</div>
+        <div class="card-meta"><span class="card-tag">Question Bank</span><span class="card-arrow">↗</span></div>
+      </div>
+      <h2 class="card-title">Bootcamp</h2>
+      <p class="card-desc">High-yield Step 1 question bank with daily practice and focused subject reviews.</p>
+      <div class="card-pills"><span class="pill">QBank</span><span class="pill">Daily Q</span></div>
+    </a>
+    <a class="tool-card card-ext" href="https://www.sketchymedicine.com" target="_blank" rel="noopener">
+      <div class="card-top">
+        <div class="card-icon">🎨</div>
+        <div class="card-meta"><span class="card-tag">Mnemonics</span><span class="card-arrow">↗</span></div>
+      </div>
+      <h2 class="card-title">Sketchy Medical</h2>
+      <p class="card-desc">Visual mnemonic stories for pharmacology, microbiology, and pathology.</p>
+      <div class="card-pills"><span class="pill">Visual</span><span class="pill">Pharm</span><span class="pill">Micro</span></div>
+    </a>
+  </div>
+
+  <!-- ── Daily Practice ── -->
+  <div class="sec-label" style="margin-top:44px;">✦ &nbsp;Daily Practice</div>
+  <a href="https://bootcamp.com/med-school/usmle-step-1-question-of-the-day" target="_blank" rel="noopener" class="qotd-banner">
+    <div class="qotd-left">
+      <div class="qotd-icon">✦</div>
+      <div>
+        <div class="qotd-label">Bootcamp · Daily</div>
+        <div class="qotd-title">Question of the Day</div>
+        <div class="qotd-sub">Keep your streak alive — one question every day adds up.</div>
+      </div>
+    </div>
+    <div class="qotd-cta">Open Today's Q ↗</div>
+  </a>
+
+  <!-- ── Quote ── -->
+  <div class="quote-strip" style="margin-top:20px;">
+    <p class="q-text" id="daily-quote"></p>
+    <span class="q-attr" id="quote-attr"></span>
+  </div>
+
+  <div class="callout" style="margin-top:20px;">
+    <span style="font-size:22px;">🗻</span>
+    <div><strong>Japan after Step 1 —</strong> Cherry blossoms, Mount Fuji, ramen at 2am. Every page you study now is a step closer. 頑張って (Ganbatte) — you've got this.</div>
+  </div>
+
+  <footer class="footer">
+    <div>Step 1 Study Hub &nbsp;·&nbsp; 🌸</div>
+    <div id="footer-date"></div>
+  </footer>
+</div>
+
+<!-- Drug of the Day Modal -->
+<div class="modal-overlay" id="dotd-modal">
+  <div class="modal detail-modal" style="max-width:560px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sakura2);margin-bottom:4px;" id="dm-group"></div>
+        <div class="modal-title" id="dm-name"></div>
+        <div style="font-size:12px;color:var(--muted);font-style:italic;" id="dm-aka"></div>
+      </div>
+      <button onclick="closeModal('dotd-modal')" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--dim);">&times;</button>
+    </div>
+    <div id="dm-content" style="max-height:65vh;overflow-y:auto;padding-right:6px;"></div>
+    <div class="modal-btns" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+      <button class="btn-cancel" onclick="closeModal('dotd-modal')">Close</button>
+      <a href="drugfacts.html" class="btn-save" style="text-decoration:none;display:inline-block;">All Drug Facts ↗</a>
+    </div>
+  </div>
+</div>
+
+<script src="drug_data.js"></script>
+<script src="app.js"></script>
+<script>
+// Drug of the Day
+let dotdDrug = null;
+
+function initDotd() {
+  if (typeof DRUGS === 'undefined') return;
+  const all = [];
+  Object.values(DRUGS).forEach(cat => {
+    cat.forEach(grp => {
+      grp.drugs.filter(d => d.tier === 1).forEach(d => all.push({...d, groupName: grp.group}));
+    });
+  });
+  if (!all.length) return;
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth()+1) * 100 + today.getDate();
+  dotdDrug = all[seed % all.length];
+  document.getElementById('dotd-name').textContent = dotdDrug.name;
+  const pearl = dotdDrug.pearl ? '💡 ' + dotdDrug.pearl.replace(/\*\*/g,'') : 'High-yield concept — tap to review.';
+  document.getElementById('dotd-pearl').textContent = pearl.length > 90 ? pearl.substring(0,90)+'…' : pearl;
+}
+
+function openDotdModal() {
+  if (!dotdDrug) return;
+  document.getElementById('dm-name').textContent = dotdDrug.name;
+  document.getElementById('dm-aka').textContent = dotdDrug.aka || '';
+  document.getElementById('dm-group').textContent = dotdDrug.groupName || 'Pharmacology';
+  const fmt = t => t ? t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>') : '—';
+  document.getElementById('dm-content').innerHTML = `
+    <div class="drug-row"><span class="drug-label">Mechanism</span><div class="drug-text">${fmt(dotdDrug.moa)}</div></div>
+    <div class="drug-row"><span class="drug-label">Clinical Use</span><div class="drug-text">${fmt(dotdDrug.use)}</div></div>
+    <div class="drug-row"><span class="drug-label">Side Effects</span><div class="drug-text">${fmt(dotdDrug.se)}</div></div>
+    ${dotdDrug.ci ? `<div class="drug-row"><span class="drug-label">Contraindications</span><div class="drug-text">${fmt(dotdDrug.ci)}</div></div>` : ''}
+    ${dotdDrug.pearl ? `<div class="pearl-box"><span class="drug-label">💎 Pearl</span><div class="drug-text">${fmt(dotdDrug.pearl)}</div></div>` : ''}
+  `;
+  openModal('dotd-modal');
+}
+
+// Daily goals display
+function renderDailyGoals() {
+  const days = getDaysRemaining();
+  const banner = document.getElementById('daily-goals-banner');
+  if (!banner || days === null || days === 0) return;
+
+  // UWorld: ~3200 total questions
+  const uworldData = Store.get('uworld-progress', {done: 0, total: 3200});
+  const remaining = uworldData.total - uworldData.done;
+  const qPerDay = days > 0 ? Math.ceil(remaining / days) : remaining;
+
+  banner.style.display = 'flex';
+  banner.innerHTML = `
+    <div style="flex:1;min-width:160px;">
+      <div class="stat-label">UWorld Q/Day Needed</div>
+      <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--sky);">${qPerDay}</div>
+      <div style="font-size:12px;color:var(--muted);">${uworldData.done} / ${uworldData.total} done</div>
+    </div>
+    <div style="width:1px;background:var(--border);flex-shrink:0;"></div>
+    <div style="flex:1;min-width:160px;">
+      <div class="stat-label">Days Until Exam</div>
+      <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--fuji);">${days}</div>
+      <div style="font-size:12px;color:var(--muted);">Stay consistent ✦</div>
+    </div>
+    <div style="width:1px;background:var(--border);flex-shrink:0;"></div>
+    <div style="flex:1;min-width:160px;">
+      <div class="stat-label">Today's Date</div>
+      <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>
+      <div style="font-size:12px;color:var(--muted);">頑張って!</div>
+    </div>
+    <a href="dashboard.html" style="align-self:center;text-decoration:none;display:inline-block;" class="btn-save">Open Dashboard ↗</a>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initDotd();
+  renderDailyGoals();
+});
+</script>
+</body>
+</html>

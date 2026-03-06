@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<title>Drug Facts · Step 1 Hub</title>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="wrap">
+  <header class="hero" style="padding:40px 0 28px;">
+    <div class="hero-eyebrow">Pharmacology Reference</div>
+    <h1 class="hero-name" style="font-size:clamp(28px,4vw,42px);">Drug <em>Facts</em></h1>
+  </header>
+
+  <!-- Search & Filters -->
+  <div class="search-bar">
+    <input class="search-input" type="text" id="drug-search" placeholder="Search drugs, MOA, uses, side effects…" oninput="filterDrugs()"/>
+    <select class="filter-select" id="cat-filter" onchange="filterDrugs()">
+      <option value="">All Systems</option>
+      <option value="autonomic">Autonomic</option>
+      <option value="cv">Cardiovascular</option>
+      <option value="blood">Blood</option>
+      <option value="neuro">Neurology / Psych</option>
+      <option value="micro">Antimicrobials</option>
+      <option value="gi">GI</option>
+      <option value="endo">Endocrine</option>
+      <option value="pulm">Pulmonary</option>
+      <option value="onco">Oncology</option>
+      <option value="toxicology">Toxicology</option>
+    </select>
+    <button class="filter-btn active" data-tier="" onclick="setTier(this,'')">All Tiers</button>
+    <button class="filter-btn" data-tier="1" onclick="setTier(this,'1')">🔴 Tier 1</button>
+    <button class="filter-btn" data-tier="2" onclick="setTier(this,'2')">🟡 Tier 2</button>
+    <button class="filter-btn" data-tier="3" onclick="setTier(this,'3')">🟢 Tier 3</button>
+  </div>
+
+  <div id="results-count" style="font-size:12px;color:var(--muted);margin-bottom:14px;"></div>
+  <div class="ref-grid" id="drug-grid"></div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="drug-detail-modal">
+  <div class="modal detail-modal" style="max-width:580px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sakura2);margin-bottom:4px;" id="ddm-system"></div>
+        <div class="modal-title" id="ddm-name"></div>
+        <div style="font-size:12px;color:var(--muted);font-style:italic;margin-top:2px;" id="ddm-aka"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="ddm-tier" class="tier-badge"></span>
+        <button onclick="closeModal('drug-detail-modal')" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--dim);">&times;</button>
+      </div>
+    </div>
+    <div id="ddm-tags" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;"></div>
+    <div id="ddm-content" style="max-height:65vh;overflow-y:auto;padding-right:6px;"></div>
+    <div class="modal-btns" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+      <button class="btn-cancel" onclick="closeModal('drug-detail-modal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="drug_data.js"></script>
+<script src="app.js"></script>
+<script>
+let activeTier = '';
+const CAT_LABELS = {
+  autonomic:'Autonomic', cv:'Cardiovascular', blood:'Blood',
+  neuro:'Neuro/Psych', micro:'Antimicrobials', gi:'GI',
+  endo:'Endocrine', pulm:'Pulmonary', onco:'Oncology', toxicology:'Toxicology'
+};
+
+function setTier(btn, tier) {
+  activeTier = tier;
+  document.querySelectorAll('.filter-btn[data-tier]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterDrugs();
+}
+
+function buildDrugList() {
+  const list = [];
+  Object.entries(DRUGS).forEach(([cat, groups]) => {
+    groups.forEach(grp => {
+      grp.drugs.forEach(d => list.push({...d, category: cat, groupName: grp.group}));
+    });
+  });
+  return list;
+}
+
+let allDrugs = [];
+
+function filterDrugs() {
+  const q = document.getElementById('drug-search').value.toLowerCase();
+  const cat = document.getElementById('cat-filter').value;
+  const tier = activeTier ? parseInt(activeTier) : null;
+
+  const filtered = allDrugs.filter(d => {
+    if (cat && d.category !== cat) return false;
+    if (tier && d.tier !== tier) return false;
+    if (q) {
+      const text = [d.name, d.aka, d.summary, d.moa, d.use, d.se, d.tags?.join(' ')].join(' ').toLowerCase();
+      if (!text.includes(q)) return false;
+    }
+    return true;
+  });
+
+  renderDrugs(filtered);
+  document.getElementById('results-count').textContent = `Showing ${filtered.length} of ${allDrugs.length} drugs`;
+}
+
+function renderDrugs(list) {
+  const grid = document.getElementById('drug-grid');
+  if (!list.length) { grid.innerHTML = '<p style="color:var(--muted);font-size:14px;">No drugs match your search.</p>'; return; }
+  grid.innerHTML = list.map(d => `
+    <div class="ref-card card-pharm" onclick='openDrugDetail(${JSON.stringify(d).replace(/'/g,"&#39;")})'>
+      <div class="ref-card-top">
+        <div class="ref-card-name">${d.name}</div>
+        <span class="tier-badge tier-${d.tier}">Tier ${d.tier}</span>
+      </div>
+      <div class="ref-card-aka">${d.aka || ''}</div>
+      <div class="ref-card-summary">${d.summary || ''}</div>
+      <div class="ref-card-tags">
+        <span class="ref-tag" style="background:var(--surface2);color:var(--muted);">${CAT_LABELS[d.category] || d.category}</span>
+        ${(d.tags || []).slice(0,3).map(t=>`<span class="ref-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function openDrugDetail(d) {
+  const fmt = t => t ? t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>') : '';
+  document.getElementById('ddm-name').textContent = d.name;
+  document.getElementById('ddm-aka').textContent = d.aka || '';
+  document.getElementById('ddm-system').textContent = (CAT_LABELS[d.category] || '') + (d.groupName ? ' · ' + d.groupName : '');
+  const tb = document.getElementById('ddm-tier');
+  tb.textContent = `Tier ${d.tier}`; tb.className = `tier-badge tier-${d.tier}`;
+  document.getElementById('ddm-tags').innerHTML = (d.tags||[]).map(t=>`<span class="ref-tag">${t}</span>`).join('');
+
+  const rows = [
+    ['Mechanism (MOA)', d.moa],
+    ['Clinical Use', d.use],
+    ['Side Effects', d.se],
+    ['Contraindications', d.ci],
+    ['Pharmacokinetics', d.pk],
+  ].filter(r => r[1]);
+
+  document.getElementById('ddm-content').innerHTML = rows.map(([label, val]) =>
+    `<div class="drug-row"><span class="drug-label">${label}</span><div class="drug-text">${fmt(val)}</div></div>`
+  ).join('') + (d.pearl ? `<div class="pearl-box"><span class="drug-label">💎 Clinical Pearl</span><div class="drug-text">${fmt(d.pearl)}</div></div>` : '');
+
+  openModal('drug-detail-modal');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  allDrugs = buildDrugList();
+  filterDrugs();
+});
+</script>
+</body>
+</html>

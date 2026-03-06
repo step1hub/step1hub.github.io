@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<title>Sketchy Micro · Step 1 Hub</title>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="wrap">
+  <header class="hero" style="padding:40px 0 28px;">
+    <div class="hero-eyebrow">Progress Tracker</div>
+    <h1 class="hero-name" style="font-size:clamp(28px,4vw,42px);">Sketchy <em>Micro</em></h1>
+  </header>
+
+  <!-- Overall Progress -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 28px;margin-bottom:28px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;">Overall Progress</div>
+      <div style="display:flex;gap:16px;font-size:13px;color:var(--muted);">
+        <span>👁 <strong id="total-watched">0</strong> Watched</span>
+        <span>🔁 <strong id="total-reviewed">0</strong> Reviewed</span>
+        <span>⭐ <strong id="total-mastered">0</strong> Mastered</span>
+      </div>
+    </div>
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="overall-bar" style="width:0%;background:linear-gradient(90deg,var(--sage),var(--sky));"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);">
+      <span id="overall-pct">0% complete</span>
+      <span id="overall-frac">0 / 0 videos</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;font-size:12px;font-weight:600;color:var(--ink2);">
+    <span>👁 = Watched &nbsp; 🔁 = Reviewed &nbsp; ⭐ = Mastered</span>
+    <button onclick="resetAll()" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:99px;padding:4px 14px;font-size:12px;color:var(--muted);cursor:pointer;">Reset All</button>
+    <button onclick="exportProgress()" style="background:none;border:1px solid var(--border);border-radius:99px;padding:4px 14px;font-size:12px;color:var(--muted);cursor:pointer;">Export CSV</button>
+  </div>
+
+  <div id="sections-container"></div>
+
+  <footer class="footer"><div>Step 1 Study Hub · 🌸</div><div id="footer-date"></div></footer>
+</div>
+
+<script src="micro_data.js"></script>
+<script src="app.js"></script>
+<script>
+// Generate sections from MICRO data directly
+function buildSections() {
+  if (typeof MICRO === 'undefined') return [];
+  return Object.entries(MICRO).map(([cat, groups]) => ({
+    cat,
+    title: cat.charAt(0).toUpperCase() + cat.slice(1),
+    icon: {bacteria:'🦠',viruses:'🧬',fungi:'🍄',parasites:'🪱'}[cat] || '🦠',
+    groups: groups.map(grp => ({
+      name: grp.group,
+      items: grp.organisms.map(o => ({
+        name: o.name,
+        tier: o.tier,
+        summary: o.summary || ''
+      }))
+    }))
+  }));
+}
+
+const STORAGE_KEY = 'sketchy-micro-progress';
+function loadProgress() { return Store.get(STORAGE_KEY, {}); }
+function saveProgress(p) { Store.set(STORAGE_KEY, p); }
+
+function getKey(cat, gi, oi) { return `${cat}-${gi}-${oi}`; }
+function getState(prog, key) { return prog[key] || {w:false, r:false, m:false}; }
+
+let sections = [];
+
+function toggleState(cat, gi, oi, field) {
+  const prog = loadProgress();
+  const key = getKey(cat, gi, oi);
+  if (!prog[key]) prog[key] = {w:false, r:false, m:false};
+  prog[key][field] = !prog[key][field];
+  if (field === 'm' && prog[key][field]) { prog[key].w = true; prog[key].r = true; }
+  if (field === 'w' && !prog[key][field]) { prog[key].r = false; prog[key].m = false; }
+  if (field === 'r' && !prog[key][field]) { prog[key].m = false; }
+  saveProgress(prog);
+  renderAll();
+}
+
+function resetAll() {
+  if (!confirm('Reset all Sketchy Micro progress?')) return;
+  Store.set(STORAGE_KEY, {}); renderAll();
+}
+
+function exportProgress() {
+  const prog = loadProgress();
+  let csv = 'Category,Group,Organism,Tier,Watched,Reviewed,Mastered\n';
+  sections.forEach(sec => {
+    sec.groups.forEach((grp, gi) => {
+      grp.items.forEach((item, oi) => {
+        const s = getState(prog, getKey(sec.cat, gi, oi));
+        csv += `"${sec.title}","${grp.name}","${item.name}",${item.tier},${s.w},${s.r},${s.m}\n`;
+      });
+    });
+  });
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'sketchy_micro_progress.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function renderAll() {
+  const prog = loadProgress();
+  let totalVids = 0, totalW = 0, totalR = 0, totalM = 0;
+
+  const container = document.getElementById('sections-container');
+  container.innerHTML = sections.map(sec => {
+    const groupsHTML = sec.groups.map((grp, gi) => {
+      let grpW = 0, grpM = 0;
+      const rows = grp.items.map((item, oi) => {
+        const key = getKey(sec.cat, gi, oi);
+        const s = getState(prog, key);
+        totalVids++; if (s.w) { totalW++; grpW++; } if (s.r) totalR++; if (s.m) { totalM++; grpM++; }
+        const tierColor = item.tier === 1 ? 'var(--sakura2)' : item.tier === 2 ? 'var(--gold)' : 'var(--sage)';
+        return `
+          <tr>
+            <td style="width:100%;">
+              <span style="font-size:9px;font-weight:700;color:${tierColor};margin-right:6px;letter-spacing:.5px;">T${item.tier}</span>
+              ${item.name}
+            </td>
+            <td>
+              <div class="check-wrap">
+                <button class="check-btn ${s.w?'on':''}" onclick="toggleState('${sec.cat}',${gi},${oi},'w')" title="Watched">👁</button>
+                <button class="check-btn ${s.r?'on-gold':''}" onclick="toggleState('${sec.cat}',${gi},${oi},'r')" title="Reviewed">🔁</button>
+                <button class="check-btn ${s.m?'on-sage':''}" onclick="toggleState('${sec.cat}',${gi},${oi},'m')" title="Mastered">⭐</button>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+
+      return `
+        <div style="margin-bottom:20px;">
+          <div style="font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.5px;margin-bottom:8px;padding-left:12px;border-left:3px solid var(--sage);">
+            ${grp.name} &nbsp;<span style="font-weight:400;">${grpM}/${grp.items.length} mastered</span>
+          </div>
+          <table class="tracker-table">
+            <thead><tr><th>Organism</th><th>Status</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+    }).join('');
+
+    const secTotal = sec.groups.reduce((a,g)=>a+g.items.length, 0);
+    let secM = 0;
+    sec.groups.forEach((grp, gi) => grp.items.forEach((_, oi) => { if (getState(prog, getKey(sec.cat, gi, oi)).m) secM++; }));
+    const pct = secTotal ? Math.round(secM/secTotal*100) : 0;
+
+    return `
+      <div class="prog-section">
+        <div class="prog-section-header">
+          <div class="prog-section-title">${sec.icon} ${sec.title}</div>
+          <span class="prog-count">${secM}/${secTotal} mastered</span>
+        </div>
+        <div class="prog-bar-wrap">
+          <div class="prog-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--sage),var(--sky));"></div>
+        </div>
+        ${groupsHTML}
+      </div>`;
+  }).join('');
+
+  const overallPct = totalVids ? Math.round(totalM/totalVids*100) : 0;
+  document.getElementById('overall-bar').style.width = overallPct + '%';
+  document.getElementById('overall-pct').textContent = overallPct + '% mastered';
+  document.getElementById('overall-frac').textContent = `${totalM} / ${totalVids} organisms`;
+  document.getElementById('total-watched').textContent = totalW;
+  document.getElementById('total-reviewed').textContent = totalR;
+  document.getElementById('total-mastered').textContent = totalM;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  sections = buildSections();
+  renderAll();
+});
+</script>
+</body>
+</html>

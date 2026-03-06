@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<title>Dashboard · Step 1 Hub</title>
+<style>
+  .tab-bar { display:flex; gap:4px; margin-bottom:24px; flex-wrap:wrap; }
+  .tab-btn {
+    padding:8px 18px; border-radius:99px; border:1px solid var(--border);
+    background:var(--surface); font-size:13px; font-weight:600; color:var(--ink2);
+    cursor:pointer; transition:all .15s;
+  }
+  .tab-btn.active { background:var(--sky); color:#fff; border-color:var(--sky); }
+  .tab-pane { display:none; }
+  .tab-pane.active { display:block; }
+
+  .score-input-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; margin-bottom:20px; }
+  .score-input-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px;
+  }
+  .score-input-card label { display:block; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+  .score-input-card input, .score-input-card select {
+    width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:var(--r);
+    font-size:14px; background:var(--bg); color:var(--ink); outline:none;
+  }
+  .score-input-card input:focus { border-color:var(--sky); }
+
+  .weakness-bar { height:8px; background:var(--border2); border-radius:99px; margin-top:4px; overflow:hidden; }
+  .weakness-bar-fill { height:100%; border-radius:99px; }
+  .chart-wrap { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:20px; margin-bottom:16px; }
+  .mini-chart { height:120px; display:flex; align-items:flex-end; gap:6px; }
+  .bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .bar-fill { width:100%; border-radius:6px 6px 0 0; min-height:4px; transition:height .4s; }
+  .bar-label { font-size:10px; color:var(--muted); text-align:center; }
+  .bar-val { font-size:10px; font-weight:700; color:var(--ink2); }
+
+  .uworld-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border2); }
+  .uworld-row:last-child { border:none; }
+  .uworld-subject { font-size:13px; font-weight:600; min-width:160px; }
+  .uworld-nums { font-size:12px; color:var(--muted); min-width:80px; }
+  .uworld-bar-wrap { flex:1; background:var(--border2); border-radius:99px; height:8px; overflow:hidden; }
+  .uworld-bar-inner { height:100%; border-radius:99px; transition:width .5s ease; }
+  .uworld-pct { font-size:13px; font-weight:700; min-width:40px; text-align:right; }
+</style>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="wrap">
+  <header class="hero" style="padding:40px 0 28px;">
+    <div class="hero-eyebrow">Performance Analytics</div>
+    <h1 class="hero-name" style="font-size:clamp(28px,4vw,42px);">Study <em>Dashboard</em></h1>
+  </header>
+
+  <!-- Top Stats -->
+  <div class="stats-grid" id="top-stats"></div>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('overview', this)">📊 Overview</button>
+    <button class="tab-btn" onclick="switchTab('scores', this)">📝 Test Scores</button>
+    <button class="tab-btn" onclick="switchTab('uworld', this)">🎯 UWorld Progress</button>
+    <button class="tab-btn" onclick="switchTab('weaknesses', this)">⚠️ Weak Points</button>
+    <button class="tab-btn" onclick="switchTab('plan', this)">📅 Study Plan</button>
+  </div>
+
+  <!-- ── OVERVIEW TAB ── -->
+  <div class="tab-pane active" id="tab-overview">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" class="responsive-2col">
+      <div class="chart-wrap">
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:14px;">Score Trend</div>
+        <div class="mini-chart" id="score-chart"></div>
+      </div>
+      <div class="chart-wrap">
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:14px;">Subject Performance</div>
+        <div id="subject-overview"></div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:16px;">Top Weak Points to Review</div>
+      <div id="overview-weaknesses"></div>
+    </div>
+  </div>
+
+  <!-- ── SCORES TAB ── -->
+  <div class="tab-pane" id="tab-scores">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin-bottom:20px;">
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:16px;">Add a Score</div>
+      <div class="score-input-grid">
+        <div class="score-input-card">
+          <label>Test Type</label>
+          <select id="score-type">
+            <option value="NBME">NBME Practice Exam</option>
+            <option value="UWSA">UWSA 1 / UWSA 2</option>
+            <option value="Free120">Free 120</option>
+            <option value="UWorld Block">UWorld Block %</option>
+            <option value="Bootcamp">Bootcamp Block %</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="score-input-card">
+          <label>Score / %</label>
+          <input type="number" id="score-value" placeholder="e.g. 245 or 78" min="0" max="300"/>
+        </div>
+        <div class="score-input-card">
+          <label>Date</label>
+          <input type="date" id="score-date"/>
+        </div>
+        <div class="score-input-card">
+          <label>Notes (optional)</label>
+          <input type="text" id="score-notes" placeholder="e.g. ran out of time on cardio"/>
+        </div>
+      </div>
+      <button class="btn-save" onclick="addScore()">Add Score ✦</button>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;">Score History</div>
+        <button onclick="clearScores()" style="font-size:12px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:99px;padding:4px 12px;cursor:pointer;">Clear All</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="score-table" style="width:100%;">
+          <thead><tr><th>Type</th><th>Score</th><th>Date</th><th>Notes</th><th></th></tr></thead>
+          <tbody id="score-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── UWORLD TAB ── -->
+  <div class="tab-pane" id="tab-uworld">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin-bottom:20px;">
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:6px;">UWorld Question Bank Progress</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Track questions completed and % correct by subject. Total UWorld Step 1: ~3,200 questions.</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;" class="responsive-3col">
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Total Questions Done</label>
+          <input class="search-input" type="number" id="uw-total-done" placeholder="e.g. 840" style="border-radius:var(--r);" oninput="saveUWorldTotal()"/>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Total QBank Size</label>
+          <input class="search-input" type="number" id="uw-total-size" placeholder="3200" style="border-radius:var(--r);" oninput="saveUWorldTotal()"/>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Overall % Correct</label>
+          <input class="search-input" type="number" id="uw-overall-pct" placeholder="e.g. 67" style="border-radius:var(--r);" oninput="saveUWorldTotal()"/>
+        </div>
+      </div>
+
+      <div style="font-weight:600;font-size:14px;margin-bottom:12px;color:var(--ink2);">By Subject:</div>
+      <div id="uw-subjects-input"></div>
+      <button class="btn-save" style="margin-top:16px;" onclick="saveSubjectData()">Save Progress ✦</button>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;">
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:16px;">Subject Breakdown</div>
+      <div id="uw-chart"></div>
+    </div>
+  </div>
+
+  <!-- ── WEAKNESSES TAB ── -->
+  <div class="tab-pane" id="tab-weaknesses">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin-bottom:20px;">
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:6px;">Add Weakness / Wrong Answer Pattern</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Log topics where you're consistently getting questions wrong.</div>
+      <div class="score-input-grid">
+        <div class="score-input-card">
+          <label>Subject / System</label>
+          <select id="weak-subject">
+            <option>Cardiology</option><option>Pulmonology</option><option>Nephrology</option>
+            <option>GI/Hepatology</option><option>Endocrine</option><option>Neurology</option>
+            <option>Psychiatry</option><option>Pharmacology</option><option>Microbiology</option>
+            <option>Immunology</option><option>Biochemistry</option><option>Genetics</option>
+            <option>Pathology</option><option>Hematology/Oncology</option><option>MSK/Rheum</option>
+            <option>Reproductive</option><option>Embryology</option><option>Anatomy</option>
+            <option>Physiology</option><option>Other</option>
+          </select>
+        </div>
+        <div class="score-input-card">
+          <label>Specific Topic</label>
+          <input type="text" id="weak-topic" placeholder="e.g. Antiarrhythmics, Renal tubular acidosis"/>
+        </div>
+        <div class="score-input-card">
+          <label>% Correct (if known)</label>
+          <input type="number" id="weak-pct" placeholder="e.g. 42" min="0" max="100"/>
+        </div>
+        <div class="score-input-card">
+          <label>Priority</label>
+          <select id="weak-priority">
+            <option value="high">🔴 High Priority</option>
+            <option value="med" selected>🟡 Medium</option>
+            <option value="low">🟢 Low</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-save" onclick="addWeakness()">Add Weakness ✦</button>
+    </div>
+
+    <div id="weaknesses-list"></div>
+  </div>
+
+  <!-- ── STUDY PLAN TAB ── -->
+  <div class="tab-pane" id="tab-plan">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;margin-bottom:20px;">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;margin-bottom:6px;">Daily Question Goal Calculator</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Based on your exam date and current UWorld progress.</div>
+      <div id="plan-content"></div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;margin-bottom:16px;">Recommended Daily Schedule</div>
+      <div id="schedule-content"></div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+@media (max-width:700px) {
+  .responsive-2col { grid-template-columns:1fr !important; }
+  .responsive-3col { grid-template-columns:1fr 1fr !important; }
+}
+</style>
+
+<script src="app.js"></script>
+<script>
+const UW_SUBJECTS = [
+  {name:'Cardiology', total:280},
+  {name:'Pulmonology', total:160},
+  {name:'Nephrology', total:200},
+  {name:'GI/Hepatology', total:220},
+  {name:'Endocrine', total:200},
+  {name:'Neurology', total:240},
+  {name:'Psychiatry', total:160},
+  {name:'Pharmacology', total:180},
+  {name:'Microbiology', total:240},
+  {name:'Immunology', total:120},
+  {name:'Biochemistry', total:180},
+  {name:'Hematology/Oncology', total:200},
+  {name:'MSK/Rheum', total:140},
+  {name:'Reproductive', total:140},
+  {name:'Pathology (General)', total:140},
+];
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  renderAll();
+}
+
+// ── Score Management ──────────────────────────────────────
+function getScores() { return Store.get('dashboard-scores', []); }
+function saveScores(s) { Store.set('dashboard-scores', s); }
+
+function addScore() {
+  const type = document.getElementById('score-type').value;
+  const val = parseFloat(document.getElementById('score-value').value);
+  const date = document.getElementById('score-date').value;
+  const notes = document.getElementById('score-notes').value;
+  if (!val || !date) { alert('Please enter a score and date.'); return; }
+  const scores = getScores();
+  scores.push({type, val, date, notes, id: Date.now()});
+  scores.sort((a,b) => a.date.localeCompare(b.date));
+  saveScores(scores);
+  document.getElementById('score-value').value = '';
+  document.getElementById('score-notes').value = '';
+  renderAll();
+}
+
+function deleteScore(id) {
+  saveScores(getScores().filter(s => s.id !== id));
+  renderAll();
+}
+
+function clearScores() {
+  if (!confirm('Clear all scores?')) return;
+  saveScores([]); renderAll();
+}
+
+function getScoreBadge(type, val) {
+  let isPercent = ['UWorld Block','Bootcamp'].some(t => type.includes(t));
+  if (isPercent) {
+    if (val >= 70) return 'score-green';
+    if (val >= 55) return 'score-yellow';
+    return 'score-red';
+  }
+  if (val >= 240) return 'score-green';
+  if (val >= 220) return 'score-yellow';
+  return 'score-red';
+}
+
+// ── UWorld Management ─────────────────────────────────────
+function getUWData() { return Store.get('uworld-progress', {done:0, total:3200, pct:0, subjects:{}}); }
+function saveUWorldTotal() {
+  const d = getUWData();
+  d.done = parseInt(document.getElementById('uw-total-done')?.value) || d.done;
+  d.total = parseInt(document.getElementById('uw-total-size')?.value) || d.total;
+  d.pct = parseInt(document.getElementById('uw-overall-pct')?.value) || d.pct;
+  Store.set('uworld-progress', d);
+}
+
+function saveSubjectData() {
+  const d = getUWData();
+  UW_SUBJECTS.forEach(sub => {
+    const doneEl = document.getElementById('uw-sub-done-'+sub.name.replace(/\//g,'-'));
+    const pctEl = document.getElementById('uw-sub-pct-'+sub.name.replace(/\//g,'-'));
+    if (doneEl || pctEl) {
+      d.subjects[sub.name] = {
+        done: parseInt(doneEl?.value) || 0,
+        pct: parseInt(pctEl?.value) || 0,
+        total: sub.total
+      };
+    }
+  });
+  saveUWorldTotal();
+  Store.set('uworld-progress', d);
+  renderAll();
+}
+
+// ── Weakness Management ───────────────────────────────────
+function getWeaknesses() { return Store.get('weaknesses', []); }
+
+function addWeakness() {
+  const subject = document.getElementById('weak-subject').value;
+  const topic = document.getElementById('weak-topic').value.trim();
+  const pct = parseInt(document.getElementById('weak-pct').value) || null;
+  const priority = document.getElementById('weak-priority').value;
+  if (!topic) { alert('Please enter a topic.'); return; }
+  const list = getWeaknesses();
+  list.push({subject, topic, pct, priority, id: Date.now()});
+  Store.set('weaknesses', list);
+  document.getElementById('weak-topic').value = '';
+  document.getElementById('weak-pct').value = '';
+  renderAll();
+}
+
+function deleteWeakness(id) {
+  Store.set('weaknesses', getWeaknesses().filter(w => w.id !== id));
+  renderAll();
+}
+
+// ── Render Functions ──────────────────────────────────────
+function renderTopStats() {
+  const scores = getScores();
+  const uwData = getUWData();
+  const days = getDaysRemaining();
+
+  const nbmeScores = scores.filter(s => ['NBME','UWSA'].some(t => s.type.includes(t)));
+  const latestNBME = nbmeScores.length ? nbmeScores[nbmeScores.length-1].val : null;
+  const uwRemaining = uwData.total - uwData.done;
+  const qPerDay = days && days > 0 ? Math.ceil(uwRemaining / days) : null;
+
+  document.getElementById('top-stats').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Latest NBME/UWSA</div>
+      <div class="stat-value ${latestNBME >= 240 ? 'stat-good' : latestNBME >= 220 ? 'stat-warn' : latestNBME ? 'stat-bad' : ''}">${latestNBME ?? '—'}</div>
+      <div class="stat-sub">${nbmeScores.length} exams logged</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">UWorld % Correct</div>
+      <div class="stat-value ${uwData.pct >= 70 ? 'stat-good' : uwData.pct >= 55 ? 'stat-warn' : uwData.pct ? 'stat-bad' : ''}">${uwData.pct ? uwData.pct+'%' : '—'}</div>
+      <div class="stat-sub">${uwData.done} / ${uwData.total} done</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Q/Day Needed</div>
+      <div class="stat-value" style="color:var(--sky);">${qPerDay ?? '—'}</div>
+      <div class="stat-sub">${uwRemaining} questions left</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Days to Exam</div>
+      <div class="stat-value" style="color:var(--fuji);">${days ?? '—'}</div>
+      <div class="stat-sub"><button onclick="openDateModal()" style="background:none;border:none;color:var(--sakura2);font-size:12px;cursor:pointer;font-weight:600;">Set date →</button></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Weak Points</div>
+      <div class="stat-value stat-bad">${getWeaknesses().filter(w=>w.priority==='high').length}</div>
+      <div class="stat-sub">${getWeaknesses().length} total logged</div>
+    </div>
+  `;
+}
+
+function renderScoreTab() {
+  const scores = getScores();
+  if (!scores.length) {
+    document.getElementById('score-tbody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">No scores yet. Add your first score above.</td></tr>';
+    return;
+  }
+  document.getElementById('score-tbody').innerHTML = [...scores].reverse().map(s => {
+    const badge = getScoreBadge(s.type, s.val);
+    const d = new Date(s.date + 'T12:00:00');
+    return `
+      <tr>
+        <td><span style="font-weight:600;">${s.type}</span></td>
+        <td><span class="score-badge ${badge}">${s.val}</span></td>
+        <td>${d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</td>
+        <td style="color:var(--muted);font-size:13px;">${s.notes || '—'}</td>
+        <td><button onclick="deleteScore(${s.id})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;">×</button></td>
+      </tr>`;
+  }).join('');
+}
+
+function renderScoreChart() {
+  const scores = getScores().filter(s => ['NBME','UWSA'].some(t => s.type.includes(t)));
+  const el = document.getElementById('score-chart');
+  if (!el) return;
+  if (!scores.length) { el.innerHTML = '<div style="color:var(--muted);font-size:13px;align-self:center;width:100%;text-align:center;">No NBME/UWSA scores yet.</div>'; return; }
+  const max = Math.max(...scores.map(s=>s.val), 260);
+  const min = Math.min(...scores.map(s=>s.val), 180);
+  el.innerHTML = scores.slice(-10).map(s => {
+    const h = Math.round((s.val - min + 10) / (max - min + 20) * 100);
+    const color = s.val >= 240 ? 'var(--sage)' : s.val >= 220 ? 'var(--gold)' : 'var(--sakura2)';
+    const d = new Date(s.date + 'T12:00:00');
+    return `<div class="bar-col">
+      <div class="bar-val">${s.val}</div>
+      <div class="bar-fill" style="height:${h}px;background:${color};"></div>
+      <div class="bar-label">${d.toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderUWorldTab() {
+  const d = getUWData();
+  const doneEl = document.getElementById('uw-total-done');
+  const sizeEl = document.getElementById('uw-total-size');
+  const pctEl = document.getElementById('uw-overall-pct');
+  // Always restore saved values (don't overwrite if user is actively typing)
+  if (doneEl && document.activeElement !== doneEl) doneEl.value = d.done || '';
+  if (sizeEl && document.activeElement !== sizeEl) sizeEl.value = d.total || 3200;
+  if (pctEl && document.activeElement !== pctEl) pctEl.value = d.pct || '';
+
+  // Always re-render subject inputs so saved values appear correctly
+  const inputContainer = document.getElementById('uw-subjects-input');
+  if (inputContainer) {
+    inputContainer.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;">` +
+      UW_SUBJECTS.map(sub => {
+        const key = sub.name.replace(/\//g,'-');
+        const saved = d.subjects[sub.name] || {};
+        return `<div style="background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:12px;">
+          <div style="font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:8px;">${sub.name} <span style="color:var(--muted);font-weight:400;">(${sub.total}q)</span></div>
+          <div style="display:flex;gap:8px;">
+            <input type="number" id="uw-sub-done-${key}" placeholder="Done" min="0" max="${sub.total}" value="${saved.done||''}"
+              style="width:50%;padding:6px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--surface);"/>
+            <input type="number" id="uw-sub-pct-${key}" placeholder="% ✓" min="0" max="100" value="${saved.pct||''}"
+              style="width:50%;padding:6px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--surface);"/>
+          </div>
+        </div>`;
+      }).join('') + '</div>';
+  }
+
+  // Render chart
+  const chart = document.getElementById('uw-chart');
+  if (!chart) return;
+  const hasData = Object.keys(d.subjects).length > 0;
+  if (!hasData) { chart.innerHTML = '<div style="color:var(--muted);font-size:14px;text-align:center;padding:24px;">Enter your subject data above and click Save.</div>'; return; }
+
+  chart.innerHTML = UW_SUBJECTS.map(sub => {
+    const s = d.subjects[sub.name];
+    if (!s || !s.done) return '';
+    const donePct = Math.round(s.done / sub.total * 100);
+    const correctColor = s.pct >= 70 ? 'var(--sage)' : s.pct >= 55 ? 'var(--gold)' : 'var(--sakura2)';
+    return `<div class="uworld-row">
+      <div class="uworld-subject">${sub.name}</div>
+      <div class="uworld-nums">${s.done}/${sub.total}</div>
+      <div style="flex:1;">
+        <div style="display:flex;gap:4px;margin-bottom:3px;">
+          <div title="Questions Done" style="flex:1;background:var(--border2);border-radius:99px;height:7px;overflow:hidden;">
+            <div style="width:${donePct}%;height:100%;background:var(--sky);border-radius:99px;transition:width .5s;"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:4px;">
+          <div title="% Correct" style="flex:1;background:var(--border2);border-radius:99px;height:7px;overflow:hidden;">
+            <div style="width:${s.pct||0}%;height:100%;background:${correctColor};border-radius:99px;transition:width .5s;"></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;min-width:90px;justify-content:flex-end;">
+        <span style="font-size:12px;color:var(--sky);font-weight:700;">${donePct}%</span>
+        <span style="font-size:12px;color:${correctColor};font-weight:700;">${s.pct ? s.pct+'%✓' : '—'}</span>
+      </div>
+    </div>`;
+  }).filter(Boolean).join('') || '<div style="color:var(--muted);font-size:14px;padding:16px;">Save subject data to see chart.</div>';
+}
+
+function renderWeaknessesTab() {
+  const list = getWeaknesses();
+  const el = document.getElementById('weaknesses-list');
+  if (!el) return;
+  if (!list.length) { el.innerHTML = '<div style="color:var(--muted);font-size:14px;text-align:center;padding:32px;">No weak points logged yet.</div>'; return; }
+
+  const sorted = [...list].sort((a,b) => {
+    const order = {high:0, med:1, low:2};
+    return (order[a.priority]||1) - (order[b.priority]||1);
+  });
+
+  el.innerHTML = sorted.map(w => {
+    const prioColor = w.priority==='high' ? 'var(--sakura2)' : w.priority==='low' ? 'var(--sage)' : 'var(--gold)';
+    const prioLabel = w.priority==='high' ? '🔴 High' : w.priority==='low' ? '🟢 Low' : '🟡 Medium';
+    return `<div class="weakness-item" style="border-left-color:${prioColor};">
+      <div>
+        <div class="weakness-name">${w.topic}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">${w.subject} · <span style="color:${prioColor};font-weight:600;">${prioLabel}</span></div>
+        ${w.pct !== null ? `<div class="weakness-bar" style="width:200px;margin-top:6px;"><div class="weakness-bar-fill" style="width:${w.pct}%;background:${prioColor};"></div></div><div style="font-size:11px;color:var(--muted);margin-top:2px;">${w.pct}% correct</div>` : ''}
+      </div>
+      <button onclick="deleteWeakness(${w.id})" style="background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;flex-shrink:0;">×</button>
+    </div>`;
+  }).join('');
+}
+
+function renderSubjectOverview() {
+  const uwData = getUWData();
+  const el = document.getElementById('subject-overview');
+  if (!el) return;
+  const hasData = Object.keys(uwData.subjects).length > 0;
+  if (!hasData) { el.innerHTML = '<div style="color:var(--muted);font-size:13px;">Enter UWorld data in the UWorld tab to see subject breakdown.</div>'; return; }
+  const sorted = UW_SUBJECTS.map(s => ({name:s.name, ...(uwData.subjects[s.name]||{pct:0,done:0,total:s.total})}))
+    .filter(s => s.done > 0)
+    .sort((a,b) => (a.pct||100) - (b.pct||100))
+    .slice(0, 7);
+  el.innerHTML = sorted.map(s => {
+    const color = (s.pct||0) >= 70 ? 'var(--sage)' : (s.pct||0) >= 55 ? 'var(--gold)' : 'var(--sakura2)';
+    return `<div style="margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
+        <span>${s.name}</span><span style="font-weight:700;color:${color};">${s.pct||'?'}%</span>
+      </div>
+      <div style="background:var(--border2);border-radius:99px;height:6px;overflow:hidden;">
+        <div style="width:${s.pct||0}%;height:100%;background:${color};border-radius:99px;transition:width .5s;"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderOverviewWeaknesses() {
+  const weaknesses = getWeaknesses().filter(w => w.priority === 'high').slice(0, 5);
+  const el = document.getElementById('overview-weaknesses');
+  if (!el) return;
+  if (!weaknesses.length) { el.innerHTML = '<div style="color:var(--muted);font-size:13px;">No high-priority weak points logged. Add them in the Weak Points tab.</div>'; return; }
+  el.innerHTML = weaknesses.map(w => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border2);">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--sakura2);flex-shrink:0;"></div>
+      <div style="flex:1;"><div style="font-size:14px;font-weight:600;">${w.topic}</div><div style="font-size:12px;color:var(--muted);">${w.subject}</div></div>
+      ${w.pct !== null ? `<span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sakura2);">${w.pct}%</span>` : ''}
+    </div>`).join('');
+}
+
+function renderPlanTab() {
+  const days = getDaysRemaining();
+  const uwData = getUWData();
+  const el = document.getElementById('plan-content');
+  const schedEl = document.getElementById('schedule-content');
+  if (!el) return;
+
+  if (!days) {
+    el.innerHTML = '<div style="text-align:center;padding:16px;"><button class="btn-save" onclick="openDateModal()">Set Your Exam Date ✦</button></div>';
+    return;
+  }
+
+  const uwRemaining = uwData.total - uwData.done;
+  const qPerDay = Math.ceil(uwRemaining / days);
+  const weeksLeft = Math.floor(days / 7);
+
+  el.innerHTML = `
+    <div class="stats-grid" style="margin-bottom:0;">
+      <div class="stat-card">
+        <div class="stat-label">UWorld Q/Day</div>
+        <div class="stat-value" style="color:var(--sky);">${qPerDay}</div>
+        <div class="stat-sub">${uwRemaining} remaining</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Days Left</div>
+        <div class="stat-value" style="color:var(--fuji);">${days}</div>
+        <div class="stat-sub">${weeksLeft} full weeks</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">UWorld Done</div>
+        <div class="stat-value" style="color:var(--sage);">${Math.round(uwData.done/uwData.total*100)}%</div>
+        <div class="stat-sub">${uwData.done} / ${uwData.total}</div>
+      </div>
+    </div>
+    ${qPerDay > 80 ? `<div class="callout" style="margin-top:16px;"><span>⚠️</span><div>You need <strong>${qPerDay} questions/day</strong> — this is high. Consider extending your timeline or increasing your daily sessions.</div></div>` : ''}
+    ${qPerDay <= 40 ? `<div class="callout" style="margin-top:16px;background:var(--sage-light);border-color:var(--sage);"><span>✅</span><div>Great pace! <strong>${qPerDay} questions/day</strong> is very manageable. Use extra time for review and weak points.</div></div>` : ''}
+  `;
+
+  if (schedEl) {
+    schedEl.innerHTML = `
+      <div style="display:grid;gap:12px;">
+        ${[
+          {time:'7:00–8:30 AM', label:'Morning UWorld Block', desc:`Complete ${Math.min(40,qPerDay)} questions, then review all explanations`, color:'var(--sky)'},
+          {time:'8:30–10:30 AM', label:'Content Review', desc:'First Aid reading, Pathoma, or weak point subjects from yesterday', color:'var(--lavender)'},
+          {time:'10:30 AM–12:00 PM', label:'Sketchy / Pixorize', desc:'Watch videos on topics covered in morning block for retention', color:'var(--peach)'},
+          {time:'12:00–1:00 PM', label:'Lunch Break', desc:'Rest, walk, eat. Your brain needs downtime to consolidate memory.', color:'var(--sage)'},
+          {time:'1:00–3:00 PM', label:'Second UWorld Block', desc:`Complete remaining ${Math.max(0,qPerDay-40)} questions or a full 40-block`, color:'var(--sky)'},
+          {time:'3:00–5:00 PM', label:'Deep Review', desc:'Wrong answers from today\'s blocks. Make Anki cards for missed concepts.', color:'var(--sakura2)'},
+          {time:'5:00–6:30 PM', label:'Active Recall / Anki', desc:'Flashcard review — both new cards and due cards', color:'var(--gold)'},
+          {time:'6:30 PM+', label:'Rest & Recovery', desc:'Dinner, exercise, and sleep by 10 PM. 7–8 hours is non-negotiable.', color:'var(--sage)'},
+        ].map(s => `
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <div style="font-size:11px;font-weight:700;color:${s.color};white-space:nowrap;min-width:120px;padding-top:2px;">${s.time}</div>
+            <div>
+              <div style="font-weight:600;font-size:14px;">${s.label}</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:2px;">${s.desc}</div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }
+}
+
+function renderAll() {
+  renderTopStats();
+  renderScoreTab();
+  renderScoreChart();
+  renderUWorldTab();
+  renderWeaknessesTab();
+  renderSubjectOverview();
+  renderOverviewWeaknesses();
+  renderPlanTab();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Set default date for new score input
+  const today = new Date().toISOString().split('T')[0];
+  const scoreDate = document.getElementById('score-date');
+  if (scoreDate) scoreDate.value = today;
+  renderAll();
+});
+</script>
+</body>
+</html>

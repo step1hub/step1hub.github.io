@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<title>Sketchy Pharm · Step 1 Hub</title>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="wrap">
+  <header class="hero" style="padding:40px 0 28px;">
+    <div class="hero-eyebrow">Progress Tracker</div>
+    <h1 class="hero-name" style="font-size:clamp(28px,4vw,42px);">Sketchy <em>Pharm</em></h1>
+  </header>
+
+  <!-- Overall Progress -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 28px;margin-bottom:28px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;">Overall Progress</div>
+      <div style="display:flex;gap:16px;font-size:13px;color:var(--muted);">
+        <span>👁 <strong id="total-watched">0</strong> Watched</span>
+        <span>🔁 <strong id="total-reviewed">0</strong> Reviewed</span>
+        <span>⭐ <strong id="total-mastered">0</strong> Mastered</span>
+      </div>
+    </div>
+    <div class="prog-bar-wrap"><div class="prog-bar-fill" id="overall-bar" style="width:0%;background:linear-gradient(90deg,var(--peach),var(--sakura2));"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);">
+      <span id="overall-pct">0% complete</span>
+      <span id="overall-frac">0 / 0 videos</span>
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div style="display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;font-size:12px;font-weight:600;color:var(--ink2);">
+    <span>👁 = Watched</span>
+    <span>🔁 = Reviewed</span>
+    <span>⭐ = Mastered</span>
+    <button onclick="resetAll()" style="margin-left:auto;background:none;border:1px solid var(--border);border-radius:99px;padding:4px 14px;font-size:12px;color:var(--muted);cursor:pointer;">Reset All</button>
+    <button onclick="exportProgress()" style="background:none;border:1px solid var(--border);border-radius:99px;padding:4px 14px;font-size:12px;color:var(--muted);cursor:pointer;">Export CSV</button>
+  </div>
+
+  <div id="sections-container"></div>
+
+  <footer class="footer"><div>Step 1 Study Hub · 🌸</div><div id="footer-date"></div></footer>
+</div>
+
+<script src="drug_data.js"></script>
+<script src="app.js"></script>
+<script>
+// Sketchy Pharm videos derived from drug_data.js categories
+const SKETCHY_PHARM_SECTIONS = [
+  {
+    title: "Autonomic Pharmacology",
+    videos: [
+      "Cholinomimetics & AChE Inhibitors",
+      "Anticholinergics (Muscarinic Antagonists)",
+      "Sympathomimetics: Epi, NE, Dopamine",
+      "Alpha & Beta Blockers",
+      "Ganglionic Blockers & NMJ Drugs"
+    ]
+  },
+  {
+    title: "Cardiovascular",
+    videos: [
+      "Antihypertensives: ACE Inhibitors & ARBs",
+      "Calcium Channel Blockers",
+      "Beta Blockers in CVD",
+      "Diuretics: Loops, Thiazides, K+-sparing",
+      "Antiarrhythmics: Class I (Na+ Blockers)",
+      "Antiarrhythmics: Class II–IV",
+      "Heart Failure Drugs",
+      "Anticoagulants: Heparin & Warfarin",
+      "Direct Oral Anticoagulants (DOACs)",
+      "Antiplatelet Drugs",
+      "Thrombolytics",
+      "Statins & Lipid-Lowering Agents",
+      "Vasodilators & Nitrates"
+    ]
+  },
+  {
+    title: "Pulmonary",
+    videos: [
+      "Beta-2 Agonists (SABA/LABA)",
+      "Inhaled Corticosteroids",
+      "Anticholinergics in COPD",
+      "Leukotriene Modifiers",
+      "Methylxanthines & Cromolyn",
+      "Biologics: Anti-IgE, Anti-IL-5"
+    ]
+  },
+  {
+    title: "Neurology & Psychiatry",
+    videos: [
+      "Opioid Analgesics",
+      "General Anesthesia",
+      "Local Anesthetics",
+      "Benzodiazepines & Barbiturates",
+      "Antiepileptics: Na+ Channel Blockers",
+      "Antiepileptics: GABA Enhancers",
+      "Parkinson's Disease Drugs",
+      "Antipsychotics: Typical",
+      "Antipsychotics: Atypical",
+      "Antidepressants: SSRIs & SNRIs",
+      "TCAs & MAOIs",
+      "Mood Stabilizers (Lithium, Valproate)",
+      "Alzheimer's Drugs",
+      "Migraine Treatments",
+      "Drugs of Abuse"
+    ]
+  },
+  {
+    title: "Endocrine",
+    videos: [
+      "Insulin & Glucose Management",
+      "Oral Antidiabetics: Metformin & Others",
+      "GLP-1 Agonists & SGLT2 Inhibitors",
+      "Thyroid Drugs",
+      "Corticosteroids",
+      "Adrenal Drugs",
+      "Estrogens, Progestins & OCPs",
+      "Androgens & Anti-Androgens",
+      "Bone Drugs: Bisphosphonates & Others"
+    ]
+  },
+  {
+    title: "GI Pharmacology",
+    videos: [
+      "Antacids, H2 Blockers & PPIs",
+      "H. pylori Treatment",
+      "Antiemetics",
+      "Laxatives & Antidiarrheals",
+      "IBD Drugs"
+    ]
+  },
+  {
+    title: "Antimicrobials",
+    videos: [
+      "Penicillins",
+      "Cephalosporins",
+      "Carbapenems & Monobactams",
+      "Beta-Lactamase Inhibitors",
+      "Vancomycin",
+      "Aminoglycosides",
+      "Tetracyclines",
+      "Macrolides",
+      "Fluoroquinolones",
+      "Sulfonamides & TMP-SMX",
+      "Clindamycin & Metronidazole",
+      "Antifungals",
+      "Antivirals: HSV, CMV",
+      "Antivirals: HIV (NRTIs, NNRTIs, PIs)",
+      "Antivirals: Influenza & Hepatitis",
+      "Antimycobacterials: TB Drugs",
+      "Antiparasitics"
+    ]
+  },
+  {
+    title: "Oncology",
+    videos: [
+      "Alkylating Agents",
+      "Antimetabolites: Methotrexate & Others",
+      "Antitumor Antibiotics",
+      "Microtubule Poisons (Vincas, Taxanes)",
+      "Topoisomerase Inhibitors",
+      "Hormonal Therapies",
+      "Targeted Therapies: Tyrosine Kinase Inhibitors",
+      "Monoclonal Antibodies in Cancer"
+    ]
+  },
+  {
+    title: "Immunology & Toxicology",
+    videos: [
+      "Immunosuppressants",
+      "NSAIDs & Acetaminophen",
+      "Gout Drugs",
+      "Antidotes & Toxicology",
+      "Alcohol & Addiction Pharmacology"
+    ]
+  }
+];
+
+const STORAGE_KEY = 'sketchy-pharm-progress';
+
+function loadProgress() { return Store.get(STORAGE_KEY, {}); }
+function saveProgress(p) { Store.set(STORAGE_KEY, p); }
+
+function getKey(secIdx, vidIdx) { return `${secIdx}-${vidIdx}`; }
+function getState(prog, key) { return prog[key] || {w:false, r:false, m:false}; }
+
+function toggleState(secIdx, vidIdx, field) {
+  const prog = loadProgress();
+  const key = getKey(secIdx, vidIdx);
+  if (!prog[key]) prog[key] = {w:false, r:false, m:false};
+  prog[key][field] = !prog[key][field];
+  // mastered implies watched & reviewed
+  if (field === 'm' && prog[key][field]) { prog[key].w = true; prog[key].r = true; }
+  if (field === 'w' && !prog[key][field]) { prog[key].r = false; prog[key].m = false; }
+  if (field === 'r' && !prog[key][field]) { prog[key].m = false; }
+  saveProgress(prog);
+  renderAll();
+}
+
+function resetAll() {
+  if (!confirm('Reset all Sketchy Pharm progress?')) return;
+  Store.set(STORAGE_KEY, {});
+  renderAll();
+}
+
+function exportProgress() {
+  const prog = loadProgress();
+  let csv = 'Section,Video,Watched,Reviewed,Mastered\n';
+  SKETCHY_PHARM_SECTIONS.forEach((sec, si) => {
+    sec.videos.forEach((vid, vi) => {
+      const s = getState(prog, getKey(si, vi));
+      csv += `"${sec.title}","${vid}",${s.w},${s.r},${s.m}\n`;
+    });
+  });
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'sketchy_pharm_progress.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function renderAll() {
+  const prog = loadProgress();
+  let totalVids = 0, totalW = 0, totalR = 0, totalM = 0;
+
+  const container = document.getElementById('sections-container');
+  container.innerHTML = SKETCHY_PHARM_SECTIONS.map((sec, si) => {
+    let secW = 0, secM = 0;
+    const rows = sec.videos.map((vid, vi) => {
+      const key = getKey(si, vi);
+      const s = getState(prog, key);
+      totalVids++; if (s.w) { totalW++; secW++; } if (s.r) totalR++; if (s.m) { totalM++; secM++; }
+      return `
+        <tr>
+          <td style="width:100%;">${vid}</td>
+          <td>
+            <div class="check-wrap">
+              <button class="check-btn ${s.w?'on':''}" onclick="toggleState(${si},${vi},'w')" title="Watched">👁</button>
+              <button class="check-btn ${s.r?'on-gold':''}" onclick="toggleState(${si},${vi},'r')" title="Reviewed">🔁</button>
+              <button class="check-btn ${s.m?'on-sage':''}" onclick="toggleState(${si},${vi},'m')" title="Mastered">⭐</button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+
+    const pct = sec.videos.length ? Math.round(secM / sec.videos.length * 100) : 0;
+    return `
+      <div class="prog-section">
+        <div class="prog-section-header">
+          <div class="prog-section-title">${sec.title}</div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span class="prog-count">${secW}/${sec.videos.length} watched</span>
+            <span class="prog-count">${secM}/${sec.videos.length} mastered</span>
+          </div>
+        </div>
+        <div class="prog-bar-wrap">
+          <div class="prog-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,var(--peach),var(--sakura2));"></div>
+        </div>
+        <table class="tracker-table">
+          <thead><tr><th>Video</th><th>Status</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  }).join('');
+
+  const overallPct = totalVids ? Math.round(totalM / totalVids * 100) : 0;
+  document.getElementById('overall-bar').style.width = overallPct + '%';
+  document.getElementById('overall-pct').textContent = overallPct + '% mastered';
+  document.getElementById('overall-frac').textContent = `${totalM} / ${totalVids} videos`;
+  document.getElementById('total-watched').textContent = totalW;
+  document.getElementById('total-reviewed').textContent = totalR;
+  document.getElementById('total-mastered').textContent = totalM;
+}
+
+document.addEventListener('DOMContentLoaded', renderAll);
+</script>
+</body>
+</html>

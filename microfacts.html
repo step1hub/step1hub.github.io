@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<title>Micro Facts · Step 1 Hub</title>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="wrap">
+  <header class="hero" style="padding:40px 0 28px;">
+    <div class="hero-eyebrow">Microbiology Reference</div>
+    <h1 class="hero-name" style="font-size:clamp(28px,4vw,42px);">Micro <em>Facts</em></h1>
+  </header>
+
+  <div class="search-bar">
+    <input class="search-input" type="text" id="micro-search" placeholder="Search organisms, diseases, treatments, pearls…" oninput="filterMicro()"/>
+    <select class="filter-select" id="cat-filter" onchange="filterMicro()">
+      <option value="">All Categories</option>
+      <option value="bacteria">Bacteria</option>
+      <option value="viruses">Viruses</option>
+      <option value="fungi">Fungi</option>
+      <option value="parasites">Parasites</option>
+    </select>
+    <button class="filter-btn active" data-tier="" onclick="setTier(this,'')">All Tiers</button>
+    <button class="filter-btn" data-tier="1" onclick="setTier(this,'1')">🔴 Tier 1</button>
+    <button class="filter-btn" data-tier="2" onclick="setTier(this,'2')">🟡 Tier 2</button>
+  </div>
+
+  <div id="results-count" style="font-size:12px;color:var(--muted);margin-bottom:14px;"></div>
+  <div class="ref-grid" id="micro-grid"></div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-overlay" id="micro-detail-modal">
+  <div class="modal detail-modal" style="max-width:600px;">
+    <div class="modal-header">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:4px;" id="mdm-cat"></div>
+        <div class="modal-title" id="mdm-name"></div>
+        <div style="font-size:12px;color:var(--muted);font-style:italic;margin-top:2px;" id="mdm-gram"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="mdm-tier" class="tier-badge"></span>
+        <button onclick="closeModal('micro-detail-modal')" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--dim);">&times;</button>
+      </div>
+    </div>
+    <div id="mdm-tags" style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;"></div>
+    <div id="mdm-content" style="max-height:65vh;overflow-y:auto;padding-right:6px;"></div>
+    <div class="modal-btns" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+      <button class="btn-cancel" onclick="closeModal('micro-detail-modal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="micro_data.js"></script>
+<script src="app.js"></script>
+<script>
+let activeTier = '';
+const CAT_ICONS = {bacteria:'🦠', viruses:'🧬', fungi:'🍄', parasites:'🪱'};
+
+function setTier(btn, tier) {
+  activeTier = tier;
+  document.querySelectorAll('.filter-btn[data-tier]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterMicro();
+}
+
+function buildMicroList() {
+  const list = [];
+  Object.entries(MICRO).forEach(([cat, groups]) => {
+    groups.forEach(grp => {
+      grp.organisms.forEach(o => list.push({...o, category: cat, groupName: grp.group}));
+    });
+  });
+  return list;
+}
+
+let allMicro = [];
+
+function filterMicro() {
+  const q = document.getElementById('micro-search').value.toLowerCase();
+  const cat = document.getElementById('cat-filter').value;
+  const tier = activeTier ? parseInt(activeTier) : null;
+
+  const filtered = allMicro.filter(o => {
+    if (cat && o.category !== cat) return false;
+    if (tier && o.tier !== tier) return false;
+    if (q) {
+      const text = [o.name, o.summary, o.gram, o.disease, o.tx, o.tags?.join(' '), o.pearl].join(' ').toLowerCase();
+      if (!text.includes(q)) return false;
+    }
+    return true;
+  });
+
+  renderMicro(filtered);
+  document.getElementById('results-count').textContent = `Showing ${filtered.length} of ${allMicro.length} organisms`;
+}
+
+function renderMicro(list) {
+  const grid = document.getElementById('micro-grid');
+  if (!list.length) { grid.innerHTML = '<p style="color:var(--muted);font-size:14px;">No organisms match your search.</p>'; return; }
+  grid.innerHTML = list.map(o => `
+    <div class="ref-card card-micro" onclick='openMicroDetail(${JSON.stringify(o).replace(/'/g,"&#39;")})'>
+      <div class="ref-card-top">
+        <div class="ref-card-name">${CAT_ICONS[o.category] || '🦠'} ${o.name}</div>
+        <span class="tier-badge tier-${o.tier}">Tier ${o.tier}</span>
+      </div>
+      ${o.gram ? `<div class="ref-card-aka">${o.gram}</div>` : ''}
+      <div class="ref-card-summary">${o.summary || ''}</div>
+      <div class="ref-card-tags">
+        <span class="ref-tag" style="background:var(--sage-light);color:var(--sage);">${o.groupName}</span>
+        ${(o.tags || []).slice(0,3).map(t=>`<span class="ref-tag">${t}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function openMicroDetail(o) {
+  const fmt = t => t ? t.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>') : '';
+  document.getElementById('mdm-name').textContent = o.name;
+  document.getElementById('mdm-gram').textContent = o.gram || '';
+  document.getElementById('mdm-cat').textContent = (o.category || '').toUpperCase() + (o.groupName ? ' · ' + o.groupName : '');
+  const tb = document.getElementById('mdm-tier');
+  tb.textContent = `Tier ${o.tier}`; tb.className = `tier-badge tier-${o.tier}`;
+  document.getElementById('mdm-tags').innerHTML = (o.tags||[]).map(t=>`<span class="ref-tag">${t}</span>`).join('');
+
+  const rows = [
+    ['Virulence Factors', o.virulence],
+    ['Diseases', o.disease],
+    ['Treatment', o.tx],
+  ].filter(r => r[1]);
+
+  document.getElementById('mdm-content').innerHTML = rows.map(([label, val]) =>
+    `<div class="drug-row"><span class="drug-label">${label}</span><div class="drug-text">${fmt(val)}</div></div>`
+  ).join('') + (o.pearl ? `<div class="pearl-box" style="background:var(--sage-light);border-color:var(--sage);"><span class="drug-label" style="color:var(--sage);">💎 Pearl</span><div class="drug-text">${fmt(o.pearl)}</div></div>` : '');
+
+  openModal('micro-detail-modal');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  allMicro = buildMicroList();
+  filterMicro();
+});
+</script>
+</body>
+</html>
