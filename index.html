@@ -9,28 +9,28 @@
 <style>
 /* ── Hero ────────────────────────────────────────────────── */
 .hero {
-  text-align: left;
-  padding: 48px 0 32px;
+  text-align: center;
+  padding: 56px 0 40px;
 }
 .hero-eyebrow {
-  font-size: 10px; font-weight: 600; letter-spacing: 2.5px;
-  text-transform: uppercase; color: var(--muted);
-  margin-bottom: 16px;
+  font-size: 10px; font-weight: 500; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--dim);
+  margin-bottom: 20px;
 }
 .hero-countdown {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 6.5vw, 76px);
-  font-weight: 700; line-height: 1.05;
+  font-size: clamp(42px, 7vw, 84px);
+  font-weight: 700; line-height: 1;
   color: var(--ink);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 .hero-countdown em { font-style: italic; color: var(--sakura2); }
-.cd-num { transition: color .3s; }
+.cd-num { color: var(--sakura2); }
 .hero-sub {
-  font-size: 15px; color: var(--ink2); margin-bottom: 20px; line-height: 1.6;
+  font-size: 14px; color: var(--muted); margin-bottom: 16px; line-height: 1.6;
 }
-.hero-sub span { color: var(--sakura2); font-weight: 600; }
-.hero-actions { display: flex; justify-content: flex-start; gap: 10px; flex-wrap: wrap; }
+.hero-sub span { color: var(--ink2); font-weight: 600; }
+.hero-actions { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 .hero-set-btn {
   background: transparent; color: var(--sakura2);
   border: 1px solid var(--sakura); border-radius: var(--r);
@@ -61,8 +61,8 @@
   border-right: 1px solid var(--border2); min-width: 0;
 }
 .strip-stat:last-of-type { border-right: none; }
-.strip-label { font-size: 10px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
-.strip-value { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; line-height: 1; }
+.strip-label { font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.strip-value { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; line-height: 1; }
 .strip-sub   { font-size: 11px; color: var(--muted); margin-top: 3px; }
 .strip-cta   { display: flex; align-items: center; padding: 16px 22px; flex-shrink: 0; }
 
@@ -73,7 +73,7 @@
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   padding: 10px 16px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   text-decoration: none; color: inherit;
   transition: box-shadow .2s, transform .15s;
 }
@@ -109,13 +109,9 @@
   background: var(--surface);
   position: relative; overflow: hidden;
 }
-.feat-banner::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-}
-.feat-banner.feat-drug::before  { background: var(--sakura2); }
-.feat-banner.feat-drug  { background: #fffbfb; }
-.feat-banner.feat-micro::before { background: var(--sage); }
-.feat-banner.feat-micro { background: #f8fbf8; }
+.feat-banner::before { display: none; }
+.feat-banner.feat-drug  { background: #fffbfb; border-left: 3px solid var(--sakura2); }
+.feat-banner.feat-micro { background: #f8fbf8; border-left: 3px solid var(--sage); }
 .feat-banner:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
 .feat-eyebrow {
   font-size: 10px; font-weight: 600; letter-spacing: 1.2px;
@@ -138,7 +134,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 18px 20px 16px;
+  padding: 16px 18px 14px;
   display: block;
   position: relative; overflow: hidden;
   transition: transform .18s, box-shadow .18s, border-color .18s;
@@ -152,14 +148,14 @@
 }
 .tracker-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--card-accent, var(--sakura)); }
 .tracker-tile:hover::after { transform: scaleX(1); }
-.tile-label  { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.tile-title  { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; margin-bottom: 3px; color: var(--ink); }
-.tile-desc   { font-size: 12px; color: var(--ink2); line-height: 1.5; margin-bottom: 14px; opacity: 0.7; }
+.tile-label  { font-size: 9px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--dim); margin-bottom: 3px; }
+.tile-title  { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; margin-bottom: 12px; color: var(--ink); }
+.tile-desc   { display: none; }
 .tile-arrow  { position: absolute; top: 16px; right: 16px; font-size: 13px; color: var(--dim); transition: color .18s; }
 .tracker-tile:hover .tile-arrow { color: var(--card-accent, var(--sakura2)); }
-.tile-prog-bar  { height: 5px; background: var(--border2); border-radius: 99px; overflow: hidden; margin-bottom: 5px; }
+.tile-prog-bar  { height: 6px; background: var(--border2); border-radius: 99px; overflow: hidden; margin-bottom: 0; }
 .tile-prog-fill { height: 100%; border-radius: 99px; background: var(--card-accent, var(--sakura2)); transition: width .5s ease; }
-.tile-prog-label { font-size: 10px; color: var(--muted); display: flex; justify-content: space-between; }
+.tile-prog-label { font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; margin-top: 6px; }
 
 /* ── Reference tools grid ────────────────────────────────── */
 .tool-grid {
@@ -210,10 +206,6 @@
   text-transform: uppercase; color: var(--muted);
   white-space: nowrap; flex-shrink: 0;
 }
-.quote-ganbatte {
-  font-size: 20px; flex-shrink: 0;
-}
-
 
 /* ── UWorld progress bar (top of stats strip) ───────────── */
 .uw-prog-wrap {
@@ -313,30 +305,19 @@
     </div>
   </div>
 
-  <!-- ── 4. Today's Focus banner ── -->
-  <a class="focus-banner" id="focus-banner" href="#">
-    <div class="focus-icon-wrap" id="focus-icon"></div>
-    <div class="focus-meta">
-      <div class="focus-eyebrow">Today's Focus</div>
-      <div class="focus-title" id="focus-title"></div>
-      <div class="focus-desc"  id="focus-desc"></div>
-    </div>
-    <div class="focus-arrow">Study now ↗</div>
-  </a>
-
   <!-- ── 1. Drug of the Day + Organism of the Day ── -->
   <div class="featured-grid">
     <div class="feat-banner feat-drug" id="dotd-banner" onclick="openDotdModal()" style="display:none;">
       <span class="feat-eyebrow ey-drug">Drug of the Day</span>
       <div class="feat-name"  id="dotd-name">Loading…</div>
       <div class="feat-pearl" id="dotd-pearl"></div>
-      <div class="feat-link" style="color:var(--sage);">View full card ↗</div>
+      <div class="feat-link">View full card ↗</div>
     </div>
     <div class="feat-banner feat-micro" id="ootd-banner" onclick="openOotdModal()" style="display:none;">
       <span class="feat-eyebrow ey-micro">Organism of the Day</span>
       <div class="feat-name"  id="ootd-name">Loading…</div>
       <div class="feat-pearl" id="ootd-pearl"></div>
-      <div class="feat-link">View full card ↗</div>
+      <div class="feat-link" style="color:var(--sage);">View full card ↗</div>
     </div>
   </div>
 
@@ -374,8 +355,8 @@
   <div class="tool-grid">
     <a class="tool-card card-pharm" href="drugfacts.html">
       <div class="card-top">
-        <div class="card-icon">💊</div>
-        <div class="card-meta"><span class="card-tag">Pharmacology</span><span class="card-arrow">↗</span></div>
+        <div class="card-meta"><span class="card-tag">Pharmacology</span></div>
+        <span class="card-arrow">↗</span>
       </div>
       <h2 class="card-title">Drug Facts</h2>
       <p class="card-desc">Complete Step 1 pharmacology — mechanism, side effects, clinical pearls, and tier ratings across all systems.</p>
@@ -383,8 +364,8 @@
     </a>
     <a class="tool-card card-micro" href="microfacts.html">
       <div class="card-top">
-        <div class="card-icon">🔬</div>
-        <div class="card-meta"><span class="card-tag">Microbiology</span><span class="card-arrow">↗</span></div>
+        <div class="card-meta"><span class="card-tag">Microbiology</span></div>
+        <span class="card-arrow">↗</span>
       </div>
       <h2 class="card-title">Micro Facts</h2>
       <p class="card-desc">Bacteria, viruses, fungi, and parasites — virulence factors, diseases, treatments, and high-yield pearls.</p>
@@ -392,8 +373,8 @@
     </a>
     <a class="tool-card card-dash" href="dashboard.html">
       <div class="card-top">
-        <div class="card-icon">📊</div>
-        <div class="card-meta"><span class="card-tag">Analytics</span><span class="card-arrow">↗</span></div>
+        <div class="card-meta"><span class="card-tag">Analytics</span></div>
+        <span class="card-arrow">↗</span>
       </div>
       <h2 class="card-title">Dashboard</h2>
       <p class="card-desc">Log UWorld sessions, track practice exam scores, find weak points, and calculate your daily question goal.</p>
@@ -434,9 +415,19 @@
     </a>
   </div>
 
+  <!-- ── 4. Today's Focus banner ── -->
+  <a class="focus-banner" id="focus-banner" href="#">
+    <div class="focus-icon-wrap" id="focus-icon"></div>
+    <div class="focus-meta">
+      <div class="focus-eyebrow">Today's Focus</div>
+      <div class="focus-title" id="focus-title"></div>
+      <div class="focus-desc"  id="focus-desc"></div>
+    </div>
+    <div class="focus-arrow">Study now ↗</div>
+  </a>
+
   <!-- ── 7. Slim motivational quote footer ── -->
   <div class="quote-footer">
-    <div class="quote-ganbatte">🗻</div>
     <div class="quote-footer-text" id="daily-quote"></div>
     <div class="quote-footer-attr" id="quote-attr"></div>
   </div>
@@ -570,7 +561,7 @@ function openDotdModal() {
     <div class="drug-row"><span class="drug-label">Clinical Use</span><div class="drug-text">${fmt(dotdDrug.use)}</div></div>
     <div class="drug-row"><span class="drug-label">Side Effects</span><div class="drug-text">${fmt(dotdDrug.se)}</div></div>
     ${dotdDrug.ci    ? `<div class="drug-row"><span class="drug-label">Contraindications</span><div class="drug-text">${fmt(dotdDrug.ci)}</div></div>` : ''}
-    ${dotdDrug.pearl ? `<div class="pearl-box"><span class="drug-label">💎 Pearl</span><div class="drug-text">${fmt(dotdDrug.pearl)}</div></div>` : ''}
+    ${dotdDrug.pearl ? `<div class="pearl-box"><span class="drug-label">Pearl</span><div class="drug-text">${fmt(dotdDrug.pearl)}</div></div>` : ''}
   `;
   openModal('dotd-modal');
 }
@@ -619,7 +610,7 @@ function openOotdModal() {
     ).join('') +
     (o.pearl
       ? `<div class="pearl-box" style="background:var(--sage-light);border-color:var(--sage);">
-           <span class="drug-label" style="color:var(--sage);">💎 Pearl</span>
+           <span class="drug-label" style="color:var(--sage);">Pearl</span>
            <div class="drug-text">${fmt(o.pearl)}</div>
          </div>`
       : '');
@@ -722,14 +713,12 @@ function renderHero() {
 
   if (days === null) {
     numEl.textContent      = '—';
-    numEl.style.color      = 'var(--sakura2)';
     sub.innerHTML          = 'Set your exam date to start the countdown.';
     actions.style.display  = 'flex';
     const resetBtn = actions.querySelector('.hero-set-btn');
     if (resetBtn) { resetBtn.textContent = 'Set Exam Date ✦'; resetBtn.classList.remove('edit-mode'); }
   } else {
     numEl.textContent     = days;
-    numEl.style.color     = 'var(--sakura2)';
     const d               = new Date(examDate + 'T12:00:00');
     const formatted       = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     sub.innerHTML         = `Exam on <span>${formatted}</span>`;
