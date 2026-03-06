@@ -127,11 +127,23 @@
 .chip-red    { background: var(--sakura-light); color: var(--sakura2); }
 .chip-blue   { background: var(--sky-light); color: var(--sky); }
 .hist-empty { color: var(--muted); font-size: 14px; text-align: center; padding: 32px; }
-.row-act-btn {
-  background: none; border: none; color: var(--dim); font-size: 16px; cursor: pointer; padding: 2px 5px;
-  transition: color .15s;
+.row-actions { display: flex; gap: 6px; justify-content: flex-end; }
+.row-edit-btn {
+  padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 600;
+  border: 1px solid var(--border); background: transparent; color: var(--ink2);
+  cursor: pointer; transition: all .15s; white-space: nowrap;
 }
-.row-act-btn:hover { color: var(--sakura2); }
+.row-edit-btn:hover { background: var(--surface2); border-color: var(--sky); color: var(--sky); }
+.row-delete-btn {
+  padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 600;
+  border: 1px solid var(--border); background: transparent; color: var(--muted);
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.row-delete-btn:hover { background: var(--sakura-light); border-color: var(--sakura2); color: var(--sakura2); }
+.row-confirming .row-delete-btn {
+  background: var(--sakura2); border-color: var(--sakura2); color: #fff;
+}
+tr.editing-row td { background: var(--sky-light) !important; }
 
 /* ── Weaknesses ──────────────────────────────────────────── */
 .weak-item {
@@ -257,10 +269,6 @@
           <label>Questions Done</label>
           <input type="number" id="log-qs" min="1" max="120" placeholder="e.g. 40"/>
         </div>
-        <div class="log-field">
-          <label>% Correct</label>
-          <input type="number" id="log-score" min="0" max="100" placeholder="optional"/>
-        </div>
         <button class="log-btn" id="btn-log-qs" onclick="logEntry()">Log ✦</button>
         <button class="btn-ghost hidden-panel" id="cancel-edit" onclick="cancelEdit()">Cancel</button>
       </div>
@@ -310,8 +318,8 @@
       <div class="prog-stat-lbl">Remaining</div>
     </div>
     <div class="prog-stat">
-      <div class="prog-stat-num" id="stat-avg" style="color:var(--sage);">—</div>
-      <div class="prog-stat-lbl">Avg % Correct</div>
+      <div class="prog-stat-num" id="stat-streak" style="color:var(--sage);">0</div>
+      <div class="prog-stat-lbl">Day Streak 🔥</div>
     </div>
     <div class="prog-stat clickable" onclick="showPaceModal()" title="Click for pace calculator">
       <div class="prog-stat-num" id="stat-needed" style="color:var(--gold);">—</div>
@@ -552,6 +560,14 @@ function loadAll() {
   settings   = { ...DEFAULT_SETTINGS, ...Store.get(K.settings, {}) };
   uniqueDone = Store.get(K.unique, 0);
   weaknesses = Store.get(K.weak, []);
+
+  // Migration: strip legacy 'score' field from any existing entries
+  let migrated = false;
+  entries = entries.map(e => {
+    if ('score' in e) { const { score, ...rest } = e; migrated = true; return rest; }
+    return e;
+  });
+  if (migrated) Store.set(K.entries, entries);
 }
 
 function saveAll() {
@@ -615,21 +631,18 @@ function setLogMode(mode) {
 function logEntry() {
   const date  = document.getElementById('log-date').value;
   const qs    = parseInt(document.getElementById('log-qs').value);
-  const score = parseFloat(document.getElementById('log-score').value);
 
   if (!date) { showToast('Please select a date'); return; }
   if (!qs || qs < 1) { showToast('Please enter questions done'); return; }
 
-  const scoreVal = isNaN(score) ? null : score;
-
   if (editingId !== null) {
     const idx = entries.findIndex(e => e.id === editingId);
-    if (idx !== -1) entries[idx] = { ...entries[idx], date, qs, score: scoreVal };
+    if (idx !== -1) entries[idx] = { ...entries[idx], date, qs };
     editingId = null;
     document.getElementById('btn-log-qs').textContent = 'Log ✦';
     document.getElementById('cancel-edit').classList.add('hidden-panel');
   } else {
-    entries.push({ id: Date.now(), date, qs, score: scoreVal });
+    entries.push({ id: Date.now(), date, qs });
   }
 
   entries.sort((a,b) => a.date.localeCompare(b.date));
@@ -646,16 +659,14 @@ function cancelEdit() {
   document.getElementById('btn-log-qs').textContent = 'Log ✦';
   document.getElementById('cancel-edit').classList.add('hidden-panel');
   document.getElementById('log-qs').value = '';
-  document.getElementById('log-score').value = '';
 }
 
 function editEntry(id) {
   const e = entries.find(e => e.id === id);
   if (!e) return;
   setLogMode('questions');
-  document.getElementById('log-date').value  = e.date;
-  document.getElementById('log-qs').value    = e.qs;
-  document.getElementById('log-score').value = e.score ?? '';
+  document.getElementById('log-date').value = e.date;
+  document.getElementById('log-qs').value   = e.qs;
   document.getElementById('btn-log-qs').textContent = 'Update ✦';
   document.getElementById('cancel-edit').classList.remove('hidden-panel');
   editingId = id;
@@ -663,7 +674,6 @@ function editEntry(id) {
 }
 
 function deleteEntry(id) {
-  if (!confirm('Delete this session?')) return;
   entries = entries.filter(e => e.id !== id);
   uniqueDone = entries.reduce((s,e) => s + e.qs, 0);
   saveAll(); renderAll();
@@ -725,7 +735,6 @@ function editExam(id) {
 }
 
 function deleteExam(id) {
-  if (!confirm('Delete this exam?')) return;
   exams = exams.filter(e => e.id !== id);
   saveAll(); renderAll();
   showToast('Exam deleted');
@@ -738,8 +747,17 @@ function renderStats() {
   const remaining = Math.max(0, total - done);
   const pct       = total ? Math.min(100, Math.round(done / total * 100)) : 0;
 
-  const scored = entries.filter(e => e.score !== null && e.score !== undefined);
-  const avg    = scored.length ? Math.round(scored.reduce((s,e) => s + e.score, 0) / scored.length) : null;
+  const scored = [];
+
+  // Day streak — consecutive days with at least one session logged
+  const dateset = new Set(entries.map(e => e.date));
+  let streak = 0;
+  const today = new Date(); today.setHours(0,0,0,0);
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(today); d.setDate(today.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    if (dateset.has(key)) { streak++; } else { break; }
+  }
 
   let needed = null;
   if (settings.finishBy) {
@@ -755,7 +773,7 @@ function renderStats() {
 
   document.getElementById('stat-done').textContent   = done.toLocaleString();
   document.getElementById('stat-remain').textContent = remaining.toLocaleString();
-  document.getElementById('stat-avg').textContent    = avg !== null ? avg + '%' : '—';
+  document.getElementById('stat-streak').textContent = streak;
   document.getElementById('stat-needed').textContent = needed !== null ? needed : '—';
 
   document.getElementById('prog-pct').textContent     = pct + '%';
@@ -825,28 +843,13 @@ function renderChart() {
   body.innerHTML = '<div class="chart-canvas-wrap"><canvas id="dash-chart"></canvas></div>';
   if (chartInstance) chartInstance.destroy();
 
-  const hasScores = data.some(d => d.avg !== null);
   const datasets = [{
     label: 'Questions',
     data: data.map(d => d.qs),
     backgroundColor: 'rgba(106,174,214,0.7)',
     borderColor: 'rgba(106,174,214,1)',
     borderWidth: 1, borderRadius: 4,
-    yAxisID: 'yQs', order: 2, type: 'bar',
   }];
-
-  if (hasScores) {
-    datasets.push({
-      label: '% Correct',
-      data: data.map(d => d.avg),
-      borderColor: 'rgba(122,171,138,1)',
-      backgroundColor: 'rgba(122,171,138,0.15)',
-      borderWidth: 2, pointRadius: 4,
-      pointBackgroundColor: 'rgba(122,171,138,1)',
-      tension: 0.35,
-      yAxisID: 'yScore', order: 1, type: 'line', spanGaps: true,
-    });
-  }
 
   chartInstance = new Chart(document.getElementById('dash-chart'), {
     type: 'bar',
@@ -855,31 +858,21 @@ function renderChart() {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: { display: hasScores, labels: { font: { family: 'DM Sans' }, boxWidth: 12 } },
+        legend: { display: false },
         tooltip: {
           callbacks: {
-            label: ctx => ctx.dataset.label === '% Correct'
-              ? ` ${ctx.dataset.label}: ${ctx.raw !== null ? ctx.raw+'%' : 'N/A'}`
-              : ` ${ctx.dataset.label}: ${ctx.raw}`
+            label: ctx => ` Questions: ${ctx.raw}`
           }
         }
       },
       scales: {
         x: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 45 } },
-        yQs: {
-          position: 'left', beginAtZero: true,
+        y: {
+          beginAtZero: true,
           grid: { color: 'rgba(0,0,0,.05)' },
           ticks: { font: { size: 11 }, precision: 0 },
           title: { display: true, text: 'Questions', font: { size: 11 } }
-        },
-        ...(hasScores ? {
-          yScore: {
-            position: 'right', min: 0, max: 100,
-            grid: { drawOnChartArea: false },
-            ticks: { font: { size: 11 }, callback: v => v+'%' },
-            title: { display: true, text: '% Correct', font: { size: 11 } }
-          }
-        } : {})
+        }
       }
     }
   });
@@ -901,25 +894,54 @@ function renderHistory() {
 
   const rows = [...entries].reverse().slice(0, 50).map(e => {
     const dateStr = new Date(e.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-    const chip = e.score !== null && e.score !== undefined
-      ? `<span class="score-chip ${e.score>=70?'chip-green':e.score>=55?'chip-yellow':'chip-red'}">${e.score}%</span>`
-      : '<span style="color:var(--dim);">—</span>';
-    return `<tr>
+    const isEditing = e.id === editingId;
+    return `<tr id="row-${e.id}" class="${isEditing ? 'editing-row' : ''}">
       <td>${dateStr}</td>
       <td style="font-weight:600;">${e.qs}</td>
-      <td>${chip}</td>
       <td>
-        <button class="row-act-btn" onclick="editEntry(${e.id})" title="Edit">✎</button>
-        <button class="row-act-btn" onclick="deleteEntry(${e.id})" title="Delete">×</button>
+        <div class="row-actions">
+          <button class="row-edit-btn" onclick="editEntry(${e.id})">${isEditing ? '✦ Editing…' : 'Edit'}</button>
+          <button class="row-delete-btn" id="del-${e.id}" onclick="confirmDelete(${e.id})">Delete</button>
+        </div>
       </td>
     </tr>`;
   }).join('');
 
   el.innerHTML = `<table class="hist-table">
-    <thead><tr><th>Date</th><th>Questions</th><th>% Correct</th><th></th></tr></thead>
+    <thead><tr><th>Date</th><th>Questions</th><th></th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
   if (entries.length > 50) el.innerHTML += `<div style="font-size:12px;color:var(--muted);padding:8px 12px;">Showing most recent 50 of ${entries.length} sessions.</div>`;
+}
+
+// Two-step delete: first click turns button red + says "Sure?", second click confirms
+const pendingDeletes = new Set();
+function confirmDelete(id) {
+  if (pendingDeletes.has(id)) {
+    // Second click — actually delete
+    pendingDeletes.delete(id);
+    deleteEntry(id);
+  } else {
+    // First click — arm the button
+    pendingDeletes.add(id);
+    const btn = document.getElementById('del-' + id);
+    if (btn) {
+      btn.textContent = 'Sure?';
+      btn.style.background = 'var(--sakura2)';
+      btn.style.borderColor = 'var(--sakura2)';
+      btn.style.color = '#fff';
+      // Auto-disarm after 3 seconds
+      setTimeout(() => {
+        pendingDeletes.delete(id);
+        if (btn && btn.isConnected) {
+          btn.textContent = 'Delete';
+          btn.style.background = '';
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }
+      }, 3000);
+    }
+  }
 }
 
 // ── Render exams ──────────────────────────────────────────
@@ -933,14 +955,17 @@ function renderExams() {
       ? `<span class="score-chip ${e.epc>=70?'chip-green':e.epc>=55?'chip-yellow':'chip-red'}">${e.epc}%</span>` : '—';
     const eppChip = e.epp !== null && e.epp !== undefined
       ? `<span class="score-chip chip-blue">${e.epp}% pass</span>` : '—';
-    return `<tr>
+    const isEditing = e.id === editingExamId;
+    return `<tr id="exam-row-${e.id}" class="${isEditing ? 'editing-row' : ''}">
       <td>${dateStr}</td>
       <td style="font-weight:600;">${e.name}</td>
       <td>${epcChip}</td>
       <td>${eppChip}</td>
       <td>
-        <button class="row-act-btn" onclick="editExam(${e.id})" title="Edit">✎</button>
-        <button class="row-act-btn" onclick="deleteExam(${e.id})" title="Delete">×</button>
+        <div class="row-actions">
+          <button class="row-edit-btn" onclick="editExam(${e.id})">${isEditing ? '✦ Editing…' : 'Edit'}</button>
+          <button class="row-delete-btn" id="exam-del-${e.id}" onclick="confirmDeleteExam(${e.id})">Delete</button>
+        </div>
       </td>
     </tr>`;
   }).join('');
@@ -949,6 +974,32 @@ function renderExams() {
     <thead><tr><th>Date</th><th>Exam</th><th>% Correct</th><th>Est. Pass</th><th></th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
+}
+
+const pendingExamDeletes = new Set();
+function confirmDeleteExam(id) {
+  if (pendingExamDeletes.has(id)) {
+    pendingExamDeletes.delete(id);
+    deleteExam(id);
+  } else {
+    pendingExamDeletes.add(id);
+    const btn = document.getElementById('exam-del-' + id);
+    if (btn) {
+      btn.textContent = 'Sure?';
+      btn.style.background = 'var(--sakura2)';
+      btn.style.borderColor = 'var(--sakura2)';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        pendingExamDeletes.delete(id);
+        if (btn && btn.isConnected) {
+          btn.textContent = 'Delete';
+          btn.style.background = '';
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }
+      }, 3000);
+    }
+  }
 }
 
 // ── Render weak points ────────────────────────────────────
@@ -1109,14 +1160,11 @@ function parseCSVFile(file) {
     };
     const di = guess('date','day');
     const qi = guess('question','qs','#','num','count');
-    const si = guess('percent','correct','score','%','pct');
 
     const opts = (sel) => csvHeaders.map((h,i) => `<option value="${i}"${i===sel?' selected':''}>${h}</option>`).join('');
     document.getElementById('mapper-grid').innerHTML = `
       <div class="mapper-field"><label>Date column</label><select id="map-date">${opts(di)}</select></div>
-      <div class="mapper-field"><label>Questions column</label><select id="map-qs">${opts(qi)}</select></div>
-      <div class="mapper-field"><label>% Correct (optional)</label>
-        <select id="map-score"><option value="">— skip —</option>${opts(si)}</select></div>`;
+      <div class="mapper-field"><label>Questions column</label><select id="map-qs">${opts(qi)}</select></div>`;
 
     const previewRows = csvRows.slice(0,5).map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
     document.getElementById('csv-preview').innerHTML = `
@@ -1133,10 +1181,8 @@ function parseCSVFile(file) {
 }
 
 function importCSV() {
-  const dateCol  = parseInt(document.getElementById('map-date').value);
-  const qsCol    = parseInt(document.getElementById('map-qs').value);
-  const scoreRaw = document.getElementById('map-score').value;
-  const scoreCol = scoreRaw !== '' ? parseInt(scoreRaw) : null;
+  const dateCol = parseInt(document.getElementById('map-date').value);
+  const qsCol   = parseInt(document.getElementById('map-qs').value);
 
   let imported = 0, skipped = 0;
   const existing = new Set(entries.map(e => e.date + '|' + e.qs));
@@ -1155,8 +1201,7 @@ function importCSV() {
     const key = date + '|' + qs;
     if (existing.has(key)) { skipped++; return; }
 
-    const score = scoreCol !== null ? parseFloat(row[scoreCol]) : null;
-    entries.push({ id: Date.now() + imported, date, qs, score: isNaN(score) ? null : score });
+    entries.push({ id: Date.now() + imported, date, qs });
     existing.add(key);
     imported++;
   });
