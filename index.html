@@ -20,26 +20,26 @@
   padding: 52px 0 0;
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 32px;
-  align-items: start;
+  gap: 40px;
+  align-items: center;
   border-bottom: 1px solid var(--border2);
   margin-bottom: 0;
 }
 .hero-eyebrow {
   font-size: 10px; font-weight: 700; letter-spacing: 3px;
   text-transform: uppercase; color: var(--sakura2);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .hero-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(32px, 4.5vw, 50px);
-  font-weight: 700; line-height: 1.12; color: var(--ink);
-  margin-bottom: 16px;
+  font-size: clamp(28px, 3.8vw, 44px);
+  font-weight: 700; line-height: 1.14; color: var(--ink);
+  margin-bottom: 14px;
 }
 .hero-title em { font-style: italic; color: var(--sakura2); }
 .hero-tagline {
   font-size: 14px; color: var(--muted); line-height: 1.65;
-  max-width: 480px; margin-bottom: 32px;
+  max-width: 420px; margin-bottom: 36px;
 }
 
 /* ── Countdown — defined in style.css ────────────────────── */
@@ -249,7 +249,7 @@
     <div class="hero-left">
       <div class="hero-eyebrow">USMLE Step 1 Study Hub</div>
       <h1 class="hero-title">Your <em>Study Resources,</em><br>All in One Place</h1>
-      <p class="hero-tagline">Everything you need for Step 1 — pharmacology, microbiology, progress tracking, and more. 頑張って.</p>
+      <p class="hero-tagline">Everything you need for Step 1 — pharmacology, microbiology, progress tracking, and more.</p>
     </div>
 
     <div class="hero-countdown" aria-label="Exam countdown">
@@ -258,7 +258,7 @@
         <span class="cd-days" id="cd-days">—</span>
         <span class="cd-unit">days</span>
       </div>
-      <div class="cd-date" id="cd-date"><span class="cd-date-empty">No exam date set</span></div>
+      <span class="cd-date" id="cd-date"><span class="cd-date-empty">No exam date set</span></span>
       <button class="cd-edit" id="cd-edit-btn" onclick="openDateModal()">Set Exam Date ✦</button>
     </div>
   </header>
@@ -414,8 +414,7 @@
   <!-- ── MOTIVATION BAND ────────────────────────────────── -->
   <div class="motive-band">
     <div class="motive-txt">
-      <strong>Japan after Step 1 —</strong> Cherry blossoms, Mount Fuji, ramen at 2am.
-      Every page you study now is a step closer. 頑張って (Ganbatte) — you've got this.
+      <strong>Keep going —</strong> Every page you study now compounds. You're building the knowledge that will carry you through exam day and beyond.
     </div>
     <div class="motive-sep"></div>
     <div class="motive-q">
@@ -624,47 +623,38 @@ document.addEventListener('keydown', e => {
   }
 });
 
-/* ── Patch saveExamDate to refresh countdown after save ─── */
-const _origSaveExamDate = typeof saveExamDate === 'function' ? saveExamDate : null;
-document.addEventListener('DOMContentLoaded', () => {
-  // Wrap after app.js has loaded
-  const origSave = window.saveExamDate;
-  if (origSave) {
-    window.saveExamDate = function() {
-      origSave();
-      renderCountdown();
-      renderUWorld();
-    };
-  }
-});
-
-/* ── Countdown display ───────────────────────────────────── */
-function renderCountdown() {
-  const days = getDaysRemaining();
-  const dateStr = Store.get('exam-date', '');
-  const btn = document.getElementById('cd-edit-btn');
-  const dateEl = document.getElementById('cd-date');
+/* ── Countdown button state ──────────────────────────────
+   app.js owns Firebase and writes to #cd-days / #cd-date.
+   We just watch those elements and toggle the button style.
+   ──────────────────────────────────────────────────────── */
+function syncCountdownBtn() {
   const daysEl = document.getElementById('cd-days');
-
-  if (days !== null && days >= 0 && dateStr) {
-    daysEl.textContent = days;
-    // Format the date nicely
-    const d = new Date(dateStr + 'T12:00:00');
-    dateEl.textContent = d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-    // Switch to compact edit button
+  const btn    = document.getElementById('cd-edit-btn');
+  if (!daysEl || !btn) return;
+  const hasDate = daysEl.textContent.trim() !== '—' && daysEl.textContent.trim() !== '';
+  if (hasDate) {
     btn.textContent = 'Edit ✦';
     btn.classList.add('cd-edit-set');
   } else {
-    daysEl.textContent = '—';
-    dateEl.innerHTML = '<span class="cd-date-empty">No exam date set</span>';
     btn.textContent = 'Set Exam Date ✦';
     btn.classList.remove('cd-edit-set');
   }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  // Let app.js initialise first (it runs synchronously after DOMContentLoaded too)
+  requestAnimationFrame(() => {
+    syncCountdownBtn();
+    // Watch for app.js / Firebase async updates to cd-days
+    const daysEl = document.getElementById('cd-days');
+    if (daysEl) {
+      new MutationObserver(syncCountdownBtn).observe(daysEl, { childList: true, characterData: true, subtree: true });
+    }
+  });
+});
+
 /* ── Init ────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
-  renderCountdown();
   initDotd();
   initOotd();
   renderUWorld();
