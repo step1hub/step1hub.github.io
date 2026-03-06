@@ -6,6 +6,272 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="style.css"/>
 <title>Drug Facts · Step 1 Hub</title>
+<style>
+/* ═══════ SHARED REFERENCE PAGE STYLES ═══════════════════ */
+
+/* ── Page header ─────────────────────────────────────────── */
+.ref-page-header {
+  padding: 40px 0 0;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap;
+}
+.ref-page-left {}
+.ref-page-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 8px;
+}
+.ref-page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 700; line-height: 1.1; color: var(--ink);
+}
+.ref-page-title em { font-style: italic; color: var(--accent); }
+.ref-count {
+  font-size: 12px; color: var(--muted);
+  align-self: flex-end; padding-bottom: 6px;
+  white-space: nowrap;
+}
+.ref-count strong { color: var(--ink2); font-weight: 600; }
+
+/* ── Search bar ──────────────────────────────────────────── */
+.ref-search-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 0 0;
+}
+.ref-search-wrap {
+  flex: 1; position: relative; max-width: 540px;
+}
+.ref-search-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 14px; color: var(--dim); pointer-events: none;
+}
+.ref-search-input {
+  width: 100%; padding: 10px 14px 10px 38px;
+  border: 1.5px solid var(--border); border-radius: 99px;
+  background: var(--surface); font-size: 13.5px; color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  outline: none; transition: border-color .15s, box-shadow .15s;
+}
+.ref-search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+.ref-search-input::placeholder { color: var(--dim); }
+
+/* ── Tier filter pills ───────────────────────────────────── */
+.tier-filter-row {
+  display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+}
+.tier-pip-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 13px; border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: transparent; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11.5px; font-weight: 600; color: var(--muted);
+  transition: all .15s;
+}
+.tier-pip-btn .pip {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--pip-color, var(--dim));
+  flex-shrink: 0;
+}
+.tier-pip-btn:hover { border-color: var(--ink2); color: var(--ink2); }
+.tier-pip-btn.active {
+  background: var(--surface2); border-color: var(--pip-color, var(--ink2));
+  color: var(--ink);
+}
+.tier-pip-btn[data-tier=""] .pip { background: var(--ink2); }
+.tier-pip-btn[data-tier="1"] .pip { background: var(--sakura2); }
+.tier-pip-btn[data-tier="2"] .pip { background: var(--gold); }
+.tier-pip-btn[data-tier="3"] .pip { background: var(--sage); }
+
+/* ── Category tabs ───────────────────────────────────────── */
+.cat-tab-bar {
+  display: flex; gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-top: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cat-tab-bar::-webkit-scrollbar { display: none; }
+.cat-tab {
+  padding: 10px 16px;
+  font-size: 12px; font-weight: 600; color: var(--muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer; white-space: nowrap;
+  background: transparent; border-top: none; border-left: none; border-right: none;
+  font-family: 'DM Sans', sans-serif;
+  transition: color .15s, border-color .15s;
+  letter-spacing: 0.2px;
+}
+.cat-tab:hover { color: var(--ink2); }
+.cat-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.cat-tab .tab-count {
+  display: inline-block; margin-left: 5px;
+  font-size: 10px; font-weight: 700; color: var(--dim);
+  background: var(--border2); border-radius: 99px;
+  padding: 1px 6px; vertical-align: middle;
+}
+.cat-tab.active .tab-count { background: var(--accent-light); color: var(--accent); }
+
+/* ── Content panel ───────────────────────────────────────── */
+.ref-panel { padding-top: 4px; }
+.ref-panel.hidden { display: none; }
+
+/* ── Group section header ────────────────────────────────── */
+.group-header {
+  display: flex; align-items: center; gap: 12px;
+  margin: 28px 0 14px;
+}
+.group-header:first-child { margin-top: 20px; }
+.group-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.8px;
+  text-transform: uppercase; color: var(--muted);
+  white-space: nowrap;
+}
+.group-line {
+  flex: 1; height: 1px; background: var(--border2);
+}
+.group-badge {
+  font-size: 10px; font-weight: 600; color: var(--dim);
+  white-space: nowrap;
+}
+
+/* ── Card grid ───────────────────────────────────────────── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+/* ── Ref card — redesigned for scannability ──────────────── */
+.rcard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+  position: relative;
+  display: flex; flex-direction: column; gap: 5px;
+  overflow: hidden;
+}
+.rcard::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; border-radius: 12px 0 0 12px;
+  background: var(--tier-color, var(--border));
+  opacity: 0;
+  transition: opacity .16s;
+}
+.rcard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(42,31,26,.10), 0 1px 4px rgba(42,31,26,.06);
+  border-color: color-mix(in srgb, var(--tier-color, var(--border)) 40%, var(--border));
+}
+.rcard:hover::before { opacity: 1; }
+.rcard:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Tier colors via CSS variable */
+.rcard[data-tier="1"] { --tier-color: var(--sakura2); }
+.rcard[data-tier="2"] { --tier-color: var(--gold); }
+.rcard[data-tier="3"] { --tier-color: var(--sage); }
+
+.rcard-top {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 8px;
+}
+.rcard-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-weight: 600; line-height: 1.3;
+  color: var(--ink);
+}
+/* Tier pip — small, subtle, right-aligned */
+.rcard-tier {
+  display: flex; align-items: center; gap: 4px;
+  flex-shrink: 0; padding-top: 3px;
+}
+.rcard-pip {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--tier-color, var(--dim));
+  flex-shrink: 0;
+}
+.rcard-tier-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.8px;
+  text-transform: uppercase; color: var(--dim);
+}
+
+.rcard-aka {
+  font-size: 11.5px; color: var(--muted); font-style: italic;
+  line-height: 1.4;
+}
+.rcard-summary {
+  font-size: 12.5px; color: var(--ink2); line-height: 1.55;
+  margin-top: 2px;
+}
+.rcard-tags {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px;
+}
+.rcard-tag {
+  font-size: 10px; font-weight: 500;
+  background: var(--surface2); border: 1px solid var(--border2);
+  color: var(--ink2); padding: 2px 7px; border-radius: 99px;
+}
+
+/* ── Empty state ─────────────────────────────────────────── */
+.ref-empty {
+  grid-column: 1 / -1;
+  padding: 56px 24px; text-align: center;
+}
+.ref-empty-icon { font-size: 32px; margin-bottom: 12px; }
+.ref-empty-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 600; color: var(--ink2); margin-bottom: 6px;
+}
+.ref-empty-sub { font-size: 13px; color: var(--muted); }
+
+/* ── Detail modal content ────────────────────────────────── */
+.modal-group-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 4px;
+}
+.modal-name {
+  font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700;
+  line-height: 1.2; margin-bottom: 3px;
+}
+.modal-sub-line {
+  font-size: 12px; color: var(--muted); font-style: italic;
+}
+.modal-tier-strip {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border2);
+}
+.modal-tier-pip {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--tier-color, var(--dim));
+}
+.modal-tier-text {
+  font-size: 11px; font-weight: 700; color: var(--muted);
+  letter-spacing: 0.5px;
+}
+.modal-tags-wrap {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-bottom: 16px;
+}
+
+/* ── Drug-specific accent ────────────────────────────────── */
+:root {
+  --accent: var(--sakura2);
+  --accent-light: var(--sakura-light);
+  --accent-glow: rgba(196,80,94,.12);
+}
+</style>
 </head>
 <body>
 
@@ -20,65 +286,63 @@
 
 <div class="wrap">
 
-  <!-- Page header -->
-  <header class="page-header">
-    <div class="page-eyebrow">Pharmacology Reference</div>
-    <h1 class="page-title">Drug <em>Facts</em></h1>
-  </header>
-
-  <!-- Filter bar: row 1 = search + system, row 2 = tier chips -->
-  <div class="filter-bar">
-    <div class="filter-row">
-      <span class="filter-row-label">Search</span>
-      <input class="search-input" type="text" id="drug-search"
-             placeholder="Drug name, MOA, use, side effects…"
-             oninput="filterDrugs()" autocomplete="off"/>
-      <select class="filter-select" id="cat-filter" onchange="filterDrugs()">
-        <option value="">All Systems</option>
-        <option value="autonomic">Autonomic</option>
-        <option value="cv">Cardiovascular</option>
-        <option value="blood">Blood</option>
-        <option value="neuro">Neurology / Psych</option>
-        <option value="micro">Antimicrobials</option>
-        <option value="gi">GI</option>
-        <option value="endo">Endocrine</option>
-        <option value="pulm">Pulmonary</option>
-        <option value="onco">Oncology</option>
-        <option value="toxicology">Toxicology</option>
-      </select>
+  <!-- ── Header ──────────────────────────────────────────── -->
+  <div class="ref-page-header">
+    <div class="ref-page-left">
+      <div class="ref-page-eyebrow">Pharmacology Reference</div>
+      <h1 class="ref-page-title">Drug <em>Facts</em></h1>
     </div>
-    <div class="filter-row">
-      <span class="filter-row-label">Tier</span>
-      <button class="tier-chip active" data-tier=""  onclick="setTier(this,'')">All</button>
-      <button class="tier-chip"        data-tier="1" onclick="setTier(this,'1')">Tier 1 — High Yield</button>
-      <button class="tier-chip"        data-tier="2" onclick="setTier(this,'2')">Tier 2 — Important</button>
-      <button class="tier-chip"        data-tier="3" onclick="setTier(this,'3')">Tier 3 — Know It</button>
+    <div class="ref-count" id="results-meta"></div>
+  </div>
+
+  <!-- ── Search + Tier filter ────────────────────────────── -->
+  <div class="ref-search-row">
+    <div class="ref-search-wrap">
+      <span class="ref-search-icon">🔍</span>
+      <input class="ref-search-input" type="text" id="drug-search"
+             placeholder="Drug name, mechanism, side effects, tags…"
+             oninput="onSearch()" autocomplete="off"/>
+    </div>
+    <div class="tier-filter-row">
+      <button class="tier-pip-btn active" data-tier="" onclick="setTier(this,'')">
+        <span class="pip"></span> All
+      </button>
+      <button class="tier-pip-btn" data-tier="1" onclick="setTier(this,'1')" style="--pip-color:var(--sakura2)">
+        <span class="pip"></span> Tier 1
+      </button>
+      <button class="tier-pip-btn" data-tier="2" onclick="setTier(this,'2')" style="--pip-color:var(--gold)">
+        <span class="pip"></span> Tier 2
+      </button>
+      <button class="tier-pip-btn" data-tier="3" onclick="setTier(this,'3')" style="--pip-color:var(--sage)">
+        <span class="pip"></span> Tier 3
+      </button>
     </div>
   </div>
 
-  <!-- Results count -->
-  <div class="results-meta" id="results-meta"></div>
+  <!-- ── Category tabs ───────────────────────────────────── -->
+  <div class="cat-tab-bar" id="cat-tabs" role="tablist"></div>
 
-  <!-- Drug card grid -->
-  <div class="ref-grid" id="drug-grid"></div>
+  <!-- ── Panels rendered here ────────────────────────────── -->
+  <div id="panels-container"></div>
 
 </div><!-- /wrap -->
 
 <!-- ── Detail Modal ──────────────────────────────────────── -->
-<div class="modal-overlay" id="drug-detail-modal">
+<div class="modal-overlay" id="drug-detail-modal" role="dialog" aria-modal="true" aria-labelledby="ddm-name">
   <div class="modal detail-modal">
     <div class="modal-header">
       <div style="flex:1;min-width:0;">
-        <div class="modal-system" id="ddm-system"></div>
-        <div class="modal-title"  id="ddm-name"></div>
-        <div class="modal-aka"    id="ddm-aka"></div>
+        <div class="modal-group-label" id="ddm-system" style="color:var(--accent);"></div>
+        <div class="modal-name" id="ddm-name"></div>
+        <div class="modal-sub-line" id="ddm-aka"></div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:10px;flex-shrink:0;">
-        <span class="tier-badge" id="ddm-tier"></span>
-        <button class="modal-close-btn" onclick="closeModal('drug-detail-modal')">&times;</button>
-      </div>
+      <button class="modal-close-btn" onclick="closeModal('drug-detail-modal')" aria-label="Close">&times;</button>
     </div>
-    <div class="modal-tags-row" id="ddm-tags"></div>
+    <div class="modal-tier-strip" id="ddm-tier-strip">
+      <div class="modal-tier-pip" id="ddm-tier-pip"></div>
+      <div class="modal-tier-text" id="ddm-tier-text"></div>
+    </div>
+    <div class="modal-tags-wrap" id="ddm-tags"></div>
     <div id="ddm-content" style="max-height:62vh;overflow-y:auto;padding-right:4px;"></div>
     <div class="modal-btns" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
       <button class="btn-cancel" onclick="closeModal('drug-detail-modal')">Close</button>
@@ -89,17 +353,29 @@
 <script src="drug_data.js"></script>
 <script src="app.js"></script>
 <script>
-let activeTier = '';
-let allDrugs   = [];
-
-const CAT_LABELS = {
-  autonomic:'Autonomic', cv:'Cardiovascular', blood:'Blood',
-  neuro:'Neuro / Psych', micro:'Antimicrobials', gi:'GI',
-  endo:'Endocrine', pulm:'Pulmonary', onco:'Oncology',
-  toxicology:'Toxicology'
+/* ── Config ─────────────────────────────────────────────── */
+const CAT_META = {
+  autonomic:   { label: 'Autonomic',       icon: '⚡' },
+  cv:          { label: 'Cardiovascular',  icon: '❤️' },
+  blood:       { label: 'Blood',           icon: '🩸' },
+  neuro:       { label: 'Neuro / Psych',   icon: '🧠' },
+  micro:       { label: 'Antimicrobials',  icon: '🦠' },
+  gi:          { label: 'GI',              icon: '🫁' },
+  endo:        { label: 'Endocrine',       icon: '🔬' },
+  pulm:        { label: 'Pulmonary',       icon: '🫀' },
+  onco:        { label: 'Oncology',        icon: '⚗️' },
+  toxicology:  { label: 'Toxicology',      icon: '☠️' },
 };
 
-/* ── Build flat list from nested DRUGS ─────────────────── */
+const TIER_COLORS = { 1: 'var(--sakura2)', 2: 'var(--gold)', 3: 'var(--sage)' };
+const TIER_LABELS = { 1: 'Tier 1 — High Yield', 2: 'Tier 2 — Important', 3: 'Tier 3 — Know It' };
+
+let allDrugs = [];
+let activeTier = '';
+let activeTab = '';
+let searchQ = '';
+
+/* ── Build flat drug list ────────────────────────────────── */
 function buildDrugList() {
   const list = [];
   Object.entries(DRUGS).forEach(([cat, groups]) =>
@@ -110,91 +386,165 @@ function buildDrugList() {
   return list;
 }
 
-/* ── Tier chip selection ────────────────────────────────── */
-function setTier(btn, tier) {
-  activeTier = tier;
-  document.querySelectorAll('.tier-chip').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  filterDrugs();
-}
-
-/* ── Filter ─────────────────────────────────────────────── */
-function filterDrugs() {
-  const q    = document.getElementById('drug-search').value.toLowerCase().trim();
-  const cat  = document.getElementById('cat-filter').value;
-  const tier = activeTier ? parseInt(activeTier) : null;
-
-  const filtered = allDrugs.filter(d => {
-    if (cat  && d.category !== cat) return false;
-    if (tier && d.tier     !== tier) return false;
-    if (q) {
+/* ── Filtering ───────────────────────────────────────────── */
+function getFiltered() {
+  return allDrugs.filter(d => {
+    if (activeTier && d.tier !== parseInt(activeTier)) return false;
+    if (activeTab && d.category !== activeTab) return false;
+    if (searchQ) {
       const blob = [d.name, d.aka, d.summary, d.moa, d.use, d.se,
                     (d.tags || []).join(' ')].join(' ').toLowerCase();
-      if (!blob.includes(q)) return false;
+      if (!blob.includes(searchQ)) return false;
     }
     return true;
   });
+}
 
-  renderGrid(filtered);
+/* ── Render everything ───────────────────────────────────── */
+function render() {
+  const filtered = getFiltered();
 
+  // Update count
   const meta = document.getElementById('results-meta');
-  if (filtered.length === allDrugs.length) {
-    meta.innerHTML = `<strong>${allDrugs.length}</strong> drugs`;
-  } else {
-    meta.innerHTML = `<strong>${filtered.length}</strong> of ${allDrugs.length} drugs`;
+  meta.innerHTML = filtered.length === allDrugs.length
+    ? `<strong>${allDrugs.length}</strong> drugs`
+    : `<strong>${filtered.length}</strong> of ${allDrugs.length} drugs`;
+
+  // Rebuild tabs with live counts
+  renderTabs(filtered);
+
+  // Render panels
+  renderPanels(filtered);
+}
+
+function renderTabs(filtered) {
+  const tabBar = document.getElementById('cat-tabs');
+  const cats = Object.keys(CAT_META);
+
+  // "All" tab — only show when searching or tier-filtered
+  const showAll = searchQ || activeTier;
+  const allCount = filtered.length;
+
+  let html = '';
+  if (showAll) {
+    html += `<button class="cat-tab${activeTab === '' ? ' active' : ''}" 
+               onclick="switchTab('')" role="tab" aria-selected="${activeTab===''}"
+               data-cat="">All <span class="tab-count">${allCount}</span></button>`;
+  }
+
+  cats.forEach(cat => {
+    const catFiltered = filtered.filter(d => d.category === cat);
+    if (catFiltered.length === 0 && (searchQ || activeTier)) return; // hide empty cats when filtering
+    const count = catFiltered.length;
+    const meta = CAT_META[cat];
+    const isActive = activeTab === cat;
+    html += `<button class="cat-tab${isActive ? ' active' : ''}"
+               onclick="switchTab('${cat}')" role="tab" aria-selected="${isActive}"
+               data-cat="${cat}">
+               ${meta.label}
+               <span class="tab-count">${count}</span>
+             </button>`;
+  });
+
+  tabBar.innerHTML = html;
+
+  // Auto-select first visible tab if current is gone
+  if (!showAll && activeTab === '') {
+    const firstCat = cats.find(c => filtered.some(d => d.category === c));
+    if (firstCat) switchTab(firstCat, false);
   }
 }
 
-/* ── Render card grid ───────────────────────────────────── */
-function renderGrid(list) {
-  const grid = document.getElementById('drug-grid');
+function renderPanels(filtered) {
+  const container = document.getElementById('panels-container');
+  const cats = activeTab ? [activeTab] : Object.keys(CAT_META);
 
-  if (!list.length) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-title">No results</div>
-        <div class="empty-state-sub">Try a different search or clear your filters.</div>
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="cards-grid" style="margin-top:16px;">
+        <div class="ref-empty">
+          <div class="ref-empty-icon">🔍</div>
+          <div class="ref-empty-title">No results</div>
+          <div class="ref-empty-sub">Try a different search term or clear your filters.</div>
+        </div>
       </div>`;
     return;
   }
 
-  grid.innerHTML = list.map(d => {
-    const catLabel = CAT_LABELS[d.category] || d.category;
-    const tags = (d.tags || []).slice(0, 3)
-      .map(t => `<span class="ref-tag">${t}</span>`).join('');
-    const payload = JSON.stringify(d).replace(/'/g, "&#39;");
+  container.innerHTML = cats.map(cat => {
+    const catDrugs = filtered.filter(d => d.category === cat);
+    if (!catDrugs.length) return '';
+    const groups = [...new Set(catDrugs.map(d => d.groupName))];
 
-    return `<div class="ref-card" data-tier="${d.tier}"
-                 onclick='openDrugDetail(${payload})'>
-      <div class="ref-card-top">
-        <div class="ref-card-name">${d.name}</div>
-        <span class="tier-badge tier-${d.tier}">T${d.tier}</span>
-      </div>
-      ${d.aka ? `<div class="ref-card-aka">${d.aka}</div>` : ''}
-      <div class="ref-card-summary">${d.summary || ''}</div>
-      <div class="ref-card-tags">
-        <span class="ref-tag" style="font-weight:600;color:var(--ink2);">${catLabel}</span>
-        ${tags}
-      </div>
+    return `<div class="ref-panel" id="panel-${cat}">
+      ${groups.map(grp => {
+        const grpDrugs = catDrugs.filter(d => d.groupName === grp);
+        return `
+          <div class="group-header">
+            <span class="group-title">${grp}</span>
+            <div class="group-line"></div>
+            <span class="group-badge">${grpDrugs.length}</span>
+          </div>
+          <div class="cards-grid">
+            ${grpDrugs.map(d => renderCard(d)).join('')}
+          </div>`;
+      }).join('')}
     </div>`;
   }).join('');
 }
 
-/* ── Open detail modal ──────────────────────────────────── */
+function renderCard(d) {
+  const payload = JSON.stringify(d).replace(/'/g, "&#39;").replace(/"/g, '&quot;');
+  const tags = (d.tags || []).slice(0, 3).map(t => `<span class="rcard-tag">${t}</span>`).join('');
+  return `<div class="rcard" data-tier="${d.tier}" 
+               onclick='openDrugDetail(${JSON.stringify(d).replace(/'/g,"&#39;")})'
+               tabindex="0" role="button" aria-label="${d.name}">
+    <div class="rcard-top">
+      <div class="rcard-name">${d.name}</div>
+      <div class="rcard-tier">
+        <div class="rcard-pip"></div>
+        <span class="rcard-tier-label">T${d.tier}</span>
+      </div>
+    </div>
+    ${d.aka ? `<div class="rcard-aka">${d.aka}</div>` : ''}
+    <div class="rcard-summary">${d.summary || ''}</div>
+    ${tags ? `<div class="rcard-tags">${tags}</div>` : ''}
+  </div>`;
+}
+
+/* ── Tab switching ───────────────────────────────────────── */
+function switchTab(cat, doRender = true) {
+  activeTab = cat;
+  if (doRender) render();
+}
+
+function setTier(btn, tier) {
+  activeTier = tier;
+  document.querySelectorAll('.tier-pip-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function onSearch() {
+  searchQ = document.getElementById('drug-search').value.toLowerCase().trim();
+  render();
+}
+
+/* ── Detail modal ────────────────────────────────────────── */
 function openDrugDetail(d) {
   const fmt = t => t ? t.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') : '';
+  const tierColor = TIER_COLORS[d.tier] || 'var(--dim)';
+  const tierLabel = TIER_LABELS[d.tier] || '';
+  const catLabel = (CAT_META[d.category]?.label || d.category);
 
-  document.getElementById('ddm-name').textContent   = d.name;
-  document.getElementById('ddm-aka').textContent    = d.aka || '';
   document.getElementById('ddm-system').textContent =
-    (CAT_LABELS[d.category] || '') + (d.groupName ? ' · ' + d.groupName : '');
-
-  const tb = document.getElementById('ddm-tier');
-  tb.textContent = `Tier ${d.tier}`;
-  tb.className   = `tier-badge tier-${d.tier}`;
-
+    catLabel + (d.groupName ? ' · ' + d.groupName : '');
+  document.getElementById('ddm-name').textContent = d.name;
+  document.getElementById('ddm-aka').textContent = d.aka || '';
+  document.getElementById('ddm-tier-pip').style.background = tierColor;
+  document.getElementById('ddm-tier-text').textContent = tierLabel;
   document.getElementById('ddm-tags').innerHTML =
-    (d.tags || []).map(t => `<span class="ref-tag">${t}</span>`).join('');
+    (d.tags || []).map(t => `<span class="rcard-tag">${t}</span>`).join('');
 
   const sections = [
     ['Mechanism',        d.moa],
@@ -211,20 +561,29 @@ function openDrugDetail(d) {
          <div class="drug-text">${fmt(val)}</div>
        </div>`
     ).join('') +
-    (d.pearl
-      ? `<div class="pearl-box">
-           <span class="drug-label">Clinical Pearl</span>
-           <div class="drug-text">${fmt(d.pearl)}</div>
-         </div>`
-      : '');
+    (d.pearl ? `<div class="pearl-box">
+       <span class="drug-label">Clinical Pearl</span>
+       <div class="drug-text">${fmt(d.pearl)}</div>
+     </div>` : '');
 
   openModal('drug-detail-modal');
 }
 
-/* ── Init ───────────────────────────────────────────────── */
+/* ── Keyboard support ────────────────────────────────────── */
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('rcard')) {
+    e.preventDefault();
+    e.target.click();
+  }
+  if (e.key === 'Escape') closeModal('drug-detail-modal');
+});
+
+/* ── Init ────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   allDrugs = buildDrugList();
-  filterDrugs();
+  // Set default tab to first category
+  activeTab = Object.keys(CAT_META)[0];
+  render();
 });
 </script>
 </body>
