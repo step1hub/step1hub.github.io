@@ -8,8 +8,8 @@
 <title>Sketchy Micro · Step 1 Hub</title>
 <style>
 .tracker-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px;}
-.tracker-search{flex:1;min-width:200px;padding:9px 14px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;font-family:inherit;background:var(--surface);color:var(--ink);outline:none;transition:border-color .15s;}
-.tracker-search:focus{border-color:var(--sky);}
+.tracker-search{flex:1;min-width:160px;padding:7px 12px;border:1px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink2);outline:none;transition:border-color .15s;box-shadow:none;}
+.tracker-search:focus{border-color:var(--dim);}
 .filter-chips{display:flex;gap:6px;flex-wrap:wrap;}
 .filter-chip{padding:6px 14px;border-radius:99px;font-size:12px;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
 .filter-chip.active{background:var(--sky);color:#fff;border-color:var(--sky);}
@@ -22,8 +22,8 @@
 .overall-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px;}
 .overall-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;}
 .overall-stats{display:flex;gap:18px;font-size:13px;}
-.overall-stat{color:var(--muted);}
-.overall-stat strong{color:var(--ink2);}
+.overall-stat{color:var(--muted);font-size:12px;}
+.overall-stat strong{color:var(--ink2);font-size:14px;}
 .overall-bar-bg{background:var(--border2);border-radius:99px;height:8px;overflow:hidden;}
 .overall-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--sky),var(--fuji));transition:width .5s ease;}
 .overall-sub{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px;}
@@ -49,11 +49,12 @@
 .video-row.hidden-row{display:none;}
 .video-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);min-width:36px;}
 .video-name{flex:1;font-size:13.5px;color:var(--ink2);line-height:1.4;}
+.video-row.is-reviewed .video-name{text-decoration:line-through;color:var(--dim);}
 .video-time{font-size:11px;color:var(--dim);min-width:52px;text-align:right;font-family:'DM Mono',monospace;}
 .check-btns{display:flex;gap:6px;}
 .icon-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .15s;line-height:1;flex-shrink:0;color:var(--dim);}
 .icon-btn:hover{transform:scale(1.1);}
-.icon-btn.active-w{background:var(--sakura2);border-color:var(--sakura2);color:#fff;}
+.icon-btn.active-w{background:var(--sage);border-color:var(--sage);color:#fff;}
 .icon-btn.active-r{background:var(--gold);border-color:var(--gold);color:#fff;}
 .tracker-legend{display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:16px;}
 .no-results{text-align:center;padding:40px;color:var(--muted);font-size:14px;}
@@ -72,17 +73,17 @@
 <body>
 <script src="nav.js"></script>
 <div class="wrap">
-  <header class="hero" style="padding:40px 0 20px;">
-    <div class="hero-eyebrow">Progress Tracker</div>
-    <h1 class="hero-name" style="font-size:clamp(28px,4vw,44px);">Sketchy <em>Micro</em></h1>
+  <header class="hero" style="padding:36px 0 16px;">
+    <div class="hero-eyebrow" style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sakura2);margin-bottom:10px;">Progress Tracker</div>
+    <h1 class="hero-name" style="font-size:clamp(30px,4vw,46px);letter-spacing:-0.5px;font-weight:700;line-height:1.1;margin-bottom:6px;">Sketchy <em>Micro</em></h1>
   </header>
 
   <div class="overall-card">
     <div class="overall-top">
       <span class="overall-title">Overall Progress</span>
       <div class="overall-stats">
-        <span class="overall-stat">W <strong id="tot-w">0</strong>Watched</span>
-        <span class="overall-stat">R <strong id="tot-r">0</strong>Reviewed</span>
+        <span class="overall-stat" style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;background:var(--sage);color:#fff;font-size:10px;">✔</span><strong id="tot-w">0</strong> Watched</span>
+        <span class="overall-stat" style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;background:var(--gold);color:#fff;font-size:10px;">✦</span><strong id="tot-r">0</strong> Reviewed</span>
       </div>
     </div>
     <div class="overall-bar-bg"><div class="overall-bar-fill" id="overall-bar" style="width:0%;"></div></div>
@@ -102,12 +103,19 @@
     </div>
     <div class="toolbar-right">
       <button class="toolbar-btn" id="toggle-expand-btn" onclick="toggleExpand()">Expand All</button>
-      <button class="toolbar-btn" onclick="resetAll()" style="color:var(--sakura2);">Reset All</button>
     </div>
   </div>
 
   <div class="tracker-legend">
-    <span style="font-size:12px;color:var(--muted);">✓ Watched (Left Toggle) &nbsp;&nbsp;·&nbsp;&nbsp; ✓ Reviewed (Right Toggle)</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;background:var(--sage);color:#fff;font-size:11px;font-weight:700;">✔</span>
+      <span>Watched (left button)</span>
+    </span>
+    <span style="color:var(--dim);">·</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;background:var(--gold);color:#fff;font-size:11px;font-weight:700;">✦</span>
+      <span>Reviewed (right button)</span>
+    </span>
   </div>
 
   <div id="tracker-container"></div>
@@ -323,6 +331,7 @@ function updateVideoRow(id) {
   if(rb) rb.className = `icon-btn${s.r ? ' active-r' : ''}`;
   const row = document.getElementById('row-'+id);
   if(row) row.classList.toggle('hidden-row', !rowVisible(id));
+  if(row) row.classList.toggle('is-reviewed', s.r);
 }
 
 function rowVisible(id) {
@@ -405,13 +414,13 @@ function renderAll() {
     const accent = ACCENTS[idx % ACCENTS.length];
     const rows = cat.videos.map(v => {
       const s = getState(v.id);
-      return `<div class="video-row" id="row-${v.id}">
+      return `<div class="video-row${s.r ? ' is-reviewed' : ''}" id="row-${v.id}">
         <div class="video-num">${v.num}</div>
         <div class="video-name">${v.name}</div>
         <div class="video-time">${v.time}</div>
         <div class="check-btns">
-          <button id="btn-w-${v.id}" class="icon-btn${s.w ? ' active-w' : ''}" onclick="toggle('${v.id}','w')" title="Watched">✓</button>
-          <button id="btn-r-${v.id}" class="icon-btn${s.r ? ' active-r' : ''}" onclick="toggle('${v.id}','r')" title="Reviewed">✓</button>
+          <button id="btn-w-${v.id}" class="icon-btn${s.w ? ' active-w' : ''}" onclick="toggle('${v.id}','w')" title="Watched">✔</button>
+          <button id="btn-r-${v.id}" class="icon-btn${s.r ? ' active-r' : ''}" onclick="toggle('${v.id}','r')" title="Reviewed">✦</button>
         </div>
       </div>`;
     }).join('');
