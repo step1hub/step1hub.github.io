@@ -27,12 +27,12 @@
 /* ── Log tabs ────────────────────────────────────────────── */
 .log-tabs { display: flex; gap: 4px; margin-bottom: 16px; }
 .log-tab {
-  padding: 7px 18px; border-radius: 99px;
+  padding: 6px 16px; border-radius: 8px;
   border: 1px solid var(--border); background: transparent;
-  font-size: 13px; font-weight: 600; color: var(--ink2);
+  font-size: 12px; font-weight: 600; color: var(--muted);
   cursor: pointer; transition: all .15s;
 }
-.log-tab.active { background: var(--sky); color: #fff; border-color: var(--sky); }
+.log-tab.active { background: var(--sakura2); color: #fff; border-color: var(--sakura2); }
 
 /* ── Log row ─────────────────────────────────────────────── */
 .log-row {
@@ -49,7 +49,7 @@
   outline: none; transition: border-color .15s; font-family: inherit;
   min-width: 110px;
 }
-.log-field input:focus, .log-field select:focus { border-color: var(--sky); }
+.log-field input:focus, .log-field select:focus { border-color: var(--dim); }
 .log-field.wide { flex: 1; min-width: 160px; }
 .log-btn {
   padding: 9px 22px; border-radius: var(--r);
@@ -82,7 +82,7 @@
 .prog-stat-num {
   font-family: 'Playfair Display', serif;
   font-size: 36px; font-weight: 700; line-height: 1;
-  color: var(--sky);
+  color: var(--ink);
 }
 .prog-stat-lbl { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-top: 5px; }
 .prog-stat.clickable { cursor: pointer; transition: box-shadow .15s; }
@@ -92,9 +92,9 @@
 .prog-bar-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 20px 24px; margin-bottom: 18px; }
 .prog-bar-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
 .prog-bar-label { font-size: 13px; font-weight: 600; color: var(--ink2); }
-.prog-bar-pct { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--sky); }
+.prog-bar-pct { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--ink); }
 .prog-bg { background: var(--border2); border-radius: 99px; height: 10px; overflow: hidden; }
-.prog-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--sky), var(--fuji)); transition: width .6s ease; }
+.prog-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--sakura2), var(--gold)); transition: width .6s ease; }
 .prog-bar-sub { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 6px; }
 .edit-prog-btn {
   font-size: 11px; font-weight: 600; color: var(--sakura2);
@@ -108,7 +108,7 @@
   padding: 5px 14px; border-radius: 99px; font-size: 12px; font-weight: 600;
   border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all .15s;
 }
-.chart-view-tab.active { background: var(--sky); color: #fff; border-color: var(--sky); }
+.chart-view-tab.active { background: var(--sakura2); color: #fff; border-color: var(--sakura2); }
 .chart-canvas-wrap { position: relative; height: 200px; }
 .chart-empty { color: var(--muted); font-size: 14px; text-align: center; padding: 40px 0; }
 
@@ -179,7 +179,7 @@ tr.editing-row td { background: var(--sky-light) !important; }
   border: 1px solid var(--border); background: var(--surface2); color: var(--muted);
   cursor: pointer; transition: all .15s; user-select: none;
 }
-.day-chip.active { background: var(--sky); color: #fff; border-color: var(--sky); }
+.day-chip.active { background: var(--sakura2); color: #fff; border-color: var(--sakura2); }
 
 /* ── Import ──────────────────────────────────────────────── */
 .drop-zone {
@@ -232,7 +232,7 @@ tr.editing-row td { background: var(--sky-light) !important; }
   <!-- ── SETTINGS ── -->
   <div class="dash-section" id="settings-section" style="display:none;">
     <div class="dash-section-title">
-      ⚙️ Settings
+      Settings
       <button class="btn-ghost" onclick="toggleSettings()">Close</button>
     </div>
     <div class="settings-grid">
@@ -319,7 +319,7 @@ tr.editing-row td { background: var(--sky-light) !important; }
     </div>
     <div class="prog-stat">
       <div class="prog-stat-num" id="stat-streak" style="color:var(--sage);">0</div>
-      <div class="prog-stat-lbl">Day Streak 🔥</div>
+      <div class="prog-stat-lbl">Day Streak</div>
     </div>
     <div class="prog-stat clickable" onclick="showPaceModal()" title="Click for pace calculator">
       <div class="prog-stat-num" id="stat-needed" style="color:var(--gold);">—</div>
@@ -335,8 +335,8 @@ tr.editing-row td { background: var(--sky-light) !important; }
         <button class="edit-prog-btn" onclick="promptEditProgress()" style="margin-left:10px;">✎ Edit Progress</button>
       </span>
       <span style="display:flex;align-items:center;gap:10px;">
-        <button class="btn-ghost" style="padding:5px 12px;font-size:12px;" onclick="toggleSettings()">⚙️ Settings</button>
-        <button class="btn-ghost" style="padding:5px 12px;font-size:12px;" onclick="openImportModal()">↑ Import CSV</button>
+        <button class="btn-ghost" style="padding:5px 12px;font-size:12px;" onclick="toggleSettings()">Settings</button>
+        <button class="btn-ghost" style="padding:5px 12px;font-size:12px;" onclick="openImportModal()">Import CSV</button>
         <span class="prog-bar-pct" id="prog-pct">0%</span>
       </span>
     </div>
@@ -358,7 +358,7 @@ tr.editing-row td { background: var(--sky-light) !important; }
       </div>
     </div>
     <div id="charts-body">
-      <div class="chart-empty">Log your first session to start tracking 🌸</div>
+      <div class="chart-empty">Log your first session to start tracking.</div>
     </div>
   </div>
 
@@ -369,7 +369,7 @@ tr.editing-row td { background: var(--sky-light) !important; }
       <span style="font-size:12px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;" id="session-count"></span>
     </div>
     <div id="history-container">
-      <div class="hist-empty">No sessions logged yet 🌸</div>
+      <div class="hist-empty">No sessions logged yet.</div>
     </div>
   </div>
 
@@ -377,7 +377,7 @@ tr.editing-row td { background: var(--sky-light) !important; }
   <div class="dash-section">
     <div class="dash-section-title">Practice Exams</div>
     <div id="exam-container">
-      <div class="hist-empty">No practice exams logged yet 🌸</div>
+      <div class="hist-empty">No practice exams logged yet.</div>
     </div>
   </div>
 
@@ -392,7 +392,7 @@ tr.editing-row td { background: var(--sky-light) !important; }
     </div>
   </div>
 
-  <footer class="footer"><div>Step 1 Study Hub · 🌸</div><div id="footer-date"></div></footer>
+  <footer class="footer"><div>Step 1 Study Hub</div><div id="footer-date"></div></footer>
 </div>
 
 <!-- ── PACE MODAL ── -->
@@ -440,9 +440,9 @@ tr.editing-row td { background: var(--sky-light) !important; }
         <div style="flex:1;">
           <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Priority</label>
           <select id="weak-priority" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;">
-            <option value="high">🔴 High</option>
-            <option value="med" selected>🟡 Medium</option>
-            <option value="low">🟢 Low</option>
+            <option value="high">High</option>
+            <option value="med" selected>Medium</option>
+            <option value="low">Low</option>
           </select>
         </div>
       </div>
@@ -491,7 +491,7 @@ tr.editing-row td { background: var(--sky-light) !important; }
     </div>
     <div class="drop-zone" id="drop-zone"
       onclick="document.getElementById('csv-input').click()">
-      <div class="drop-zone-icon">📂</div>
+      <div class="drop-zone-icon" style="font-size:28px;color:var(--muted);">↑</div>
       <div class="drop-zone-text">Drop CSV here or <span>click to browse</span></div>
       <div class="drop-zone-sub">UWorld exports, spreadsheets, any CSV</div>
       <input type="file" id="csv-input" accept=".csv,.txt" style="display:none;" onchange="handleFileSelect(this)"/>
@@ -835,7 +835,7 @@ function renderChart() {
   const data = groupEntries(chartView);
 
   if (!data.length) {
-    body.innerHTML = '<div class="chart-empty">Log your first session to start tracking 🌸</div>';
+    body.innerHTML = '<div class="chart-empty">Log your first session to start tracking.</div>';
     if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
     return;
   }
@@ -846,8 +846,8 @@ function renderChart() {
   const datasets = [{
     label: 'Questions',
     data: data.map(d => d.qs),
-    backgroundColor: 'rgba(106,174,214,0.7)',
-    borderColor: 'rgba(106,174,214,1)',
+    backgroundColor: 'rgba(210,100,120,0.65)',
+    borderColor: 'rgba(210,100,120,1)',
     borderWidth: 1, borderRadius: 4,
   }];
 
@@ -884,7 +884,7 @@ function renderHistory() {
   const count = document.getElementById('session-count');
 
   if (!entries.length) {
-    el.innerHTML = '<div class="hist-empty">No sessions logged yet 🌸</div>';
+    el.innerHTML = '<div class="hist-empty">No sessions logged yet.</div>';
     if (count) count.textContent = '';
     return;
   }
@@ -947,7 +947,7 @@ function confirmDelete(id) {
 // ── Render exams ──────────────────────────────────────────
 function renderExams() {
   const el = document.getElementById('exam-container');
-  if (!exams.length) { el.innerHTML = '<div class="hist-empty">No practice exams logged yet 🌸</div>'; return; }
+  if (!exams.length) { el.innerHTML = '<div class="hist-empty">No practice exams logged yet.</div>'; return; }
 
   const rows = [...exams].reverse().map(e => {
     const dateStr = new Date(e.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
@@ -1014,7 +1014,7 @@ function renderWeak() {
     <div class="weak-item ${w.priority==='med'?'med':w.priority==='low'?'low':''}">
       <div style="flex:1;">
         <div class="weak-name">${w.topic}</div>
-        <div class="weak-meta">${w.subject} · ${w.priority==='high'?'🔴 High':w.priority==='low'?'🟢 Low':'🟡 Medium'}</div>
+        <div class="weak-meta">${w.subject} · ${w.priority==='high'?'High priority':w.priority==='low'?'Low priority':'Medium priority'}</div>
       </div>
       ${w.pct !== null && w.pct !== undefined ? `<div class="weak-pct">${w.pct}%</div>` : ''}
       <div style="display:flex;gap:4px;">
@@ -1085,9 +1085,9 @@ function showPaceModal() {
     const calDays   = Math.max(0, Math.round((finish - now) / 86400000));
     const studyDays = Math.round(calDays * (settings.studyDays.length || 5) / 7);
     const qDay      = studyDays > 0 ? Math.ceil(remaining / studyDays) : '—';
-    html += paceRow('Days until finish date', calDays, 'var(--fuji)');
-    html += paceRow(`Study days (${settings.studyDays.length} days/wk)`, studyDays, 'var(--fuji)');
-    html += paceRow('Questions / study day', qDay, 'var(--sky)');
+    html += paceRow('Days until finish date', calDays, 'var(--gold)');
+    html += paceRow(`Study days (${settings.studyDays.length} days/wk)`, studyDays, 'var(--gold)');
+    html += paceRow('Questions / study day', qDay, 'var(--sakura2)');
   }
 
   if (examDays !== null) {
@@ -1097,7 +1097,7 @@ function showPaceModal() {
   }
 
   if (!settings.finishBy && examDays === null) {
-    html += `<div style="color:var(--muted);font-size:13px;margin-top:8px;">Set a finish date in ⚙️ Settings or set your exam date in the nav to calculate pace.</div>`;
+    html += `<div style="color:var(--muted);font-size:13px;margin-top:8px;">Set a finish date in Settings or set your exam date in the nav to calculate pace.</div>`;
   }
 
   html += '</div>';
@@ -1105,7 +1105,7 @@ function showPaceModal() {
   openModal('pace-modal');
 }
 
-function paceRow(label, val, color = 'var(--sky)') {
+function paceRow(label, val, color = 'var(--ink)') {
   return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border2);">
     <span style="font-size:14px;color:var(--ink2);">${label}</span>
     <strong style="font-family:'Playfair Display',serif;font-size:20px;color:${color};">${val}</strong>
