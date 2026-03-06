@@ -5,628 +5,1212 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="style.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <title>Dashboard · Step 1 Hub</title>
 <style>
-  .tab-bar { display:flex; gap:4px; margin-bottom:24px; flex-wrap:wrap; }
-  .tab-btn {
-    padding:8px 18px; border-radius:99px; border:1px solid var(--border);
-    background:var(--surface); font-size:13px; font-weight:600; color:var(--ink2);
-    cursor:pointer; transition:all .15s;
-  }
-  .tab-btn.active { background:var(--sky); color:#fff; border-color:var(--sky); }
-  .tab-pane { display:none; }
-  .tab-pane.active { display:block; }
+/* ── Dashboard-specific styles ───────────────────────────── */
+.dash-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 24px 28px;
+  margin-bottom: 18px;
+}
+.dash-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 600;
+  margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px;
+}
 
-  .score-input-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; margin-bottom:20px; }
-  .score-input-card {
-    background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:16px;
-  }
-  .score-input-card label { display:block; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-  .score-input-card input, .score-input-card select {
-    width:100%; padding:8px 12px; border:1px solid var(--border); border-radius:var(--r);
-    font-size:14px; background:var(--bg); color:var(--ink); outline:none;
-  }
-  .score-input-card input:focus { border-color:var(--sky); }
+/* ── Log tabs ────────────────────────────────────────────── */
+.log-tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.log-tab {
+  padding: 7px 18px; border-radius: 99px;
+  border: 1px solid var(--border); background: transparent;
+  font-size: 13px; font-weight: 600; color: var(--ink2);
+  cursor: pointer; transition: all .15s;
+}
+.log-tab.active { background: var(--sky); color: #fff; border-color: var(--sky); }
 
-  .weakness-bar { height:8px; background:var(--border2); border-radius:99px; margin-top:4px; overflow:hidden; }
-  .weakness-bar-fill { height:100%; border-radius:99px; }
-  .chart-wrap { background:var(--surface); border:1px solid var(--border); border-radius:var(--r-lg); padding:20px; margin-bottom:16px; }
-  .mini-chart { height:120px; display:flex; align-items:flex-end; gap:6px; }
-  .bar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
-  .bar-fill { width:100%; border-radius:6px 6px 0 0; min-height:4px; transition:height .4s; }
-  .bar-label { font-size:10px; color:var(--muted); text-align:center; }
-  .bar-val { font-size:10px; font-weight:700; color:var(--ink2); }
+/* ── Log row ─────────────────────────────────────────────── */
+.log-row {
+  display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;
+}
+.log-field { display: flex; flex-direction: column; gap: 5px; }
+.log-field label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--muted);
+}
+.log-field input, .log-field select {
+  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--r);
+  font-size: 14px; background: var(--bg); color: var(--ink);
+  outline: none; transition: border-color .15s; font-family: inherit;
+  min-width: 110px;
+}
+.log-field input:focus, .log-field select:focus { border-color: var(--sky); }
+.log-field.wide { flex: 1; min-width: 160px; }
+.log-btn {
+  padding: 9px 22px; border-radius: var(--r);
+  background: var(--sakura2); color: #fff; border: none;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: opacity .15s, transform .15s;
+  white-space: nowrap; align-self: flex-end;
+}
+.log-btn:hover { opacity: .88; transform: translateY(-1px); }
+.btn-ghost {
+  padding: 9px 16px; border-radius: var(--r);
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--border); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .15s; white-space: nowrap; align-self: flex-end;
+}
+.btn-ghost:hover { background: var(--surface2); color: var(--ink2); }
+.hidden-panel { display: none !important; }
 
-  .uworld-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border2); }
-  .uworld-row:last-child { border:none; }
-  .uworld-subject { font-size:13px; font-weight:600; min-width:160px; }
-  .uworld-nums { font-size:12px; color:var(--muted); min-width:80px; }
-  .uworld-bar-wrap { flex:1; background:var(--border2); border-radius:99px; height:8px; overflow:hidden; }
-  .uworld-bar-inner { height:100%; border-radius:99px; transition:width .5s ease; }
-  .uworld-pct { font-size:13px; font-weight:700; min-width:40px; text-align:right; }
+/* ── Progress strip ──────────────────────────────────────── */
+.prog-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px; margin-bottom: 18px;
+}
+.prog-stat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 18px 20px;
+  text-align: center;
+}
+.prog-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px; font-weight: 700; line-height: 1;
+  color: var(--sky);
+}
+.prog-stat-lbl { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-top: 5px; }
+.prog-stat.clickable { cursor: pointer; transition: box-shadow .15s; }
+.prog-stat.clickable:hover { box-shadow: var(--shadow-md); }
+
+/* ── Progress bar ────────────────────────────────────────── */
+.prog-bar-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 20px 24px; margin-bottom: 18px; }
+.prog-bar-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+.prog-bar-label { font-size: 13px; font-weight: 600; color: var(--ink2); }
+.prog-bar-pct { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--sky); }
+.prog-bg { background: var(--border2); border-radius: 99px; height: 10px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--sky), var(--fuji)); transition: width .6s ease; }
+.prog-bar-sub { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 6px; }
+.edit-prog-btn {
+  font-size: 11px; font-weight: 600; color: var(--sakura2);
+  background: none; border: none; cursor: pointer; padding: 0;
+}
+
+/* ── Chart area ──────────────────────────────────────────── */
+.charts-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+.chart-view-tabs { display: flex; gap: 4px; }
+.chart-view-tab {
+  padding: 5px 14px; border-radius: 99px; font-size: 12px; font-weight: 600;
+  border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all .15s;
+}
+.chart-view-tab.active { background: var(--sky); color: #fff; border-color: var(--sky); }
+.chart-canvas-wrap { position: relative; height: 200px; }
+.chart-empty { color: var(--muted); font-size: 14px; text-align: center; padding: 40px 0; }
+
+/* ── History table ───────────────────────────────────────── */
+.hist-table { width: 100%; border-collapse: collapse; }
+.hist-table th { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+.hist-table td { padding: 10px 12px; border-bottom: 1px solid var(--border2); font-size: 13.5px; vertical-align: middle; }
+.hist-table tr:last-child td { border-bottom: none; }
+.hist-table tr:hover td { background: var(--surface2); }
+.score-chip {
+  display: inline-block; font-size: 12px; font-weight: 700;
+  padding: 3px 10px; border-radius: 99px;
+}
+.chip-green  { background: var(--sage-light); color: var(--sage); }
+.chip-yellow { background: var(--gold-light); color: var(--gold); }
+.chip-red    { background: var(--sakura-light); color: var(--sakura2); }
+.chip-blue   { background: var(--sky-light); color: var(--sky); }
+.hist-empty { color: var(--muted); font-size: 14px; text-align: center; padding: 32px; }
+.row-act-btn {
+  background: none; border: none; color: var(--dim); font-size: 16px; cursor: pointer; padding: 2px 5px;
+  transition: color .15s;
+}
+.row-act-btn:hover { color: var(--sakura2); }
+
+/* ── Weaknesses ──────────────────────────────────────────── */
+.weak-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 16px; border-radius: var(--r);
+  border: 1px solid var(--border); border-left: 3px solid var(--sakura2);
+  margin-bottom: 8px; background: var(--surface);
+}
+.weak-item.med  { border-left-color: var(--gold); }
+.weak-item.low  { border-left-color: var(--sage); }
+.weak-name { font-weight: 600; font-size: 14px; }
+.weak-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.weak-pct  { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--sakura2); flex-shrink: 0; }
+.weak-item.med .weak-pct { color: var(--gold); }
+.weak-item.low .weak-pct { color: var(--sage); }
+
+/* ── Pace modal ──────────────────────────────────────────── */
+.pace-modal { max-width: 380px; }
+.pace-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border2); font-size: 14px; }
+.pace-row:last-child { border: none; }
+.pace-row strong { color: var(--sky); font-family: 'Playfair Display', serif; font-size: 18px; }
+
+/* ── Settings panel ──────────────────────────────────────── */
+.settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.settings-field label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+.settings-field input, .settings-field select {
+  width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--r);
+  font-size: 14px; background: var(--bg); color: var(--ink); outline: none; font-family: inherit;
+}
+.day-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.day-chip {
+  padding: 5px 12px; border-radius: 99px; font-size: 12px; font-weight: 600;
+  border: 1px solid var(--border); background: var(--surface2); color: var(--muted);
+  cursor: pointer; transition: all .15s; user-select: none;
+}
+.day-chip.active { background: var(--sky); color: #fff; border-color: var(--sky); }
+
+/* ── Import ──────────────────────────────────────────────── */
+.drop-zone {
+  border: 2px dashed var(--border); border-radius: var(--r-lg);
+  padding: 32px; text-align: center; cursor: pointer;
+  transition: border-color .15s, background .15s; margin-top: 16px;
+}
+.drop-zone:hover, .drop-zone.drag-over { border-color: var(--sky); background: var(--sky-light); }
+.drop-zone-icon { font-size: 32px; margin-bottom: 8px; }
+.drop-zone-text { font-size: 14px; color: var(--ink2); }
+.drop-zone-text span { color: var(--sky); font-weight: 600; }
+.drop-zone-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.prompt-code { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 12px; font-family: 'DM Mono', monospace; display: block; margin-top: 6px; line-height: 1.8; }
+.mapper-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 16px 0; }
+.mapper-field label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+.mapper-field select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--r); font-size: 13px; background: var(--bg); color: var(--ink); font-family: inherit; }
+.csv-preview-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 12px; overflow-x: auto; display: block; }
+.csv-preview-table th { background: var(--surface2); padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+.csv-preview-table td { padding: 5px 10px; border-bottom: 1px solid var(--border2); }
+.success-box { text-align: center; padding: 24px 0; }
+.success-icon { font-size: 40px; margin-bottom: 12px; }
+.success-msg { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+.success-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+
+/* ── Toast ───────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: var(--ink); color: #fff; padding: 10px 22px; border-radius: 99px;
+  font-size: 13px; font-weight: 600; z-index: 9999; opacity: 0;
+  transition: opacity .25s, transform .25s; pointer-events: none; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 600px) {
+  .log-row { flex-direction: column; }
+  .log-field input, .log-field select { min-width: unset; width: 100%; }
+  .mapper-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 <script src="nav.js"></script>
 
 <div class="wrap">
-  <header class="hero" style="padding:40px 0 28px;">
-    <div class="hero-eyebrow">Performance Analytics</div>
+  <header class="hero" style="padding:40px 0 24px;">
+    <div class="hero-eyebrow">Question Bank · Practice Exams</div>
     <h1 class="hero-name" style="font-size:clamp(28px,4vw,42px);">Study <em>Dashboard</em></h1>
   </header>
 
-  <!-- Top Stats -->
-  <div class="stats-grid" id="top-stats"></div>
-
-  <!-- Tabs -->
-  <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab('overview', this)">📊 Overview</button>
-    <button class="tab-btn" onclick="switchTab('scores', this)">📝 Test Scores</button>
-    <button class="tab-btn" onclick="switchTab('uworld', this)">🎯 UWorld Progress</button>
-    <button class="tab-btn" onclick="switchTab('weaknesses', this)">⚠️ Weak Points</button>
-    <button class="tab-btn" onclick="switchTab('plan', this)">📅 Study Plan</button>
-  </div>
-
-  <!-- ── OVERVIEW TAB ── -->
-  <div class="tab-pane active" id="tab-overview">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" class="responsive-2col">
-      <div class="chart-wrap">
-        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:14px;">Score Trend</div>
-        <div class="mini-chart" id="score-chart"></div>
+  <!-- ── SETTINGS ── -->
+  <div class="dash-section" id="settings-section" style="display:none;">
+    <div class="dash-section-title">
+      ⚙️ Settings
+      <button class="btn-ghost" onclick="toggleSettings()">Close</button>
+    </div>
+    <div class="settings-grid">
+      <div class="settings-field">
+        <label>Total QBank Size</label>
+        <input type="number" id="setup-total" value="3661" min="1"/>
       </div>
-      <div class="chart-wrap">
-        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:14px;">Subject Performance</div>
-        <div id="subject-overview"></div>
+      <div class="settings-field">
+        <label>Finish QBank By</label>
+        <input type="date" id="setup-finish"/>
       </div>
     </div>
-    <div class="chart-wrap">
-      <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:600;margin-bottom:16px;">Top Weak Points to Review</div>
-      <div id="overview-weaknesses"></div>
+    <div class="settings-field" style="margin-bottom:14px;">
+      <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Study Days Per Week</label>
+      <div class="day-chips" id="day-chips"></div>
     </div>
+    <button class="log-btn" onclick="saveSettings()">Save Settings ✦</button>
   </div>
 
-  <!-- ── SCORES TAB ── -->
-  <div class="tab-pane" id="tab-scores">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin-bottom:20px;">
-      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:16px;">Add a Score</div>
-      <div class="score-input-grid">
-        <div class="score-input-card">
-          <label>Test Type</label>
-          <select id="score-type">
-            <option value="NBME">NBME Practice Exam</option>
-            <option value="UWSA">UWSA 1 / UWSA 2</option>
-            <option value="Free120">Free 120</option>
-            <option value="UWorld Block">UWorld Block %</option>
-            <option value="Bootcamp">Bootcamp Block %</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="score-input-card">
-          <label>Score / %</label>
-          <input type="number" id="score-value" placeholder="e.g. 245 or 78" min="0" max="300"/>
-        </div>
-        <div class="score-input-card">
+  <!-- ── LOG ENTRY ── -->
+  <div class="dash-section">
+    <div class="log-tabs">
+      <button class="log-tab active" id="tab-qs" onclick="setLogMode('questions')">Log Questions</button>
+      <button class="log-tab" id="tab-exam" onclick="setLogMode('exam')">Log Practice Exam</button>
+    </div>
+
+    <div id="panel-questions">
+      <div class="log-row">
+        <div class="log-field">
           <label>Date</label>
-          <input type="date" id="score-date"/>
+          <input type="date" id="log-date"/>
         </div>
-        <div class="score-input-card">
-          <label>Notes (optional)</label>
-          <input type="text" id="score-notes" placeholder="e.g. ran out of time on cardio"/>
+        <div class="log-field">
+          <label>Questions Done</label>
+          <input type="number" id="log-qs" min="1" max="120" placeholder="e.g. 40"/>
         </div>
-      </div>
-      <button class="btn-save" onclick="addScore()">Add Score ✦</button>
-    </div>
-
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;">
-      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;">Score History</div>
-        <button onclick="clearScores()" style="font-size:12px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:99px;padding:4px 12px;cursor:pointer;">Clear All</button>
-      </div>
-      <div style="overflow-x:auto;">
-        <table class="score-table" style="width:100%;">
-          <thead><tr><th>Type</th><th>Score</th><th>Date</th><th>Notes</th><th></th></tr></thead>
-          <tbody id="score-tbody"></tbody>
-        </table>
+        <div class="log-field">
+          <label>% Correct</label>
+          <input type="number" id="log-score" min="0" max="100" placeholder="optional"/>
+        </div>
+        <button class="log-btn" id="btn-log-qs" onclick="logEntry()">Log ✦</button>
+        <button class="btn-ghost hidden-panel" id="cancel-edit" onclick="cancelEdit()">Cancel</button>
       </div>
     </div>
-  </div>
 
-  <!-- ── UWORLD TAB ── -->
-  <div class="tab-pane" id="tab-uworld">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin-bottom:20px;">
-      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:6px;">UWorld Question Bank Progress</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Track questions completed and % correct by subject. Total UWorld Step 1: ~3,200 questions.</div>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;" class="responsive-3col">
-        <div>
-          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Total Questions Done</label>
-          <input class="search-input" type="number" id="uw-total-done" placeholder="e.g. 840" style="border-radius:var(--r);" oninput="saveUWorldTotal()"/>
+    <div id="panel-exam" class="hidden-panel">
+      <div class="log-row">
+        <div class="log-field">
+          <label>Date</label>
+          <input type="date" id="exam-date"/>
         </div>
-        <div>
-          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Total QBank Size</label>
-          <input class="search-input" type="number" id="uw-total-size" placeholder="3200" style="border-radius:var(--r);" oninput="saveUWorldTotal()"/>
-        </div>
-        <div>
-          <label style="display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Overall % Correct</label>
-          <input class="search-input" type="number" id="uw-overall-pct" placeholder="e.g. 67" style="border-radius:var(--r);" oninput="saveUWorldTotal()"/>
-        </div>
-      </div>
-
-      <div style="font-weight:600;font-size:14px;margin-bottom:12px;color:var(--ink2);">By Subject:</div>
-      <div id="uw-subjects-input"></div>
-      <button class="btn-save" style="margin-top:16px;" onclick="saveSubjectData()">Save Progress ✦</button>
-    </div>
-
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;">
-      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:16px;">Subject Breakdown</div>
-      <div id="uw-chart"></div>
-    </div>
-  </div>
-
-  <!-- ── WEAKNESSES TAB ── -->
-  <div class="tab-pane" id="tab-weaknesses">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;margin-bottom:20px;">
-      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;margin-bottom:6px;">Add Weakness / Wrong Answer Pattern</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:16px;">Log topics where you're consistently getting questions wrong.</div>
-      <div class="score-input-grid">
-        <div class="score-input-card">
-          <label>Subject / System</label>
-          <select id="weak-subject">
-            <option>Cardiology</option><option>Pulmonology</option><option>Nephrology</option>
-            <option>GI/Hepatology</option><option>Endocrine</option><option>Neurology</option>
-            <option>Psychiatry</option><option>Pharmacology</option><option>Microbiology</option>
-            <option>Immunology</option><option>Biochemistry</option><option>Genetics</option>
-            <option>Pathology</option><option>Hematology/Oncology</option><option>MSK/Rheum</option>
-            <option>Reproductive</option><option>Embryology</option><option>Anatomy</option>
-            <option>Physiology</option><option>Other</option>
+        <div class="log-field wide">
+          <label>Exam Name</label>
+          <select id="exam-name">
+            <option value="">Select exam…</option>
+            <option>NBME 25</option><option>NBME 26</option><option>NBME 27</option>
+            <option>NBME 28</option><option>NBME 29</option><option>NBME 30</option>
+            <option>NBME 31</option><option>Free 120</option>
+            <option>UWorld Self-Assessment 1</option>
+            <option>UWorld Self-Assessment 2</option>
+            <option>UWorld Self-Assessment 3</option>
+            <option>Amboss SA</option><option>Other</option>
           </select>
         </div>
-        <div class="score-input-card">
-          <label>Specific Topic</label>
-          <input type="text" id="weak-topic" placeholder="e.g. Antiarrhythmics, Renal tubular acidosis"/>
+        <div class="log-field">
+          <label>% Correct (EPC)</label>
+          <input type="number" id="exam-epc" min="0" max="100" placeholder="e.g. 72"/>
         </div>
-        <div class="score-input-card">
-          <label>% Correct (if known)</label>
-          <input type="number" id="weak-pct" placeholder="e.g. 42" min="0" max="100"/>
+        <div class="log-field">
+          <label>Est. Pass % (EPP)</label>
+          <input type="number" id="exam-epp" min="0" max="100" placeholder="e.g. 99"/>
         </div>
-        <div class="score-input-card">
-          <label>Priority</label>
-          <select id="weak-priority">
-            <option value="high">🔴 High Priority</option>
+        <button class="log-btn" id="btn-log-exam" onclick="logExam()">Log ✦</button>
+        <button class="btn-ghost hidden-panel" id="cancel-edit-exam" onclick="cancelEditExam()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROGRESS STATS ── -->
+  <div class="prog-strip">
+    <div class="prog-stat">
+      <div class="prog-stat-num" id="stat-done">0</div>
+      <div class="prog-stat-lbl">Questions Done</div>
+    </div>
+    <div class="prog-stat">
+      <div class="prog-stat-num" id="stat-remain" style="color:var(--muted);">0</div>
+      <div class="prog-stat-lbl">Remaining</div>
+    </div>
+    <div class="prog-stat">
+      <div class="prog-stat-num" id="stat-avg" style="color:var(--sage);">—</div>
+      <div class="prog-stat-lbl">Avg % Correct</div>
+    </div>
+    <div class="prog-stat clickable" onclick="showPaceModal()" title="Click for pace calculator">
+      <div class="prog-stat-num" id="stat-needed" style="color:var(--gold);">—</div>
+      <div class="prog-stat-lbl">Q / Day Needed <span style="font-size:9px;display:block;color:var(--dim);">tap for calc</span></div>
+    </div>
+  </div>
+
+  <!-- ── PROGRESS BAR ── -->
+  <div class="prog-bar-section">
+    <div class="prog-bar-head">
+      <span class="prog-bar-label">
+        QBank Completion
+        <button class="edit-prog-btn" onclick="promptEditProgress()" style="margin-left:10px;">✎ Edit Progress</button>
+      </span>
+      <span style="display:flex;align-items:center;gap:10px;">
+        <button class="btn-ghost" style="padding:5px 12px;font-size:12px;" onclick="toggleSettings()">⚙️ Settings</button>
+        <button class="btn-ghost" style="padding:5px 12px;font-size:12px;" onclick="openImportModal()">↑ Import CSV</button>
+        <span class="prog-bar-pct" id="prog-pct">0%</span>
+      </span>
+    </div>
+    <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%;"></div></div>
+    <div class="prog-bar-sub">
+      <span id="prog-sub-left"></span>
+      <span id="prog-sub-right"></span>
+    </div>
+  </div>
+
+  <!-- ── CHARTS ── -->
+  <div class="dash-section">
+    <div class="charts-head">
+      <span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;">Activity Charts</span>
+      <div class="chart-view-tabs">
+        <button class="chart-view-tab active" onclick="setChartView('daily',this)">Daily</button>
+        <button class="chart-view-tab" onclick="setChartView('weekly',this)">Weekly</button>
+        <button class="chart-view-tab" onclick="setChartView('monthly',this)">Monthly</button>
+      </div>
+    </div>
+    <div id="charts-body">
+      <div class="chart-empty">Log your first session to start tracking 🌸</div>
+    </div>
+  </div>
+
+  <!-- ── SESSION HISTORY ── -->
+  <div class="dash-section">
+    <div class="dash-section-title">
+      Session Log
+      <span style="font-size:12px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;" id="session-count"></span>
+    </div>
+    <div id="history-container">
+      <div class="hist-empty">No sessions logged yet 🌸</div>
+    </div>
+  </div>
+
+  <!-- ── PRACTICE EXAMS ── -->
+  <div class="dash-section">
+    <div class="dash-section-title">Practice Exams</div>
+    <div id="exam-container">
+      <div class="hist-empty">No practice exams logged yet 🌸</div>
+    </div>
+  </div>
+
+  <!-- ── WEAK POINTS ── -->
+  <div class="dash-section">
+    <div class="dash-section-title">
+      Weak Points
+      <button class="log-btn" style="font-size:12px;padding:7px 14px;" onclick="openWeakModal()">+ Add</button>
+    </div>
+    <div id="weak-list">
+      <div class="hist-empty">No weak points logged yet. Add topics you keep missing.</div>
+    </div>
+  </div>
+
+  <footer class="footer"><div>Step 1 Study Hub · 🌸</div><div id="footer-date"></div></footer>
+</div>
+
+<!-- ── PACE MODAL ── -->
+<div class="modal-overlay" id="pace-modal">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-header">
+      <div class="modal-title">Pace Calculator</div>
+      <button onclick="closeModal('pace-modal')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--dim);">&times;</button>
+    </div>
+    <div id="pace-content" style="margin-top:8px;"></div>
+  </div>
+</div>
+
+<!-- ── WEAK POINT MODAL ── -->
+<div class="modal-overlay" id="weak-modal">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-header">
+      <div class="modal-title" id="weak-modal-title">Add Weak Point</div>
+      <button onclick="closeModal('weak-modal')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--dim);">&times;</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px;">
+      <div>
+        <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Subject / System</label>
+        <select id="weak-subject" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;">
+          <option>Cardiology</option><option>Pulmonology</option><option>Nephrology</option>
+          <option>GI / Hepatology</option><option>Endocrine</option><option>Neurology</option>
+          <option>Psychiatry</option><option>Pharmacology</option><option>Microbiology</option>
+          <option>Immunology</option><option>Biochemistry</option><option>Genetics</option>
+          <option>Hematology / Oncology</option><option>MSK / Rheum</option>
+          <option>Reproductive</option><option>Pathology</option><option>Anatomy</option>
+          <option>Physiology</option><option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Specific Topic</label>
+        <input type="text" id="weak-topic" placeholder="e.g. Antiarrhythmics, Renal tubular acidosis"
+          style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;outline:none;"/>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <div style="flex:1;">
+          <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">% Correct (if known)</label>
+          <input type="number" id="weak-pct" placeholder="e.g. 42" min="0" max="100"
+            style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;outline:none;"/>
+        </div>
+        <div style="flex:1;">
+          <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Priority</label>
+          <select id="weak-priority" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;">
+            <option value="high">🔴 High</option>
             <option value="med" selected>🟡 Medium</option>
             <option value="low">🟢 Low</option>
           </select>
         </div>
       </div>
-      <button class="btn-save" onclick="addWeakness()">Add Weakness ✦</button>
     </div>
-
-    <div id="weaknesses-list"></div>
-  </div>
-
-  <!-- ── STUDY PLAN TAB ── -->
-  <div class="tab-pane" id="tab-plan">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;margin-bottom:20px;">
-      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;margin-bottom:6px;">Daily Question Goal Calculator</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Based on your exam date and current UWorld progress.</div>
-      <div id="plan-content"></div>
-    </div>
-
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;">
-      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:600;margin-bottom:16px;">Recommended Daily Schedule</div>
-      <div id="schedule-content"></div>
+    <div class="modal-btns" style="margin-top:20px;">
+      <button class="btn-cancel" onclick="closeModal('weak-modal')">Cancel</button>
+      <button class="btn-save" onclick="saveWeak()">Save ✦</button>
     </div>
   </div>
-
 </div>
 
-<style>
-@media (max-width:700px) {
-  .responsive-2col { grid-template-columns:1fr !important; }
-  .responsive-3col { grid-template-columns:1fr 1fr !important; }
-}
-</style>
+<!-- ── EDIT PROGRESS MODAL ── -->
+<div class="modal-overlay" id="edit-progress-modal">
+  <div class="modal" style="max-width:360px;">
+    <div class="modal-header">
+      <div class="modal-title">Edit QBank Progress</div>
+      <button onclick="closeModal('edit-progress-modal')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--dim);">&times;</button>
+    </div>
+    <div class="modal-sub" style="margin-bottom:16px;">Manually set how many unique questions you've completed (overrides the logged total).</div>
+    <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Unique Questions Done</label>
+    <input type="number" id="edit-unique-input" min="0"
+      style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--r);font-size:15px;background:var(--bg);font-family:inherit;outline:none;"/>
+    <div class="modal-btns" style="margin-top:20px;">
+      <button class="btn-cancel" onclick="closeModal('edit-progress-modal')">Cancel</button>
+      <button class="btn-save" onclick="saveEditProgress()">Save ✦</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── IMPORT MODAL ── -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header">
+      <div class="modal-title">Import Past Data</div>
+      <button onclick="closeModal('import-modal')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--dim);">&times;</button>
+    </div>
+    <p style="font-size:13px;color:var(--ink2);margin-bottom:4px;">Upload a CSV with <strong>date</strong> and <strong>questions</strong> columns (score optional).</p>
+    <div style="background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:14px;margin-top:12px;font-size:13px;color:var(--ink2);">
+      <strong style="font-size:12px;">How to get your UWorld data:</strong>
+      <ol style="padding-left:18px;margin-top:6px;font-size:12px;line-height:2;color:var(--ink2);">
+        <li>Go to UWorld → <strong>Previous Tests</strong> → set Items/page to 100</li>
+        <li>Select all & copy the table</li>
+        <li>Paste into an AI with this prompt:</li>
+      </ol>
+      <code class="prompt-code">"Convert this UWorld data into a clean CSV with only three columns: Date, Questions, PercentCorrect. No other data."</code>
+    </div>
+    <div class="drop-zone" id="drop-zone"
+      onclick="document.getElementById('csv-input').click()">
+      <div class="drop-zone-icon">📂</div>
+      <div class="drop-zone-text">Drop CSV here or <span>click to browse</span></div>
+      <div class="drop-zone-sub">UWorld exports, spreadsheets, any CSV</div>
+      <input type="file" id="csv-input" accept=".csv,.txt" style="display:none;" onchange="handleFileSelect(this)"/>
+    </div>
+    <div id="col-mapper" class="hidden-panel">
+      <div style="font-size:12px;color:var(--muted);margin:12px 0 4px;" id="csv-file-info"></div>
+      <div class="mapper-grid" id="mapper-grid"></div>
+      <div id="csv-preview"></div>
+      <div class="modal-btns" style="margin-top:16px;">
+        <button class="btn-cancel" onclick="resetImport()">Clear</button>
+        <button class="btn-save" onclick="importCSV()">Import ✦</button>
+      </div>
+    </div>
+    <div id="import-success" class="hidden-panel">
+      <div class="success-box">
+        <div class="success-icon">✦</div>
+        <div class="success-msg" id="import-success-msg"></div>
+        <div class="success-sub">Stats, progress, and charts have been updated.</div>
+        <div style="display:flex;gap:10px;justify-content:center;">
+          <button class="btn-save" onclick="closeModal('import-modal')">Done</button>
+          <button class="btn-cancel" onclick="resetImport()">Re-import</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"></div>
 
 <script src="app.js"></script>
 <script>
-const UW_SUBJECTS = [
-  {name:'Cardiology', total:280},
-  {name:'Pulmonology', total:160},
-  {name:'Nephrology', total:200},
-  {name:'GI/Hepatology', total:220},
-  {name:'Endocrine', total:200},
-  {name:'Neurology', total:240},
-  {name:'Psychiatry', total:160},
-  {name:'Pharmacology', total:180},
-  {name:'Microbiology', total:240},
-  {name:'Immunology', total:120},
-  {name:'Biochemistry', total:180},
-  {name:'Hematology/Oncology', total:200},
-  {name:'MSK/Rheum', total:140},
-  {name:'Reproductive', total:140},
-  {name:'Pathology (General)', total:140},
-];
+/* ============================================================
+   DASHBOARD LOGIC
+   ============================================================ */
 
-function switchTab(id, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab-'+id).classList.add('active');
-  if (btn) btn.classList.add('active');
-  renderAll();
+const K = {
+  entries:  'uw-entries',
+  exams:    'uw-exams',
+  settings: 'uw-settings',
+  unique:   'uw-unique-done',
+  weak:     'uw-weaknesses',
+};
+
+const DEFAULT_SETTINGS = {
+  total: 3661,
+  finishBy: '',
+  studyDays: [1,2,3,4,5],
+};
+
+let entries    = [];
+let exams      = [];
+let settings   = {};
+let uniqueDone = 0;
+let weaknesses = [];
+let chartView  = 'daily';
+let chartInstance = null;
+let editingId     = null;
+let editingExamId = null;
+let weakEditingId = null;
+
+// ── Load / Save ───────────────────────────────────────────
+function loadAll() {
+  entries    = Store.get(K.entries, []);
+  exams      = Store.get(K.exams, []);
+  settings   = { ...DEFAULT_SETTINGS, ...Store.get(K.settings, {}) };
+  uniqueDone = Store.get(K.unique, 0);
+  weaknesses = Store.get(K.weak, []);
 }
 
-// ── Score Management ──────────────────────────────────────
-function getScores() { return Store.get('dashboard-scores', []); }
-function saveScores(s) { Store.set('dashboard-scores', s); }
-
-function addScore() {
-  const type = document.getElementById('score-type').value;
-  const val = parseFloat(document.getElementById('score-value').value);
-  const date = document.getElementById('score-date').value;
-  const notes = document.getElementById('score-notes').value;
-  if (!val || !date) { alert('Please enter a score and date.'); return; }
-  const scores = getScores();
-  scores.push({type, val, date, notes, id: Date.now()});
-  scores.sort((a,b) => a.date.localeCompare(b.date));
-  saveScores(scores);
-  document.getElementById('score-value').value = '';
-  document.getElementById('score-notes').value = '';
-  renderAll();
+function saveAll() {
+  Store.set(K.entries, entries);
+  Store.set(K.exams, exams);
+  Store.set(K.settings, settings);
+  Store.set(K.unique, uniqueDone);
+  Store.set(K.weak, weaknesses);
 }
 
-function deleteScore(id) {
-  saveScores(getScores().filter(s => s.id !== id));
-  renderAll();
-}
-
-function clearScores() {
-  if (!confirm('Clear all scores?')) return;
-  saveScores([]); renderAll();
-}
-
-function getScoreBadge(type, val) {
-  let isPercent = ['UWorld Block','Bootcamp'].some(t => type.includes(t));
-  if (isPercent) {
-    if (val >= 70) return 'score-green';
-    if (val >= 55) return 'score-yellow';
-    return 'score-red';
+// ── Settings ──────────────────────────────────────────────
+function toggleSettings() {
+  const s = document.getElementById('settings-section');
+  const isHidden = s.style.display === 'none' || !s.style.display;
+  if (isHidden) {
+    document.getElementById('setup-total').value = settings.total;
+    document.getElementById('setup-finish').value = settings.finishBy;
+    renderDayChips();
+    s.style.display = 'block';
+  } else {
+    s.style.display = 'none';
   }
-  if (val >= 240) return 'score-green';
-  if (val >= 220) return 'score-yellow';
-  return 'score-red';
 }
 
-// ── UWorld Management ─────────────────────────────────────
-function getUWData() { return Store.get('uworld-progress', {done:0, total:3200, pct:0, subjects:{}}); }
-function saveUWorldTotal() {
-  const d = getUWData();
-  d.done = parseInt(document.getElementById('uw-total-done')?.value) || d.done;
-  d.total = parseInt(document.getElementById('uw-total-size')?.value) || d.total;
-  d.pct = parseInt(document.getElementById('uw-overall-pct')?.value) || d.pct;
-  Store.set('uworld-progress', d);
+function renderDayChips() {
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  document.getElementById('day-chips').innerHTML = days.map((d,i) =>
+    `<div class="day-chip ${settings.studyDays.includes(i)?'active':''}" data-day="${i}" onclick="toggleDay(this,${i})">${d}</div>`
+  ).join('');
 }
 
-function saveSubjectData() {
-  const d = getUWData();
-  UW_SUBJECTS.forEach(sub => {
-    const doneEl = document.getElementById('uw-sub-done-'+sub.name.replace(/\//g,'-'));
-    const pctEl = document.getElementById('uw-sub-pct-'+sub.name.replace(/\//g,'-'));
-    if (doneEl || pctEl) {
-      d.subjects[sub.name] = {
-        done: parseInt(doneEl?.value) || 0,
-        pct: parseInt(pctEl?.value) || 0,
-        total: sub.total
-      };
+function toggleDay(el, day) {
+  el.classList.toggle('active');
+  if (settings.studyDays.includes(day)) {
+    settings.studyDays = settings.studyDays.filter(d => d !== day);
+  } else {
+    settings.studyDays.push(day);
+    settings.studyDays.sort((a,b)=>a-b);
+  }
+}
+
+function saveSettings() {
+  settings.total    = parseInt(document.getElementById('setup-total').value) || 3661;
+  settings.finishBy = document.getElementById('setup-finish').value;
+  Store.set(K.settings, settings);
+  document.getElementById('settings-section').style.display = 'none';
+  renderAll();
+  showToast('Settings saved ✦');
+}
+
+// ── Log mode ──────────────────────────────────────────────
+function setLogMode(mode) {
+  const isQ = mode === 'questions';
+  document.getElementById('tab-qs').classList.toggle('active', isQ);
+  document.getElementById('tab-exam').classList.toggle('active', !isQ);
+  document.getElementById('panel-questions').classList.toggle('hidden-panel', !isQ);
+  document.getElementById('panel-exam').classList.toggle('hidden-panel', isQ);
+}
+
+// ── Log entry ─────────────────────────────────────────────
+function logEntry() {
+  const date  = document.getElementById('log-date').value;
+  const qs    = parseInt(document.getElementById('log-qs').value);
+  const score = parseFloat(document.getElementById('log-score').value);
+
+  if (!date) { showToast('Please select a date'); return; }
+  if (!qs || qs < 1) { showToast('Please enter questions done'); return; }
+
+  const scoreVal = isNaN(score) ? null : score;
+
+  if (editingId !== null) {
+    const idx = entries.findIndex(e => e.id === editingId);
+    if (idx !== -1) entries[idx] = { ...entries[idx], date, qs, score: scoreVal };
+    editingId = null;
+    document.getElementById('btn-log-qs').textContent = 'Log ✦';
+    document.getElementById('cancel-edit').classList.add('hidden-panel');
+  } else {
+    entries.push({ id: Date.now(), date, qs, score: scoreVal });
+  }
+
+  entries.sort((a,b) => a.date.localeCompare(b.date));
+  uniqueDone = entries.reduce((s,e) => s + e.qs, 0);
+  saveAll();
+  document.getElementById('log-qs').value = '';
+  document.getElementById('log-score').value = '';
+  renderAll();
+  showToast('Session logged ✦');
+}
+
+function cancelEdit() {
+  editingId = null;
+  document.getElementById('btn-log-qs').textContent = 'Log ✦';
+  document.getElementById('cancel-edit').classList.add('hidden-panel');
+  document.getElementById('log-qs').value = '';
+  document.getElementById('log-score').value = '';
+}
+
+function editEntry(id) {
+  const e = entries.find(e => e.id === id);
+  if (!e) return;
+  setLogMode('questions');
+  document.getElementById('log-date').value  = e.date;
+  document.getElementById('log-qs').value    = e.qs;
+  document.getElementById('log-score').value = e.score ?? '';
+  document.getElementById('btn-log-qs').textContent = 'Update ✦';
+  document.getElementById('cancel-edit').classList.remove('hidden-panel');
+  editingId = id;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteEntry(id) {
+  if (!confirm('Delete this session?')) return;
+  entries = entries.filter(e => e.id !== id);
+  uniqueDone = entries.reduce((s,e) => s + e.qs, 0);
+  saveAll(); renderAll();
+  showToast('Entry deleted');
+}
+
+// ── Log exam ──────────────────────────────────────────────
+function logExam() {
+  const date = document.getElementById('exam-date').value;
+  const name = document.getElementById('exam-name').value;
+  const epc  = parseFloat(document.getElementById('exam-epc').value);
+  const epp  = parseFloat(document.getElementById('exam-epp').value);
+
+  if (!date || !name) { showToast('Please select date and exam name'); return; }
+
+  const entry = {
+    id: editingExamId ?? Date.now(),
+    date, name,
+    epc: isNaN(epc) ? null : epc,
+    epp: isNaN(epp) ? null : epp,
+  };
+
+  if (editingExamId !== null) {
+    const idx = exams.findIndex(e => e.id === editingExamId);
+    if (idx !== -1) exams[idx] = entry;
+    editingExamId = null;
+    document.getElementById('btn-log-exam').textContent = 'Log ✦';
+    document.getElementById('cancel-edit-exam').classList.add('hidden-panel');
+  } else {
+    exams.push(entry);
+  }
+
+  exams.sort((a,b) => a.date.localeCompare(b.date));
+  saveAll();
+  document.getElementById('exam-epc').value = '';
+  document.getElementById('exam-epp').value = '';
+  renderAll();
+  showToast('Exam logged ✦');
+}
+
+function cancelEditExam() {
+  editingExamId = null;
+  document.getElementById('btn-log-exam').textContent = 'Log ✦';
+  document.getElementById('cancel-edit-exam').classList.add('hidden-panel');
+}
+
+function editExam(id) {
+  const e = exams.find(e => e.id === id);
+  if (!e) return;
+  setLogMode('exam');
+  document.getElementById('exam-date').value = e.date;
+  document.getElementById('exam-name').value = e.name;
+  document.getElementById('exam-epc').value  = e.epc ?? '';
+  document.getElementById('exam-epp').value  = e.epp ?? '';
+  document.getElementById('btn-log-exam').textContent = 'Update ✦';
+  document.getElementById('cancel-edit-exam').classList.remove('hidden-panel');
+  editingExamId = id;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteExam(id) {
+  if (!confirm('Delete this exam?')) return;
+  exams = exams.filter(e => e.id !== id);
+  saveAll(); renderAll();
+  showToast('Exam deleted');
+}
+
+// ── Render stats ──────────────────────────────────────────
+function renderStats() {
+  const total     = settings.total;
+  const done      = uniqueDone;
+  const remaining = Math.max(0, total - done);
+  const pct       = total ? Math.min(100, Math.round(done / total * 100)) : 0;
+
+  const scored = entries.filter(e => e.score !== null && e.score !== undefined);
+  const avg    = scored.length ? Math.round(scored.reduce((s,e) => s + e.score, 0) / scored.length) : null;
+
+  let needed = null;
+  if (settings.finishBy) {
+    const finish = new Date(settings.finishBy + 'T12:00:00');
+    const now = new Date(); now.setHours(0,0,0,0);
+    const calDays    = Math.max(0, Math.round((finish - now) / 86400000));
+    const studyDays  = Math.round(calDays * (settings.studyDays.length || 5) / 7);
+    needed = studyDays > 0 ? Math.ceil(remaining / studyDays) : remaining;
+  } else {
+    const examDays = getDaysRemaining();
+    if (examDays && examDays > 0) needed = Math.ceil(remaining / examDays);
+  }
+
+  document.getElementById('stat-done').textContent   = done.toLocaleString();
+  document.getElementById('stat-remain').textContent = remaining.toLocaleString();
+  document.getElementById('stat-avg').textContent    = avg !== null ? avg + '%' : '—';
+  document.getElementById('stat-needed').textContent = needed !== null ? needed : '—';
+
+  document.getElementById('prog-pct').textContent     = pct + '%';
+  document.getElementById('prog-fill').style.width    = pct + '%';
+  document.getElementById('prog-sub-left').textContent  = `${done.toLocaleString()} of ${total.toLocaleString()} questions`;
+  document.getElementById('prog-sub-right').textContent = remaining > 0 ? `${remaining.toLocaleString()} remaining` : '🎉 Complete!';
+}
+
+// ── Render chart ──────────────────────────────────────────
+function setChartView(view, btn) {
+  chartView = view;
+  document.querySelectorAll('.chart-view-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderChart();
+}
+
+function groupEntries(view) {
+  if (!entries.length) return [];
+  const map = new Map();
+  entries.forEach(e => {
+    let key;
+    const d = new Date(e.date + 'T12:00:00');
+    if (view === 'daily') {
+      key = e.date;
+    } else if (view === 'weekly') {
+      const day = d.getDay();
+      const mon = new Date(d);
+      mon.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+      key = mon.toISOString().split('T')[0];
+    } else {
+      key = e.date.substring(0, 7);
     }
+    if (!map.has(key)) map.set(key, { qs: 0, scores: [] });
+    const cur = map.get(key);
+    cur.qs += e.qs;
+    if (e.score !== null && e.score !== undefined) cur.scores.push(e.score);
   });
-  saveUWorldTotal();
-  Store.set('uworld-progress', d);
-  renderAll();
+
+  return [...map.entries()]
+    .sort((a,b) => a[0].localeCompare(b[0]))
+    .slice(-30)
+    .map(([key, val]) => ({
+      label: formatChartLabel(key, view),
+      qs:  val.qs,
+      avg: val.scores.length ? Math.round(val.scores.reduce((s,v)=>s+v,0)/val.scores.length) : null,
+    }));
 }
 
-// ── Weakness Management ───────────────────────────────────
-function getWeaknesses() { return Store.get('weaknesses', []); }
-
-function addWeakness() {
-  const subject = document.getElementById('weak-subject').value;
-  const topic = document.getElementById('weak-topic').value.trim();
-  const pct = parseInt(document.getElementById('weak-pct').value) || null;
-  const priority = document.getElementById('weak-priority').value;
-  if (!topic) { alert('Please enter a topic.'); return; }
-  const list = getWeaknesses();
-  list.push({subject, topic, pct, priority, id: Date.now()});
-  Store.set('weaknesses', list);
-  document.getElementById('weak-topic').value = '';
-  document.getElementById('weak-pct').value = '';
-  renderAll();
+function formatChartLabel(key, view) {
+  if (view === 'monthly') {
+    const [y,m] = key.split('-');
+    return new Date(parseInt(y), parseInt(m)-1, 1).toLocaleDateString('en-US',{month:'short'});
+  }
+  return new Date(key + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
 }
 
-function deleteWeakness(id) {
-  Store.set('weaknesses', getWeaknesses().filter(w => w.id !== id));
-  renderAll();
-}
+function renderChart() {
+  const body = document.getElementById('charts-body');
+  const data = groupEntries(chartView);
 
-// ── Render Functions ──────────────────────────────────────
-function renderTopStats() {
-  const scores = getScores();
-  const uwData = getUWData();
-  const days = getDaysRemaining();
-
-  const nbmeScores = scores.filter(s => ['NBME','UWSA'].some(t => s.type.includes(t)));
-  const latestNBME = nbmeScores.length ? nbmeScores[nbmeScores.length-1].val : null;
-  const uwRemaining = uwData.total - uwData.done;
-  const qPerDay = days && days > 0 ? Math.ceil(uwRemaining / days) : null;
-
-  document.getElementById('top-stats').innerHTML = `
-    <div class="stat-card">
-      <div class="stat-label">Latest NBME/UWSA</div>
-      <div class="stat-value ${latestNBME >= 240 ? 'stat-good' : latestNBME >= 220 ? 'stat-warn' : latestNBME ? 'stat-bad' : ''}">${latestNBME ?? '—'}</div>
-      <div class="stat-sub">${nbmeScores.length} exams logged</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">UWorld % Correct</div>
-      <div class="stat-value ${uwData.pct >= 70 ? 'stat-good' : uwData.pct >= 55 ? 'stat-warn' : uwData.pct ? 'stat-bad' : ''}">${uwData.pct ? uwData.pct+'%' : '—'}</div>
-      <div class="stat-sub">${uwData.done} / ${uwData.total} done</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Q/Day Needed</div>
-      <div class="stat-value" style="color:var(--sky);">${qPerDay ?? '—'}</div>
-      <div class="stat-sub">${uwRemaining} questions left</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Days to Exam</div>
-      <div class="stat-value" style="color:var(--fuji);">${days ?? '—'}</div>
-      <div class="stat-sub"><button onclick="openDateModal()" style="background:none;border:none;color:var(--sakura2);font-size:12px;cursor:pointer;font-weight:600;">Set date →</button></div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Weak Points</div>
-      <div class="stat-value stat-bad">${getWeaknesses().filter(w=>w.priority==='high').length}</div>
-      <div class="stat-sub">${getWeaknesses().length} total logged</div>
-    </div>
-  `;
-}
-
-function renderScoreTab() {
-  const scores = getScores();
-  if (!scores.length) {
-    document.getElementById('score-tbody').innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">No scores yet. Add your first score above.</td></tr>';
+  if (!data.length) {
+    body.innerHTML = '<div class="chart-empty">Log your first session to start tracking 🌸</div>';
+    if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
     return;
   }
-  document.getElementById('score-tbody').innerHTML = [...scores].reverse().map(s => {
-    const badge = getScoreBadge(s.type, s.val);
-    const d = new Date(s.date + 'T12:00:00');
-    return `
-      <tr>
-        <td><span style="font-weight:600;">${s.type}</span></td>
-        <td><span class="score-badge ${badge}">${s.val}</span></td>
-        <td>${d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</td>
-        <td style="color:var(--muted);font-size:13px;">${s.notes || '—'}</td>
-        <td><button onclick="deleteScore(${s.id})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;">×</button></td>
-      </tr>`;
-  }).join('');
-}
 
-function renderScoreChart() {
-  const scores = getScores().filter(s => ['NBME','UWSA'].some(t => s.type.includes(t)));
-  const el = document.getElementById('score-chart');
-  if (!el) return;
-  if (!scores.length) { el.innerHTML = '<div style="color:var(--muted);font-size:13px;align-self:center;width:100%;text-align:center;">No NBME/UWSA scores yet.</div>'; return; }
-  const max = Math.max(...scores.map(s=>s.val), 260);
-  const min = Math.min(...scores.map(s=>s.val), 180);
-  el.innerHTML = scores.slice(-10).map(s => {
-    const h = Math.round((s.val - min + 10) / (max - min + 20) * 100);
-    const color = s.val >= 240 ? 'var(--sage)' : s.val >= 220 ? 'var(--gold)' : 'var(--sakura2)';
-    const d = new Date(s.date + 'T12:00:00');
-    return `<div class="bar-col">
-      <div class="bar-val">${s.val}</div>
-      <div class="bar-fill" style="height:${h}px;background:${color};"></div>
-      <div class="bar-label">${d.toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>
-    </div>`;
-  }).join('');
-}
+  body.innerHTML = '<div class="chart-canvas-wrap"><canvas id="dash-chart"></canvas></div>';
+  if (chartInstance) chartInstance.destroy();
 
-function renderUWorldTab() {
-  const d = getUWData();
-  const doneEl = document.getElementById('uw-total-done');
-  const sizeEl = document.getElementById('uw-total-size');
-  const pctEl = document.getElementById('uw-overall-pct');
-  // Always restore saved values (don't overwrite if user is actively typing)
-  if (doneEl && document.activeElement !== doneEl) doneEl.value = d.done || '';
-  if (sizeEl && document.activeElement !== sizeEl) sizeEl.value = d.total || 3200;
-  if (pctEl && document.activeElement !== pctEl) pctEl.value = d.pct || '';
+  const hasScores = data.some(d => d.avg !== null);
+  const datasets = [{
+    label: 'Questions',
+    data: data.map(d => d.qs),
+    backgroundColor: 'rgba(106,174,214,0.7)',
+    borderColor: 'rgba(106,174,214,1)',
+    borderWidth: 1, borderRadius: 4,
+    yAxisID: 'yQs', order: 2, type: 'bar',
+  }];
 
-  // Always re-render subject inputs so saved values appear correctly
-  const inputContainer = document.getElementById('uw-subjects-input');
-  if (inputContainer) {
-    inputContainer.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;">` +
-      UW_SUBJECTS.map(sub => {
-        const key = sub.name.replace(/\//g,'-');
-        const saved = d.subjects[sub.name] || {};
-        return `<div style="background:var(--bg);border:1px solid var(--border2);border-radius:var(--r);padding:12px;">
-          <div style="font-size:12px;font-weight:700;color:var(--ink2);margin-bottom:8px;">${sub.name} <span style="color:var(--muted);font-weight:400;">(${sub.total}q)</span></div>
-          <div style="display:flex;gap:8px;">
-            <input type="number" id="uw-sub-done-${key}" placeholder="Done" min="0" max="${sub.total}" value="${saved.done||''}"
-              style="width:50%;padding:6px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--surface);"/>
-            <input type="number" id="uw-sub-pct-${key}" placeholder="% ✓" min="0" max="100" value="${saved.pct||''}"
-              style="width:50%;padding:6px 8px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--surface);"/>
-          </div>
-        </div>`;
-      }).join('') + '</div>';
+  if (hasScores) {
+    datasets.push({
+      label: '% Correct',
+      data: data.map(d => d.avg),
+      borderColor: 'rgba(122,171,138,1)',
+      backgroundColor: 'rgba(122,171,138,0.15)',
+      borderWidth: 2, pointRadius: 4,
+      pointBackgroundColor: 'rgba(122,171,138,1)',
+      tension: 0.35,
+      yAxisID: 'yScore', order: 1, type: 'line', spanGaps: true,
+    });
   }
 
-  // Render chart
-  const chart = document.getElementById('uw-chart');
-  if (!chart) return;
-  const hasData = Object.keys(d.subjects).length > 0;
-  if (!hasData) { chart.innerHTML = '<div style="color:var(--muted);font-size:14px;text-align:center;padding:24px;">Enter your subject data above and click Save.</div>'; return; }
-
-  chart.innerHTML = UW_SUBJECTS.map(sub => {
-    const s = d.subjects[sub.name];
-    if (!s || !s.done) return '';
-    const donePct = Math.round(s.done / sub.total * 100);
-    const correctColor = s.pct >= 70 ? 'var(--sage)' : s.pct >= 55 ? 'var(--gold)' : 'var(--sakura2)';
-    return `<div class="uworld-row">
-      <div class="uworld-subject">${sub.name}</div>
-      <div class="uworld-nums">${s.done}/${sub.total}</div>
-      <div style="flex:1;">
-        <div style="display:flex;gap:4px;margin-bottom:3px;">
-          <div title="Questions Done" style="flex:1;background:var(--border2);border-radius:99px;height:7px;overflow:hidden;">
-            <div style="width:${donePct}%;height:100%;background:var(--sky);border-radius:99px;transition:width .5s;"></div>
-          </div>
-        </div>
-        <div style="display:flex;gap:4px;">
-          <div title="% Correct" style="flex:1;background:var(--border2);border-radius:99px;height:7px;overflow:hidden;">
-            <div style="width:${s.pct||0}%;height:100%;background:${correctColor};border-radius:99px;transition:width .5s;"></div>
-          </div>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;min-width:90px;justify-content:flex-end;">
-        <span style="font-size:12px;color:var(--sky);font-weight:700;">${donePct}%</span>
-        <span style="font-size:12px;color:${correctColor};font-weight:700;">${s.pct ? s.pct+'%✓' : '—'}</span>
-      </div>
-    </div>`;
-  }).filter(Boolean).join('') || '<div style="color:var(--muted);font-size:14px;padding:16px;">Save subject data to see chart.</div>';
-}
-
-function renderWeaknessesTab() {
-  const list = getWeaknesses();
-  const el = document.getElementById('weaknesses-list');
-  if (!el) return;
-  if (!list.length) { el.innerHTML = '<div style="color:var(--muted);font-size:14px;text-align:center;padding:32px;">No weak points logged yet.</div>'; return; }
-
-  const sorted = [...list].sort((a,b) => {
-    const order = {high:0, med:1, low:2};
-    return (order[a.priority]||1) - (order[b.priority]||1);
+  chartInstance = new Chart(document.getElementById('dash-chart'), {
+    type: 'bar',
+    data: { labels: data.map(d => d.label), datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: hasScores, labels: { font: { family: 'DM Sans' }, boxWidth: 12 } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ctx.dataset.label === '% Correct'
+              ? ` ${ctx.dataset.label}: ${ctx.raw !== null ? ctx.raw+'%' : 'N/A'}`
+              : ` ${ctx.dataset.label}: ${ctx.raw}`
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 45 } },
+        yQs: {
+          position: 'left', beginAtZero: true,
+          grid: { color: 'rgba(0,0,0,.05)' },
+          ticks: { font: { size: 11 }, precision: 0 },
+          title: { display: true, text: 'Questions', font: { size: 11 } }
+        },
+        ...(hasScores ? {
+          yScore: {
+            position: 'right', min: 0, max: 100,
+            grid: { drawOnChartArea: false },
+            ticks: { font: { size: 11 }, callback: v => v+'%' },
+            title: { display: true, text: '% Correct', font: { size: 11 } }
+          }
+        } : {})
+      }
+    }
   });
-
-  el.innerHTML = sorted.map(w => {
-    const prioColor = w.priority==='high' ? 'var(--sakura2)' : w.priority==='low' ? 'var(--sage)' : 'var(--gold)';
-    const prioLabel = w.priority==='high' ? '🔴 High' : w.priority==='low' ? '🟢 Low' : '🟡 Medium';
-    return `<div class="weakness-item" style="border-left-color:${prioColor};">
-      <div>
-        <div class="weakness-name">${w.topic}</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px;">${w.subject} · <span style="color:${prioColor};font-weight:600;">${prioLabel}</span></div>
-        ${w.pct !== null ? `<div class="weakness-bar" style="width:200px;margin-top:6px;"><div class="weakness-bar-fill" style="width:${w.pct}%;background:${prioColor};"></div></div><div style="font-size:11px;color:var(--muted);margin-top:2px;">${w.pct}% correct</div>` : ''}
-      </div>
-      <button onclick="deleteWeakness(${w.id})" style="background:none;border:none;color:var(--dim);cursor:pointer;font-size:18px;flex-shrink:0;">×</button>
-    </div>`;
-  }).join('');
 }
 
-function renderSubjectOverview() {
-  const uwData = getUWData();
-  const el = document.getElementById('subject-overview');
-  if (!el) return;
-  const hasData = Object.keys(uwData.subjects).length > 0;
-  if (!hasData) { el.innerHTML = '<div style="color:var(--muted);font-size:13px;">Enter UWorld data in the UWorld tab to see subject breakdown.</div>'; return; }
-  const sorted = UW_SUBJECTS.map(s => ({name:s.name, ...(uwData.subjects[s.name]||{pct:0,done:0,total:s.total})}))
-    .filter(s => s.done > 0)
-    .sort((a,b) => (a.pct||100) - (b.pct||100))
-    .slice(0, 7);
-  el.innerHTML = sorted.map(s => {
-    const color = (s.pct||0) >= 70 ? 'var(--sage)' : (s.pct||0) >= 55 ? 'var(--gold)' : 'var(--sakura2)';
-    return `<div style="margin-bottom:8px;">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">
-        <span>${s.name}</span><span style="font-weight:700;color:${color};">${s.pct||'?'}%</span>
-      </div>
-      <div style="background:var(--border2);border-radius:99px;height:6px;overflow:hidden;">
-        <div style="width:${s.pct||0}%;height:100%;background:${color};border-radius:99px;transition:width .5s;"></div>
-      </div>
-    </div>`;
+// ── Render history ────────────────────────────────────────
+function renderHistory() {
+  const el    = document.getElementById('history-container');
+  const count = document.getElementById('session-count');
+
+  if (!entries.length) {
+    el.innerHTML = '<div class="hist-empty">No sessions logged yet 🌸</div>';
+    if (count) count.textContent = '';
+    return;
+  }
+
+  const totalQs = entries.reduce((s,e) => s + e.qs, 0);
+  if (count) count.textContent = `${entries.length} sessions · ${totalQs.toLocaleString()} total`;
+
+  const rows = [...entries].reverse().slice(0, 50).map(e => {
+    const dateStr = new Date(e.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const chip = e.score !== null && e.score !== undefined
+      ? `<span class="score-chip ${e.score>=70?'chip-green':e.score>=55?'chip-yellow':'chip-red'}">${e.score}%</span>`
+      : '<span style="color:var(--dim);">—</span>';
+    return `<tr>
+      <td>${dateStr}</td>
+      <td style="font-weight:600;">${e.qs}</td>
+      <td>${chip}</td>
+      <td>
+        <button class="row-act-btn" onclick="editEntry(${e.id})" title="Edit">✎</button>
+        <button class="row-act-btn" onclick="deleteEntry(${e.id})" title="Delete">×</button>
+      </td>
+    </tr>`;
   }).join('');
+
+  el.innerHTML = `<table class="hist-table">
+    <thead><tr><th>Date</th><th>Questions</th><th>% Correct</th><th></th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+  if (entries.length > 50) el.innerHTML += `<div style="font-size:12px;color:var(--muted);padding:8px 12px;">Showing most recent 50 of ${entries.length} sessions.</div>`;
 }
 
-function renderOverviewWeaknesses() {
-  const weaknesses = getWeaknesses().filter(w => w.priority === 'high').slice(0, 5);
-  const el = document.getElementById('overview-weaknesses');
-  if (!el) return;
-  if (!weaknesses.length) { el.innerHTML = '<div style="color:var(--muted);font-size:13px;">No high-priority weak points logged. Add them in the Weak Points tab.</div>'; return; }
-  el.innerHTML = weaknesses.map(w => `
-    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border2);">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--sakura2);flex-shrink:0;"></div>
-      <div style="flex:1;"><div style="font-size:14px;font-weight:600;">${w.topic}</div><div style="font-size:12px;color:var(--muted);">${w.subject}</div></div>
-      ${w.pct !== null ? `<span style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--sakura2);">${w.pct}%</span>` : ''}
+// ── Render exams ──────────────────────────────────────────
+function renderExams() {
+  const el = document.getElementById('exam-container');
+  if (!exams.length) { el.innerHTML = '<div class="hist-empty">No practice exams logged yet 🌸</div>'; return; }
+
+  const rows = [...exams].reverse().map(e => {
+    const dateStr = new Date(e.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    const epcChip = e.epc !== null && e.epc !== undefined
+      ? `<span class="score-chip ${e.epc>=70?'chip-green':e.epc>=55?'chip-yellow':'chip-red'}">${e.epc}%</span>` : '—';
+    const eppChip = e.epp !== null && e.epp !== undefined
+      ? `<span class="score-chip chip-blue">${e.epp}% pass</span>` : '—';
+    return `<tr>
+      <td>${dateStr}</td>
+      <td style="font-weight:600;">${e.name}</td>
+      <td>${epcChip}</td>
+      <td>${eppChip}</td>
+      <td>
+        <button class="row-act-btn" onclick="editExam(${e.id})" title="Edit">✎</button>
+        <button class="row-act-btn" onclick="deleteExam(${e.id})" title="Delete">×</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `<table class="hist-table">
+    <thead><tr><th>Date</th><th>Exam</th><th>% Correct</th><th>Est. Pass</th><th></th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+// ── Render weak points ────────────────────────────────────
+function renderWeak() {
+  const el = document.getElementById('weak-list');
+  if (!weaknesses.length) {
+    el.innerHTML = '<div class="hist-empty">No weak points logged yet. Add topics you keep missing.</div>';
+    return;
+  }
+  const sorted = [...weaknesses].sort((a,b) => ({high:0,med:1,low:2}[a.priority]||1) - ({high:0,med:1,low:2}[b.priority]||1));
+  el.innerHTML = sorted.map(w => `
+    <div class="weak-item ${w.priority==='med'?'med':w.priority==='low'?'low':''}">
+      <div style="flex:1;">
+        <div class="weak-name">${w.topic}</div>
+        <div class="weak-meta">${w.subject} · ${w.priority==='high'?'🔴 High':w.priority==='low'?'🟢 Low':'🟡 Medium'}</div>
+      </div>
+      ${w.pct !== null && w.pct !== undefined ? `<div class="weak-pct">${w.pct}%</div>` : ''}
+      <div style="display:flex;gap:4px;">
+        <button class="row-act-btn" onclick="editWeak(${w.id})" title="Edit">✎</button>
+        <button class="row-act-btn" onclick="deleteWeak(${w.id})" title="Delete">×</button>
+      </div>
     </div>`).join('');
 }
 
-function renderPlanTab() {
-  const days = getDaysRemaining();
-  const uwData = getUWData();
-  const el = document.getElementById('plan-content');
-  const schedEl = document.getElementById('schedule-content');
-  if (!el) return;
-
-  if (!days) {
-    el.innerHTML = '<div style="text-align:center;padding:16px;"><button class="btn-save" onclick="openDateModal()">Set Your Exam Date ✦</button></div>';
-    return;
-  }
-
-  const uwRemaining = uwData.total - uwData.done;
-  const qPerDay = Math.ceil(uwRemaining / days);
-  const weeksLeft = Math.floor(days / 7);
-
-  el.innerHTML = `
-    <div class="stats-grid" style="margin-bottom:0;">
-      <div class="stat-card">
-        <div class="stat-label">UWorld Q/Day</div>
-        <div class="stat-value" style="color:var(--sky);">${qPerDay}</div>
-        <div class="stat-sub">${uwRemaining} remaining</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Days Left</div>
-        <div class="stat-value" style="color:var(--fuji);">${days}</div>
-        <div class="stat-sub">${weeksLeft} full weeks</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">UWorld Done</div>
-        <div class="stat-value" style="color:var(--sage);">${Math.round(uwData.done/uwData.total*100)}%</div>
-        <div class="stat-sub">${uwData.done} / ${uwData.total}</div>
-      </div>
-    </div>
-    ${qPerDay > 80 ? `<div class="callout" style="margin-top:16px;"><span>⚠️</span><div>You need <strong>${qPerDay} questions/day</strong> — this is high. Consider extending your timeline or increasing your daily sessions.</div></div>` : ''}
-    ${qPerDay <= 40 ? `<div class="callout" style="margin-top:16px;background:var(--sage-light);border-color:var(--sage);"><span>✅</span><div>Great pace! <strong>${qPerDay} questions/day</strong> is very manageable. Use extra time for review and weak points.</div></div>` : ''}
-  `;
-
-  if (schedEl) {
-    schedEl.innerHTML = `
-      <div style="display:grid;gap:12px;">
-        ${[
-          {time:'7:00–8:30 AM', label:'Morning UWorld Block', desc:`Complete ${Math.min(40,qPerDay)} questions, then review all explanations`, color:'var(--sky)'},
-          {time:'8:30–10:30 AM', label:'Content Review', desc:'First Aid reading, Pathoma, or weak point subjects from yesterday', color:'var(--lavender)'},
-          {time:'10:30 AM–12:00 PM', label:'Sketchy / Pixorize', desc:'Watch videos on topics covered in morning block for retention', color:'var(--peach)'},
-          {time:'12:00–1:00 PM', label:'Lunch Break', desc:'Rest, walk, eat. Your brain needs downtime to consolidate memory.', color:'var(--sage)'},
-          {time:'1:00–3:00 PM', label:'Second UWorld Block', desc:`Complete remaining ${Math.max(0,qPerDay-40)} questions or a full 40-block`, color:'var(--sky)'},
-          {time:'3:00–5:00 PM', label:'Deep Review', desc:'Wrong answers from today\'s blocks. Make Anki cards for missed concepts.', color:'var(--sakura2)'},
-          {time:'5:00–6:30 PM', label:'Active Recall / Anki', desc:'Flashcard review — both new cards and due cards', color:'var(--gold)'},
-          {time:'6:30 PM+', label:'Rest & Recovery', desc:'Dinner, exercise, and sleep by 10 PM. 7–8 hours is non-negotiable.', color:'var(--sage)'},
-        ].map(s => `
-          <div style="display:flex;gap:14px;align-items:flex-start;">
-            <div style="font-size:11px;font-weight:700;color:${s.color};white-space:nowrap;min-width:120px;padding-top:2px;">${s.time}</div>
-            <div>
-              <div style="font-weight:600;font-size:14px;">${s.label}</div>
-              <div style="font-size:13px;color:var(--muted);margin-top:2px;">${s.desc}</div>
-            </div>
-          </div>`).join('')}
-      </div>`;
-  }
+// ── Weak modal ────────────────────────────────────────────
+function openWeakModal() {
+  weakEditingId = null;
+  document.getElementById('weak-modal-title').textContent = 'Add Weak Point';
+  document.getElementById('weak-topic').value    = '';
+  document.getElementById('weak-pct').value      = '';
+  document.getElementById('weak-priority').value = 'med';
+  openModal('weak-modal');
 }
 
+function editWeak(id) {
+  const w = weaknesses.find(w => w.id === id);
+  if (!w) return;
+  weakEditingId = id;
+  document.getElementById('weak-modal-title').textContent = 'Edit Weak Point';
+  document.getElementById('weak-subject').value  = w.subject;
+  document.getElementById('weak-topic').value    = w.topic;
+  document.getElementById('weak-pct').value      = w.pct ?? '';
+  document.getElementById('weak-priority').value = w.priority;
+  openModal('weak-modal');
+}
+
+function saveWeak() {
+  const subject  = document.getElementById('weak-subject').value;
+  const topic    = document.getElementById('weak-topic').value.trim();
+  const pct      = parseFloat(document.getElementById('weak-pct').value);
+  const priority = document.getElementById('weak-priority').value;
+  if (!topic) { showToast('Please enter a topic'); return; }
+
+  const entry = { subject, topic, pct: isNaN(pct) ? null : pct, priority };
+  if (weakEditingId !== null) {
+    const idx = weaknesses.findIndex(w => w.id === weakEditingId);
+    if (idx !== -1) weaknesses[idx] = { ...weaknesses[idx], ...entry };
+  } else {
+    weaknesses.push({ id: Date.now(), ...entry });
+  }
+  saveAll();
+  closeModal('weak-modal');
+  renderWeak();
+  showToast('Saved ✦');
+}
+
+function deleteWeak(id) {
+  if (!confirm('Delete this weak point?')) return;
+  weaknesses = weaknesses.filter(w => w.id !== id);
+  saveAll(); renderWeak();
+}
+
+// ── Pace modal ────────────────────────────────────────────
+function showPaceModal() {
+  const remaining = Math.max(0, settings.total - uniqueDone);
+  const examDays  = getDaysRemaining();
+  let html = `<div style="display:flex;flex-direction:column;gap:1px;">`;
+  html += paceRow('Questions remaining', remaining.toLocaleString());
+
+  if (settings.finishBy) {
+    const finish = new Date(settings.finishBy + 'T12:00:00');
+    const now = new Date(); now.setHours(0,0,0,0);
+    const calDays   = Math.max(0, Math.round((finish - now) / 86400000));
+    const studyDays = Math.round(calDays * (settings.studyDays.length || 5) / 7);
+    const qDay      = studyDays > 0 ? Math.ceil(remaining / studyDays) : '—';
+    html += paceRow('Days until finish date', calDays, 'var(--fuji)');
+    html += paceRow(`Study days (${settings.studyDays.length} days/wk)`, studyDays, 'var(--fuji)');
+    html += paceRow('Questions / study day', qDay, 'var(--sky)');
+  }
+
+  if (examDays !== null) {
+    const qDay = examDays > 0 ? Math.ceil(remaining / examDays) : '—';
+    html += paceRow('Days until exam', examDays, 'var(--sakura2)');
+    html += paceRow('Q/day (by exam date)', qDay, 'var(--sakura2)');
+  }
+
+  if (!settings.finishBy && examDays === null) {
+    html += `<div style="color:var(--muted);font-size:13px;margin-top:8px;">Set a finish date in ⚙️ Settings or set your exam date in the nav to calculate pace.</div>`;
+  }
+
+  html += '</div>';
+  document.getElementById('pace-content').innerHTML = html;
+  openModal('pace-modal');
+}
+
+function paceRow(label, val, color = 'var(--sky)') {
+  return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border2);">
+    <span style="font-size:14px;color:var(--ink2);">${label}</span>
+    <strong style="font-family:'Playfair Display',serif;font-size:20px;color:${color};">${val}</strong>
+  </div>`;
+}
+
+// ── Edit progress ─────────────────────────────────────────
+function promptEditProgress() {
+  document.getElementById('edit-unique-input').value = uniqueDone;
+  openModal('edit-progress-modal');
+}
+
+function saveEditProgress() {
+  const val = parseInt(document.getElementById('edit-unique-input').value);
+  if (!isNaN(val) && val >= 0) {
+    uniqueDone = val;
+    Store.set(K.unique, uniqueDone);
+    renderStats();
+    showToast('Progress updated');
+  }
+  closeModal('edit-progress-modal');
+}
+
+// ── CSV Import ────────────────────────────────────────────
+let csvRows = [], csvHeaders = [];
+
+function openImportModal() { openModal('import-modal'); }
+
+function handleFileSelect(input) {
+  if (input.files[0]) parseCSVFile(input.files[0]);
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) parseCSVFile(file);
+}
+
+function parseCSVFile(file) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const lines = ev.target.result.trim().split(/\r?\n/);
+    csvHeaders = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g,''));
+    csvRows    = lines.slice(1).map(l => l.split(',').map(c => c.trim().replace(/^"|"$/g,'')));
+
+    document.getElementById('csv-file-info').textContent = `${file.name} — ${csvRows.length} rows detected`;
+
+    const guess = (...kws) => {
+      const i = csvHeaders.findIndex(h => kws.some(k => h.toLowerCase().includes(k)));
+      return i >= 0 ? i : 0;
+    };
+    const di = guess('date','day');
+    const qi = guess('question','qs','#','num','count');
+    const si = guess('percent','correct','score','%','pct');
+
+    const opts = (sel) => csvHeaders.map((h,i) => `<option value="${i}"${i===sel?' selected':''}>${h}</option>`).join('');
+    document.getElementById('mapper-grid').innerHTML = `
+      <div class="mapper-field"><label>Date column</label><select id="map-date">${opts(di)}</select></div>
+      <div class="mapper-field"><label>Questions column</label><select id="map-qs">${opts(qi)}</select></div>
+      <div class="mapper-field"><label>% Correct (optional)</label>
+        <select id="map-score"><option value="">— skip —</option>${opts(si)}</select></div>`;
+
+    const previewRows = csvRows.slice(0,5).map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
+    document.getElementById('csv-preview').innerHTML = `
+      <table class="csv-preview-table">
+        <thead><tr>${csvHeaders.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+        <tbody>${previewRows}</tbody>
+      </table>
+      <p style="font-size:11px;color:var(--muted);margin-top:4px;">Showing first 5 rows</p>`;
+
+    document.getElementById('drop-zone').classList.add('hidden-panel');
+    document.getElementById('col-mapper').classList.remove('hidden-panel');
+  };
+  reader.readAsText(file);
+}
+
+function importCSV() {
+  const dateCol  = parseInt(document.getElementById('map-date').value);
+  const qsCol    = parseInt(document.getElementById('map-qs').value);
+  const scoreRaw = document.getElementById('map-score').value;
+  const scoreCol = scoreRaw !== '' ? parseInt(scoreRaw) : null;
+
+  let imported = 0, skipped = 0;
+  const existing = new Set(entries.map(e => e.date + '|' + e.qs));
+
+  csvRows.forEach(row => {
+    const rawDate = row[dateCol];
+    const rawQs   = row[qsCol];
+    if (!rawDate || !rawQs) { skipped++; return; }
+
+    const parsed = new Date(rawDate);
+    if (isNaN(parsed.getTime())) { skipped++; return; }
+    const date = parsed.toISOString().split('T')[0];
+    const qs   = parseInt(rawQs);
+    if (!qs || qs < 1) { skipped++; return; }
+
+    const key = date + '|' + qs;
+    if (existing.has(key)) { skipped++; return; }
+
+    const score = scoreCol !== null ? parseFloat(row[scoreCol]) : null;
+    entries.push({ id: Date.now() + imported, date, qs, score: isNaN(score) ? null : score });
+    existing.add(key);
+    imported++;
+  });
+
+  entries.sort((a,b) => a.date.localeCompare(b.date));
+  uniqueDone = entries.reduce((s,e) => s + e.qs, 0);
+  saveAll();
+
+  document.getElementById('import-success-msg').textContent =
+    `Imported ${imported} session${imported !== 1 ? 's' : ''}${skipped ? ` (${skipped} skipped)` : ''}`;
+  document.getElementById('col-mapper').classList.add('hidden-panel');
+  document.getElementById('import-success').classList.remove('hidden-panel');
+  renderAll();
+}
+
+function resetImport() {
+  csvRows = []; csvHeaders = [];
+  document.getElementById('drop-zone').classList.remove('hidden-panel');
+  document.getElementById('col-mapper').classList.add('hidden-panel');
+  document.getElementById('import-success').classList.add('hidden-panel');
+  document.getElementById('csv-input').value = '';
+}
+
+// ── Master render ─────────────────────────────────────────
 function renderAll() {
-  renderTopStats();
-  renderScoreTab();
-  renderScoreChart();
-  renderUWorldTab();
-  renderWeaknessesTab();
-  renderSubjectOverview();
-  renderOverviewWeaknesses();
-  renderPlanTab();
+  renderStats();
+  renderChart();
+  renderHistory();
+  renderExams();
+  renderWeak();
 }
 
+// ── Toast ─────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── Init ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  // Set default date for new score input
+  loadAll();
+
   const today = new Date().toISOString().split('T')[0];
-  const scoreDate = document.getElementById('score-date');
-  if (scoreDate) scoreDate.value = today;
+  document.getElementById('log-date').value  = today;
+  document.getElementById('exam-date').value = today;
+
+  // Drag-and-drop on import zone
+  const dz = document.getElementById('drop-zone');
+  dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag-over'); });
+  dz.addEventListener('dragleave', ()  => dz.classList.remove('drag-over'));
+  dz.addEventListener('drop',      e  => handleDrop(e));
+
   renderAll();
 });
 </script>
