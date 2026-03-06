@@ -51,10 +51,10 @@
 .video-name{flex:1;font-size:13.5px;color:var(--ink2);line-height:1.4;}
 .video-time{font-size:11px;color:var(--dim);min-width:52px;text-align:right;font-family:'DM Mono',monospace;}
 .check-btns{display:flex;gap:6px;}
-.icon-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .15s;line-height:1;flex-shrink:0;}
+.icon-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .15s;line-height:1;flex-shrink:0;color:var(--dim);}
 .icon-btn:hover{transform:scale(1.1);}
-.icon-btn.active-w{background:var(--sakura2);border-color:var(--sakura2);}
-.icon-btn.active-r{background:var(--gold);border-color:var(--gold);}
+.icon-btn.active-w{background:var(--sakura2);border-color:var(--sakura2);color:#fff;}
+.icon-btn.active-r{background:var(--gold);border-color:var(--gold);color:#fff;}
 .tracker-legend{display:flex;gap:16px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:16px;}
 .no-results{text-align:center;padding:40px;color:var(--muted);font-size:14px;}
 .accent-0{background:var(--sakura2);}
@@ -81,8 +81,8 @@
     <div class="overall-top">
       <span class="overall-title">Overall Progress</span>
       <div class="overall-stats">
-        <span class="overall-stat"> <strong id="tot-w">0</strong> Watched</span>
-        <span class="overall-stat"> <strong id="tot-r">0</strong> Reviewed</span>
+        <span class="overall-stat">W <strong id="tot-w">0</strong>Watched</span>
+        <span class="overall-stat">R <strong id="tot-r">0</strong>Reviewed</span>
       </div>
     </div>
     <div class="overall-bar-bg"><div class="overall-bar-fill" id="overall-bar" style="width:0%;"></div></div>
@@ -101,15 +101,13 @@
       <div class="filter-chip f-reviewed" data-filter="reviewed" onclick="setFilter('reviewed',this)">Reviewed</div>
     </div>
     <div class="toolbar-right">
-      <button class="toolbar-btn" onclick="expandAll()">Expand All</button>
-      <button class="toolbar-btn" onclick="collapseAll()">Collapse All</button>
-      <button class="toolbar-btn" onclick="exportCSV()">Export CSV</button>
+      <button class="toolbar-btn" id="toggle-expand-btn" onclick="toggleExpand()">Expand All</button>
       <button class="toolbar-btn" onclick="resetAll()" style="color:var(--sakura2);">Reset All</button>
     </div>
   </div>
 
   <div class="tracker-legend">
-    <span style="font-size:12px;color:var(--muted);">W = Watched &nbsp;·&nbsp; R = Reviewed</span>
+    <span style="font-size:12px;color:var(--muted);">✓ Watched (Left Toggle) &nbsp;&nbsp;·&nbsp;&nbsp; ✓ Reviewed (Right Toggle)</span>
   </div>
 
   <div id="tracker-container"></div>
@@ -392,23 +390,14 @@ function updateSummary() {
   updateCatHeaders();
 }
 
-function expandAll() { document.querySelectorAll('.cat-section').forEach(s => s.classList.add('open')); }
-function collapseAll() { document.querySelectorAll('.cat-section').forEach(s => s.classList.remove('open')); }
-function resetAll() { if(!confirm('Reset ALL progress?')) return; progress={}; save(); renderAll(); showToast('Progress reset'); }
-
-function exportCSV() {
-  let csv = 'Section,Num,Video,Watched,Reviewed\n';
-  CATEGORIES.forEach(cat => {
-    cat.videos.forEach(v => {
-      const s = getState(v.id);
-      csv += `"${cat.name}","${v.num}","${v.name}",${s.w ? 1 : 0},${s.r ? 1 : 0}\n`;
-    });
-  });
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'sketchy_micro_progress.csv';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+function toggleExpand() {
+  const sections = document.querySelectorAll('.cat-section');
+  const anyClosed = Array.from(sections).some(s => !s.classList.contains('open'));
+  sections.forEach(s => s.classList.toggle('open', anyClosed));
+  document.getElementById('toggle-expand-btn').textContent = anyClosed ? 'Collapse All' : 'Expand All';
 }
+
+function resetAll() { if(!confirm('Reset ALL progress?')) return; progress={}; save(); renderAll(); showToast('Progress reset'); }
 
 function renderAll() {
   const container = document.getElementById('tracker-container');
@@ -421,8 +410,8 @@ function renderAll() {
         <div class="video-name">${v.name}</div>
         <div class="video-time">${v.time}</div>
         <div class="check-btns">
-          <button id="btn-w-${v.id}" class="icon-btn${s.w ? ' active-w' : ''}" onclick="toggle('${v.id}','w')" title="Watched">W</button>
-          <button id="btn-r-${v.id}" class="icon-btn${s.r ? ' active-r' : ''}" onclick="toggle('${v.id}','r')" title="Reviewed">R</button>
+          <button id="btn-w-${v.id}" class="icon-btn${s.w ? ' active-w' : ''}" onclick="toggle('${v.id}','w')" title="Watched">✓</button>
+          <button id="btn-r-${v.id}" class="icon-btn${s.r ? ' active-r' : ''}" onclick="toggle('${v.id}','r')" title="Reviewed">✓</button>
         </div>
       </div>`;
     }).join('');
@@ -446,7 +435,7 @@ function renderAll() {
           <div style="min-width:36px;">No.</div>
           <div style="flex:1;">Organism / Video</div>
           <div style="min-width:52px;text-align:right;">Time</div>
-          <div style="min-width:118px;text-align:right;">Status</div>
+          <div style="min-width:74px;text-align:center;">Status</div>
         </div>
         ${rows}
       </div>
