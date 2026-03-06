@@ -112,13 +112,13 @@ input, select, textarea { font-family: inherit; }
 .nav-exam-pill {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 11px; font-weight: 600;
-  background: transparent; color: var(--gold);
-  border: 1px solid #e8d4a0;
+  background: transparent; color: var(--sakura2);
+  border: 1px solid var(--sakura);
   padding: 4px 11px; border-radius: 99px;
   cursor: pointer; transition: background .15s;
   white-space: nowrap;
 }
-.nav-exam-pill:hover { background: var(--gold-light); }
+.nav-exam-pill:hover { background: var(--sakura-light); }
 .nav-exam-icon { font-size: 11px; line-height: 1; }
 
 /* Auth button */
@@ -138,7 +138,6 @@ input, select, textarea { font-family: inherit; }
 /* ── Hero ─────────────────────────────────────────────────── */
 .hero {
   padding: 60px 0 44px;
-  display: flex; flex-direction: column; align-items: flex-start;
   position: relative;
 }
 .hero-eyebrow {
@@ -165,7 +164,7 @@ input, select, textarea { font-family: inherit; }
   flex-wrap: wrap;
 }
 .cd-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.cd-days { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; line-height: 1; color: var(--fuji); }
+.cd-days { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; line-height: 1; color: var(--sakura2); }
 .cd-unit { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .cd-divider { width: 1px; height: 60px; background: var(--border); }
 .cd-date-lbl { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
@@ -181,9 +180,10 @@ input, select, textarea { font-family: inherit; }
 
 /* ── Section Label ────────────────────────────────────────── */
 .sec-label {
-  font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
-  text-transform: uppercase; color: var(--muted);
-  margin: 44px 0 16px;
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--sakura2);
+  opacity: 0.55;
+  margin: 36px 0 14px;
 }
 
 /* ── Tool Grid ────────────────────────────────────────────── */
@@ -196,7 +196,7 @@ input, select, textarea { font-family: inherit; }
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 24px;
+  padding: 20px;
   display: block;
   transition: transform .2s, box-shadow .2s, border-color .2s;
   cursor: pointer;
@@ -206,7 +206,7 @@ input, select, textarea { font-family: inherit; }
   content: '';
   position: absolute; top: 0; left: 0; right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--card-accent, var(--sakura)), transparent);
+  background: var(--card-accent, var(--sakura2));
   opacity: 0; transition: opacity .2s;
 }
 .tool-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--card-accent, var(--sakura)); }
@@ -215,24 +215,27 @@ input, select, textarea { font-family: inherit; }
 .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
 .card-icon { font-size: 26px; }
 .card-meta { display: flex; align-items: center; gap: 8px; }
-.card-tag { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); background: var(--surface2); padding: 3px 8px; border-radius: 99px; }
+.card-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink2); background: var(--surface2); border: 1px solid var(--border2); padding: 3px 9px; border-radius: 99px; }
 .card-arrow { font-size: 18px; color: var(--dim); transition: color .2s; }
 .tool-card:hover .card-arrow { color: var(--card-accent, var(--sakura2)); }
-.card-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; }
-.card-desc { font-size: 13.5px; color: var(--ink2); line-height: 1.55; margin-bottom: 14px; }
+.card-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+.card-desc { font-size: 13px; color: var(--ink2); line-height: 1.55; margin-bottom: 12px; }
 .card-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill { font-size: 11px; font-weight: 500; background: var(--surface2); color: var(--ink2); padding: 3px 10px; border-radius: 99px; border: 1px solid var(--border2); }
+.pill { font-size: 11px; font-weight: 500; background: var(--surface2); color: var(--muted); padding: 3px 10px; border-radius: 99px; }
 
 /* Card accent colors */
 .card-pharm  { --card-accent: var(--sakura2); }
 .card-micro  { --card-accent: var(--sage); }
 .card-spharm { --card-accent: var(--peach); }
 .card-smicro { --card-accent: var(--lavender); }
-.card-pix    { --card-accent: var(--sage); }
-.card-dash   { --card-accent: var(--sakura2); }
-.card-uworld { --card-accent: var(--fuji); }
+.card-pix    { --card-accent: var(--peach); }
+.card-dash   { --card-accent: var(--lavender); }
+.card-uworld { --card-accent: var(--lavender); }
 .card-ext    { --card-accent: var(--gold); }
 .card-dotd   { --card-accent: var(--sakura2); background: var(--sakura-light); }
+
+/* Left border accent on tool cards — always visible, same pattern as feat-banners */
+.tool-card { border-left: 3px solid var(--card-accent, var(--sakura2)); }
 
 /* ── QOTD Banner ──────────────────────────────────────────── */
 .qotd-banner {
@@ -477,7 +480,7 @@ input, select, textarea { font-family: inherit; }
 .uworld-subject-bar { margin-bottom: 12px; }
 .uworld-subject-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
 .uworld-bar-outer { background: var(--border2); border-radius: 99px; height: 8px; overflow: hidden; }
-.uworld-bar-inner { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--sky), var(--fuji)); transition: width .6s ease; }
+.uworld-bar-inner { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--peach), var(--sakura2)); transition: width .6s ease; }
 
 /* ── Upload Zone ──────────────────────────────────────────── */
 .upload-zone {
