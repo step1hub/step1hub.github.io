@@ -18,9 +18,7 @@
 .drug-modal-topbar { border-top-color: var(--sage); }
 .rcard-bk-dot { display:inline-block; font-size:10px; color:var(--gold); margin-left:5px; line-height:1; }
 .rcard-bk-dot::before { content:"★"; }
-.bk-tab .tab-dot { font-size:10px; display:inline-flex; align-items:center; justify-content:center; color:#fff; line-height:1; }
 .bk-count { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; border-radius:99px; background:var(--gold); color:#fff; font-size:10px; font-weight:700; margin-left:4px; }
-.cat-tab.bk-tab.active { border-bottom-color: var(--gold); color: var(--gold); }
 /* Modal pearl border uses sage fallback */
 .drug-modal-body .rcard-pearl {
   border: 1px solid color-mix(in srgb, var(--cat-color, var(--sage)) 25%, transparent);
@@ -192,12 +190,6 @@ function renderTabs() {
       <span class="tab-dot" style="background:${meta.color}"></span>${meta.label}
     </button>`;
   });
-  const bkCount = getBookmarks().length;
-  const bkActive = activeTab === 'bookmarks' && !searchQ;
-  html += `<button class="cat-tab bk-tab${bkActive ? ' active' : ''}"
-    onclick="switchTab('bookmarks')" role="tab" title="Your bookmarked organisms">
-    <span class="tab-dot" style="background:var(--gold)">★</span>Saved${bkCount ? ` <span class="bk-count">${bkCount}</span>` : ''}
-  </button>`;
   document.getElementById('cat-tabs').innerHTML = html;
 }
 
@@ -371,8 +363,7 @@ function toggleBookmarkFilter() {
   const btn = document.getElementById('bookmark-filter-btn');
   if (btn) btn.classList.toggle('active', bookmarkFilter);
   // If activating filter, switch to bookmarks tab; if deactivating, go back to bacteria
-  if (bookmarkFilter) { activeTab = 'bookmarks'; }
-  else { activeTab = 'bacteria'; }
+  activeTab = 'bacteria';
   renderTabs();
   render();
 }
