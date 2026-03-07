@@ -25,6 +25,10 @@
   --sage:        #5e9a70;
   --sage-light:  #e8f4ec;
   --lavender:    #8b7eb8;
+  --pix:         var(--lavender);
+  --pix-light:   #f0eefb;
+  --dash-accent: var(--gold);
+  --dash-light:  var(--gold-light);
   --lav-light:   #f0edf8;
   --gold:        #b8863a;
   --gold-light:  #fdf3e0;
@@ -298,7 +302,7 @@ input, select, textarea { font-family: inherit; }
 .card-spharm { --card-accent: var(--sakura2); }
 .card-smicro { --card-accent: var(--sage); }
 .card-pix    { --card-accent: var(--sky); }
-.card-dash   { --card-accent: var(--sky); }
+.card-dash   { --card-accent: var(--lavender); }
 .card-uworld { --card-accent: var(--fuji); }
 .card-ext    { --card-accent: var(--gold); }
 

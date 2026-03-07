@@ -8,6 +8,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <title>Dashboard · Step 1 Hub</title>
 <style>
+/* ── Dashboard accent ────────────────────────────────────── */
+:root { --dash: var(--lavender); --dash-light: #f0eefb; --tracker-accent: var(--lavender); }
+.hero-name em { color: var(--dash); }
+
 /* ── Dashboard-specific styles ───────────────────────────── */
 .dash-section {
   background: var(--surface);
@@ -32,7 +36,7 @@
   font-size: 12px; font-weight: 600; color: var(--muted);
   cursor: pointer; transition: all .15s;
 }
-.log-tab.active { background: var(--sakura2); color: #fff; border-color: var(--sakura2); }
+.log-tab.active { background: var(--dash); color: #fff; border-color: var(--dash); }
 
 /* ── Log row ─────────────────────────────────────────────── */
 .log-row {
@@ -53,7 +57,7 @@
 .log-field.wide { flex: 1; min-width: 160px; }
 .log-btn {
   padding: 9px 22px; border-radius: var(--r);
-  background: var(--sakura2); color: #fff; border: none;
+  background: var(--dash); color: #fff; border: none;
   font-size: 13px; font-weight: 700; cursor: pointer;
   transition: opacity .15s, transform .15s;
   white-space: nowrap; align-self: flex-end;
@@ -92,12 +96,12 @@
 .prog-bar-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 20px 24px; margin-bottom: 18px; }
 .prog-bar-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
 .prog-bar-label { font-size: 13px; font-weight: 600; color: var(--ink2); }
-.prog-bar-pct { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--ink); }
+.prog-bar-pct { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dash); }
 .prog-bg { background: var(--border2); border-radius: 99px; height: 10px; overflow: hidden; }
-.prog-fill { height: 100%; border-radius: 99px; background: var(--sakura2); transition: width .6s ease; }
+.prog-fill { height: 100%; border-radius: 99px; background: var(--dash); opacity: 0.85; transition: width .6s ease; }
 .prog-bar-sub { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 6px; }
 .edit-prog-btn {
-  font-size: 11px; font-weight: 600; color: var(--sakura2);
+  font-size: 11px; font-weight: 600; color: var(--dash);
   background: none; border: none; cursor: pointer; padding: 0;
 }
 
@@ -108,7 +112,7 @@
   padding: 5px 14px; border-radius: 99px; font-size: 12px; font-weight: 600;
   border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all .15s;
 }
-.chart-view-tab.active { background: var(--sakura2); color: #fff; border-color: var(--sakura2); }
+.chart-view-tab.active { background: var(--dash); color: #fff; border-color: var(--dash); }
 .chart-canvas-wrap { position: relative; height: 200px; }
 .chart-empty { color: var(--muted); font-size: 14px; text-align: center; padding: 40px 0; }
 
@@ -139,24 +143,24 @@
   border: 1px solid var(--border); background: transparent; color: var(--muted);
   cursor: pointer; transition: all .15s; white-space: nowrap;
 }
-.row-delete-btn:hover { background: var(--sakura-light); border-color: var(--sakura2); color: var(--sakura2); }
+.row-delete-btn:hover { background: var(--dash-light); border-color: var(--dash); color: var(--dash); }
 .row-confirming .row-delete-btn {
-  background: var(--sakura2); border-color: var(--sakura2); color: #fff;
+  background: var(--dash); border-color: var(--dash); color: #fff;
 }
-tr.editing-row td { background: var(--sky-light) !important; }
+tr.editing-row td { background: var(--dash-light) !important; }
 
 /* ── Weaknesses ──────────────────────────────────────────── */
 .weak-item {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 12px 16px; border-radius: var(--r);
-  border: 1px solid var(--border); border-left: 3px solid var(--sakura2);
+  border: 1px solid var(--border); border-left: 3px solid var(--dash);
   margin-bottom: 8px; background: var(--surface);
 }
 .weak-item.med  { border-left-color: var(--sky); }
 .weak-item.low  { border-left-color: var(--sage); }
 .weak-name { font-weight: 600; font-size: 14px; }
 .weak-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.weak-pct  { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--sakura2); flex-shrink: 0; }
+.weak-pct  { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dash); flex-shrink: 0; }
 .weak-item.med .weak-pct { color: var(--sky); }
 .weak-item.low .weak-pct { color: var(--sage); }
 
@@ -164,7 +168,7 @@ tr.editing-row td { background: var(--sky-light) !important; }
 .pace-modal { max-width: 380px; }
 .pace-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border2); font-size: 14px; }
 .pace-row:last-child { border: none; }
-.pace-row strong { color: var(--sky); font-family: 'Playfair Display', serif; font-size: 18px; }
+.pace-row strong { color: var(--dash); font-family: 'Playfair Display', serif; font-size: 18px; }
 
 /* ── Settings panel ──────────────────────────────────────── */
 .settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 14px; }
@@ -179,19 +183,19 @@ tr.editing-row td { background: var(--sky-light) !important; }
   border: 1px solid var(--border); background: var(--surface2); color: var(--muted);
   cursor: pointer; transition: all .15s; user-select: none;
 }
-.day-chip.active { background: var(--sakura2); color: #fff; border-color: var(--sakura2); }
+.day-chip.active { background: var(--dash); color: #fff; border-color: var(--dash); }
 
 /* ── Import ──────────────────────────────────────────────── */
 .drop-zone {
-  border: 2px dashed var(--sky); border-radius: var(--r-lg);
+  border: 2px dashed var(--dash); border-radius: var(--r-lg);
   padding: 32px; text-align: center; cursor: pointer;
   transition: border-color .15s, background .15s; margin-top: 16px;
-  background: var(--sky-light);
+  background: var(--dash-light);
 }
-.drop-zone:hover, .drop-zone.drag-over { border-color: var(--fuji); background: var(--lav-light); }
+.drop-zone:hover, .drop-zone.drag-over { border-color: var(--dash); background: color-mix(in srgb, var(--dash) 12%, white); }
 .drop-zone-icon { font-size: 32px; margin-bottom: 8px; }
 .drop-zone-text { font-size: 14px; color: var(--ink2); }
-.drop-zone-text span { color: var(--sky); font-weight: 600; }
+.drop-zone-text span { color: var(--dash); font-weight: 600; }
 .drop-zone-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
 .prompt-code { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 12px; font-family: 'DM Mono', monospace; display: block; margin-top: 6px; line-height: 1.8; }
 .mapper-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 16px 0; }
@@ -225,9 +229,9 @@ tr.editing-row td { background: var(--sky-light) !important; }
 <script src="nav.js"></script>
 
 <div class="wrap">
-  <header class="hero" style="padding:40px 0 24px;">
-    <div class="hero-eyebrow">Question Bank · Practice Exams</div>
-    <h1 class="hero-name" style="font-size:clamp(28px,4vw,42px);">Study <em>Dashboard</em></h1>
+  <header class="hero" style="padding:36px 0 20px;">
+    <div class="tracker-hero-eyebrow">Question Bank · Practice Exams</div>
+    <h1 class="hero-name">Study <em>Dashboard</em></h1>
   </header>
 
   <!-- ── SETTINGS ── -->
@@ -323,7 +327,7 @@ tr.editing-row td { background: var(--sky-light) !important; }
       <div class="prog-stat-lbl">Day Streak</div>
     </div>
     <div class="prog-stat clickable" onclick="showPaceModal()" title="Click for pace calculator">
-      <div class="prog-stat-num" id="stat-needed" style="color:var(--sakura2);">—</div>
+      <div class="prog-stat-num" id="stat-needed" style="color:var(--dash);">—</div>
       <div class="prog-stat-lbl">Q / Day Needed <span style="font-size:9px;display:block;color:var(--dim);">tap for calc</span></div>
     </div>
   </div>
