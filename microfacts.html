@@ -72,11 +72,6 @@
       <div class="drug-modal-aka" id="mdm-gram"></div>
     </div>
 
-    <!-- Tags as summary area -->
-    <div class="drug-modal-summary" id="mdm-meta">
-      <div class="micro-modal-tags" id="mdm-tags"></div>
-    </div>
-
     <!-- Scrollable body -->
     <div class="drug-modal-body" id="mdm-content"></div>
 
@@ -128,7 +123,7 @@ function getFiltered() {
   if (searchQ) {
     return allOrgs.filter(o => {
       const blob = [o.name, o.gram, o.summary, o.disease, o.tx,
-                    (o.tags || []).join(' '), o.pearl, o.virulence].join(' ').toLowerCase();
+                    o.pearl, o.virulence].join(' ').toLowerCase();
       return blob.includes(searchQ);
     });
   }
@@ -217,7 +212,6 @@ function renderPanels(filtered, isSearch) {
 
 function renderCard(o, catColor) {
   const color = catColor || CAT_META[o.category]?.color || 'var(--accent)';
-  const tags = (o.tags || []).slice(0, 3).map(t => `<span class="rcard-tag">${t}</span>`).join('');
   return `<div class="rcard" data-cat="${o.category}" style="--cat-color:${color};border-left-color:${color}"
     tabindex="0" role="button" aria-label="${o.name}"
     onclick='openMicroDetail(${JSON.stringify(o).replace(/'/g,"&#39;")})'>
@@ -228,7 +222,6 @@ function renderCard(o, catColor) {
       </div>
     </div>
     <div class="rcard-summary">${o.summary || ''}</div>
-    ${tags ? `<div class="rcard-tags">${tags}</div>` : ''}
   </div>`;
 }
 
@@ -271,9 +264,6 @@ function openMicroDetail(o) {
   const gramEl = document.getElementById('mdm-gram');
   gramEl.textContent = o.gram || '';
   gramEl.style.display = o.gram ? '' : 'none';
-
-  document.getElementById('mdm-tags').innerHTML =
-    (o.tags || []).map(t => `<span class="rcard-tag">${t}</span>`).join('');
 
   const rows = [
     { label: 'Virulence Factors', cls: 'lbl-moa', val: o.virulence },
