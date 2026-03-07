@@ -187,15 +187,16 @@
 
 .rcard-name {
   font-family: 'Playfair Display', serif;
-  font-size: 17px; font-weight: 700; line-height: 1.2;
-  color: var(--ink); letter-spacing: -0.3px;
+  font-size: 16px; font-weight: 700; line-height: 1.2; color: var(--ink);
+  letter-spacing: -0.3px;
 }
 .rcard-aka {
   font-family: 'DM Mono', monospace;
-  font-size: 10.5px; color: var(--ink2); font-style: normal;
-  line-height: 1.6; margin-top: 5px;
-  font-weight: 400; opacity: 1;
+  font-size: 9px; color: var(--accent); font-style: normal;
+  line-height: 1.7; margin-top: 5px; word-break: break-word;
+  font-weight: 400; opacity: 0.75;
 }
+.rcard-aka .dot-sep { color: var(--border); margin: 0 2px; }
 .aka-name { white-space: nowrap; }
 .aka-sep { color: var(--border); margin-right: 1px; }
 
@@ -209,8 +210,10 @@
 .rcard.expanded .rcard-toggle { transform: rotate(180deg); color: var(--accent); }
 
 .rcard-summary {
-  padding: 6px 14px 13px;
-  font-size: 12px; color: var(--ink2); line-height: 1.58;
+  padding: 8px 14px 14px;
+  font-size: 12px; color: var(--ink2); line-height: 1.62;
+  border-top: 1px solid var(--border2);
+  margin-top: 8px;
 }
 
 /* ── Expanded detail ─────────────────────────────────────── */
