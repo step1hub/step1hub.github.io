@@ -112,15 +112,15 @@
 
       <div class="qsb-section">
         <div class="qsb-label">Scope</div>
-        <div class="qsb-pill-group">
-          <button class="qsb-pill active" data-scope="current" onclick="setQuizScope('current')">Current tab</button>
-          <button class="qsb-pill" data-scope="all" onclick="setQuizScope('all')">All drugs</button>
-          <button class="qsb-pill" data-scope="custom" onclick="setQuizScope('custom')">Choose…</button>
+        <div class="qsb-scope-group">
+          <button class="qsb-scope-btn active" data-scope="current" onclick="setQuizScope('current')">Current tab</button>
+          <button class="qsb-scope-btn" data-scope="all" onclick="setQuizScope('all')">All drugs</button>
+          <button class="qsb-scope-btn" data-scope="custom" onclick="setQuizScope('custom')">Choose categories…</button>
         </div>
-        <div class="quiz-cat-picker" id="quiz-cat-picker" style="display:none;margin-top:10px;"></div>
+        <div class="quiz-cat-picker" id="quiz-cat-picker" style="display:none;margin-top:8px;"></div>
       </div>
 
-      <div class="qsb-section">
+      <div class="qsb-section" style="padding-bottom:14px;">
         <div class="qsb-label">Show on back</div>
         <div class="qsb-checks">
           <label class="qsb-check"><input type="checkbox" checked value="moa" onchange="toggleFieldVis('moa',this)"><span>Mechanism</span></label>
