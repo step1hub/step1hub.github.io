@@ -163,10 +163,10 @@ input, select, textarea { font-family: inherit; }
 
 /* ── Countdown design tokens ──────────────────────────────── */
 :root {
-  --cd-bg:           var(--sakura-light);
-  --cd-border:       var(--sakura);
-  --cd-shadow:       0 2px 12px rgba(196,80,94,.07);
-  --cd-shadow-hover: 0 4px 20px rgba(196,80,94,.12);
+  --cd-bg:           var(--surface);
+  --cd-border:       var(--border);
+  --cd-shadow:       0 4px 24px rgba(42,31,26,.08), 0 1px 4px rgba(42,31,26,.04);
+  --cd-shadow-hover: 0 8px 32px rgba(42,31,26,.12);
   --ext-qotd:        var(--sakura2);
   --ext-uworld:      var(--sky);
   --ext-pathoma:     var(--sage);
@@ -177,10 +177,11 @@ input, select, textarea { font-family: inherit; }
   position: relative; overflow: hidden;
   background: var(--cd-bg);
   border: 1px solid var(--cd-border);
+  border-left: 4px solid var(--sakura2);
   border-radius: var(--r-xl);
-  padding: 28px 30px 24px;
+  padding: 32px 36px 28px;
   box-shadow: var(--cd-shadow);
-  min-width: 220px; max-width: 260px;
+  min-width: 240px; max-width: 290px;
   display: flex; flex-direction: column; align-items: center;
   text-align: center;
   align-self: center;
@@ -190,7 +191,7 @@ input, select, textarea { font-family: inherit; }
 .cd-eyebrow {
   font-size: 9px; font-weight: 700; letter-spacing: 2.5px;
   text-transform: uppercase; color: var(--sakura2);
-  opacity: .7; margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .cd-number-row {
   display: flex; align-items: baseline; justify-content: center; gap: 7px;
@@ -198,15 +199,15 @@ input, select, textarea { font-family: inherit; }
 }
 .hero-countdown .cd-days {
   font-family: 'Playfair Display', serif;
-  font-size: 56px; font-weight: 700; line-height: 1;
-  color: var(--sakura2); letter-spacing: -2px;
+  font-size: 72px; font-weight: 700; line-height: 1;
+  color: var(--sakura2); letter-spacing: -3px;
 }
 .hero-countdown .cd-unit {
   font-size: 13px; font-weight: 500;
   color: var(--muted); padding-bottom: 4px;
 }
 .hero-countdown .cd-date {
-  font-size: 13px; font-weight: 600; color: var(--ink2);
+  font-size: 15px; font-weight: 600; color: var(--ink);
   margin-bottom: 24px; letter-spacing: .1px;
 }
 .hero-countdown .cd-date-empty {
