@@ -1,6 +1,9 @@
 // auth.js
 
 // Global Firebase variables for use across all pages
+window.auth = null;
+window.db = null;
+window.currentUser = null;
 let auth = null;
 let db = null;
 let currentUser = null;
@@ -26,6 +29,8 @@ try {
     
     auth = firebase.auth();
     db = firebase.firestore();
+    window.auth = auth;
+    window.db = db;
 
     // Enable Firestore offline persistence to replace custom localStorage hacks
     db.enablePersistence()
@@ -42,6 +47,7 @@ try {
     // Centralized Auth State Listener
     auth.onAuthStateChanged((user) => {
       currentUser = user;
+      window.currentUser = user;
       
       // Dispatch a custom event so individual pages can safely listen for auth changes 
       // without needing their own onAuthStateChanged listeners, reducing duplicate calls.
