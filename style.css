@@ -1613,3 +1613,10 @@ mark.search-hl {
 .icon-btn.active-r  { background: var(--tracker-accent); border-color: var(--tracker-accent); color: #fff; }
 .filter-chip.f-watched.active  { background: var(--tracker-accent); border-color: var(--tracker-accent); color: #fff; opacity: 0.6; }
 .filter-chip.f-reviewed.active { background: var(--tracker-accent); border-color: var(--tracker-accent); color: #fff; }
+
+/* ── Tracker legend badges ─────────────────────────────────── */
+.legend-badge { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:5px; color:#fff; font-size:10px; background:var(--tracker-accent); }
+.legend-badge-w { opacity: 0.55; }
+.legend-badge-r { opacity: 1; }
+.tc-fill-w { position:absolute; left:0; top:0; height:100%; border-radius:99px; background:var(--card-accent, var(--sky)); opacity:0.4; transition:width .6s ease; }
+.tc-fill-r { position:absolute; left:0; top:0; height:100%; border-radius:99px; background:var(--card-accent, var(--fuji)); transition:width .6s ease; }
