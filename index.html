@@ -229,6 +229,9 @@
 
 /* ── Micro modal sage button ──────────────────────────────── */
 .btn-save-sage { background: var(--sage); }
+/* ── Micro pearl box — sage tint ─────────────────────────── */
+.pearl-box-sage { background: var(--sage-light); border-color: #b0d4bc; }
+.pearl-box-sage .drug-label { color: var(--sage); }
 </style>
 </head>
 <body>
@@ -548,7 +551,7 @@ function initOotd() {
   if (!all.length) return;
   ootdOrg = all[(seed() + 37) % all.length];
   document.getElementById('ootd-name').textContent = ootdOrg.name;
-  const p = bare(ootdOrg.pearl) || (ootdOrg.treatment ? 'Tx: ' + bare(ootdOrg.treatment) : 'High-yield organism — tap to review.');
+  const p = bare(ootdOrg.pearl) || (ootdOrg.tx ? 'Tx: ' + bare(ootdOrg.tx) : 'High-yield organism — tap to review.');
   document.getElementById('ootd-pearl').textContent = p.length > 130 ? p.slice(0,130)+'…' : p;
   // Swap skeleton → real card
   document.getElementById('ootd-skeleton').style.display = 'none';
@@ -562,16 +565,16 @@ function openOotdModal() {
   document.getElementById('om-group').textContent = ootdOrg.groupName || 'Microbiology';
   const fields = [
     ['Gram Stain / Type', ootdOrg.gram],
-    ['Virulence', ootdOrg.virulence],
-    ['Disease', ootdOrg.disease],
-    ['Treatment', ootdOrg.treatment],
-    ['Unique Features', ootdOrg.unique]
+    ['Virulence',         ootdOrg.virulence],
+    ['Diseases',          ootdOrg.disease],
+    ['Lab Diagnosis',     ootdOrg.lab_diagnosis],
+    ['Treatment',         ootdOrg.tx],
   ];
   document.getElementById('om-content').innerHTML =
     fields.filter(([,v]) => v)
       .map(([l,v]) => `<div class="drug-row"><span class="drug-label">${l}</span><div class="drug-text">${fmt(v)}</div></div>`)
       .join('') +
-    (ootdOrg.pearl ? `<div class="pearl-box" style="background:var(--sage-light);border-color:#b0d4bc;"><span class="drug-label" style="color:var(--sage);">Pearl</span><div class="drug-text">${fmt(ootdOrg.pearl)}</div></div>` : '');
+    (ootdOrg.pearl ? `<div class="pearl-box pearl-box-sage"><span class="drug-label">Pearl</span><div class="drug-text">${fmt(ootdOrg.pearl)}</div></div>` : '');
   openModal('ootd-modal');
 }
 
