@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="style.css"/>
 <title>Drug Facts · Step 1 Hub</title>
 <style>
-/* ── Page-level accent overrides ─────────────────────────── */
 :root {
   --accent:       var(--sakura2);
   --accent-light: var(--sakura-light);
@@ -37,6 +36,7 @@
     <div class="ref-count" id="results-meta"></div>
   </div>
 
+  <!-- Search row -->
   <div class="ref-search-row">
     <div class="ref-search-wrap">
       <span class="ref-search-icon">
@@ -47,11 +47,59 @@
       <input class="ref-search-input" type="text" id="drug-search"
              placeholder="Search drug, class, mechanism, side effect…"
              oninput="onSearch()" autocomplete="off"/>
+      <button class="ref-search-clear" id="search-clear-btn" title="Clear search" onclick="clearSearch()">✕</button>
     </div>
+    <button class="bookmark-filter-btn" id="bookmark-filter-btn" onclick="toggleBookmarkFilter()">
+      ★ Bookmarked <span class="bk-count" id="bk-count">0</span>
+    </button>
   </div>
 
+  <!-- View mode bar -->
+  <div class="view-mode-bar">
+    <button class="mode-btn active" id="mode-browse" onclick="setMode('browse')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/>
+        <rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/>
+      </svg>
+      Browse
+    </button>
+    <button class="mode-btn" id="mode-quiz" onclick="setMode('quiz')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="1" y="2" width="14" height="12" rx="2"/>
+        <line x1="5" y1="8" x2="11" y2="8"/><line x1="8" y1="5" x2="8" y2="11"/>
+      </svg>
+      Flashcard Quiz
+    </button>
+    <div class="mode-sep"></div>
+    <span style="font-family:'DM Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:0.5px;">
+      QUIZ: Space=flip · 1=Again · 2=Hard · 3=Got it
+    </span>
+  </div>
+
+  <!-- Quiz toolbar -->
+  <div class="quiz-toolbar" id="quiz-toolbar">
+    <div class="quiz-direction-toggle">
+      <button class="quiz-dir-btn active" id="dir-name" onclick="setQuizDir('name-to-facts')">Drug → Facts</button>
+      <button class="quiz-dir-btn" id="dir-guess" onclick="setQuizDir('facts-to-name')">Facts → Drug</button>
+    </div>
+    <button class="quiz-shuffle-btn" onclick="shuffleQuiz()">⇄ Shuffle</button>
+    <button class="quiz-reset-btn" onclick="resetQuiz()">↺ Reset</button>
+    <div class="quiz-stat" id="quiz-stat">Ready</div>
+  </div>
+
+  <!-- Tab bar -->
   <div class="cat-tab-bar" id="cat-tabs" role="tablist"></div>
+
+  <!-- Quiz progress bar -->
+  <div class="quiz-progress-bar-wrap" id="quiz-progress-wrap" style="display:none;">
+    <div class="quiz-progress-bar-fill" id="quiz-progress-fill" style="width:0%"></div>
+  </div>
+
+  <!-- Browse panels -->
   <div id="panels-container"></div>
+
+  <!-- Quiz container -->
+  <div id="quiz-container" style="display:none;"></div>
 
 </div>
 
@@ -59,18 +107,18 @@
 <div class="drug-modal-overlay" id="drug-modal-overlay" onclick="handleModalOverlayClick(event)">
   <div class="drug-modal" id="drug-modal">
 
-    <!-- Top bar: breadcrumb + nav controls -->
     <div class="drug-modal-topbar" id="modal-banner">
       <div class="drug-modal-breadcrumb" id="modal-breadcrumb"></div>
       <div class="drug-modal-topbar-right">
+        <button id="modal-star-btn" class="rcard-star" style="font-size:16px;padding:4px 8px;" onclick="toggleModalBookmark()" title="Bookmark (S)">☆</button>
         <span class="drug-modal-counter" id="modal-counter"></span>
-        <button class="drug-modal-nav-btn" id="modal-prev" onclick="modalNav(-1)" title="Previous drug">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L4 6l4 4"/></svg>
+        <button class="drug-modal-nav-btn" id="modal-prev" onclick="modalNav(-1)" title="Previous">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2L4 6l4 4"/></svg>
           Prev
         </button>
-        <button class="drug-modal-nav-btn" id="modal-next" onclick="modalNav(1)" title="Next drug">
+        <button class="drug-modal-nav-btn" id="modal-next" onclick="modalNav(1)" title="Next">
           Next
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2l4 4-4 4"/></svg>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 2l4 4-4 4"/></svg>
         </button>
         <button class="drug-modal-close" onclick="closeModal()" title="Close (Esc)">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg>
@@ -78,16 +126,12 @@
       </div>
     </div>
 
-    <!-- Drug identity -->
     <div class="drug-modal-header" id="modal-header">
       <div class="drug-modal-title" id="modal-title"></div>
       <div class="drug-modal-aka" id="modal-aka"></div>
     </div>
 
-    <!-- Summary -->
     <div class="drug-modal-summary" id="modal-summary"></div>
-
-    <!-- Scrollable detail fields -->
     <div class="drug-modal-body" id="modal-body"></div>
 
   </div>
@@ -96,6 +140,10 @@
 <script src="drug_data.js"></script>
 <script src="app.js"></script>
 <script>
+/* ============================================================
+   DRUG FACTS PAGE LOGIC
+   ============================================================ */
+
 const CAT_META = {
   autonomic:  { label: 'Autonomics',     color: '#c4505e', desc: 'Parasympathetic (cholinergic) and sympathetic (adrenergic) drug classes. Master receptor subtypes first — M1/M2/M3, α1/α2, β1/β2 — and the drugs fall into place. High-yield for organ-specific side effects and clinical applications.' },
   cv:         { label: 'Cardio & Renal', color: '#9e3a5a', desc: 'The most tested drug system on Step 1. Know ACEi/ARBs cold — they appear in HF, HTN, CKD, and post-MI vignettes. Antiarrhythmic classes: think ion channels first, then drugs. Diuretic electrolyte effects are guaranteed questions.' },
@@ -109,8 +157,74 @@ const CAT_META = {
   toxicology: { label: 'Toxicology',     color: '#a63e3e', desc: 'Crucial reversal agents and toxidromes. Focus on the mechanism of toxicity and the logic of the chosen antidote. Know the classic overdose presentations cold.' },
 };
 
-let allDrugs = [], activeTab = 'autonomic', searchQ = '';
+// ── State ──────────────────────────────────────────────────
+let allDrugs = [];
+let activeTab = 'autonomic';
+let searchQ = '';
+let currentMode = 'browse';
+let quizDir = 'name-to-facts';
+let quizDrugs = [];
+let quizIdx = 0;
+let quizResults = { again: 0, hard: 0, good: 0 };
+let bookmarkFilter = false;
+let bookmarks = new Set();
 
+// ── Bookmarks ──────────────────────────────────────────────
+function loadBookmarks() {
+  try {
+    const saved = localStorage.getItem('df-bookmarks');
+    bookmarks = saved ? new Set(JSON.parse(saved)) : new Set();
+  } catch { bookmarks = new Set(); }
+}
+function saveBookmarks() {
+  localStorage.setItem('df-bookmarks', JSON.stringify([...bookmarks]));
+  syncBookmarkCount();
+}
+function syncBookmarkCount() {
+  const cnt = document.getElementById('bk-count');
+  const btn = document.getElementById('bookmark-filter-btn');
+  if (cnt) cnt.textContent = bookmarks.size;
+  if (btn) btn.classList.toggle('active', bookmarkFilter);
+}
+function toggleBookmark(name) {
+  if (bookmarks.has(name)) bookmarks.delete(name);
+  else bookmarks.add(name);
+  saveBookmarks();
+}
+function toggleBookmarkFilter() {
+  bookmarkFilter = !bookmarkFilter;
+  document.getElementById('bookmark-filter-btn').classList.toggle('active', bookmarkFilter);
+  render();
+}
+function toggleModalBookmark() {
+  const d = modalDrugs[modalIdx];
+  if (!d) return;
+  toggleBookmark(d.name);
+  updateModalStarBtn(d.name);
+  refreshCardStar(d.name);
+}
+function updateModalStarBtn(name) {
+  const btn = document.getElementById('modal-star-btn');
+  if (!btn) return;
+  const starred = bookmarks.has(name);
+  btn.textContent = starred ? '★' : '☆';
+  btn.classList.toggle('starred', starred);
+  btn.title = starred ? 'Remove bookmark (S)' : 'Bookmark (S)';
+}
+function refreshCardStar(name) {
+  document.querySelectorAll('.rcard').forEach(c => {
+    if (c.dataset.drugName === name) {
+      const star = c.querySelector('.rcard-star');
+      if (star) {
+        const s = bookmarks.has(name);
+        star.textContent = s ? '★' : '☆';
+        star.classList.toggle('starred', s);
+      }
+    }
+  });
+}
+
+// ── Build drug list ────────────────────────────────────────
 function buildDrugList() {
   const list = [];
   Object.entries(DRUGS).forEach(([cat, groups]) =>
@@ -122,20 +236,23 @@ function buildDrugList() {
 }
 
 function getFiltered() {
+  let drugs = allDrugs;
+  if (bookmarkFilter) drugs = drugs.filter(d => bookmarks.has(d.name));
   if (searchQ) {
-    return allDrugs.filter(d => {
+    return drugs.filter(d => {
       const blob = [d.name, d.aka, d.summary, d.moa, d.use, d.se, d.ci, d.pk, d.pearl]
         .filter(Boolean).join(' ').toLowerCase();
       return blob.includes(searchQ);
     });
   }
-  return allDrugs.filter(d => d.category === activeTab);
+  if (bookmarkFilter) return drugs;
+  return drugs.filter(d => d.category === activeTab);
 }
 
+// ── Text helpers ───────────────────────────────────────────
 function esc(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 function fmt(text, q) {
   if (!text) return '';
   let out = esc(text);
@@ -146,7 +263,6 @@ function fmt(text, q) {
   }
   return out;
 }
-
 function fmtLines(text, q) {
   if (!text) return '';
   let out = fmt(text, q);
@@ -159,23 +275,42 @@ function fmtLines(text, q) {
     return `<div class="info-line">${line}</div>`;
   }).join('');
 }
+function stripMd(text) {
+  return (text||'').replace(/\*\*(.*?)\*\*/g, '$1');
+}
 
+// ── Mode switching ─────────────────────────────────────────
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('mode-browse').classList.toggle('active', mode === 'browse');
+  document.getElementById('mode-quiz').classList.toggle('active', mode === 'quiz');
+  document.getElementById('quiz-toolbar').classList.toggle('visible', mode === 'quiz');
+  document.getElementById('quiz-progress-wrap').style.display = mode === 'quiz' ? '' : 'none';
+  document.getElementById('panels-container').style.display = mode === 'browse' ? '' : 'none';
+  document.getElementById('quiz-container').style.display = mode === 'quiz' ? '' : 'none';
+  if (mode === 'quiz') startQuiz();
+}
+
+// ── Main render ────────────────────────────────────────────
 function render() {
   const filtered = getFiltered();
   const isSearch = searchQ.length > 0;
+  const isBmFilter = bookmarkFilter;
 
-  document.getElementById('results-meta').innerHTML = isSearch
+  document.getElementById('results-meta').innerHTML = (isSearch || isBmFilter)
     ? `<strong>${filtered.length}</strong> of ${allDrugs.length} drugs`
     : `<strong>${allDrugs.length}</strong> drugs`;
 
+  document.getElementById('search-clear-btn').classList.toggle('visible', searchQ.length > 0);
+  syncBookmarkCount();
   renderTabs();
-  renderPanels(filtered, isSearch);
+  if (currentMode === 'browse') renderPanels(filtered, isSearch || isBmFilter);
 }
 
 function renderTabs() {
   let html = '';
   Object.entries(CAT_META).forEach(([cat, meta]) => {
-    const isActive = (activeTab === cat && !searchQ);
+    const isActive = (activeTab === cat && !searchQ && !bookmarkFilter);
     html += `<button class="cat-tab${isActive ? ' active' : ''}"
       onclick="switchTab('${cat}')" role="tab">
       <span class="tab-dot" style="background:${meta.color}"></span>${meta.label}
@@ -212,8 +347,8 @@ function renderPanels(filtered, isSearch) {
   if (!filtered.length) {
     container.innerHTML = `<div class="cards-grid" style="margin-top:16px;">
       <div class="ref-empty">
-        <div class="ref-empty-title">Nothing here yet</div>
-        <div class="ref-empty-sub">This category has no entries.</div>
+        <div class="ref-empty-title">${bookmarkFilter ? 'No bookmarks yet' : 'Nothing here yet'}</div>
+        <div class="ref-empty-sub">${bookmarkFilter ? 'Click ☆ on any drug card to save it here.' : 'This category has no entries.'}</div>
       </div></div>`;
     return;
   }
@@ -238,7 +373,7 @@ function renderPanels(filtered, isSearch) {
         </span>
         <button class="group-expand-btn" style="--cat-color:${meta.color}" onclick="toggleGroup('${gid}',this)">▼ Expand</button>
       </div>
-      <div class="cards-grid" id="${gid}">
+      <div class="cards-grid" id="${gid}" style="display:none;">
         ${grpDrugs.map(d => renderCard(d, meta.color)).join('')}
       </div>
     </div>`;
@@ -247,39 +382,53 @@ function renderPanels(filtered, isSearch) {
   container.innerHTML = `<div class="ref-panel" id="panel-${cat}">${introHtml}${groupsHtml}</div>`;
 }
 
-function renderCard(d, catColor, idx) {
+function renderCard(d, catColor) {
   const color = catColor || CAT_META[d.category]?.color || 'var(--accent)';
   const q = searchQ;
-
+  const isStarred = bookmarks.has(d.name);
   const akaHtml = d.aka
-    ? d.aka.replace(/\|/g, '·').replace(/·+/g, '·').split('·')
+    ? d.aka.replace(/\|/g,'·').replace(/·+/g,'·').split('·')
         .map(s => s.trim()).filter(Boolean)
         .join('<span class="dot-sep">·</span>')
     : '';
 
-  return `<div class="rcard" data-cat="${d.category}" data-idx="${idx ?? ''}" style="--cat-color:${color};border-left-color:${color}"
+  return `<div class="rcard" data-cat="${d.category}" data-drug-name="${esc(d.name)}"
+    style="--cat-color:${color};border-left-color:${color}"
     tabindex="0" role="button" aria-label="${esc(d.name)}"
-    onclick="openModal(this)">
+    onclick="openCardModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCardModal(this);}">
     <div class="rcard-header">
       <div class="rcard-header-left">
         <div class="rcard-name">${fmt(d.name, q)}</div>
         ${akaHtml ? `<div class="rcard-aka">${akaHtml}</div>` : ''}
       </div>
-      <button class="rcard-toggle" style="color:${color};font-size:11px;" tabindex="-1" aria-hidden="true">▼</button>
+      <button class="rcard-star${isStarred ? ' starred' : ''}" tabindex="0"
+        aria-label="Bookmark ${esc(d.name)}"
+        onclick="event.stopPropagation();toggleCardBookmark(this,'${esc(d.name)}')">${isStarred ? '★' : '☆'}</button>
     </div>
     <div class="rcard-summary">${fmt(d.summary, q)}</div>
   </div>`;
 }
 
+function toggleCardBookmark(btn, name) {
+  // decode HTML entities that esc() may have added
+  const decoded = name.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');
+  toggleBookmark(decoded);
+  const isStarred = bookmarks.has(decoded);
+  btn.textContent = isStarred ? '★' : '☆';
+  btn.classList.toggle('starred', isStarred);
+  syncBookmarkCount();
+  if (bookmarkFilter && !isStarred) render();
+}
+
+// ── Modal ──────────────────────────────────────────────────
 let modalDrugs = [], modalIdx = 0;
 
-function openModal(cardEl) {
+function openCardModal(cardEl) {
   if (window.getSelection().toString().length > 0) return;
-  // Use ALL drugs in current tab/search for navigation
   const filtered = getFiltered();
   modalDrugs = filtered;
   const cat = cardEl.dataset.cat;
-  const name = cardEl.querySelector('.rcard-name')?.textContent;
+  const name = cardEl.dataset.drugName;
   const idx = modalDrugs.findIndex(d => d.category === cat && d.name === name);
   modalIdx = idx >= 0 ? idx : 0;
   showModal();
@@ -292,7 +441,6 @@ function showModal() {
   const catLabel = CAT_META[d.category]?.label || d.category;
   const q = searchQ;
 
-  // Topbar breadcrumb
   document.getElementById('modal-breadcrumb').innerHTML = `
     <span class="drug-modal-banner-cat" style="color:${color};border-color:${color}50;background:${color}12;">${catLabel}</span>
     <span class="drug-modal-banner-sep">›</span>
@@ -301,18 +449,16 @@ function showModal() {
   document.getElementById('drug-modal').style.setProperty('--cat-color', color);
   document.getElementById('modal-banner').style.borderBottom = `1px solid ${color}20`;
   document.getElementById('modal-banner').style.borderTop = `3px solid ${color}`;
-
   document.getElementById('modal-header').style.borderTop = 'none';
   document.getElementById('modal-title').innerHTML = fmt(d.name, q);
 
   const akaHtml = d.aka
-    ? d.aka.replace(/\|/g, '·').replace(/·+/g, '·').split('·')
+    ? d.aka.replace(/\|/g,'·').replace(/·+/g,'·').split('·')
         .map(s => s.trim()).filter(Boolean)
         .join('<span class="dot-sep">·</span>')
     : '';
   const akaEl = document.getElementById('modal-aka');
   akaEl.innerHTML = akaHtml;
-  akaEl.style.color = '';
   akaEl.style.display = akaHtml ? '' : 'none';
 
   document.getElementById('modal-summary').innerHTML = fmt(d.summary, q);
@@ -346,38 +492,37 @@ function showModal() {
   document.getElementById('modal-body').scrollTop = 0;
   document.getElementById('drug-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  updateModalStarBtn(d.name);
 }
 
 function closeModal() {
   document.getElementById('drug-modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
 function modalNav(dir) {
   const next = modalIdx + dir;
-  if (next >= 0 && next < modalDrugs.length) {
-    modalIdx = next;
-    showModal();
-  }
+  if (next >= 0 && next < modalDrugs.length) { modalIdx = next; showModal(); }
 }
-
 function handleModalOverlayClick(e) {
   if (e.target === document.getElementById('drug-modal-overlay')) closeModal();
 }
 
+// ── Browse helpers ─────────────────────────────────────────
 function toggleGroup(gid, btn) {
-  // Groups just expand/collapse the grid visibility now
   const grid = document.getElementById(gid);
-  const hidden = grid.style.display === 'none';
-  grid.style.display = hidden ? '' : 'none';
-  btn.textContent = hidden ? '▲ Collapse' : '▼ Expand';
+  const isHidden = grid.style.display === 'none' || grid.style.display === '';
+  grid.style.display = isHidden ? 'grid' : 'none';
+  btn.textContent = isHidden ? '▲ Collapse' : '▼ Expand';
 }
 
 function switchTab(cat) {
   activeTab = cat;
   searchQ = '';
+  bookmarkFilter = false;
   document.getElementById('drug-search').value = '';
+  document.getElementById('bookmark-filter-btn').classList.remove('active');
   render();
+  if (currentMode === 'quiz') startQuiz();
 }
 
 function onSearch() {
@@ -385,6 +530,193 @@ function onSearch() {
   render();
 }
 
+function clearSearch() {
+  document.getElementById('drug-search').value = '';
+  searchQ = '';
+  render();
+  document.getElementById('drug-search').focus();
+}
+
+// ── Quiz logic ─────────────────────────────────────────────
+function setQuizDir(dir) {
+  quizDir = dir;
+  document.getElementById('dir-name').classList.toggle('active', dir === 'name-to-facts');
+  document.getElementById('dir-guess').classList.toggle('active', dir === 'facts-to-name');
+  startQuiz();
+}
+
+function startQuiz() {
+  quizDrugs = [...getFiltered()];
+  quizIdx = 0;
+  quizResults = { again: 0, hard: 0, good: 0 };
+  renderQuizCard();
+  updateQuizProgress();
+}
+
+function shuffleQuiz() {
+  for (let i = quizDrugs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [quizDrugs[i], quizDrugs[j]] = [quizDrugs[j], quizDrugs[i]];
+  }
+  quizIdx = 0;
+  quizResults = { again: 0, hard: 0, good: 0 };
+  renderQuizCard();
+  updateQuizProgress();
+}
+
+function resetQuiz() { startQuiz(); }
+
+function updateQuizProgress() {
+  const done = quizIdx;
+  const total = quizDrugs.length;
+  const pct = total ? (done / total) * 100 : 0;
+  document.getElementById('quiz-progress-fill').style.width = pct + '%';
+  const stat = document.getElementById('quiz-stat');
+  if (stat) {
+    stat.innerHTML = total
+      ? `<strong>${done}</strong>/${total} &nbsp;·&nbsp; ✓ ${quizResults.good} · ~ ${quizResults.hard} · ✗ ${quizResults.again}`
+      : 'No drugs to quiz';
+  }
+}
+
+function renderQuizCard() {
+  const container = document.getElementById('quiz-container');
+
+  if (!quizDrugs.length) {
+    container.innerHTML = `<div class="quiz-complete visible">
+      <div class="quiz-complete-icon">🌸</div>
+      <div class="quiz-complete-title">No drugs to quiz</div>
+      <div class="quiz-complete-sub">Adjust your tab, search, or bookmarks filter.</div>
+    </div>`;
+    return;
+  }
+
+  if (quizIdx >= quizDrugs.length) {
+    const total = quizDrugs.length;
+    container.innerHTML = `<div class="quiz-complete visible">
+      <div class="quiz-complete-icon">🎉</div>
+      <div class="quiz-complete-title">Round Complete!</div>
+      <div class="quiz-complete-sub">You reviewed all ${total} drug${total !== 1 ? 's' : ''} in this set.</div>
+      <div class="quiz-complete-stats">
+        <div class="qc-stat"><div class="qc-stat-num" style="color:var(--sage)">${quizResults.good}</div><div class="qc-stat-lbl">Got it</div></div>
+        <div class="qc-stat"><div class="qc-stat-num" style="color:var(--gold)">${quizResults.hard}</div><div class="qc-stat-lbl">Hard</div></div>
+        <div class="qc-stat"><div class="qc-stat-num" style="color:var(--sakura2)">${quizResults.again}</div><div class="qc-stat-lbl">Again</div></div>
+      </div>
+      <button class="quiz-restart-btn" onclick="resetQuiz()">↺ Review Again</button>
+    </div>`;
+    return;
+  }
+
+  const d = quizDrugs[quizIdx];
+  const color = CAT_META[d.category]?.color || 'var(--sakura2)';
+  const catLabel = CAT_META[d.category]?.label || d.category;
+  const isNameToFacts = quizDir === 'name-to-facts';
+
+  const frontQ = isNameToFacts ? d.name : stripMd(d.summary || d.moa || '').substring(0, 150) + (stripMd(d.summary||'').length > 150 ? '…' : '');
+  const frontPrompt = isNameToFacts ? 'What do you know about this drug?' : 'Identify this drug';
+  const frontSub = isNameToFacts ? `${d.groupName || ''} · ${catLabel}` : catLabel;
+
+  const akaLine = d.aka
+    ? `<div class="flashcard-field-val" style="color:${color};margin-bottom:12px;font-size:11px;">${stripMd(d.aka).replace(/\|/g,'·')}</div>`
+    : '';
+
+  const backFields = [
+    isNameToFacts ? null : { lbl: 'Summary', val: d.summary },
+    { lbl: 'Mechanism', val: d.moa },
+    { lbl: 'Clinical Use', val: d.use },
+    { lbl: 'Side Effects', val: d.se },
+    { lbl: 'Contraindications', val: d.ci },
+    { lbl: 'Pharmacokinetics', val: d.pk },
+    d.pearl ? { lbl: '★ Step 1 Pearl', val: d.pearl } : null,
+  ].filter(f => f && f.val);
+
+  const isStarred = bookmarks.has(d.name);
+
+  container.innerHTML = `
+    <div class="quiz-single-wrap">
+      <div class="flashcard-wrap">
+        <div class="flashcard" id="fc-current" style="--cat-color:${color}" onclick="flipCard()">
+          <div class="flashcard-face flashcard-front">
+            <div class="flashcard-prompt" style="color:${color}">${frontPrompt}</div>
+            <div class="flashcard-question">${frontQ}</div>
+            <div class="flashcard-subtext">${frontSub}</div>
+            <div class="flashcard-flip-hint">Click to reveal ↩</div>
+          </div>
+          <div class="flashcard-face flashcard-back">
+            <div class="flashcard-back-label" style="color:${color}">${catLabel} · ${d.groupName||''}</div>
+            <div class="flashcard-back-title">${isNameToFacts ? d.name : 'Answer'}</div>
+            ${akaLine}
+            <div class="flashcard-fields">
+              ${backFields.map(f => `
+                <div class="flashcard-field">
+                  <div class="flashcard-field-lbl" style="color:${color}">${f.lbl}</div>
+                  <div class="flashcard-field-val">${f.val.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flashcard-actions" id="fc-actions" style="display:none;">
+        <button class="fc-action-btn fc-btn-again" onclick="rateCard('again')">✗ Again</button>
+        <button class="fc-action-btn fc-btn-hard"  onclick="rateCard('hard')">~ Hard</button>
+        <button class="fc-action-btn fc-btn-good"  onclick="rateCard('good')">✓ Got it</button>
+      </div>
+
+      <div class="quiz-nav-row">
+        <button class="quiz-nav-btn" onclick="quizNavBack()" ${quizIdx === 0 ? 'disabled' : ''}>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2L4 6l4 4"/></svg>
+          Prev
+        </button>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="quiz-card-counter">${quizIdx + 1} / ${quizDrugs.length}</span>
+          <button class="rcard-star${isStarred?' starred':''}" style="font-size:18px;background:none;border:none;cursor:pointer;"
+            onclick="quizToggleStar(this,'${d.name.replace(/'/g,"&#39;")}')"
+            title="Bookmark this drug">${isStarred ? '★' : '☆'}</button>
+        </div>
+        <button class="quiz-nav-btn" onclick="rateCard('skip')" ${quizIdx >= quizDrugs.length - 1 ? 'disabled' : ''}>
+          Skip
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 2l4 4-4 4"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function flipCard() {
+  const card = document.getElementById('fc-current');
+  if (!card) return;
+  const wasFlipped = card.classList.contains('flipped');
+  card.classList.add('flipped');
+  if (!wasFlipped) {
+    document.getElementById('fc-actions').style.display = 'flex';
+  }
+}
+
+function rateCard(rating) {
+  if (rating !== 'skip') quizResults[rating]++;
+  quizIdx++;
+  updateQuizProgress();
+  renderQuizCard();
+}
+
+function quizNavBack() {
+  if (quizIdx > 0) {
+    quizIdx--;
+    renderQuizCard();
+    updateQuizProgress();
+  }
+}
+
+function quizToggleStar(btn, name) {
+  toggleBookmark(name);
+  const isStarred = bookmarks.has(name);
+  btn.textContent = isStarred ? '★' : '☆';
+  btn.classList.toggle('starred', isStarred);
+  syncBookmarkCount();
+}
+
+// ── Keyboard shortcuts ─────────────────────────────────────
 document.addEventListener('keydown', e => {
   const search = document.getElementById('drug-search');
   const modalOpen = document.getElementById('drug-modal-overlay').classList.contains('open');
@@ -393,20 +725,35 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeModal();
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); modalNav(1); }
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); modalNav(-1); }
+    if (e.key === 's' || e.key === 'S') toggleModalBookmark();
+    return;
+  }
+
+  if (currentMode === 'quiz') {
+    const card = document.getElementById('fc-current');
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      if (card && !card.classList.contains('flipped')) flipCard();
+      else rateCard('good');
+    }
+    if (e.key === '1') rateCard('again');
+    if (e.key === '2') rateCard('hard');
+    if (e.key === '3') rateCard('good');
+    if (e.key === 'ArrowLeft') quizNavBack();
+    if (e.key === 'ArrowRight') rateCard('skip');
     return;
   }
 
   if (e.key === '/' && document.activeElement !== search) {
     e.preventDefault(); search.focus(); search.select();
   }
-  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('rcard')) {
-    e.preventDefault(); openModal(e.target);
-  }
-  if (e.key === 'Escape' && searchQ) { search.value = ''; onSearch(); }
+  if (e.key === 'Escape' && searchQ) clearSearch();
 });
 
 window.addEventListener('appAuthStateChanged', () => { if (allDrugs.length) render(); });
+
 document.addEventListener('DOMContentLoaded', () => {
+  loadBookmarks();
   allDrugs = buildDrugList();
   activeTab = 'autonomic';
   render();
