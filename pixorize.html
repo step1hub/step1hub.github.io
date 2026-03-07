@@ -270,7 +270,7 @@ function renderAll() {
           </div>
         </div>
         <div class="cat-header-right">
-          <span class="cat-count" id="cat-count-${cat.id}">0 / ${cat.videos.length} reviewed</span>
+          <span class="cat-time-badge">${(function(){const m=cat.videos.reduce((s,v)=>s+parseMins(v.time),0);if(!m)return'';const h=Math.floor(m/60),mn=Math.round(m%60);return h>0?(mn>0?h+'h '+mn+'min':h+'h'):mn+'min';})()} </span><span class="cat-count" id="cat-count-${cat.id}">0 / ${cat.videos.length} reviewed</span>
           <div class="cat-mini-bar"><div class="cat-mini-fill-w" id="cat-fill-w-${cat.id}" style="width:0%;"></div><div class="cat-mini-fill-r" id="cat-fill-r-${cat.id}" style="width:0%;"></div></div>
           <button class="cat-chevron" onclick="this.closest('.cat-section').classList.toggle('open');event.stopPropagation()">▼</button>
         </div>

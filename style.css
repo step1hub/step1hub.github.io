@@ -1566,6 +1566,14 @@ mark.search-hl {
 .cat-body { display:none; border-top:1px solid var(--border2); }
 .cat-section.open .cat-body { display:block; }
 .video-header-row { display:flex; align-items:center; padding:8px 20px; gap:12px; font-size:10px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border2); background:var(--bg); }
+.video-header-row .video-num,
+.video-header-row .video-name,
+.video-header-row .video-time,
+.video-header-row .check-btns {
+  font-family: inherit; font-size: 10px; font-weight: 700;
+  letter-spacing: 1.2px; color: var(--muted); text-transform: uppercase;
+}
+.video-header-row .check-btns { justify-content: center; }
 .video-row { display:flex; align-items:center; padding:11px 20px; border-bottom:1px solid var(--border2); gap:12px; transition:background .1s; }
 .video-row:last-child { border-bottom:none; }
 .video-row:hover { background:var(--surface2); }
@@ -1577,7 +1585,7 @@ mark.search-hl {
 .check-btns { display:flex; gap:6px; }
 
 /* ── Status icon buttons ───────────────────────────────────── */
-.icon-btn { width:34px; height:34px; border-radius:8px; border:1.5px solid var(--border); background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; transition:all .15s; line-height:1; flex-shrink:0; color:var(--dim); }
+.icon-btn { width:34px; height:34px; border-radius:8px; border:1.5px solid var(--border); background:var(--bg); display:flex; align-items:center; justify-content:center; font-size:15px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI Symbol", sans-serif; cursor:pointer; transition:all .15s; line-height:1; flex-shrink:0; color:var(--dim); }
 .icon-btn:hover { transform:scale(1.1); }
 
 /* ── Category accent palette ───────────────────────────────── */
@@ -1632,6 +1640,14 @@ mark.search-hl {
   padding: 18px 24px;
   display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
   margin-top: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow var(--t), border-color var(--t);
+}
+.uw-strip:hover {
+  box-shadow: var(--shadow-md), inset 3px 0 0 0 var(--lavender);
+  border-color: color-mix(in srgb, var(--lavender) 30%, var(--border));
 }
 .uw-empty-hint { font-size: 12px; color: var(--muted); font-style: italic; }
 .uw-prog { flex: 1; min-width: 160px; }
@@ -1649,3 +1665,10 @@ mark.search-hl {
 .uw-qd-v { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; line-height: 1; color: var(--lavender); }
 .uw-qd-l { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); margin-top: 4px; }
 
+
+/* Category time badge in tracker headers */
+.cat-time-badge {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+  color: var(--dim); font-family: 'DM Mono', monospace;
+  margin-right: 8px;
+}

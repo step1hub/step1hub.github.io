@@ -39,7 +39,7 @@ function renderCountdown() {
     const exam = new Date(s + 'T12:00:00');
     dateEl.textContent = exam.toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'});
   }
-  daysEl.style.color = 'var(--sakura2)';
+  daysEl.style.color = 'var(--gold)';
   updateNavPill();
 }
 

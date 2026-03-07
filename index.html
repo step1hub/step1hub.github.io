@@ -219,6 +219,34 @@
   .cd-days { font-size: 52px; }
 }
 
+/* ── Dashboard card hover preview ────────────────────────── */
+.dash-preview-card { position: relative; }
+.dash-hover-preview {
+  position: absolute; inset: 0;
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  padding: 20px 22px;
+  display: flex; flex-direction: column; justify-content: center; gap: 10px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.18s ease;
+  border-left: 3px solid var(--lavender);
+}
+.dash-preview-card:hover .dash-hover-preview {
+  opacity: 1; pointer-events: auto;
+}
+.dhp-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; gap: 12px;
+}
+.dhp-label { color: var(--muted); font-weight: 500; }
+.dhp-val { color: var(--ink2); font-weight: 700; font-family: 'DM Mono', monospace; }
+.dhp-cta {
+  margin-top: 6px; padding-top: 10px;
+  border-top: 1px solid var(--border2);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  color: var(--lavender); text-align: right;
+}
+
 /* ── Micro modal sage button ──────────────────────────────── */
 .btn-save-sage { background: var(--sage); }
 /* ── Micro pearl box — sage tint ─────────────────────────── */
@@ -368,12 +396,31 @@
       <div class="card-title">Micro Facts</div>
       <p class="card-desc">Bacteria, viruses, fungi, and parasites — virulence factors, diseases, treatments, and high-yield pearls.</p>
     </a>
-    <a class="tool-card card-dash" href="dashboard.html">
+    <a class="tool-card card-dash dash-preview-card" href="dashboard.html" id="dash-preview-card">
       <div class="card-hdr">
         <span class="card-arrow" aria-hidden="true">↗</span>
       </div>
       <div class="card-title">Dashboard</div>
       <p class="card-desc">Log UWorld sessions, track practice exam scores, find weak points, and calculate your daily question goal.</p>
+      <div class="dash-hover-preview" id="dash-hover-preview">
+        <div class="dhp-row">
+          <span class="dhp-label">UWorld</span>
+          <span class="dhp-val" id="dhp-uw">—</span>
+        </div>
+        <div class="dhp-row">
+          <span class="dhp-label">Sessions logged</span>
+          <span class="dhp-val" id="dhp-sess">—</span>
+        </div>
+        <div class="dhp-row">
+          <span class="dhp-label">Study streak</span>
+          <span class="dhp-val" id="dhp-streak">—</span>
+        </div>
+        <div class="dhp-row">
+          <span class="dhp-label">Exams taken</span>
+          <span class="dhp-val" id="dhp-exams">—</span>
+        </div>
+        <div class="dhp-cta">Open Dashboard ↗</div>
+      </div>
     </a>
   </div>
 
@@ -601,11 +648,40 @@ function renderUWorld() {
 }
 
 /* Re-render everything after Firebase syncs down fresh data */
+// ── Dashboard card hover preview data ─────────────────────
+function populateDashPreview() {
+  try {
+    // UWorld
+    const uwDone  = Store.get('uw-unique-done', 0);
+    const uwTotal = Store.get('uw-settings', { total: 3661 }).total || 3661;
+    const uwPct   = uwTotal > 0 ? Math.round(uwDone / uwTotal * 100) : 0;
+    const dhpUw   = document.getElementById('dhp-uw');
+    if (dhpUw) dhpUw.textContent = `${uwDone} / ${uwTotal} (${uwPct}%)`;
+
+    // Sessions
+    const sessions = Store.get('uw-sessions', []);
+    const dhpSess  = document.getElementById('dhp-sess');
+    if (dhpSess) dhpSess.textContent = sessions.length ? `${sessions.length} session${sessions.length !== 1 ? 's' : ''}` : 'None yet';
+
+    // Streak
+    const streak  = Store.get('study-streak', { current: 0 });
+    const dhpStr  = document.getElementById('dhp-streak');
+    if (dhpStr) dhpStr.textContent = streak.current ? `${streak.current} day${streak.current !== 1 ? 's' : ''} 🔥` : '—';
+
+    // Exams
+    const exams   = Store.get('nbme-exams', []);
+    const dhpExam = document.getElementById('dhp-exams');
+    if (dhpExam) dhpExam.textContent = exams.length ? `${exams.length} exam${exams.length !== 1 ? 's' : ''}` : 'None yet';
+  } catch(e) { /* non-critical */ }
+}
+
 window.onCloudSyncComplete = function() {
   renderUWorld();
   renderTrackers();
   initDotd();
   initOotd();
+  populateDashPreview();
+  populateDashPreview();
 };
 
 /* ── Progress trackers ───────────────────────────────────── */
