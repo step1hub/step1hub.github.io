@@ -186,8 +186,27 @@
 
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 860px) {
-  .hero { grid-template-columns: 1fr; }
-  .hero-countdown { min-width: unset; max-width: unset; }
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    padding: 32px 0 36px;
+    gap: 24px;
+  }
+  .hero-countdown {
+    min-width: unset; max-width: unset;
+    width: 100%;
+    grid-row: 2;
+    display: flex; flex-direction: row; align-items: center;
+    justify-content: space-between; gap: 20px;
+    padding: 20px 24px;
+    text-align: left;
+  }
+  .cd-eyebrow { display: none; }
+  .cd-main { flex-direction: row; align-items: baseline; gap: 8px; }
+  .cd-days { font-size: 48px !important; }
+  .cd-unit { align-self: flex-end; padding-bottom: 6px; }
+  .cd-date { font-size: 13px; }
+  .cd-edit-btn { margin-top: 0; }
 }
 @media (max-width: 720px) {
   .daily-grid { grid-template-columns: 1fr; }
@@ -240,7 +259,7 @@
   </header>
 
   <!-- ── UWORLD PROGRESS (always visible) ──────────────── -->
-  <div class="uw-strip" id="uw-strip" aria-label="UWorld progress">
+  <a class="uw-strip" id="uw-strip" href="dashboard.html" aria-label="UWorld progress — click to open dashboard">
     <div class="uw-prog">
       <div class="uw-lbl">UWorld Progress</div>
       <div class="uw-row">
@@ -256,7 +275,7 @@
       <div class="uw-qd-v" id="uw-qday">—</div>
       <div class="uw-qd-l">Q / Day Needed</div>
     </div>
-  </div>
+  </a>
 
   <!-- ── TODAY'S HIGH YIELD ─────────────────────────────── -->
   <div class="sec-label">Today's High Yield</div>
