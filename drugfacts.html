@@ -254,16 +254,16 @@ function renderCard(d, catColor, idx) {
   const akaHtml = d.aka
     ? d.aka.replace(/\|/g, '·').replace(/·+/g, '·').split('·')
         .map(s => s.trim()).filter(Boolean)
-        .join('<span class="dot-sep" style="color:var(--border);margin:0 3px;">·</span>')
+        .join('<span class="dot-sep">·</span>')
     : '';
 
-  return `<div class="rcard" data-cat="${d.category}" data-idx="${idx ?? ''}" style="border-left-color:${color}"
+  return `<div class="rcard" data-cat="${d.category}" data-idx="${idx ?? ''}" style="--cat-color:${color};border-left-color:${color}"
     tabindex="0" role="button" aria-label="${esc(d.name)}"
     onclick="openModal(this)">
     <div class="rcard-header">
       <div class="rcard-header-left">
         <div class="rcard-name">${fmt(d.name, q)}</div>
-        ${akaHtml ? `<div class="rcard-aka" style="color:${color}">${akaHtml}</div>` : ''}
+        ${akaHtml ? `<div class="rcard-aka">${akaHtml}</div>` : ''}
       </div>
       <button class="rcard-toggle" style="color:${color};font-size:11px;" tabindex="-1" aria-hidden="true">▼</button>
     </div>
@@ -298,6 +298,7 @@ function showModal() {
     <span class="drug-modal-banner-sep">›</span>
     <span class="drug-modal-banner-grp">${d.groupName || ''}</span>
   `;
+  document.getElementById('drug-modal').style.setProperty('--cat-color', color);
   document.getElementById('modal-banner').style.borderBottom = `1px solid ${color}20`;
   document.getElementById('modal-banner').style.borderTop = `3px solid ${color}`;
 
@@ -307,11 +308,11 @@ function showModal() {
   const akaHtml = d.aka
     ? d.aka.replace(/\|/g, '·').replace(/·+/g, '·').split('·')
         .map(s => s.trim()).filter(Boolean)
-        .join('<span style="color:var(--border);margin:0 3px;">·</span>')
+        .join('<span class="dot-sep">·</span>')
     : '';
   const akaEl = document.getElementById('modal-aka');
   akaEl.innerHTML = akaHtml;
-  akaEl.style.color = color;
+  akaEl.style.color = '';
   akaEl.style.display = akaHtml ? '' : 'none';
 
   document.getElementById('modal-summary').innerHTML = fmt(d.summary, q);
