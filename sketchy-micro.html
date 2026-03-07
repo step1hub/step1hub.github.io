@@ -29,8 +29,7 @@
     <div class="overall-bar-bg"><div class="overall-bar-fill-w" id="overall-bar-w" style="width:0%;"></div><div class="overall-bar-fill-r" id="overall-bar-r" style="width:0%;"></div></div>
     <div class="overall-sub">
       <span id="overall-note">0% reviewed</span>
-      <span id="overall-total">0 / 0 videos</span>
-      <span id="overall-time" style="color:var(--dim);font-size:12px;"></span>
+      <span style="color:var(--dim);font-size:12px;"><span id="overall-time"></span> · <span id="tot-total"></span></span>
     </div>
   </div>
 
@@ -188,9 +187,9 @@ function updateSummary() {
   document.getElementById('overall-bar-w').style.width = (total ? Math.round((tw / total) * 100) : 0) + '%';
   document.getElementById('overall-bar-r').style.width = pct + '%';
   document.getElementById('overall-note').textContent = pct + '% reviewed';
-  document.getElementById('overall-total').textContent = tr + ' / ' + total + ' videos';
   const totMins = totalContentTime();
-  document.getElementById('overall-time').textContent = totMins > 0 ? fmtTime(totMins) + ' total content' : '';
+  document.getElementById('overall-time').textContent = total + ' videos · ' + (totMins > 0 ? fmtTime(totMins) : '');
+  document.getElementById('tot-total').textContent = '';
   updateCatHeaders();
 }
 
