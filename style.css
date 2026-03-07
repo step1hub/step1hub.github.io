@@ -1068,8 +1068,19 @@ mark.search-hl {
 .ref-search-clear:hover { color: var(--ink2); }
 .ref-search-clear.visible { display: block; }
 
-/* ── Quiz mode layout ───────────────────────────────────── */
-/* stat + kbd hint used in the quiz strip */
+/* ══════════════════════════════════════════════════════════
+   QUIZ STRIP + SIDEBAR LAYOUT
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Strip above layout: progress + stat + settings toggle ─ */
+.quiz-strip {
+  display: none; flex-direction: column; gap: 0;
+  margin: 6px 0 0;
+}
+.quiz-strip-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 0 2px;
+}
 .quiz-stat {
   font-family: 'DM Mono', monospace; font-size: 10px;
   color: var(--muted); white-space: nowrap;
@@ -1077,23 +1088,7 @@ mark.search-hl {
 .quiz-stat strong { color: var(--ink); }
 .quiz-kbd-hint {
   font-family: 'DM Mono', monospace; font-size: 9px;
-  color: var(--dim); letter-spacing: 0.4px;
-  white-space: nowrap; opacity: 0.65;
-}
-
-/* ══════════════════════════════════════════════════════════
-   QUIZ LAYOUT — sidebar + card area
-   ══════════════════════════════════════════════════════════ */
-
-/* Thin strip above the layout: progress bar + stat + settings button */
-/* ── Quiz strip (above layout) ──────────────────────────── */
-.quiz-strip {
-  display: none; flex-direction: column; gap: 0;
-  margin: 8px 0 0;
-}
-.quiz-strip-row {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 0 4px;
+  color: var(--dim); letter-spacing: 0.4px; white-space: nowrap; opacity: 0.65;
 }
 .quiz-settings-btn {
   display: flex; align-items: center; gap: 5px;
@@ -1101,134 +1096,150 @@ mark.search-hl {
   border-radius: 99px; padding: 5px 13px;
   font-size: 10px; font-weight: 600; color: var(--muted);
   cursor: pointer; font-family: 'DM Sans', sans-serif;
-  transition: all .14s; margin-left: auto;
+  transition: all .15s; margin-left: auto;
 }
 .quiz-settings-btn:hover { border-color: var(--ink2); color: var(--ink); }
 .quiz-settings-btn.active {
-  background: var(--ink); border-color: var(--ink); color: var(--surface);
+  background: var(--ink); border-color: var(--ink); color: #fff;
 }
-.quiz-settings-btn svg { opacity: 0.7; }
 
-/* ── Layout: sidebar + card ─────────────────────────────── */
+/* ── Quiz layout wrapper ────────────────────────────────── */
 .quiz-layout {
-  display: flex; align-items: flex-start; gap: 16px;
+  display: flex; align-items: flex-start; gap: 14px;
   margin-top: 4px; padding-bottom: 48px;
 }
 
-/* ── Settings sidebar ───────────────────────────────────── */
+/* ── Sidebar ─────────────────────────────────────────────── */
 .quiz-sidebar {
   flex-shrink: 0;
+  /* closed state */
+  width: 0; min-width: 0; opacity: 0;
+  pointer-events: none;
+  transition: width .22s cubic-bezier(.4,0,.2,1),
+              min-width .22s cubic-bezier(.4,0,.2,1),
+              opacity .18s;
+  /* no overflow:hidden — it clips the border */
+}
+.quiz-sidebar.open {
+  width: 188px; min-width: 188px;
+  opacity: 1; pointer-events: auto;
+}
+
+/* Inner card that actually shows */
+.qsb-inner {
+  width: 188px;
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: 14px;
-  overflow: hidden;
-  width: 0; min-width: 0; opacity: 0; pointer-events: none;
-  transition: width .22s cubic-bezier(.4,0,.2,1), opacity .2s, min-width .22s;
-}
-.quiz-sidebar.open {
-  width: 192px; min-width: 192px; opacity: 1; pointer-events: auto;
+  overflow: hidden; /* OK here — only clips content, not outer element */
 }
 
-/* Section spacing — tighter */
+/* ── Sidebar sections ───────────────────────────────────── */
 .qsb-section {
-  padding: 14px 14px 0;
+  padding: 13px 13px 13px;
+  border-bottom: 1px solid var(--border2);
 }
-.qsb-section + .qsb-section {
-  border-top: 1px solid var(--border2);
-  padding-top: 12px;
-}
+.qsb-section:last-of-type { border-bottom: none; }
+
 .qsb-label {
-  font-size: 8.5px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1.3px; color: var(--dim);
+  font-size: 8px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--dim);
   margin-bottom: 8px; font-family: 'DM Sans', sans-serif;
 }
 
-/* Segmented control style for pill groups */
+/* Direction — iOS-style segmented control */
 .qsb-pill-group {
   display: flex; flex-direction: row;
-  background: var(--surface2); border-radius: 8px;
-  padding: 2px; gap: 2px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 2px; gap: 2px;
 }
 .qsb-pill {
-  flex: 1; background: none; border: none;
-  border-radius: 6px; padding: 5px 4px;
+  flex: 1; background: transparent; border: none;
+  border-radius: 6px; padding: 5px 2px;
   font-size: 10px; font-weight: 600; color: var(--muted);
   cursor: pointer; font-family: 'DM Sans', sans-serif;
-  text-align: center; transition: all .14s; line-height: 1.2;
+  text-align: center; transition: all .14s; line-height: 1.3;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .qsb-pill.active {
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: 0 1px 3px rgba(42,31,26,.10);
+  background: var(--surface); color: var(--ink);
+  box-shadow: 0 1px 4px rgba(42,31,26,.12);
 }
 .qsb-pill:not(.active):hover { color: var(--ink2); }
 
-/* Scope uses stacked layout since labels are longer */
-.qsb-scope-group {
-  display: flex; flex-direction: column; gap: 3px;
-}
+/* Scope — radio-button style rows */
+.qsb-scope-group { display: flex; flex-direction: column; gap: 2px; }
 .qsb-scope-btn {
-  background: none; border: 1.5px solid transparent;
-  border-radius: 7px; padding: 5px 8px;
-  font-size: 10.5px; font-weight: 600; color: var(--muted);
+  display: flex; align-items: center; gap: 7px;
+  background: none; border: none;
+  border-radius: 6px; padding: 5px 6px;
+  font-size: 11px; font-weight: 500; color: var(--muted);
   cursor: pointer; font-family: 'DM Sans', sans-serif;
-  text-align: left; transition: all .14s; line-height: 1;
+  text-align: left; transition: all .13s; width: 100%;
+}
+.qsb-scope-btn::before {
+  content: ''; display: block;
+  width: 12px; height: 12px; flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  transition: all .13s;
 }
 .qsb-scope-btn.active {
-  background: var(--surface2); border-color: var(--border);
-  color: var(--ink);
+  color: var(--ink); background: var(--surface2);
 }
-.qsb-scope-btn:not(.active):hover { color: var(--ink2); }
+.qsb-scope-btn.active::before {
+  background: var(--sakura2);
+  border-color: var(--sakura2);
+  box-shadow: inset 0 0 0 3px var(--surface2);
+}
+.qsb-scope-btn:not(.active):hover { color: var(--ink2); background: var(--surface2); }
 
-/* Field checkboxes */
-.qsb-checks {
-  display: flex; flex-direction: column; gap: 1px;
-  margin-bottom: 2px;
-}
+/* Show on back — checkboxes */
+.qsb-checks { display: flex; flex-direction: column; gap: 0; }
 .qsb-check {
   display: flex; align-items: center; gap: 8px;
-  cursor: pointer; padding: 4px 0;
-  border-radius: 6px;
+  cursor: pointer; padding: 4px 2px; border-radius: 6px;
+  transition: background .12s;
 }
-.qsb-check:hover span { color: var(--ink); }
+.qsb-check:hover { background: var(--surface2); }
 .qsb-check input[type=checkbox] {
   width: 13px; height: 13px; cursor: pointer;
   accent-color: var(--sakura2); flex-shrink: 0;
 }
 .qsb-check span {
   font-size: 11px; font-weight: 500; color: var(--ink2);
-  font-family: 'DM Sans', sans-serif; transition: color .12s;
+  font-family: 'DM Sans', sans-serif;
 }
 
-.qsb-divider {
-  height: 1px; background: var(--border2); margin: 0;
-}
+/* Shuffle + Reset actions */
 .qsb-actions {
-  display: flex; gap: 6px; padding: 12px 14px 14px;
+  display: flex; gap: 6px;
+  padding: 11px 13px 13px;
 }
 .qsb-action-btn {
-  flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px;
-  background: var(--surface2); border: none;
-  border-radius: 8px; padding: 7px 6px;
+  flex: 1; display: flex; align-items: center;
+  justify-content: center; gap: 5px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 7px 4px;
   font-size: 10px; font-weight: 600; color: var(--muted);
-  cursor: pointer; font-family: 'DM Sans', sans-serif;
-  transition: all .14s;
+  cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .13s;
 }
-.qsb-action-btn:hover { background: var(--border); color: var(--ink); }
+.qsb-action-btn:hover {
+  background: var(--border); color: var(--ink); border-color: var(--border);
+}
 
-/* Category chip picker inside sidebar */
+/* Category chip picker */
 .quiz-cat-picker {
-  flex-wrap: wrap; gap: 4px; padding-top: 2px;
+  flex-wrap: wrap; gap: 4px; padding-top: 8px;
 }
 .quiz-cat-chip {
   background: none;
-  border: 1.5px solid color-mix(in srgb, var(--chip-color) 30%, var(--border));
-  color: color-mix(in srgb, var(--chip-color) 65%, var(--muted));
+  border: 1.5px solid color-mix(in srgb, var(--chip-color) 35%, var(--border));
+  color: color-mix(in srgb, var(--chip-color) 60%, var(--muted));
   border-radius: 99px; padding: 2px 9px;
-  font-size: 9.5px; font-weight: 600;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer; transition: all .14s; white-space: nowrap;
+  font-size: 9.5px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: all .13s; white-space: nowrap;
 }
 .quiz-cat-chip:hover {
   border-color: var(--chip-color); color: var(--chip-color);
@@ -1238,13 +1249,9 @@ mark.search-hl {
   background: var(--chip-color); border-color: var(--chip-color); color: #fff;
 }
 
-/* Card takes remaining space */
+/* Card area */
 .quiz-main { flex: 1; min-width: 0; }
-
-/* Card stack */
-.quiz-single-wrap {
-  display: flex; flex-direction: column; gap: 12px;
-}
+.quiz-single-wrap { display: flex; flex-direction: column; gap: 12px; }
 
 
 /* ── Top nav row ────────────────────────────────────────── */
@@ -1492,7 +1499,8 @@ mark.search-hl {
 /* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 700px) {
   .quiz-layout { flex-direction: column; }
-  .quiz-sidebar.open { width: 100%; }
+  .quiz-sidebar.open { width: 100%; min-width: 100%; }
+  .qsb-inner { width: 100%; }
   .fc-fields-grid { grid-template-columns: 1fr; }
   .fc-fields-grid .fc-field:nth-child(even) { padding-left: 0; border-left: none; }
   .fc-front { padding: 32px 22px 28px; min-height: 200px; }
