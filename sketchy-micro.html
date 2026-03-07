@@ -69,6 +69,7 @@
 .accent-5{background:var(--peach);}
 .accent-6{background:var(--lavender);}
 .accent-7{background:#7ba8cf;}
+.ref-page-title em { color: var(--sage); }
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:10px 22px;border-radius:99px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
@@ -76,10 +77,12 @@
 <body>
 <script src="nav.js"></script>
 <div class="wrap">
-  <header class="hero" style="padding:36px 0 16px;">
-    <div class="hero-eyebrow" style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sakura2);margin-bottom:10px;">Progress Tracker</div>
-    <h1 class="hero-name" style="font-size:clamp(30px,4vw,46px);letter-spacing:-0.5px;font-weight:700;line-height:1.1;margin-bottom:6px;">Sketchy <em>Micro</em></h1>
-  </header>
+  <div class="ref-page-header" style="padding-bottom:0;">
+    <div>
+      <div class="ref-page-eyebrow" style="color:var(--sage);">Progress Tracker</div>
+      <h1 class="ref-page-title">Sketchy <em>Micro</em></h1>
+    </div>
+  </div>
 
   <div class="overall-card">
     <div class="overall-top">
