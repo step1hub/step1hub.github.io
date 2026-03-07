@@ -702,18 +702,20 @@ input, select, textarea { font-family: inherit; }
 .rcard-aka {
   font-family: 'DM Sans', sans-serif;
   font-size: 11px; line-height: 1.55; margin-top: 6px;
-  word-break: normal; overflow-wrap: normal;
-  white-space: normal; font-weight: 500;
+  font-weight: 500;
   color: var(--cat-color, var(--ink2));
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 0; overflow: visible;
 }
-/* Each drug name token stays on one line — breaks only happen after a dot */
+/* Each drug name token stays on one line — breaks only happen at dot separators */
 .aka-token {
   white-space: nowrap;
-  display: inline;
+  display: inline-block;
 }
 .dot-sep {
+  display: inline-block;
   color: color-mix(in srgb, var(--cat-color, var(--border)) 40%, transparent);
-  margin: 0 3px; font-weight: 400; user-select: none;
+  margin: 0 3px; font-weight: 400; user-select: none; white-space: nowrap;
 }
 .rcard-toggle {
   flex-shrink: 0; background: none; border: none; cursor: pointer;
@@ -862,6 +864,7 @@ input, select, textarea { font-family: inherit; }
   font-family: 'DM Sans', sans-serif; font-size: 12px;
   font-weight: 500; margin-top: 7px; line-height: 1.6;
   color: var(--cat-color, var(--ink2));
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0; overflow: visible;
 }
 
 /* ── Summary strip ───────────────────────────────────────── */
