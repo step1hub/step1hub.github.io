@@ -187,15 +187,17 @@
 
 .rcard-name {
   font-family: 'Playfair Display', serif;
-  font-size: 15px; font-weight: 700; line-height: 1.2;
-  color: var(--ink); letter-spacing: -0.2px;
+  font-size: 17px; font-weight: 700; line-height: 1.2;
+  color: var(--ink); letter-spacing: -0.3px;
 }
 .rcard-aka {
   font-family: 'DM Mono', monospace;
-  font-size: 9px; color: var(--dim); font-style: normal;
-  line-height: 1.5; margin-top: 4px; word-break: break-word;
+  font-size: 8px; color: var(--dim); font-style: normal;
+  line-height: 1.6; margin-top: 4px;
+  font-weight: 400; opacity: 0.55;
 }
-.rcard-aka .dot-sep { margin: 0 3px; color: var(--border2); }
+.aka-name { white-space: nowrap; }
+.aka-sep { color: var(--border); margin-right: 1px; }
 
 .rcard-toggle {
   flex-shrink: 0; background: none; border: none; cursor: pointer;
