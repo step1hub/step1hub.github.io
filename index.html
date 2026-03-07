@@ -20,7 +20,7 @@
   padding: 40px 0 36px;
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 40px;
+  gap: 24px;
   align-items: center;
   border-bottom: 1px solid var(--border2);
   margin-bottom: 0;
@@ -154,9 +154,9 @@
 .tc-pct { font-weight: 700; color: var(--card-accent, var(--peach)); }
 
 /* ── Tracker card accent colors (--card-accent drives hover inset + fill) ── */
-.card-spharm { --card-accent: var(--peach); }
+.card-spharm { --card-accent: var(--sakura2); }
 .card-smicro { --card-accent: var(--sage); }
-.card-pix    { --card-accent: var(--lavender); }
+.card-pix    { --card-accent: var(--sky); }
 
 /* ── Reference cards — inherit --card-accent from style.css ─ */
 /* card-pharm / card-micro / card-dash are already defined in style.css */
@@ -181,7 +181,6 @@
 }
 .ext-card:focus-visible { outline: 2px solid var(--sakura2); outline-offset: 2px; }
 .ext-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.ext-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--ea, var(--gold)); }
 .ext-pill {
   font-size: 10px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
   color: var(--muted); background: var(--surface2); border: 1px solid var(--border2);
@@ -391,7 +390,6 @@
   <div class="ext-grid">
     <a class="ext-card ext-qotd" href="https://bootcamp.com/med-school/usmle-step-1-question-of-the-day" target="_blank" rel="noopener">
       <div class="ext-card-top">
-        <div class="ext-dot"></div>
         <span class="ext-arrow" aria-hidden="true">↗</span>
       </div>
       <div class="ext-name">Question of the Day</div>
@@ -399,7 +397,6 @@
     </a>
     <a class="ext-card ext-uworld" href="https://www.uworld.com" target="_blank" rel="noopener">
       <div class="ext-card-top">
-        <div class="ext-dot"></div>
         <span class="ext-arrow" aria-hidden="true">↗</span>
       </div>
       <div class="ext-name">UWorld</div>
@@ -407,7 +404,6 @@
     </a>
     <a class="ext-card ext-pathoma" href="https://www.pathoma.com" target="_blank" rel="noopener">
       <div class="ext-card-top">
-        <div class="ext-dot"></div>
         <span class="ext-arrow" aria-hidden="true">↗</span>
       </div>
       <div class="ext-name">Pathoma</div>
