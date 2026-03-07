@@ -687,27 +687,38 @@ function renderUWorld() {
 // ── Dashboard card hover preview data ─────────────────────
 function populateDashPreview() {
   try {
-    // UWorld
+    // UWorld %
     const uwDone  = Store.get('uw-unique-done', 0);
     const uwTotal = Store.get('uw-settings', { total: 3661 }).total || 3661;
     const uwPct   = uwTotal > 0 ? Math.round(uwDone / uwTotal * 100) : 0;
     const dhpUw   = document.getElementById('dhp-uw');
-    if (dhpUw) dhpUw.textContent = `${uwPct}%`;
+    if (dhpUw) dhpUw.textContent = uwPct + '%';
 
-    // Sessions
-    const sessions = Store.get('uw-sessions', []);
+    // Sessions = uw-entries (same key dashboard uses)
+    const entries  = Store.get('uw-entries', []);
     const dhpSess  = document.getElementById('dhp-sess');
-    if (dhpSess) dhpSess.textContent = sessions.length ? sessions.length : '—';
+    if (dhpSess) dhpSess.textContent = entries.length || '—';
 
-    // Streak
-    const streak  = Store.get('study-streak', { current: 0 });
-    const dhpStr  = document.getElementById('dhp-streak');
-    if (dhpStr) dhpStr.textContent = streak.current ? `${streak.current} 🔥` : '—';
+    // Streak — compute from uw-entries dates (same logic as dashboard)
+    const dhpStr = document.getElementById('dhp-streak');
+    if (dhpStr) {
+      let streak = 0;
+      if (entries.length) {
+        const dateset = new Set(entries.map(e => e.date).filter(Boolean));
+        const today = new Date();
+        for (let i = 0; i < 365; i++) {
+          const d = new Date(today); d.setDate(d.getDate() - i);
+          const key = d.toISOString().slice(0,10);
+          if (dateset.has(key)) streak++; else break;
+        }
+      }
+      dhpStr.textContent = streak ? streak + ' 🔥' : '—';
+    }
 
-    // Exams
-    const exams   = Store.get('nbme-exams', []);
+    // Exams = uw-exams (correct dashboard key)
+    const exams   = Store.get('uw-exams', []);
     const dhpExam = document.getElementById('dhp-exams');
-    if (dhpExam) dhpExam.textContent = exams.length ? exams.length : '—';
+    if (dhpExam) dhpExam.textContent = exams.length || '—';
   } catch(e) { /* non-critical */ }
 }
 
