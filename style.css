@@ -744,6 +744,11 @@ input, select, textarea { font-family: inherit; }
 .lbl-se  { background: #8a284414; color: #8a2844; border-color: #8a284445; }
 .lbl-ci  { background: #7a3e1814; color: #7a3e18; border-color: #7a3e1845; }
 .lbl-pk  { background: #4a389014; color: #4a3890; border-color: #4a389045; }
+/* Micro Facts label classes */
+.lbl-vir { background: #2e684514; color: #2e6845; border-color: #2e684545; }
+.lbl-dis { background: #8a284414; color: #8a2844; border-color: #8a284445; }
+.lbl-dx  { background: #7a3e1814; color: #7a3e18; border-color: #7a3e1845; }
+.lbl-tx  { background: #3a508014; color: #3a5080; border-color: #3a508045; }
 .rcard-field-text { font-size: 12px; color: var(--ink2); line-height: 1.65; }
 .rcard-field-text strong { color: var(--ink); font-weight: 600; }
 .info-line { line-height: 1.65; font-size: 12px; color: var(--ink2); }
@@ -1069,18 +1074,10 @@ mark.search-hl {
 .ref-search-clear.visible { display: block; }
 
 /* ══════════════════════════════════════════════════════════
-   QUIZ STRIP + SIDEBAR LAYOUT
+   QUIZ STRIP + SIDEBAR
    ══════════════════════════════════════════════════════════ */
 
-/* ── Strip above layout: progress + stat + settings toggle ─ */
-.quiz-strip {
-  display: none; flex-direction: column; gap: 0;
-  margin: 6px 0 0;
-}
-.quiz-strip-row {
-  display: flex; align-items: center; gap: 8px;
-  padding: 7px 0 2px;
-}
+/* Stat + kbd hint in the strip */
 .quiz-stat {
   font-family: 'DM Mono', monospace; font-size: 10px;
   color: var(--muted); white-space: nowrap;
@@ -1089,6 +1086,16 @@ mark.search-hl {
 .quiz-kbd-hint {
   font-family: 'DM Mono', monospace; font-size: 9px;
   color: var(--dim); letter-spacing: 0.4px; white-space: nowrap; opacity: 0.65;
+}
+
+/* Strip: thin row above layout */
+.quiz-strip {
+  display: none; flex-direction: column; gap: 0;
+  margin: 6px 0 0;
+}
+.quiz-strip-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 0 2px;
 }
 .quiz-settings-btn {
   display: flex; align-items: center; gap: 5px;
@@ -1103,38 +1110,35 @@ mark.search-hl {
   background: var(--ink); border-color: var(--ink); color: #fff;
 }
 
-/* ── Quiz layout wrapper ────────────────────────────────── */
+/* Layout: sidebar + card side by side */
 .quiz-layout {
   display: flex; align-items: flex-start; gap: 14px;
   margin-top: 4px; padding-bottom: 48px;
 }
 
-/* ── Sidebar ─────────────────────────────────────────────── */
+/* Sidebar outer — handles width animation only, no overflow:hidden */
 .quiz-sidebar {
   flex-shrink: 0;
-  /* closed state */
-  width: 0; min-width: 0; opacity: 0;
-  pointer-events: none;
+  width: 0; min-width: 0; opacity: 0; pointer-events: none;
   transition: width .22s cubic-bezier(.4,0,.2,1),
               min-width .22s cubic-bezier(.4,0,.2,1),
               opacity .18s;
-  /* no overflow:hidden — it clips the border */
 }
 .quiz-sidebar.open {
   width: 188px; min-width: 188px;
   opacity: 1; pointer-events: auto;
 }
 
-/* Inner card that actually shows */
+/* Inner card — border, background, clip */
 .qsb-inner {
   width: 188px;
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: 14px;
-  overflow: hidden; /* OK here — only clips content, not outer element */
+  overflow: hidden;
 }
 
-/* ── Sidebar sections ───────────────────────────────────── */
+/* Sections with divider borders */
 .qsb-section {
   padding: 13px 13px 13px;
   border-bottom: 1px solid var(--border2);
@@ -1147,9 +1151,9 @@ mark.search-hl {
   margin-bottom: 8px; font-family: 'DM Sans', sans-serif;
 }
 
-/* Direction — iOS-style segmented control */
+/* Direction — iOS segmented control */
 .qsb-pill-group {
-  display: flex; flex-direction: row;
+  display: flex;
   background: var(--surface2);
   border: 1px solid var(--border);
   border-radius: 8px; padding: 2px; gap: 2px;
@@ -1168,7 +1172,7 @@ mark.search-hl {
 }
 .qsb-pill:not(.active):hover { color: var(--ink2); }
 
-/* Scope — radio-button style rows */
+/* Scope — radio rows */
 .qsb-scope-group { display: flex; flex-direction: column; gap: 2px; }
 .qsb-scope-btn {
   display: flex; align-items: center; gap: 7px;
@@ -1185,17 +1189,14 @@ mark.search-hl {
   border: 1.5px solid var(--border);
   transition: all .13s;
 }
-.qsb-scope-btn.active {
-  color: var(--ink); background: var(--surface2);
-}
+.qsb-scope-btn.active { color: var(--ink); background: var(--surface2); }
 .qsb-scope-btn.active::before {
-  background: var(--sakura2);
-  border-color: var(--sakura2);
+  background: var(--sakura2); border-color: var(--sakura2);
   box-shadow: inset 0 0 0 3px var(--surface2);
 }
 .qsb-scope-btn:not(.active):hover { color: var(--ink2); background: var(--surface2); }
 
-/* Show on back — checkboxes */
+/* Field checkboxes */
 .qsb-checks { display: flex; flex-direction: column; gap: 0; }
 .qsb-check {
   display: flex; align-items: center; gap: 8px;
@@ -1212,11 +1213,8 @@ mark.search-hl {
   font-family: 'DM Sans', sans-serif;
 }
 
-/* Shuffle + Reset actions */
-.qsb-actions {
-  display: flex; gap: 6px;
-  padding: 11px 13px 13px;
-}
+/* Shuffle + Reset */
+.qsb-actions { display: flex; gap: 6px; padding: 11px 13px 13px; }
 .qsb-action-btn {
   flex: 1; display: flex; align-items: center;
   justify-content: center; gap: 5px;
@@ -1225,9 +1223,7 @@ mark.search-hl {
   font-size: 10px; font-weight: 600; color: var(--muted);
   cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .13s;
 }
-.qsb-action-btn:hover {
-  background: var(--border); color: var(--ink); border-color: var(--border);
-}
+.qsb-action-btn:hover { background: var(--border); color: var(--ink); }
 
 /* Category chip picker */
 .quiz-cat-picker {
@@ -1235,11 +1231,12 @@ mark.search-hl {
 }
 .quiz-cat-chip {
   background: none;
-  border: 1.5px solid color-mix(in srgb, var(--chip-color) 35%, var(--border));
-  color: color-mix(in srgb, var(--chip-color) 60%, var(--muted));
+  border: 1.5px solid color-mix(in srgb, var(--chip-color) 30%, var(--border));
+  color: color-mix(in srgb, var(--chip-color) 65%, var(--muted));
   border-radius: 99px; padding: 2px 9px;
-  font-size: 9.5px; font-weight: 600; font-family: 'DM Sans', sans-serif;
-  cursor: pointer; transition: all .13s; white-space: nowrap;
+  font-size: 9.5px; font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: all .14s; white-space: nowrap;
 }
 .quiz-cat-chip:hover {
   border-color: var(--chip-color); color: var(--chip-color);
@@ -1249,9 +1246,13 @@ mark.search-hl {
   background: var(--chip-color); border-color: var(--chip-color); color: #fff;
 }
 
-/* Card area */
+/* Card takes remaining space */
 .quiz-main { flex: 1; min-width: 0; }
-.quiz-single-wrap { display: flex; flex-direction: column; gap: 12px; }
+
+/* Card stack */
+.quiz-single-wrap {
+  display: flex; flex-direction: column; gap: 12px;
+}
 
 
 /* ── Top nav row ────────────────────────────────────────── */
