@@ -265,15 +265,9 @@ function fmt(text, q) {
 }
 function fmtLines(text, q) {
   if (!text) return '';
-  let out = fmt(text, q);
-  const parts = out.split(/\.\s+(?=[A-Z↑↓(★◇<\[0-9])/);
-  if (parts.length <= 1) return `<div class="info-line">${out}</div>`;
-  return parts.map((p, i) => {
-    let line = p.trim();
-    if (i < parts.length - 1 && !line.endsWith('.') && !line.endsWith('>') && !line.endsWith(')'))
-      line += '.';
-    return `<div class="info-line">${line}</div>`;
-  }).join('');
+  const parts = text.split('\n').map(s => s.trim()).filter(Boolean);
+  if (parts.length <= 1) return `<div class="info-line">${fmt(text, q)}</div>`;
+  return parts.map(p => `<div class="info-line">${fmt(p, q)}</div>`).join('');
 }
 function stripMd(text) {
   return (text||'').replace(/\*\*(.*?)\*\*/g, '$1');
