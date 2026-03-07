@@ -297,6 +297,28 @@ cv: [
         pearl: "Effects are competitively blocked by xanthines like **caffeine and theophylline**. Strongly contraindicated in asthma."
       },
       {
+        name: "Class II Antiarrhythmics (Beta-Blockers)",
+        aka: "Metoprolol · Atenolol · Propranolol · Esmolol · Carvedilol · Bisoprolol",
+        summary: "**Beta-adrenergic blockers** used as antiarrhythmics by slowing AV nodal conduction. The most used antiarrhythmic class in clinical practice.",
+        moa: "Competitive antagonism at **beta-1 adrenergic receptors** decreases phase 4 spontaneous depolarization (automaticity), prolongs AV nodal conduction (increases PR interval), and reduces ventricular rate in AF/flutter.",
+        use: "**Rate control in AFib/AFL**, SVT termination and prevention, **perioperative arrhythmia prevention**, ventricular rate control in thyrotoxicosis.",
+        se: "Bradycardia, AV block, bronchospasm (non-selective), fatigue, masked hypoglycemia, sexual dysfunction.",
+        ci: "Decompensated HF, cardiogenic shock, high-degree AV block, severe reactive airway disease.",
+        pk: "**Esmolol:** ultra-short IV-only (t1/2 ~9 min), ideal for acute perioperative rate control. **Metoprolol/atenolol:** once daily, cardioselective (beta-1 > beta-2).",
+        pearl: "**Class II and Class IV agents both slow the AV node** — combining them (beta-blocker + verapamil/diltiazem) can cause fatal complete heart block. Never combine in clinical practice."
+      },
+      {
+        name: "Class IV Antiarrhythmics (Non-DHP CCBs)",
+        aka: "Verapamil · Diltiazem",
+        summary: "**Non-dihydropyridine calcium channel blockers** that act directly on the SA and AV nodes to reduce heart rate and terminate reentrant arrhythmias.",
+        moa: "Block **L-type calcium channels** in the SA and AV nodes, reducing automaticity and slowing AV conduction (prolongs PR interval and AV refractory period).",
+        use: "**Rate control in AFib/AFL**, **acute PSVT termination** (IV diltiazem), stable angina, hypertrophic cardiomyopathy (verapamil).",
+        se: "**Bradycardia, AV block, severe constipation (verapamil), hypotension**, negative inotropy worsening HF.",
+        ci: "**HFrEF** (negative inotrope worsens systolic dysfunction); high-degree AV block; concurrent beta-blocker use; Wolff-Parkinson-White syndrome with AFib (may accelerate accessory pathway conduction).",
+        pk: "**Verapamil** is a potent CYP3A4 inhibitor and P-gp inhibitor, causing clinically important drug interactions (raises digoxin, statin, and cyclosporine levels).",
+        pearl: "In **WPW with AFib**, verapamil and digoxin are absolutely contraindicated — blocking the AV node shunts all conduction to the accessory pathway, risking ventricular fibrillation."
+      },
+      {
         name: "Class IA Antiarrhythmics",
         aka: "Quinidine · Procainamide · Disopyramide",
         summary: "Intermediate Na+ channel blockers that prolong the QRS and QTc.",
@@ -559,14 +581,58 @@ neuro: [
       },
       {
         name: "Non-Benzodiazepine Hypnotics (Z-drugs) & Ramelteon",
-        aka: "Zolpidem · Zaleplon · Eszopiclone · Ramelteon · Suvorexant",
+        aka: "Zolpidem · Zaleplon · Eszopiclone · Ramelteon",
         summary: "Targeted sleep aids with specialized receptor activity.",
-        moa: "**Z-drugs:** selectively modulate GABA-A alpha-1 subunits. **Ramelteon:** MT1/MT2 melatonin agonist. **Suvorexant:** orexin antagonist.",
-        use: "Insomnia.",
-        se: "**Z-drugs:** complex sleep behaviors (sleep-driving), amnesia.",
-        ci: "Complex sleep behaviors with prior use. Suvorexant: narcolepsy.",
-        pk: "Zaleplon has an ultra-short half-life.",
-        pearl: "**Ramelteon** is the only hypnotic with no abuse potential, making it the safest choice for elderly patients."
+        moa: "**Z-drugs:** selectively modulate GABA-A alpha-1 subunits (sedative but not anxiolytic or anticonvulsant). **Ramelteon:** MT1/MT2 melatonin agonist in the suprachiasmatic nucleus.",
+        use: "Insomnia (sleep onset for Z-drugs; circadian rhythm disorders for ramelteon).",
+        se: "**Z-drugs:** complex sleep behaviors (sleep-driving, sleep-eating), anterograde amnesia, paradoxical agitation. Zolpidem: rebound insomnia.",
+        ci: "Z-drugs: prior complex sleep behaviors; severe hepatic impairment (zolpidem).",
+        pk: "Zaleplon has ultra-short t1/2 (~1 hr); zolpidem ~2.5 hr; eszopiclone ~6 hr. All hepatic metabolism.",
+        pearl: "**Ramelteon** has zero abuse potential (no scheduled status) — the only FDA-approved hypnotic that is completely non-addictive, making it ideal for elderly patients or those with substance use history."
+      },
+      {
+        name: "Suvorexant & Orexin Antagonists",
+        aka: "Suvorexant · Lemborexant",
+        summary: "Dual orexin receptor antagonists (DORAs) that promote sleep by blocking wakefulness signals.",
+        moa: "Competitive antagonism at **OX1R and OX2R** orexin receptors, blocking the wake-promoting action of orexin/hypocretin neuropeptides.",
+        use: "Insomnia (both sleep onset and sleep maintenance).",
+        se: "Next-day somnolence, sleep paralysis, hypnagogic hallucinations, complex sleep behaviors.",
+        ci: "**Narcolepsy** (orexin deficiency is the disease mechanism; blocking residual orexin is catastrophic).",
+        pk: "Hepatic metabolism via CYP3A4; t1/2 ~12 hr (suvorexant). Take within 30 min of bedtime.",
+        pearl: "The mechanism is unique: instead of promoting sedation, suvorexant **removes the active signal keeping you awake** — a pharmacologically cleaner approach to insomnia. Absolutely contraindicated in narcolepsy."
+      },
+      {
+        name: "Buspirone",
+        aka: "Buspirone",
+        summary: "Non-sedating, non-addictive anxiolytic with a delayed onset of action.",
+        moa: "Partial agonist at **5-HT1A** receptors (somatodendritic autoreceptors) and weak D2 antagonist. Does NOT interact with GABA-A receptors.",
+        use: "**Generalized anxiety disorder (GAD)** — requires 2-4 weeks for therapeutic effect.",
+        se: "Dizziness, headache, nausea. **No sedation, no cognitive impairment, no dependence, no withdrawal.**",
+        ci: "Concurrent MAOI use. No utility for acute anxiety or panic attacks.",
+        pk: "Extensive hepatic first-pass metabolism; active metabolite 1-PP. CYP3A4 substrate.",
+        pearl: "**Buspirone is ideal for GAD in patients with substance use disorder** because it has no abuse potential and no cross-tolerance with benzodiazepines — patients switching from benzos must taper before starting, as buspirone does not prevent benzo withdrawal."
+      },
+      {
+        name: "Memantine & Alzheimer's Agents",
+        aka: "Memantine · Donepezil · Rivastigmine · Galantamine · Aducanumab",
+        summary: "Memantine reduces glutamate excitotoxicity; AChE inhibitors boost cholinergic transmission. Both provide symptomatic benefit only.",
+        moa: "**Memantine:** low-affinity **NMDA receptor antagonist**, blocks excessive calcium influx from glutamate excitotoxicity. **Donepezil/Rivastigmine/Galantamine:** inhibit **acetylcholinesterase (AChE)** increasing synaptic ACh.",
+        use: "**AChE inhibitors:** mild-moderate Alzheimer's. **Memantine:** moderate-severe Alzheimer's (often combined with an AChE inhibitor). Rivastigmine: also Parkinson's dementia.",
+        se: "AChE inhibitors: **GI upset, bradycardia, syncope, urinary incontinence.** Memantine: dizziness, confusion.",
+        ci: "AChE inhibitors: active GI bleeding, sick sinus syndrome, concurrent succinylcholine.",
+        pk: "Donepezil t1/2 ~70 hr (once daily). Memantine renally excreted; dose-reduce in renal failure.",
+        pearl: "**Neither class slows disease progression** — they are purely symptomatic. Physostigmine (not donepezil) is the agent used to reverse **anticholinergic toxicity** because it crosses the BBB and acts immediately."
+      },
+      {
+        name: "Dextromethorphan & Cough Suppressants",
+        aka: "Dextromethorphan · Codeine (antitussive dose) · Guaifenesin · Benzonatate",
+        summary: "Dextromethorphan is the prototypical OTC antitussive; a weak NMDA antagonist at therapeutic doses but a dissociative drug of abuse at high doses.",
+        moa: "**Dextromethorphan:** non-opioid NMDA receptor antagonist and sigma receptor agonist that suppresses the cough reflex centrally. **Codeine:** weak mu-opioid agonist.",
+        use: "Symptomatic cough suppression. Dextromethorphan combined with quinidine: **pseudobulbar affect (PBA)**.",
+        se: "At therapeutic doses: mild dizziness. **At abuse doses (Robotripping):** dissociative hallucinations, serotonin syndrome when combined with serotonergic drugs.",
+        ci: "Concurrent MAOI use (**life-threatening serotonin syndrome**).",
+        pk: "CYP2D6 converts to dextrorphan (active metabolite). Poor CYP2D6 metabolizers have higher dextromethorphan levels.",
+        pearl: "**DXM + MAOI = life-threatening serotonin syndrome** — a classic overdose vignette. At abuse doses ('triple C,' 'robo-tripping'), dextromethorphan produces PCP-like dissociation via NMDA antagonism."
       },
       {
         name: "Propofol, Etomidate & Ketamine",
@@ -985,15 +1051,48 @@ micro: [
         pearl: "**Clindamycin for toxin-mediated streptococcal/staphylococcal disease** halts toxin protein synthesis even after cell death. For Strep toxic shock, always use **penicillin + clindamycin**. Use the **D-zone test** for inducible clindamycin resistance."
       },
       {
-        name: "Misc. Antibacterials",
-        aka: "Linezolid · Daptomycin · Chloramphenicol · Polymyxin B · Colistin · Nitrofurantoin · Fosfomycin",
-        summary: "Mechanistically diverse antibiotics serving specialized roles for resistant gram-positives, MDR gram-negatives, and urinary tract infections.",
-        moa: "**Linezolid:** binds 23S rRNA of 50S subunit blocking initiation complex formation. **Daptomycin:** inserts into gram-positive cell membrane causing depolarization and disruption. **Chloramphenicol:** binds 50S subunit inhibiting peptidyl transferase. **Polymyxins:** bind LPS of gram-negative outer membrane causing detergent-like disruption. **Nitrofurantoin:** reduced to reactive intermediates damaging DNA/proteins. **Fosfomycin:** inhibits MurA blocking early peptidoglycan synthesis.",
-        use: "Linezolid: VRE, MRSA. Daptomycin: VRE bacteremia, MRSA endocarditis (NOT pneumonia). Chloramphenicol: bacterial meningitis in severe penicillin allergy. Polymyxin B/Colistin: last-resort MDR gram-negatives. Nitrofurantoin: uncomplicated lower UTI. Fosfomycin: uncomplicated UTI.",
-        se: "Linezolid: **thrombocytopenia**, **serotonin syndrome**. Daptomycin: **myopathy/rhabdomyolysis**, **eosinophilic pneumonia**. Chloramphenicol: **aplastic anemia**, **gray baby syndrome**. Polymyxins: **nephrotoxicity**, neurotoxicity. Nitrofurantoin: pulmonary reactions.",
-        ci: "Linezolid: serotonergic drugs. Daptomycin: **pneumonia** (inactivated by surfactant). Chloramphenicol: neonates. Nitrofurantoin: **CrCl <30 mL/min**, term pregnancy.",
-        pk: "Linezolid: 100% oral bioavailability. Daptomycin: IV only, renally eliminated. Chloramphenicol: CYP450 inhibitor. Nitrofurantoin: concentrates only in urine.",
-        pearl: "**Daptomycin is inactivated by lung surfactant** - never use for pneumonia. **Linezolid has 100% oral bioavailability** allowing IV to PO step-down. **Chloramphenicol aplastic anemia** is idiosyncratic, irreversible, and potentially fatal."
+        name: "Linezolid",
+        aka: "Linezolid · Tedizolid",
+        summary: "Oxazolidinone antibiotic targeting resistant gram-positives (VRE, MRSA) via a unique mechanism of action — the only oral agent for serious VRE and MRSA infections.",
+        moa: "Binds the **23S rRNA of the 50S ribosomal subunit** at the peptidyl transferase center, blocking the formation of the 70S initiation complex. Bacteriostatic; unique binding site not shared by other drug classes.",
+        use: "**VRE infections** (drug of choice); **MRSA pneumonia** (preferred over vancomycin for lung penetration); skin/soft tissue MRSA infections.",
+        se: "**Thrombocytopenia** (dose/duration dependent — monitor CBC weekly); **serotonin syndrome** (weak MAO-A inhibitor); peripheral and optic neuropathy (prolonged use); lactic acidosis.",
+        ci: "Concurrent serotonergic drugs (SSRIs, SNRIs, TCAs, MAOIs, triptans — serotonin syndrome risk); use >2 weeks without CBC monitoring.",
+        pk: "**100% oral bioavailability** — IV and oral are pharmacokinetically equivalent, allowing IV to PO transition. No renal or hepatic dose adjustment. Not significantly metabolized by CYP.",
+        pearl: "**Linezolid is preferred over vancomycin for MRSA pneumonia** because it achieves superior lung penetration and inhibits toxin production. It is a weak, reversible MAO-A inhibitor — combining with SSRIs/SNRIs causes serotonin syndrome."
+      },
+      {
+        name: "Daptomycin",
+        aka: "Daptomycin",
+        summary: "Cyclic lipopeptide antibiotic that disrupts the gram-positive cell membrane. Rapidly bactericidal against resistant gram-positives — the only antibiotic class to attack the cell membrane of gram-positives.",
+        moa: "Inserts its lipophilic tail into the gram-positive **cell membrane in a calcium-dependent manner**, forming ion channels that cause rapid membrane depolarization, arrest of DNA/RNA/protein synthesis, and cell death.",
+        use: "**MRSA bacteremia and right-sided endocarditis** (drug of choice); VRE infections; complicated skin/soft tissue gram-positive infections.",
+        se: "**Myopathy/rhabdomyolysis** (dose-dependent; monitor weekly CPK); **eosinophilic pneumonia** (rare but severe).",
+        ci: "**Pneumonia — absolutely contraindicated** (pulmonary surfactant inactivates daptomycin by binding its lipid tail). Use linezolid or vancomycin instead for MRSA lung infections.",
+        pk: "IV only; renally eliminated (dose-reduce in CrCl <30). Concentration-dependent killing; once-daily dosing. Weekly CPK monitoring required.",
+        pearl: "The single most tested daptomycin fact: **daptomycin is inactivated by pulmonary surfactant** — you must never use it for pneumonia. It is the drug of choice for MRSA bacteremia and endocarditis."
+      },
+      {
+        name: "Tigecycline & Polymyxins (Last-Resort MDR)",
+        aka: "Tigecycline · Polymyxin B · Colistin",
+        summary: "Last-resort agents for carbapenem-resistant gram-negatives (CRE, Acinetobacter, Pseudomonas). Tigecycline is also active against gram-positives and anaerobes.",
+        moa: "**Tigecycline:** glycylcycline that binds 30S ribosomal subunit with 5× higher affinity than tetracyclines, overcoming common tetracycline resistance mechanisms. **Polymyxins:** bind and disrupt the LPS of the gram-negative outer membrane, acting like a detergent.",
+        use: "Tigecycline: MDR gram-negative infections, intra-abdominal infections, MRSA skin/soft tissue. Polymyxins: CRE, carbapenem-resistant Acinetobacter, carbapenem-resistant Pseudomonas.",
+        se: "Tigecycline: **nausea/vomiting** (50% of patients), **increased mortality in VAP/bacteremia** (FDA warning), photosensitivity, teeth/bone discoloration in pregnancy. Polymyxins: **severe nephrotoxicity**, **neurotoxicity** (peripheral neuropathy, neuromuscular blockade).",
+        ci: "Tigecycline: pregnancy/children (tetracycline-class effects). Polymyxins: use only when no alternatives exist due to toxicity.",
+        pk: "Tigecycline: no renal dose adjustment; biliary excretion. Polymyxins: renally excreted; strict dose adjustment in renal failure.",
+        pearl: "**Tigecycline has an FDA black box warning for increased all-cause mortality** in hospital-acquired and ventilator-associated pneumonia — avoid as monotherapy for these indications. Polymyxins are toxic but sometimes the only remaining option for pan-resistant organisms."
+      },
+      {
+        name: "Misc. Antibacterials (Chloramphenicol, Nitrofurantoin, Fosfomycin)",
+        aka: "Chloramphenicol · Nitrofurantoin · Fosfomycin",
+        summary: "Niche antibiotics with highly specific indications and unique toxicity profiles.",
+        moa: "**Chloramphenicol:** binds **50S subunit** inhibiting peptidyl transferase (bacteriostatic). **Nitrofurantoin:** reduced to reactive intermediates that damage bacterial DNA. **Fosfomycin:** inhibits MurA, blocking the first step of peptidoglycan synthesis.",
+        use: "Chloramphenicol: bacterial meningitis in severe penicillin allergy; Rocky Mountain spotted fever in children <8 yr (cannot use doxycycline). Nitrofurantoin: uncomplicated lower UTI (does not achieve systemic levels). Fosfomycin: uncomplicated UTI including ESBL-producing organisms.",
+        se: "Chloramphenicol: **idiosyncratic aplastic anemia** (irreversible, potentially fatal), **gray baby syndrome** (neonates — cardiovascular collapse from drug accumulation due to immature glucuronyl transferase). Nitrofurantoin: pulmonary reactions (eosinophilic pneumonitis), peripheral neuropathy in renal failure. Fosfomycin: GI upset.",
+        ci: "Chloramphenicol: neonates (gray baby syndrome), bone marrow suppression. Nitrofurantoin: **CrCl <30 mL/min** (no urinary concentration achieved; neuropathy risk), term pregnancy.",
+        pk: "Chloramphenicol: CYP450 inhibitor. Nitrofurantoin: concentrates exclusively in urine. Fosfomycin oral: single-dose treatment for uncomplicated UTI.",
+        pearl: "**Chloramphenicol aplastic anemia** is idiosyncratic, dose-independent, and has ~50% mortality — its use is reserved for life-threatening infections with no alternatives. Nitrofurantoin must NOT be used for pyelonephritis — it does not achieve adequate renal parenchymal concentrations."
       },
       {
         name: "Fluoroquinolones",
@@ -1261,6 +1360,17 @@ gi: [
         pearl: "**Never use loperamide in suspected infectious diarrhea** (like E. coli O157:H7) as motility inhibition traps toxins and massively increases HUS/toxic megacolon risk."
       },
       {
+        name: "Rifaximin & GI Anti-infectives",
+        aka: "Rifaximin · Fidaxomicin · Vancomycin (oral)",
+        summary: "Non-absorbed or locally acting antibiotics targeting gut-specific infections. Rifaximin is the cornerstone of hepatic encephalopathy prevention and traveler's diarrhea.",
+        moa: "**Rifaximin:** binds bacterial **RNA polymerase beta subunit** — identical mechanism to rifampin but confined to the GI tract due to negligible absorption (<0.4%). **Fidaxomicin:** macrocyclic antibiotic binding RNA polymerase; highly selective for C. difficile.",
+        use: "Rifaximin: **hepatic encephalopathy prophylaxis** (reduces ammonia-producing bacteria), **traveler's diarrhea** (non-invasive E. coli), **IBS-D**. Fidaxomicin: **C. difficile** (preferred over vancomycin for non-hypervirulent strains; lower recurrence rate). Oral vancomycin: C. difficile (severe/fulminant).",
+        se: "Rifaximin: GI upset, peripheral edema (rare). Fidaxomicin: GI effects. Oral vancomycin: minimal (not systemically absorbed).",
+        ci: "Rifaximin: invasive/febrile diarrhea (may mask systemic infection). Fidaxomicin: not for Clostridioides difficile hypervirulent NAP1 strain (no advantage over vancomycin).",
+        pk: "Rifaximin: <0.4% systemic absorption; acts locally in GI tract. Fidaxomicin: minimal systemic absorption; primarily fecal elimination.",
+        pearl: "**Rifaximin + lactulose** is the gold standard for secondary hepatic encephalopathy prevention. Rifaximin cannot be used for systemic infections despite its RNA polymerase mechanism."
+      },
+      {
         name: "Osmotic Laxatives",
         aka: "Polyethylene Glycol · Lactulose · Magnesium Hydroxide · Sodium Phosphate · Glycerin",
         summary: "Retain water in the intestinal lumen by osmotic pressure. Lactulose also lowers ammonia in hepatic encephalopathy.",
@@ -1497,6 +1607,28 @@ endo: [
         ci: "Uncontrolled hypertension, CHF.",
         pk: "High potency mineralocorticoid activity.",
         pearl: "In Addison disease, **both glucocorticoid (hydrocortisone) and mineralocorticoid (fludrocortisone) replacement are required** to prevent life-threatening hypotension and hyperkalemia."
+      },
+      {
+        name: "Metyrapone, Ketoconazole & Adrenal Steroidogenesis Inhibitors",
+        aka: "Metyrapone · Ketoconazole · Etomidate · Osilodrostat · Mitotane",
+        summary: "Inhibit adrenal steroidogenesis to reduce cortisol production. Used to diagnose and treat Cushing syndrome.",
+        moa: "**Metyrapone:** inhibits **11-beta-hydroxylase**, blocking the final step of cortisol synthesis (cortisol precursor 11-deoxycortisol accumulates). **Ketoconazole:** inhibits multiple P450 enzymes in steroidogenesis including **17-hydroxylase and 11-beta-hydroxylase**. **Etomidate:** inhibits **11-beta-hydroxylase** — its most clinically important side effect. **Mitotane:** adrenolytic, destroys the adrenal cortex.",
+        use: "Metyrapone: **diagnostic test for hypothalamic-pituitary-adrenal axis integrity** (overnight metyrapone test); short-term management of Cushing syndrome. Ketoconazole: Cushing syndrome (chronic management). Mitotane: adrenocortical carcinoma.",
+        se: "Metyrapone: mineralocorticoid excess (11-deoxycortisol accumulates, slightly activating mineralocorticoid receptor → HTN, edema). Ketoconazole: hepatotoxicity, gynecomastia, decreased testosterone (CYP inhibition). Etomidate: **adrenocortical insufficiency** — a major concern with prolonged infusions.",
+        ci: "Ketoconazole: severe hepatic disease, concurrent QT-prolonging drugs. Metyrapone: primary adrenal insufficiency.",
+        pk: "Ketoconazole is a potent inhibitor of CYP3A4, 2C9, 2C19 causing major drug-drug interactions.",
+        pearl: "The **metyrapone stimulation test:** block cortisol → ACTH rises → 11-deoxycortisol rises in an intact HPA axis. A blunted response suggests pituitary or adrenal insufficiency. Etomidate infusions in the ICU are a classic cause of **iatrogenic adrenal insufficiency**."
+      },
+      {
+        name: "Mifepristone (RU-486)",
+        aka: "Mifepristone · Ulipristal",
+        summary: "Competitive antagonist of progesterone and glucocorticoid receptors. Used for medical abortion and refractory Cushing syndrome.",
+        moa: "Competitive antagonism at **progesterone receptors** (causing endometrial breakdown, cervical softening, and increased uterine contractility) and **glucocorticoid receptors** (blocking cortisol feedback to pituitary).",
+        use: "**Medical abortion** (up to 10 weeks gestation; always followed by misoprostol). **Refractory Cushing syndrome** (not amenable to surgery). Uterine fibroids and endometriosis.",
+        se: "**Heavy bleeding**, cramping, GI upset, incomplete abortion (1-5% requires surgical completion). Adrenal insufficiency (from glucocorticoid receptor blockade in Cushing treatment).",
+        ci: "**Ectopic pregnancy** (cannot prevent rupture); IUD in place; adrenal insufficiency (when using as abortifacient); chronic corticosteroid use.",
+        pk: "Long half-life (~18 hr); highly protein bound. CYP3A4 substrate and inhibitor.",
+        pearl: "**Mifepristone blocks the glucocorticoid receptor, not cortisol production** — in Cushing syndrome treatment, cortisol levels actually rise (no feedback), but clinical symptoms improve. Monitor by symptoms, not cortisol levels."
       }
     ]
   }
@@ -1691,15 +1823,26 @@ onco: [
         pearl: "High inspired oxygen concentrations (high FiO2) during surgery can trigger severe, fatal respiratory failure in patients with prior bleomycin exposure."
       },
       {
-        name: "Targeted Therapy & Monoclonal Antibodies",
-        aka: "Trastuzumab · Pertuzumab · Rituximab · Bevacizumab · Cetuximab · Ipilimumab · Nivolumab · Pembrolizumab · Bortezomib",
-        summary: "Targeted antibodies and small molecules that block specific tumor-driving receptors or immune checkpoints.",
-        moa: "**Trastuzumab:** anti-HER2. **Rituximab:** anti-CD20. **Bevacizumab:** anti-VEGF. **Cetuximab:** anti-EGFR. **Nivolumab/Pembrolizumab:** anti-PD-1.",
-        use: "Specific biomarker-driven malignancies.",
-        se: "Trastuzumab: **reversible cardiomyopathy**. Rituximab: **HBV reactivation**. Bevacizumab: impaired wound healing. Cetuximab: acneiform rash.",
-        ci: "Cetuximab: KRAS-mutant tumors.",
-        pk: "Intravenous administration.",
-        pearl: "**Cetuximab is entirely ineffective if the tumor has a downstream KRAS mutation**. Trastuzumab cardiotoxicity is reversible, unlike doxorubicin."
+        name: "Checkpoint Inhibitors (Anti-PD-1/PD-L1/CTLA-4)",
+        aka: "Nivolumab · Pembrolizumab · Atezolizumab · Durvalumab · Ipilimumab · Cemiplimab · Avelumab",
+        summary: "Monoclonal antibodies that remove inhibitory signals from T-cells, unleashing the immune system against cancer. Cause a unique spectrum of **immune-related adverse events (irAEs)** affecting any organ system.",
+        moa: "**Anti-PD-1 (nivolumab, pembrolizumab):** block the PD-1 receptor on T-cells, preventing cancer cells from delivering the 'off' signal. **Anti-PD-L1 (atezolizumab):** block PD-L1 on tumor cells. **Anti-CTLA-4 (ipilimumab):** block CTLA-4 during T-cell activation in lymph nodes, releasing a broader 'brake' on T-cell activation.",
+        use: "Melanoma, NSCLC, Hodgkin lymphoma (nivolumab), urothelial carcinoma, RCC, MSI-high tumors (pembrolizumab), **any solid tumor with MMR deficiency/MSI-high (pembrolizumab)**.",
+        se: "**Immune-related adverse events (irAEs):** colitis (most common), pneumonitis, hepatitis, hypophysitis, thyroiditis, adrenal insufficiency, type 1 diabetes, nephritis, myocarditis (most lethal). **All irAEs are treated with corticosteroids**; severe cases require anti-TNF (infliximab) for colitis.",
+        ci: "Active autoimmune disease requiring systemic immunosuppression; active inflammatory bowel disease; organ transplant recipients (risk of graft rejection).",
+        pk: "IV infusions every 2-6 weeks. Long half-lives (~25 days); irAEs can occur months to years after treatment ends.",
+        pearl: "**MSI-high/MMR-deficient tumors respond to checkpoint inhibitors regardless of cancer type** (pembrolizumab was the first tumor-agnostic FDA approval). The most feared irAE is **myocarditis** — rare but often fatal. Treat any suspected irAE with corticosteroids empirically."
+      },
+      {
+        name: "Targeted Therapy & Other Monoclonal Antibodies",
+        aka: "Trastuzumab · Pertuzumab · Rituximab · Bevacizumab · Cetuximab · Bortezomib · Daratumumab",
+        summary: "Targeted antibodies and small molecules that block specific tumor-driving receptors or antigens — each paired to a biomarker that predicts response.",
+        moa: "**Trastuzumab:** anti-HER2 (blocks HER2 dimerization, ADCC). **Rituximab:** anti-CD20 (ADCC, CDC, apoptosis). **Bevacizumab:** anti-VEGF (anti-angiogenesis). **Cetuximab:** anti-EGFR. **Bortezomib:** proteasome inhibitor. **Daratumumab:** anti-CD38.",
+        use: "Trastuzumab: HER2+ breast/gastric cancer. Rituximab: CD20+ B-cell lymphomas, CLL, RA. Bevacizumab: colorectal, cervical, ovarian cancers. Cetuximab: KRAS wild-type colorectal cancer, EGFR+ head/neck. Bortezomib: multiple myeloma. Daratumumab: multiple myeloma.",
+        se: "Trastuzumab: **reversible cardiomyopathy** (monitor LVEF). Rituximab: **HBV reactivation** (screen all patients; prophylax with entecavir), PML (rare). Bevacizumab: impaired wound healing, hypertension, GI perforation, thromboembolism. Cetuximab: acneiform rash (severity correlates with response). Bortezomib: **peripheral neuropathy**, thrombocytopenia.",
+        ci: "Cetuximab: **KRAS-mutant tumors** (downstream mutation renders EGFR blockade completely ineffective). Bevacizumab: recent surgery, hemoptysis, uncontrolled HTN.",
+        pk: "All IV. Trastuzumab: hold for significant LVEF drop. Rituximab: screen for HBV/HCV before treatment.",
+        pearl: "**Test for KRAS before cetuximab** — any KRAS mutation renders it futile. **Trastuzumab cardiotoxicity is reversible** (unlike anthracyclines) because it does not cause cardiomyocyte death. Screen ALL patients for HBV before rituximab due to fatal reactivation risk."
       },
       {
         name: "Tyrosine Kinase Inhibitors (TKIs)",
@@ -1811,5 +1954,4 @@ toxicology: [
     ]
   }
 ]
-
-}; // Closes the DRUGS object
+};
