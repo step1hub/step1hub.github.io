@@ -100,18 +100,17 @@
 .tab-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
 /* ── Category intro ──────────────────────────────────────── */
-/* FIX #1: uniform warm surface background for all categories */
 .cat-intro {
   border-radius: 12px;
   padding: 16px 20px;
   margin: 18px 0 22px;
-  /* Single shared background — warm surface, not tinted per-cat */
   background: var(--surface);
   border: 1px solid var(--border);
+  border-left: 4px solid var(--cat-color, var(--accent));
 }
 .cat-intro-title {
   font-family: 'Playfair Display', serif;
-  font-size: 18px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.3px;
+  font-size: 22px; font-weight: 700; margin-bottom: 5px; letter-spacing: -0.4px;
 }
 .cat-intro-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
 
@@ -123,21 +122,22 @@
 }
 .class-label {
   font-family: 'DM Mono', monospace; font-size: 8.5px; letter-spacing: 2.5px;
-  text-transform: uppercase; padding: 4px 12px;
-  display: inline-flex; align-items: center; gap: 6px;
-  border-radius: 20px; color: var(--ink2);
-  background: var(--surface2); border: 1px solid var(--border);
+  text-transform: uppercase; padding: 5px 14px;
+  display: inline-flex; align-items: center; gap: 7px;
+  border-radius: 99px; color: var(--ink2);
+  background: var(--surface); border: 1.5px solid var(--border);
+  box-shadow: 0 1px 3px rgba(42,31,26,.05);
 }
-.class-label::before { content: '◆'; font-size: 5.5px; color: var(--accent); }
+.class-label::before { content: '◆'; font-size: 6px; color: var(--accent); }
 
 .group-expand-btn {
   font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 1px;
-  text-transform: uppercase; padding: 4px 11px; border-radius: 12px;
-  border: 1px solid var(--border); background: transparent;
+  text-transform: uppercase; padding: 5px 12px; border-radius: 99px;
+  border: 1.5px solid var(--border); background: transparent;
   color: var(--muted); cursor: pointer; white-space: nowrap; flex-shrink: 0;
-  transition: background .15s, color .15s;
+  transition: background .15s, color .15s, border-color .15s;
 }
-.group-expand-btn:hover { background: var(--surface2); color: var(--ink2); }
+.group-expand-btn:hover { background: var(--sakura-light); color: var(--sakura2); border-color: var(--sakura); }
 
 /* ── Card grid ───────────────────────────────────────────── */
 .cards-grid {
@@ -147,8 +147,12 @@
   align-items: start;
 }
 
+/* Expanded card spans full grid width */
+.rcard.expanded {
+  grid-column: 1 / -1;
+}
+
 /* ── Drug card ───────────────────────────────────────────── */
-/* FIX #2: hover = shadow only. No transform, no inset border, no border mutation */
 .rcard {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -160,7 +164,6 @@
 }
 .rcard:hover {
   box-shadow: 0 4px 18px rgba(42,31,26,.10);
-  /* explicitly no border-color change, no inset border */
 }
 .rcard.expanded {
   box-shadow: 0 4px 20px rgba(42,31,26,.12);
@@ -186,14 +189,11 @@
 }
 .rcard-header-left { flex: 1; min-width: 0; }
 
-/* Drug name — Playfair, prominent */
 .rcard-name {
   font-family: 'Playfair Display', serif;
   font-size: 15px; font-weight: 700; line-height: 1.2;
   color: var(--ink); letter-spacing: -0.2px;
 }
-
-/* Aka — mono, clearly subordinate, not italic */
 .rcard-aka {
   font-family: 'DM Mono', monospace;
   font-size: 9.5px; color: var(--dim); font-style: normal;
@@ -210,7 +210,6 @@
 }
 .rcard.expanded .rcard-toggle { transform: rotate(180deg); color: var(--accent); }
 
-/* Summary — DM Sans, warm ink, clearly body copy */
 .rcard-summary {
   padding: 6px 14px 13px;
   font-size: 12px; font-weight: 400;
@@ -222,7 +221,6 @@
   display: none;
   padding: 0 14px 14px;
   border-top: 1px solid var(--border2);
-  margin-top: 1px;
 }
 .rcard.expanded .rcard-detail {
   display: block;
@@ -233,50 +231,56 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.rcard-field { margin-top: 13px; }
-
+/* ── Field boxes — bordered, label as header bar ─────────── */
+.rcard-field {
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border2);
+  overflow: hidden;
+}
 .rcard-field-label {
   font-family: 'DM Mono', monospace;
   font-size: 7.5px; letter-spacing: 2px; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 5px;
-  display: inline-block; margin-bottom: 6px;
-  border: 1px solid;
+  padding: 5px 10px; display: block;
+  border-bottom: 1px solid var(--border2);
+  font-weight: 600;
 }
-.lbl-moa { background: #f0f4fd; color: #3a5080; border-color: #c8d4f0; }
-.lbl-use { background: #edf7f1; color: #2e6845; border-color: #b8e0c8; }
+.lbl-moa { background: #eef2fb; color: #3a5080; border-color: #ccd6f0; }
+.lbl-use { background: #eaf5ef; color: #2e6845; border-color: #b8e0c8; }
 .lbl-se  { background: #fdeef2; color: #8a2844; border-color: #eeb8c8; }
 .lbl-ci  { background: #fdf4ee; color: #7a3e18; border-color: #e8c8a8; }
-.lbl-pk  { background: #f3f0fd; color: #4a3890; border-color: #c8bce8; }
+.lbl-pk  { background: #f2effe; color: #4a3890; border-color: #c8bce8; }
 
 .rcard-field-text {
   font-size: 12px; color: var(--ink2); line-height: 1.65;
+  padding: 8px 10px;
 }
 .rcard-field-text strong { color: var(--ink); font-weight: 600; }
 
-/* Sentence lines — just spacing, no dashes */
-.info-line { padding: 2px 0; line-height: 1.65; font-size: 12px; color: var(--ink2); }
+.info-line { line-height: 1.65; font-size: 12px; color: var(--ink2); }
 .info-line + .info-line { margin-top: 3px; }
 .info-line strong { color: var(--ink); font-weight: 600; }
 
 /* ── Pearl box ───────────────────────────────────────────── */
-/* FIX #3: diamond ◇ instead of star ★ */
 .rcard-pearl {
   display: flex; gap: 9px; align-items: flex-start;
   background: var(--accent-light);
+  border: 1px solid rgba(196,80,94,.20);
   border-radius: 9px; padding: 10px 12px;
-  margin-top: 14px;
+  margin-top: 10px;
 }
 .pearl-diamond {
-  color: var(--accent); font-size: 12px; flex-shrink: 0; margin-top: 1px;
+  color: var(--accent); font-size: 11px; flex-shrink: 0; margin-top: 2px;
   line-height: 1;
 }
 .pearl-body { flex: 1; min-width: 0; }
 .pearl-label {
   font-family: 'DM Mono', monospace; font-size: 7.5px; letter-spacing: 2px;
   text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 4px;
+  font-weight: 700;
 }
 .pearl-text { font-size: 12px; color: var(--ink2); line-height: 1.65; }
-.pearl-text strong { color: var(--c-cv); font-weight: 600; }
+.pearl-text strong { color: var(--accent); font-weight: 600; }
 
 /* ── Search results header ───────────────────────────────── */
 .search-cat-label {
@@ -480,7 +484,7 @@ function renderPanels(filtered, isSearch) {
   const groups = [...new Set(filtered.map(d => d.groupName))];
 
   const introHtml = `
-    <div class="cat-intro">
+    <div class="cat-intro" style="--cat-color:${meta.color}">
       <div class="cat-intro-title" style="color:${meta.color}">${meta.label}</div>
       <div class="cat-intro-desc">${meta.desc}</div>
     </div>`;
@@ -535,9 +539,9 @@ function renderCard(d) {
         </div>`).join('')}
       ${d.pearl ? `
         <div class="rcard-pearl">
-          <span class="pearl-diamond">◇</span>
+          <span class="pearl-diamond">◆</span>
           <div class="pearl-body">
-            <span class="pearl-label">Clinical Pearl</span>
+            <span class="pearl-label">Step 1 Pearl</span>
             <div class="pearl-text">${fmt(d.pearl, q)}</div>
           </div>
         </div>` : ''}
