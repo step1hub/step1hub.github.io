@@ -206,7 +206,7 @@
 .drug-modal-topbar {
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; padding: 10px 16px 10px 20px;
-  border-bottom: 1px solid var(--border2);
+  border-bottom: 3px solid var(--modal-accent, var(--accent));
   flex-shrink: 0; min-height: 44px;
 }
 .drug-modal-breadcrumb {
@@ -245,8 +245,7 @@
 
 /* ── Title block — fixed padding, never shifts ── */
 .drug-modal-header {
-  padding: 16px 24px 0; flex-shrink: 0;
-  border-top: 3px solid var(--modal-accent, var(--accent));
+  padding: 14px 24px 0; flex-shrink: 0;
 }
 .drug-modal-title {
   font-family: 'Playfair Display', serif;
@@ -559,7 +558,6 @@ function showModal() {
     <span class="drug-modal-banner-sep" style="color:${color}">›</span>
     <span class="drug-modal-banner-grp" style="color:${color}">${o.groupName || ''}</span>
   `;
-  document.getElementById('modal-topbar').style.borderBottom = `1px solid ${color}20`;
   document.getElementById('modal-title').innerHTML = fmt(o.name, q);
 
   const akaEl = document.getElementById('modal-aka');
