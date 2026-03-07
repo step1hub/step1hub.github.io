@@ -26,25 +26,24 @@
 
 /* ── Page header ─────────────────────────────────────────── */
 .ref-page-header {
-  padding: 36px 0 0;
+  padding: 36px 0 20px;
   display: flex; align-items: flex-end; justify-content: space-between;
   gap: 20px; flex-wrap: wrap;
 }
 .ref-page-eyebrow {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 3.5px;
+  font-size: 10px; font-weight: 700; letter-spacing: 3px;
   text-transform: uppercase; color: var(--accent);
-  opacity: .75; margin-bottom: 8px;
+  opacity: .85; margin-bottom: 10px;
+  font-family: 'DM Sans', sans-serif;
 }
 .ref-page-title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(30px, 4vw, 46px); font-weight: 700;
-  line-height: 1.05; letter-spacing: -0.5px; color: var(--ink);
+  line-height: 1.1; letter-spacing: -0.5px; color: var(--ink);
+  margin-bottom: 0;
 }
 .ref-page-title em { font-style: italic; color: var(--accent); }
-.ref-page-sub {
-  font-size: 12px; color: var(--muted); letter-spacing: .4px; margin-top: 7px;
-}
+.ref-page-sub { display: none; }
 .ref-count {
   font-size: 12px; color: var(--muted);
   align-self: flex-end; padding-bottom: 4px; white-space: nowrap;
@@ -144,13 +143,11 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 10px;
-  align-items: start;
+  align-items: stretch;
 }
 
-/* Expanded card spans full grid width */
-.rcard.expanded {
-  grid-column: 1 / -1;
-}
+/* Expanded card stays in its own column — no full-width */
+.rcard { grid-column: span 1; }
 
 /* ── Drug card ───────────────────────────────────────────── */
 .rcard {
@@ -162,12 +159,8 @@
   transition: box-shadow .18s ease;
   box-shadow: 0 1px 3px rgba(42,31,26,.04);
 }
-.rcard:hover {
-  box-shadow: 0 4px 18px rgba(42,31,26,.10);
-}
-.rcard.expanded {
-  box-shadow: 0 4px 20px rgba(42,31,26,.12);
-}
+.rcard:hover { box-shadow: 0 4px 18px rgba(42,31,26,.10); }
+.rcard.expanded { box-shadow: 0 4px 20px rgba(42,31,26,.12); }
 .rcard:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Per-category left borders */
@@ -182,7 +175,7 @@
 .rcard[data-cat="onco"]       { border-left-color: var(--c-onco); }
 .rcard[data-cat="toxicology"] { border-left-color: var(--c-toxicology); }
 
-/* ── Card collapsed state ────────────────────────────────── */
+/* ── Card header ─────────────────────────────────────────── */
 .rcard-header {
   padding: 13px 14px 0;
   display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;
@@ -212,14 +205,12 @@
 
 .rcard-summary {
   padding: 6px 14px 13px;
-  font-size: 12px; font-weight: 400;
-  color: var(--ink2); line-height: 1.58;
+  font-size: 12px; color: var(--ink2); line-height: 1.58;
 }
 
 /* ── Expanded detail ─────────────────────────────────────── */
 .rcard-detail {
   display: none;
-  padding: 0 14px 14px;
   border-top: 1px solid var(--border2);
 }
 .rcard.expanded .rcard-detail {
@@ -231,43 +222,46 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Field boxes — bordered, label as header bar ─────────── */
+/* ── Field: pill label + plain text, separated by lines ───── */
 .rcard-field {
-  margin-top: 10px;
-  border-radius: 8px;
-  border: 1px solid var(--border2);
-  overflow: hidden;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border2);
 }
+.rcard-field:last-of-type { border-bottom: none; }
+
 .rcard-field-label {
   font-family: 'DM Mono', monospace;
   font-size: 7.5px; letter-spacing: 2px; text-transform: uppercase;
-  padding: 5px 10px; display: block;
-  border-bottom: 1px solid var(--border2);
-  font-weight: 600;
+  padding: 3px 8px; border-radius: 99px;
+  display: inline-block; margin-bottom: 7px;
+  border: 1px solid; font-weight: 600;
 }
-.lbl-moa { background: #eef2fb; color: #3a5080; border-color: #ccd6f0; }
-.lbl-use { background: #eaf5ef; color: #2e6845; border-color: #b8e0c8; }
-.lbl-se  { background: #fdeef2; color: #8a2844; border-color: #eeb8c8; }
-.lbl-ci  { background: #fdf4ee; color: #7a3e18; border-color: #e8c8a8; }
-.lbl-pk  { background: #f2effe; color: #4a3890; border-color: #c8bce8; }
+.lbl-moa { background: #eef2fb; color: #3a5080; border-color: #c0cef0; }
+.lbl-use { background: #eaf5ef; color: #2e6845; border-color: #aadcc0; }
+.lbl-se  { background: #fdeef2; color: #8a2844; border-color: #e8afc0; }
+.lbl-ci  { background: #fdf4ee; color: #7a3e18; border-color: #e4c0a0; }
+.lbl-pk  { background: #f2effe; color: #4a3890; border-color: #c0b0e8; }
 
 .rcard-field-text {
   font-size: 12px; color: var(--ink2); line-height: 1.65;
-  padding: 8px 10px;
 }
 .rcard-field-text strong { color: var(--ink); font-weight: 600; }
 
 .info-line { line-height: 1.65; font-size: 12px; color: var(--ink2); }
-.info-line + .info-line { margin-top: 3px; }
+.info-line + .info-line {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border2);
+}
 .info-line strong { color: var(--ink); font-weight: 600; }
 
 /* ── Pearl box ───────────────────────────────────────────── */
 .rcard-pearl {
   display: flex; gap: 9px; align-items: flex-start;
   background: var(--accent-light);
-  border: 1px solid rgba(196,80,94,.20);
-  border-radius: 9px; padding: 10px 12px;
-  margin-top: 10px;
+  border-top: 1px solid rgba(196,80,94,.15);
+  padding: 12px 14px;
+  margin: 0;
 }
 .pearl-diamond {
   color: var(--accent); font-size: 11px; flex-shrink: 0; margin-top: 2px;
@@ -275,11 +269,11 @@
 }
 .pearl-body { flex: 1; min-width: 0; }
 .pearl-label {
-  font-family: 'DM Mono', monospace; font-size: 7.5px; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 4px;
-  font-weight: 700;
+  font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--accent); display: inline;
+  font-weight: 700; margin-right: 4px;
 }
-.pearl-text { font-size: 12px; color: var(--ink2); line-height: 1.65; }
+.pearl-text { font-size: 12px; color: var(--ink2); line-height: 1.65; display: inline; }
 .pearl-text strong { color: var(--accent); font-weight: 600; }
 
 /* ── Search results header ───────────────────────────────── */
@@ -329,7 +323,7 @@ mark.search-hl {
 
   <div class="ref-page-header">
     <div>
-      <div class="ref-page-eyebrow">Step 1 · Pharmacology Reference</div>
+      <div class="ref-page-eyebrow">Pharmacology Reference</div>
       <h1 class="ref-page-title">Drug <em>Facts</em></h1>
       <p class="ref-page-sub">MOA · Uses · Side Effects · PK · Clinical Pearls</p>
     </div>
@@ -541,8 +535,7 @@ function renderCard(d) {
         <div class="rcard-pearl">
           <span class="pearl-diamond">◆</span>
           <div class="pearl-body">
-            <span class="pearl-label">Step 1 Pearl</span>
-            <div class="pearl-text">${fmt(d.pearl, q)}</div>
+            <div class="pearl-text"><span class="pearl-label">Step 1 Pearl:</span> ${fmt(d.pearl, q)}</div>
           </div>
         </div>` : ''}
     </div>
