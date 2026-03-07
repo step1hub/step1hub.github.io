@@ -702,12 +702,18 @@ input, select, textarea { font-family: inherit; }
 .rcard-aka {
   font-family: 'DM Sans', sans-serif;
   font-size: 11px; line-height: 1.55; margin-top: 6px;
-  word-break: break-word; font-weight: 500;
+  word-break: normal; overflow-wrap: normal;
+  white-space: normal; font-weight: 500;
   color: var(--cat-color, var(--ink2));
+}
+/* Each drug name token stays on one line — breaks only happen after a dot */
+.aka-token {
+  white-space: nowrap;
+  display: inline;
 }
 .dot-sep {
   color: color-mix(in srgb, var(--cat-color, var(--border)) 40%, transparent);
-  margin: 0 5px; font-weight: 400; user-select: none;
+  margin: 0 3px; font-weight: 400; user-select: none;
 }
 .rcard-toggle {
   flex-shrink: 0; background: none; border: none; cursor: pointer;
@@ -745,9 +751,9 @@ input, select, textarea { font-family: inherit; }
 /* ── Pearl ───────────────────────────────────────────────── */
 .rcard-pearl {
   display: flex; gap: 12px; align-items: flex-start;
-  background: linear-gradient(135deg, var(--accent-light, var(--sakura-light)) 0%, #fff8f8 100%);
-  border-top: 1px solid rgba(196,80,94,.18);
-  border-left: 3px solid var(--accent, var(--sakura2));
+  background: color-mix(in srgb, var(--cat-color, var(--sakura2)) 8%, var(--bg));
+  border-top: 1px solid color-mix(in srgb, var(--cat-color, var(--sakura2)) 20%, transparent);
+  border-left: 3px solid var(--cat-color, var(--sakura2));
   padding: 14px 16px 15px;
   margin-left: -1px; /* align with card border-left */
 }
@@ -761,7 +767,7 @@ input, select, textarea { font-family: inherit; }
   font-size: 9px; letter-spacing: 1.5px;
   text-transform: uppercase; display: block;
   font-weight: 800; margin-bottom: 5px;
-  color: var(--accent, var(--sakura2));
+  color: var(--cat-color, var(--sakura2));
 }
 .pearl-text {
   font-family: 'DM Sans', sans-serif; font-size: 13px;
@@ -881,7 +887,7 @@ input, select, textarea { font-family: inherit; }
 .drug-modal-body .rcard-field:last-of-type { border-bottom: none; }
 .drug-modal-body .rcard-pearl {
   margin-top: 10px; border-radius: 12px;
-  border: 1px solid rgba(196,80,94,.18);
+  border: 1px solid color-mix(in srgb, var(--cat-color, var(--sakura2)) 25%, transparent);
   overflow: hidden;
 }
 
