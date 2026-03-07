@@ -77,11 +77,14 @@
 /* ── Category tabs ───────────────────────────────────────── */
 .cat-tab-bar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
   gap: 0;
   margin-top: 18px;
   border-bottom: 1px solid var(--border2);
 }
+.cat-tab-bar::-webkit-scrollbar { display: none; }
 .cat-tab {
   padding: 9px 12px;
   font-family: 'DM Sans', sans-serif; font-size: 10px;
@@ -143,11 +146,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 10px;
-  align-items: stretch;
+  align-items: start;
 }
 
-/* Expanded card stays in its own column — no full-width */
+/* Expanded card spans full width — no neighbor height mismatch */
 .rcard { grid-column: span 1; }
+.rcard.expanded { grid-column: 1 / -1; }
 
 /* ── Drug card ───────────────────────────────────────────── */
 .rcard {
@@ -230,11 +234,11 @@
 .rcard-field:last-of-type { border-bottom: none; }
 
 .rcard-field-label {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 9px; letter-spacing: 0.4px; text-transform: uppercase;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px; letter-spacing: 0.8px; text-transform: uppercase;
   padding: 3px 9px; border-radius: 99px;
   display: inline-block; margin-bottom: 7px;
-  border: 1px solid; font-weight: 700;
+  border: 1px solid; font-weight: 500;
 }
 .lbl-moa { background: #eef2fb; color: #3a5080; border-color: #c0cef0; }
 .lbl-use { background: #eaf5ef; color: #2e6845; border-color: #aadcc0; }
@@ -265,9 +269,9 @@
 }
 .pearl-body { flex: 1; min-width: 0; }
 .pearl-label {
-  font-family: 'DM Sans', sans-serif; font-size: 9px; letter-spacing: 0.3px;
+  font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.8px;
   text-transform: uppercase; color: var(--accent); display: inline;
-  font-weight: 700; margin-right: 4px;
+  font-weight: 600; margin-right: 4px;
 }
 .pearl-text { font-size: 12px; color: var(--ink2); line-height: 1.65; display: inline; }
 .pearl-text strong { color: var(--accent); font-weight: 600; }
