@@ -584,26 +584,17 @@ input, select, textarea { font-family: inherit; }
   position: relative;
   overflow: hidden;
 }
-.rcard::before {
-  content: '';
-  position: absolute; left: 0; top: 0; bottom: 0;
-  width: 3px; border-radius: 12px 0 0 12px;
-  background: var(--sakura2);
-  opacity: 0; transition: opacity .16s;
-}
+/* left border pseudo removed — per-category left borders handled via inline style on .rcard */
 .rcard:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 20px rgba(42,31,26,.10), 0 1px 4px rgba(42,31,26,.06);
   border-color: color-mix(in srgb, var(--sakura2) 30%, var(--border));
 }
-.rcard:hover::before { opacity: 1; }
 .rcard.expanded {
   transform: none;
   box-shadow: 0 6px 28px rgba(42,31,26,.12), 0 2px 6px rgba(42,31,26,.07);
   border-color: color-mix(in srgb, var(--sakura2) 40%, var(--border));
-  grid-column: 1 / -1;
 }
-.rcard.expanded::before { opacity: 1; }
 .rcard:focus-visible { outline: 2px solid var(--sakura2); outline-offset: 2px; }
 
 /* ── Card header ─────────────────────────────────────────── */
@@ -742,7 +733,6 @@ mark.search-hl {
 /* ── Mobile overrides ────────────────────────────────────── */
 @media (max-width: 640px) {
   .cards-grid { grid-template-columns: 1fr; }      /* modified: mobile single column */
-  .rcard.expanded { grid-column: 1; }
   .rcard.expanded .rcard-detail { max-height: 1200px; }
   .rcard-field-text { font-size: 13px; }
   .ref-tab-bar { -webkit-overflow-scrolling: touch; }
