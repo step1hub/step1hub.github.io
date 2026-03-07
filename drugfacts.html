@@ -462,7 +462,7 @@ function renderPanels(filtered, isSearch) {
       const meta = CAT_META[cat];
       return `<div class="ref-panel" id="panel-${cat}">
         <div class="search-cat-label" style="color:${meta.color}">${meta.label}</div>
-        <div class="cards-grid">${catDrugs.map(d => renderCard(d)).join('')}</div>
+        <div class="cards-grid">${catDrugs.map(d => renderCard(d, meta.color)).join('')}</div>
       </div>`;
     }).join('');
     return;
@@ -492,11 +492,11 @@ function renderPanels(filtered, isSearch) {
     const gid = `grp-${cat}-${gi}`;
     return `<div class="group-section">
       <div class="class-group-header">
-        <span class="class-label">${grp}</span>
-        <button class="group-expand-btn" onclick="toggleGroup('${gid}',this)">▼ Expand</button>
+        <span class="class-label" style="--cat-color:${meta.color};color:${meta.color};border-color:${meta.color}33;">${grp}</span>
+        <button class="group-expand-btn" style="--cat-color:${meta.color}" onclick="toggleGroup('${gid}',this)">▼ Expand</button>
       </div>
       <div class="cards-grid" id="${gid}">
-        ${grpDrugs.map(d => renderCard(d)).join('')}
+        ${grpDrugs.map(d => renderCard(d, meta.color)).join('')}
       </div>
     </div>`;
   }).join('');
@@ -504,7 +504,8 @@ function renderPanels(filtered, isSearch) {
   container.innerHTML = `<div class="ref-panel" id="panel-${cat}">${introHtml}${groupsHtml}</div>`;
 }
 
-function renderCard(d) {
+function renderCard(d, catColor) {
+  const color = catColor || CAT_META[d.category]?.color || 'var(--accent)';
   const q = searchQ;
   const sections = [
     { label: 'Mechanism',         cls: 'lbl-moa', val: d.moa },
@@ -518,13 +519,13 @@ function renderCard(d) {
     ? d.aka.replace(/·/g, '<span class="dot-sep">·</span>')
     : '';
 
-  return `<div class="rcard" data-cat="${d.category}"
+  return `<div class="rcard" data-cat="${d.category}" style="border-left-color:${color}"
     tabindex="0" role="button" aria-label="${esc(d.name)}" aria-expanded="false"
     onclick="toggleCard(this)">
     <div class="rcard-header">
       <div class="rcard-header-left">
         <div class="rcard-name">${fmt(d.name, q)}</div>
-        ${akaHtml ? `<div class="rcard-aka">${akaHtml}</div>` : ''}
+        ${akaHtml ? `<div class="rcard-aka" style="color:${color}">${akaHtml}</div>` : ''}
       </div>
       <button class="rcard-toggle" tabindex="-1" aria-hidden="true">▼</button>
     </div>
