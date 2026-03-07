@@ -61,6 +61,9 @@ mark.search-hl { background: rgba(94,154,112,.18); color: var(--ink); border-rad
              placeholder="Organism, disease, treatment, pearl…"
              oninput="onSearch()" autocomplete="off"/>
     </div>
+    <button class="bookmark-filter-btn" id="bookmark-filter-btn" onclick="toggleBookmarkFilter()">
+      ★ Bookmarked <span class="bk-count" id="bk-count">0</span>
+    </button>
   </div>
 
   <div class="cat-tab-bar" id="cat-tabs" role="tablist"></div>
@@ -112,7 +115,7 @@ const CAT_META = {
   parasites: { label: 'Parasites',  color: '#3d6e8a', desc: 'Transmission route is the single highest-yield fact for every parasite. Plasmodium (malaria) is the most tested parasite — know all four species. Toxoplasma and Cryptosporidium are classic HIV vignettes.' },
 };
 
-let allOrgs = [], activeTab = 'bacteria', searchQ = '';
+let allOrgs = [], activeTab = 'bacteria', searchQ = '', bookmarkFilter = false;
 
 function buildOrgList() {
   const list = [];
@@ -132,7 +135,7 @@ function getFiltered() {
       return blob.includes(searchQ);
     });
   }
-  if (activeTab === 'bookmarks') return allOrgs.filter(o => isBookmarked(o.name));
+  if (activeTab === 'bookmarks' || bookmarkFilter) return allOrgs.filter(o => isBookmarked(o.name));
   return allOrgs.filter(o => o.category === activeTab);
 }
 
@@ -355,6 +358,25 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
+// ── Bookmark filter button ──────────────────────────────────
+function syncBookmarkCount() {
+  const cnt = document.getElementById('bk-count');
+  const btn = document.getElementById('bookmark-filter-btn');
+  const bks = getBookmarks();
+  if (cnt) cnt.textContent = bks.length;
+  if (btn) btn.classList.toggle('active', bookmarkFilter);
+}
+function toggleBookmarkFilter() {
+  bookmarkFilter = !bookmarkFilter;
+  const btn = document.getElementById('bookmark-filter-btn');
+  if (btn) btn.classList.toggle('active', bookmarkFilter);
+  // If activating filter, switch to bookmarks tab; if deactivating, go back to bacteria
+  if (bookmarkFilter) { activeTab = 'bookmarks'; }
+  else { activeTab = 'bacteria'; }
+  renderTabs();
+  render();
+}
+
 // ── Bookmarks (localStorage + Firebase sync) ───────────────
 const BK_KEY = 'micro-bookmarks';
 let _bookmarks = null;
@@ -369,6 +391,7 @@ function getBookmarks() {
 function saveBookmarks(arr) {
   _bookmarks = arr;
   localStorage.setItem(BK_KEY, JSON.stringify(arr));
+  syncBookmarkCount();
   // Push to Firestore if signed in
   if (window.db && window.currentUser) {
     window.db.collection('users').doc(window.currentUser.uid)
@@ -487,6 +510,7 @@ window.addEventListener('appAuthStateChanged', (e) => {
 });
 document.addEventListener('DOMContentLoaded', () => {
   allOrgs = buildOrgList();
+  syncBookmarkCount();
   activeTab = 'bacteria';
   render();
 });
