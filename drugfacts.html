@@ -86,20 +86,20 @@
 }
 .cat-tab-bar::-webkit-scrollbar { display: none; }
 .cat-tab {
-  padding: 9px 12px;
-  font-family: 'DM Sans', sans-serif; font-size: 10px;
-  letter-spacing: 0.3px; text-transform: uppercase; font-weight: 600;
+  padding: 9px 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 9px;
+  letter-spacing: 0.2px; text-transform: uppercase; font-weight: 600;
   color: var(--muted); border: none;
   border-bottom: 2px solid transparent;
   cursor: pointer; white-space: nowrap;
   background: transparent;
   transition: color .15s, border-color .15s;
-  display: flex; align-items: center; gap: 5px;
+  display: flex; align-items: center; gap: 4px;
   flex-shrink: 0;
 }
 .cat-tab:hover { color: var(--ink2); }
 .cat-tab.active { color: var(--ink); border-bottom-color: var(--accent); }
-.tab-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.tab-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 
 /* ── Category intro ──────────────────────────────────────── */
 .cat-intro {
@@ -146,10 +146,9 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 10px;
-  align-items: start;
+  align-items: stretch;
 }
 
-/* Expanded card spans full width — no neighbor height mismatch */
 .rcard { grid-column: span 1; }
 .rcard.expanded { grid-column: 1 / -1; }
 
@@ -240,11 +239,11 @@
   display: inline-block; margin-bottom: 7px;
   border: 1px solid; font-weight: 500;
 }
-.lbl-moa { background: #eef2fb; color: #3a5080; border-color: #c0cef0; }
-.lbl-use { background: #eaf5ef; color: #2e6845; border-color: #aadcc0; }
-.lbl-se  { background: #fdeef2; color: #8a2844; border-color: #e8afc0; }
-.lbl-ci  { background: #fdf4ee; color: #7a3e18; border-color: #e4c0a0; }
-.lbl-pk  { background: #f2effe; color: #4a3890; border-color: #c0b0e8; }
+.lbl-moa { background: #fff; color: #3a5080; border-color: #b8c8ec; }
+.lbl-use { background: #fff; color: #2e6845; border-color: #9ed0b0; }
+.lbl-se  { background: #fff; color: #8a2844; border-color: #e8a8b8; }
+.lbl-ci  { background: #fff; color: #7a3e18; border-color: #e0b890; }
+.lbl-pk  { background: #fff; color: #4a3890; border-color: #b8a8e0; }
 
 .rcard-field-text {
   font-size: 12px; color: var(--ink2); line-height: 1.65;
