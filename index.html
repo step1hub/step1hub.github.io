@@ -17,13 +17,16 @@
 
 /* ── Hero ─────────────────────────────────────────────────── */
 .hero {
-  padding: 52px 0 0;
+  padding: 40px 0 36px;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 40px;
   align-items: center;
   border-bottom: 1px solid var(--border2);
   margin-bottom: 0;
+}
+.hero-left {
+  display: flex; flex-direction: column; justify-content: center;
 }
 .hero-eyebrow {
   font-size: 10px; font-weight: 700; letter-spacing: 3px;
@@ -39,7 +42,7 @@
 .hero-title em { font-style: italic; color: var(--sakura2); }
 .hero-tagline {
   font-size: 14px; color: var(--muted); line-height: 1.65;
-  max-width: 420px; margin-bottom: 36px;
+  max-width: 420px; margin-bottom: 0;
 }
 
 /* ── Countdown — defined in style.css ────────────────────── */
@@ -147,8 +150,9 @@
 .tc-arrow { position: absolute; top: 18px; right: 18px; font-size: 13px; color: var(--dim); transition: color var(--t); }
 .tc-lbl { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
 .tc-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 12px; }
-.tc-bg { height: 5px; background: var(--border2); border-radius: 99px; overflow: hidden; margin-bottom: 6px; }
-.tc-fill { height: 100%; border-radius: 99px; background: var(--card-accent, var(--peach)); transition: width .6s ease; }
+.tc-bg { height: 5px; background: var(--border2); border-radius: 99px; overflow: hidden; margin-bottom: 6px; position: relative; }
+.tc-fill-w { position: absolute; left:0; top:0; height: 100%; border-radius: 99px; background: var(--sage); opacity: 0.55; transition: width .6s ease; }
+.tc-fill-r { position: absolute; left:0; top:0; height: 100%; border-radius: 99px; background: var(--card-accent, var(--peach)); transition: width .6s ease; }
 .tc-stats { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
 .tc-pct { font-weight: 700; color: var(--card-accent, var(--peach)); }
 
@@ -326,7 +330,7 @@
       <div class="tc-lbl">Sketchy</div>
       <div class="tc-title">Pharm</div>
       <div class="tc-bg" role="progressbar" aria-valuemin="0" aria-valuemax="101">
-        <div class="tc-fill" id="tp-bar" style="width:0%"></div>
+        <div class="tc-fill-w" id="tp-bar-w" style="width:0%"></div><div class="tc-fill-r" id="tp-bar-r" style="width:0%"></div>
       </div>
       <div class="tc-stats">
         <span id="tp-stats">0 / 101 reviewed</span>
@@ -338,7 +342,7 @@
       <div class="tc-lbl">Sketchy</div>
       <div class="tc-title">Micro</div>
       <div class="tc-bg" role="progressbar" aria-valuemin="0" aria-valuemax="104">
-        <div class="tc-fill" id="tm-bar" style="width:0%"></div>
+        <div class="tc-fill-w" id="tm-bar-w" style="width:0%"></div><div class="tc-fill-r" id="tm-bar-r" style="width:0%"></div>
       </div>
       <div class="tc-stats">
         <span id="tm-stats">0 / 104 reviewed</span>
@@ -350,7 +354,7 @@
       <div class="tc-lbl">Pixorize</div>
       <div class="tc-title">Biochem &amp; Immuno</div>
       <div class="tc-bg" role="progressbar" aria-valuemin="0" aria-valuemax="244">
-        <div class="tc-fill" id="tpx-bar" style="width:0%"></div>
+        <div class="tc-fill-w" id="tpx-bar-w" style="width:0%"></div><div class="tc-fill-r" id="tpx-bar-r" style="width:0%"></div>
       </div>
       <div class="tc-stats">
         <span id="tpx-stats">0 / 244 reviewed</span>
@@ -453,7 +457,7 @@
 
 <!-- ── DRUG OF THE DAY MODAL ──────────────────────────────── -->
 <div class="modal-overlay" id="dotd-modal" role="dialog" aria-modal="true" aria-labelledby="dm-name">
-  <div class="modal detail-modal" style="max-width:560px;">
+  <div class="modal detail-modal" style="max-width:720px;">
     <div class="modal-header">
       <div>
         <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sakura2);margin-bottom:4px;" id="dm-group"></div>
@@ -462,7 +466,8 @@
       </div>
       <button onclick="closeModal('dotd-modal')" class="modal-close-btn" aria-label="Close">&times;</button>
     </div>
-    <div id="dm-content" style="max-height:65vh;overflow-y:auto;padding-right:6px;"></div>
+    <div id="dm-summary" style="font-size:13px;color:var(--ink2);line-height:1.65;padding:12px 0 16px;border-bottom:1px solid var(--border2);margin-bottom:4px;"></div>
+    <div id="dm-content" style="max-height:60vh;overflow-y:auto;padding-right:6px;"></div>
     <div class="modal-btns" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
       <button class="btn-cancel" onclick="closeModal('dotd-modal')">Close</button>
       <a href="drugfacts.html" class="btn-save" style="text-decoration:none;display:inline-block;">All Drug Facts ↗</a>
@@ -472,7 +477,7 @@
 
 <!-- ── ORGANISM OF THE DAY MODAL ──────────────────────────── -->
 <div class="modal-overlay" id="ootd-modal" role="dialog" aria-modal="true" aria-labelledby="om-name">
-  <div class="modal detail-modal" style="max-width:560px;">
+  <div class="modal detail-modal" style="max-width:720px;">
     <div class="modal-header">
       <div>
         <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:4px;" id="om-group"></div>
@@ -481,7 +486,8 @@
       </div>
       <button onclick="closeModal('ootd-modal')" class="modal-close-btn" aria-label="Close">&times;</button>
     </div>
-    <div id="om-content" style="max-height:65vh;overflow-y:auto;padding-right:6px;"></div>
+    <div id="om-summary" style="font-size:13px;color:var(--ink2);line-height:1.65;padding:12px 0 16px;border-bottom:1px solid var(--border2);margin-bottom:4px;"></div>
+    <div id="om-content" style="max-height:60vh;overflow-y:auto;padding-right:6px;"></div>
     <div class="modal-btns" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
       <button class="btn-cancel" onclick="closeModal('ootd-modal')">Close</button>
       <a href="microfacts.html" class="btn-save btn-save-sage" style="text-decoration:none;display:inline-block;">All Micro Facts ↗</a>
@@ -507,12 +513,12 @@ function initDotd() {
   if (typeof DRUGS === 'undefined') return;
   const all = [];
   Object.values(DRUGS).forEach(cat => cat.forEach(grp =>
-    grp.drugs.filter(d => d.tier === 1).forEach(d => all.push({...d, groupName: grp.group}))
+    grp.drugs.filter(d => d.pearl).forEach(d => all.push({...d, groupName: grp.group}))
   ));
   if (!all.length) return;
   dotdDrug = all[seed() % all.length];
   document.getElementById('dotd-name').textContent = dotdDrug.name;
-  const p = bare(dotdDrug.pearl) || 'High-yield concept — tap to review.';
+  const p = bare(dotdDrug.summary) || bare(dotdDrug.pearl) || 'High-yield concept — tap to review.';
   document.getElementById('dotd-pearl').textContent = p.length > 130 ? p.slice(0,130)+'…' : p;
   // Swap skeleton → real card
   document.getElementById('dotd-skeleton').style.display = 'none';
@@ -524,6 +530,7 @@ function openDotdModal() {
   document.getElementById('dm-name').textContent = dotdDrug.name;
   document.getElementById('dm-aka').textContent = dotdDrug.aka || '';
   document.getElementById('dm-group').textContent = dotdDrug.groupName || 'Pharmacology';
+  document.getElementById('dm-summary').innerHTML = fmt(dotdDrug.summary) || '';
   document.getElementById('dm-content').innerHTML = `
     <div class="drug-row"><span class="drug-label">Mechanism</span><div class="drug-text">${fmt(dotdDrug.moa)}</div></div>
     <div class="drug-row"><span class="drug-label">Clinical Use</span><div class="drug-text">${fmt(dotdDrug.use)}</div></div>
@@ -551,7 +558,7 @@ function initOotd() {
   if (!all.length) return;
   ootdOrg = all[(seed() + 37) % all.length];
   document.getElementById('ootd-name').textContent = ootdOrg.name;
-  const p = bare(ootdOrg.pearl) || (ootdOrg.tx ? 'Tx: ' + bare(ootdOrg.tx) : 'High-yield organism — tap to review.');
+  const p = bare(ootdOrg.summary) || bare(ootdOrg.pearl) || 'High-yield organism — tap to review.';
   document.getElementById('ootd-pearl').textContent = p.length > 130 ? p.slice(0,130)+'…' : p;
   // Swap skeleton → real card
   document.getElementById('ootd-skeleton').style.display = 'none';
@@ -563,6 +570,7 @@ function openOotdModal() {
   document.getElementById('om-name').textContent = ootdOrg.name;
   document.getElementById('om-aka').textContent = ootdOrg.aka || '';
   document.getElementById('om-group').textContent = ootdOrg.groupName || 'Microbiology';
+  document.getElementById('om-summary').innerHTML = fmt(ootdOrg.summary) || '';
   const fields = [
     ['Gram Stain / Type', ootdOrg.gram],
     ['Virulence',         ootdOrg.virulence],
@@ -611,8 +619,10 @@ function loadTracker(key, total, bId, sId, pId) {
   const data = Store.get(key, {});
   let w = 0, r = 0;
   Object.values(data).forEach(v => { if (v==='w'||v==='wr') w++; if (v==='r'||v==='wr') r++; });
-  const pct = total > 0 ? Math.round(r / total * 100) : 0;
-  document.getElementById(bId).style.width = pct + '%';
+  const pct  = total > 0 ? Math.round(r / total * 100) : 0;
+  const pctW = total > 0 ? Math.round(w / total * 100) : 0;
+  document.getElementById(bId+'-r').style.width = pct + '%';
+  document.getElementById(bId+'-w').style.width = pctW + '%';
   document.getElementById(pId).textContent = pct + '%';
   document.getElementById(sId).textContent = w > 0 ? `${r} / ${total} reviewed · ${w} watched` : `${r} / ${total} reviewed`;
 }

@@ -38,8 +38,9 @@
 .overall-stats { display: flex; gap: 18px; font-size: 13px; }
 .overall-stat { color: var(--muted); font-size: 12px; }
 .overall-stat strong { color: var(--ink2); font-size: 14px; }
-.overall-bar-bg { background: var(--border2); border-radius: 99px; height: 8px; overflow: hidden; }
-.overall-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--sky), var(--fuji)); transition: width .5s ease; }
+.overall-bar-bg { background: var(--border2); border-radius: 99px; height: 8px; overflow: hidden; position: relative; }
+.overall-bar-fill-w { position: absolute; left:0; top:0; height: 100%; border-radius: 99px; background: var(--sage); opacity: 0.55; transition: width .5s ease; }
+.overall-bar-fill-r { position: absolute; left:0; top:0; height: 100%; border-radius: 99px; background: var(--gold); transition: width .5s ease; }
 .overall-sub { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 6px; }
 
 /* ── Category sections ─────────────────────────────────── */
@@ -61,8 +62,9 @@
 .cat-why { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .cat-header-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
 .cat-count { font-size: 12px; color: var(--muted); font-weight: 600; white-space: nowrap; }
-.cat-mini-bar { width: 80px; height: 5px; background: var(--border2); border-radius: 99px; overflow: hidden; }
-.cat-mini-fill { height: 100%; border-radius: 99px; transition: width .4s; }
+.cat-mini-bar { width: 80px; height: 5px; background: var(--border2); border-radius: 99px; overflow: hidden; position: relative; }
+.cat-mini-fill-w { position: absolute; left:0; top:0; height: 100%; border-radius: 99px; background: var(--sage); opacity: 0.55; transition: width .4s; }
+.cat-mini-fill-r { position: absolute; left:0; top:0; height: 100%; border-radius: 99px; background: var(--gold); transition: width .4s; }
 .cat-chevron { font-size: 11px; color: var(--dim); transition: transform .2s; background:none; border:none; cursor:pointer; padding:4px 6px; border-radius:4px; line-height:1; }
 .cat-section.open .cat-chevron { transform: rotate(180deg); }
 
@@ -139,7 +141,7 @@
         <span class="overall-stat" style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;background:var(--gold);color:#fff;font-size:10px;">✦</span><strong id="tot-r">0</strong> Reviewed</span>
       </div>
     </div>
-    <div class="overall-bar-bg"><div class="overall-bar-fill" id="overall-bar" style="width:0%;"></div></div>
+    <div class="overall-bar-bg"><div class="overall-bar-fill-w" id="overall-bar-w" style="width:0%;"></div><div class="overall-bar-fill-r" id="overall-bar-r" style="width:0%;"></div></div>
     <div class="overall-sub">
       <span id="overall-note">0% reviewed</span>
       <span id="overall-total">0 / 0 videos</span>
@@ -260,8 +262,11 @@ function updateCatHeaders() {
     const pct = total ? Math.round((r / total) * 100) : 0;
     const el = document.getElementById('cat-count-'+cat.id);
     if (el) el.textContent = `${r} / ${total} reviewed`;
-    const fill = document.getElementById('cat-fill-'+cat.id);
-    if (fill) fill.style.width = pct+'%';
+    const fillW = document.getElementById('cat-fill-w-'+cat.id);
+    const fillR = document.getElementById('cat-fill-r-'+cat.id);
+    const pctW = total ? Math.round((w / total) * 100) : 0;
+    if (fillW) fillW.style.width = pctW+'%';
+    if (fillR) fillR.style.width = pct+'%';
   });
 }
 
@@ -274,7 +279,8 @@ function updateSummary() {
   
   document.getElementById('tot-w').textContent = tw;
   document.getElementById('tot-r').textContent = tr;
-  document.getElementById('overall-bar').style.width = pct + '%';
+  document.getElementById('overall-bar-w').style.width = (total ? Math.round((tw / total) * 100) : 0) + '%';
+  document.getElementById('overall-bar-r').style.width = pct + '%';
   document.getElementById('overall-note').textContent = pct + '% reviewed';
   document.getElementById('overall-total').textContent = tr + ' / ' + total + ' videos';
   updateCatHeaders();
@@ -320,7 +326,7 @@ function renderAll() {
         </div>
         <div class="cat-header-right">
           <span class="cat-count" id="cat-count-${cat.id}">0 / ${cat.videos.length} reviewed</span>
-          <div class="cat-mini-bar"><div class="cat-mini-fill ${accent}" id="cat-fill-${cat.id}" style="width:0%;"></div></div>
+          <div class="cat-mini-bar"><div class="cat-mini-fill-w" id="cat-fill-w-${cat.id}" style="width:0%;"></div><div class="cat-mini-fill-r" id="cat-fill-r-${cat.id}" style="width:0%;"></div></div>
           <button class="cat-chevron" onclick="this.closest('.cat-section').classList.toggle('open');event.stopPropagation()">▼</button>
         </div>
       </div>

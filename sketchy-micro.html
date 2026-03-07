@@ -69,7 +69,6 @@
 .accent-5{background:var(--peach);}
 .accent-6{background:var(--lavender);}
 .accent-7{background:#7ba8cf;}
-.ref-page-title em { color: var(--sage); }
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:10px 22px;border-radius:99px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
@@ -77,12 +76,10 @@
 <body>
 <script src="nav.js"></script>
 <div class="wrap">
-  <div class="ref-page-header" style="padding-bottom:0;">
-    <div>
-      <div class="ref-page-eyebrow" style="color:var(--sage);">Progress Tracker</div>
-      <h1 class="ref-page-title">Sketchy <em>Micro</em></h1>
-    </div>
-  </div>
+  <header class="hero" style="padding:36px 0 16px;">
+    <div class="hero-eyebrow" style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sakura2);margin-bottom:10px;">Progress Tracker</div>
+    <h1 class="hero-name" style="font-size:clamp(30px,4vw,46px);letter-spacing:-0.5px;font-weight:700;line-height:1.1;margin-bottom:6px;">Sketchy <em>Micro</em></h1>
+  </header>
 
   <div class="overall-card">
     <div class="overall-top">
@@ -92,7 +89,7 @@
         <span class="overall-stat" style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;background:var(--gold);color:#fff;font-size:10px;">✦</span><strong id="tot-r">0</strong> Reviewed</span>
       </div>
     </div>
-    <div class="overall-bar-bg"><div class="overall-bar-fill" id="overall-bar" style="width:0%;"></div></div>
+    <div class="overall-bar-bg"><div class="overall-bar-fill-w" id="overall-bar-w" style="width:0%;"></div><div class="overall-bar-fill-r" id="overall-bar-r" style="width:0%;"></div></div>
     <div class="overall-sub">
       <span id="overall-note">0% reviewed</span>
       <span id="overall-total">0 / 0 videos</span>
@@ -224,7 +221,8 @@ function updateSummary() {
   
   document.getElementById('tot-w').textContent = tw;
   document.getElementById('tot-r').textContent = tr;
-  document.getElementById('overall-bar').style.width = pct + '%';
+  document.getElementById('overall-bar-w').style.width = (total ? Math.round((tw / total) * 100) : 0) + '%';
+  document.getElementById('overall-bar-r').style.width = pct + '%';
   document.getElementById('overall-note').textContent = pct + '% reviewed';
   document.getElementById('overall-total').textContent = tr + ' / ' + total + ' videos';
   updateCatHeaders();
@@ -266,7 +264,7 @@ function renderAll() {
         </div>
         <div class="cat-header-right">
           <span class="cat-count" id="cat-count-${cat.id}">0 / ${cat.videos.length} reviewed</span>
-          <div class="cat-mini-bar"><div class="cat-mini-fill ${accent}" id="cat-fill-${cat.id}" style="width:0%;"></div></div>
+          <div class="cat-mini-bar"><div class="cat-mini-fill-w" id="cat-fill-w-${cat.id}" style="width:0%;"></div><div class="cat-mini-fill-r" id="cat-fill-r-${cat.id}" style="width:0%;"></div></div>
           <button class="cat-chevron" onclick="this.closest('.cat-section').classList.toggle('open');event.stopPropagation()">▼</button>
         </div>
       </div>
