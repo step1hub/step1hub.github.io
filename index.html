@@ -52,28 +52,25 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 16px 22px;
-  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  padding: 18px 24px;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
   margin-top: 20px;
 }
-/* Always show — empty state when no data */
-.uw-empty-hint {
-  font-size: 12px; color: var(--muted); font-style: italic;
-}
+.uw-empty-hint { font-size: 12px; color: var(--muted); font-style: italic; }
 .uw-prog { flex: 1; min-width: 160px; }
 .uw-lbl {
   font-size: 10px; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 7px;
+  text-transform: uppercase; color: var(--dim); margin-bottom: 10px;
 }
-.uw-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-.uw-bg { flex: 1; height: 5px; background: var(--border2); border-radius: 99px; overflow: hidden; }
-.uw-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--sakura2), var(--gold)); transition: width .7s ease; }
-.uw-pct { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--sakura2); min-width: 36px; text-align: right; }
-.uw-sub { font-size: 11px; color: var(--muted); }
-.uw-div { width: 1px; height: 32px; background: var(--border2); flex-shrink: 0; }
-.uw-qd { text-align: center; flex-shrink: 0; }
-.uw-qd-v { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; line-height: 1; color: var(--sakura2); }
-.uw-qd-l { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+.uw-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.uw-bg { flex: 1; height: 6px; background: var(--border2); border-radius: 99px; overflow: hidden; }
+.uw-fill { height: 100%; border-radius: 99px; background: var(--sakura2); opacity: 0.75; transition: width .7s ease; }
+.uw-pct { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600; color: var(--muted); min-width: 36px; text-align: right; }
+.uw-sub { font-size: 11px; color: var(--dim); }
+.uw-div { width: 1px; height: 36px; background: var(--border2); flex-shrink: 0; }
+.uw-qd { text-align: center; flex-shrink: 0; padding: 0 4px; }
+.uw-qd-v { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; line-height: 1; color: var(--sakura2); }
+.uw-qd-l { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); margin-top: 4px; }
 
 /* ── Daily high-yield cards ───────────────────────────────── */
 .daily-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -581,25 +578,40 @@ function openOotdModal() {
 
 /* ── UWorld strip — always visible with empty state ─────── */
 function renderUWorld() {
-  const days = getDaysRemaining();
-  const uwSet = Store.get('uw-settings', {total: 3661});
-  const total = uwSet.total || 3661;
-  const done  = Store.get('uw-unique-done', 0);
-  const pct   = Math.min(100, Math.round(done / total * 100));
+  const uwSet     = Store.get('uw-settings', { total: 3661, finishBy: '', studyDays: [1,2,3,4,5] });
+  const total     = uwSet.total || 3661;
+  const done      = Store.get('uw-unique-done', 0);
+  const pct       = Math.min(100, Math.round(done / total * 100));
+  const remaining = Math.max(0, total - done);
 
   document.getElementById('uw-fill').style.width = pct + '%';
   document.getElementById('uw-pct').textContent  = pct + '%';
   document.getElementById('uw-bar-role').setAttribute('aria-valuenow', pct);
+  document.getElementById('uw-sub').textContent  = done > 0
+    ? `${done.toLocaleString()} / ${total.toLocaleString()} done`
+    : 'Set up your qbank in Dashboard to track progress';
 
-  if (done > 0) {
-    document.getElementById('uw-sub').textContent = `${done.toLocaleString()} / ${total.toLocaleString()} done`;
+  let needed = null;
+  if (uwSet.finishBy) {
+    const finish    = new Date(uwSet.finishBy + 'T12:00:00');
+    const now       = new Date(); now.setHours(0,0,0,0);
+    const calDays   = Math.max(0, Math.round((finish - now) / 86400000));
+    const studyDays = Math.round(calDays * ((uwSet.studyDays || [1,2,3,4,5]).length / 7));
+    needed = studyDays > 0 ? Math.ceil(remaining / studyDays) : null;
+  } else {
+    const days = getDaysRemaining();
+    if (days && days > 0) needed = Math.ceil(remaining / days);
   }
-
-  if (days && days > 0) {
-    const qpd = Math.ceil(Math.max(0, total - done) / days);
-    document.getElementById('uw-qday').textContent = qpd;
-  }
+  document.getElementById('uw-qday').textContent = needed !== null ? needed : '—';
 }
+
+/* Re-render everything after Firebase syncs down fresh data */
+window.onCloudSyncComplete = function() {
+  renderUWorld();
+  renderTrackers();
+  initDotd();
+  initOotd();
+};
 
 /* ── Progress trackers ───────────────────────────────────── */
 function renderTrackers() {
