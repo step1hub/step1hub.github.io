@@ -9,7 +9,7 @@
 <style>
 :root {
   --nav-active-color: var(--sakura2);
-  --gap: 12px;
+  --gap: 10px;
 }
 
 /* ── Shared card base ── */
@@ -32,35 +32,46 @@
   font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
   text-transform: uppercase; color: var(--muted);
   display: flex; align-items: center; gap: 12px;
-  padding: 20px 0 10px;
+  padding: 14px 0 8px;
 }
-.sec-label:first-of-type { padding-top: 14px; }
 .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
 
-/* ── Hero ── */
+/* ── Hero — compact 2-column strip ── */
 .hero {
-  padding: 40px 0 22px;
+  padding: 20px 0 14px;
   display: grid; grid-template-columns: 1fr auto;
-  gap: 32px; align-items: center;
+  gap: 24px; align-items: center;
 }
 .hero-eyebrow {
-  font-size: 10px; font-weight: 700; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--sakura2); margin-bottom: 12px;
+  font-size: 9px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--sakura2); margin-bottom: 8px; opacity: .7;
 }
 .hero-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(28px, 3.6vw, 46px);
-  font-weight: 700; line-height: 1.1; color: var(--ink);
+  font-size: clamp(22px, 2.6vw, 34px);
+  font-weight: 700; line-height: 1.15; color: var(--ink);
 }
 .hero-title em { font-style: italic; color: var(--sakura2); }
 
-/* ── Today's High Yield ── */
+/* ── Countdown — compact card ── */
+.hero-countdown {
+  padding: 18px 24px 14px !important;
+  min-width: 170px !important; max-width: 210px !important;
+}
+.hero-countdown .cd-days { font-size: 56px !important; letter-spacing: -2px !important; }
+.hero-countdown .cd-unit { font-size: 13px !important; }
+.hero-countdown .cd-date { font-size: 13px !important; margin-bottom: 12px !important; }
+.hero-countdown .cd-date-empty { font-size: 11px !important; }
+.hero-countdown .cd-eyebrow { margin-bottom: 8px !important; }
+.cd-number-row { margin-bottom: 6px !important; }
+
+/* ── Today's High Yield — compact horizontal cards ── */
 .daily-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); }
 
 .feat-skeleton {
   border-radius: var(--r-lg); border: 1px solid var(--border2);
-  background: var(--surface); padding: 22px 24px;
-  display: flex; flex-direction: column; gap: 10px; min-height: 150px;
+  background: var(--surface); padding: 14px 18px;
+  display: flex; flex-direction: column; gap: 8px; height: 96px;
 }
 .skel-line { border-radius: 6px; background: var(--border2); animation: shimmer 1.4s ease-in-out infinite; }
 .skel-accent-drug  { background: var(--sakura-light) !important; }
@@ -69,27 +80,32 @@
 
 .feat-card {
   display: none; flex-direction: column;
-  padding: 22px 24px; cursor: pointer;
+  padding: 14px 18px 12px; cursor: pointer; min-height: 0;
 }
 .feat-card:hover .feat-cta { opacity: 1; transform: translateX(2px); }
 .feat-eyebrow {
-  font-size: 10px; font-weight: 700; letter-spacing: 1.8px;
-  text-transform: uppercase; color: var(--card-accent, var(--sakura2)); margin-bottom: 10px;
+  font-size: 9px; font-weight: 700; letter-spacing: 1.8px;
+  text-transform: uppercase; color: var(--card-accent, var(--sakura2)); margin-bottom: 6px;
 }
 .feat-name {
-  font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600;
-  line-height: 1.3; color: var(--ink); margin-bottom: 8px;
+  font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600;
+  line-height: 1.2; color: var(--ink); margin-bottom: 5px;
 }
-.feat-pearl { font-size: 13px; font-style: italic; color: var(--ink2); line-height: 1.55; flex: 1; }
+.feat-pearl {
+  font-size: 12px; color: var(--ink2); line-height: 1.5;
+  flex: 1;
+  /* clamp to 2 lines */
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
 .feat-cta {
-  margin-top: 14px; font-size: 12px; font-weight: 600;
-  color: var(--card-accent, var(--sakura2)); opacity: .55;
+  margin-top: 8px; font-size: 11px; font-weight: 600;
+  color: var(--card-accent, var(--sakura2)); opacity: .5;
   transition: opacity var(--t), transform var(--t);
 }
 .feat-drug  { --card-accent: var(--sakura2); }
 .feat-micro { --card-accent: var(--sage); }
 
-/* ── Tracker bar — 4 clickable segments separated by 1px lines ── */
+/* ── Tracker bar ── */
 .tracker-bar {
   display: flex;
   background: var(--surface);
@@ -102,7 +118,7 @@
 
 .tr-seg {
   flex: 1; min-width: 0;
-  padding: 16px 20px 15px;
+  padding: 12px 16px 11px;
   display: flex; flex-direction: column;
   text-decoration: none; color: inherit;
   transition: background var(--t);
@@ -112,23 +128,17 @@
 }
 .tr-seg-uw { flex: 1.25; }
 
-.tr-sep {
-  width: 1px; background: var(--border2);
-  flex-shrink: 0; margin: 10px 0;
-}
+.tr-sep { width: 1px; background: var(--border2); flex-shrink: 0; margin: 8px 0; }
 
 .tr-label {
   font-size: 9px; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--tr-color, var(--lavender));
-  margin-bottom: 10px;
+  text-transform: uppercase; color: var(--tr-color, var(--lavender));
+  margin-bottom: 8px;
 }
-
 .tr-bar-bg {
-  width: 100%; height: 4px;
+  width: 100%; height: 3px;
   background: var(--border2); border-radius: 99px;
-  overflow: hidden; position: relative;
-  margin-bottom: 9px;
+  overflow: hidden; position: relative; margin-bottom: 7px;
 }
 .tr-bar-w {
   position: absolute; height: 100%; border-radius: 99px;
@@ -140,39 +150,36 @@
   background: var(--tr-color, var(--lavender)); opacity: .72;
   transition: width .8s ease;
 }
-
 .tr-pct {
   font-family: 'Playfair Display', serif;
-  font-size: 22px; font-weight: 700; line-height: 1;
-  color: var(--ink); margin-bottom: 4px;
+  font-size: 20px; font-weight: 700; line-height: 1;
+  color: var(--ink); margin-bottom: 3px;
 }
-.tr-sub {
-  font-size: 10px; color: var(--muted); line-height: 1.55;
-}
+.tr-sub { font-size: 10px; color: var(--muted); line-height: 1.45; }
 
-/* ── Reference & Resources ── */
-.ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: var(--gap); }
-.tool-card { padding: 20px 22px; display: block; position: relative; }
+/* ── Reference cards ── */
+.ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--gap); }
+.tool-card { padding: 14px 16px 13px; display: block; position: relative; }
 .tool-card:hover .card-arrow { color: var(--card-accent, var(--sakura2)); transform: translate(2px,-2px); }
-.card-arrow { position: absolute; top: 16px; right: 16px; font-size: 15px; color: var(--dim); transition: color var(--t), transform var(--t); }
-.card-title { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 6px; margin-top: 2px; }
-.card-desc  { font-size: 13px; color: var(--ink2); line-height: 1.55; }
+.card-arrow { position: absolute; top: 12px; right: 14px; font-size: 14px; color: var(--dim); transition: color var(--t), transform var(--t); }
+.card-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; margin-top: 0; }
+.card-desc  { font-size: 12px; color: var(--ink2); line-height: 1.5; }
 .card-pharm { --card-accent: var(--sakura2); }
 .card-micro { --card-accent: var(--sage); }
 
 /* ── Quote ── */
 .motive-band {
-  margin-top: 28px; border-top: 1px solid var(--border2);
-  padding: 24px 0 4px; text-align: center;
+  margin-top: 20px; border-top: 1px solid var(--border2);
+  padding: 16px 0 4px; text-align: center;
 }
-.motive-qt { font-family: 'Playfair Display', serif; font-size: 15px; font-style: italic; color: var(--ink2); line-height: 1.75; }
-.motive-attr { display: block; margin-top: 8px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); }
+.motive-qt { font-family: 'Playfair Display', serif; font-size: 14px; font-style: italic; color: var(--ink2); line-height: 1.7; }
+.motive-attr { display: block; margin-top: 6px; font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); }
 
 /* ── Responsive ── */
 @media (max-width: 860px) {
-  .hero { grid-template-columns: 1fr; padding: 28px 0 18px; gap: 16px; }
-  .hero-countdown { min-width: unset; width: 100%; text-align: center; align-items: center; }
-  .tr-seg { padding: 14px 14px 13px; }
+  .hero { grid-template-columns: 1fr; padding: 18px 0 12px; gap: 12px; }
+  .hero-countdown { min-width: unset !important; width: 100% !important; text-align: center; align-items: center; }
+  .tr-seg { padding: 10px 12px 9px; }
 }
 @media (max-width: 640px) {
   .daily-grid { grid-template-columns: 1fr; }
@@ -207,7 +214,7 @@
   <header class="hero">
     <div class="hero-left">
       <div class="hero-eyebrow">USMLE Step 1 Study Hub</div>
-      <h1 class="hero-title">Your <em>Study Resources,</em><br>All in One Place</h1>
+      <h1 class="hero-title">Your <em>Study Resources,</em> All in One Place</h1>
     </div>
 
     <div class="hero-countdown" aria-label="Exam countdown">
