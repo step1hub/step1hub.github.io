@@ -579,13 +579,13 @@ tr.editing-row td { background: var(--dash-light) !important; }
 
     <!-- Step indicator -->
     <div style="display:flex;align-items:center;padding:16px 28px 0;flex-shrink:0;">
-      <div id="dash-ind1" style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--lavender);">
-        <span id="dash-dot1" style="width:20px;height:20px;border-radius:50%;background:var(--lavender);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;">1</span>
+      <div id="dash-ind1" style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--lavender);white-space:nowrap;flex-shrink:0;">
+        <span id="dash-dot1" style="width:20px;height:20px;border-radius:50%;background:var(--lavender);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;">1</span>
         Prepare
       </div>
-      <div style="flex:1;height:1px;background:var(--border2);margin:0 8px;"></div>
-      <div id="dash-ind2" style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--muted);">
-        <span id="dash-dot2" style="width:20px;height:20px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;">2</span>
+      <div style="width:40px;flex:none;height:1px;background:var(--border2);margin:0 10px;"></div>
+      <div id="dash-ind2" style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;flex-shrink:0;">
+        <span id="dash-dot2" style="width:20px;height:20px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;">2</span>
         Paste CSV
       </div>
     </div>
@@ -597,24 +597,24 @@ tr.editing-row td { background: var(--dash-light) !important; }
       <div id="import-s1">
         <p style="font-size:13px;color:var(--ink2);margin:0 0 14px;">Copy your UWorld session table, then use AI to convert it — no file saving needed.</p>
         <div style="border:1px solid var(--border2);border-left:3px solid var(--lavender);border-radius:10px;padding:16px 18px;font-size:13px;color:var(--ink2);line-height:1.8;">
-          <strong style="font-size:11px;font-weight:700;color:var(--ink);display:block;margin-bottom:12px;text-transform:uppercase;letter-spacing:.6px;">How to get your UWorld data</strong>
+          <strong style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:12px;">How to get your UWorld data</strong>
           <div style="display:flex;flex-direction:column;gap:12px;">
             <div style="display:flex;gap:12px;align-items:flex-start;">
-              <span style="width:18px;height:18px;border-radius:50%;background:var(--lavender);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">1</span>
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--lavender);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">1</span>
               <span>Go to <strong>Previous Tests</strong> in UWorld. Set Items/page to <strong>100</strong>, select all table rows and copy.</span>
             </div>
             <div style="display:flex;gap:12px;align-items:flex-start;">
-              <span style="width:18px;height:18px;border-radius:50%;background:var(--lavender);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">2</span>
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--lavender);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">2</span>
               <div style="flex:1;">
                 Paste into Claude or ChatGPT with this prompt:
-                <div style="position:relative;margin-top:6px;">
-                  <code class="prompt-code" id="import-prompt-code">Convert this UWorld test history into a CSV with exactly 3 columns: Date, Questions, Name. Date = date column. Questions = # QS. Name = test name/number (e.g. "Test 157"). One row per test, skip omitted/blank rows. No header row. No markdown.</code>
-                  <button onclick="copyImportPrompt()" id="copy-prompt-btn" style="position:absolute;top:6px;right:8px;background:var(--lavender);color:#fff;border:none;border-radius:5px;padding:3px 9px;font-size:10px;font-weight:700;cursor:pointer;">Copy</button>
+                <div style="position:relative;margin-top:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;">
+                  <code id="import-prompt-code" style="display:block;font-family:'DM Mono',monospace;font-size:11px;line-height:1.6;color:var(--ink2);padding:10px 12px;padding-right:68px;white-space:pre-wrap;word-break:break-word;max-height:88px;overflow-y:auto;">Convert this UWorld test history into a CSV with exactly 3 columns: Date, Questions, Name. Date = date column. Questions = # QS. Name = test name/number (e.g. "Test 157"). One row per test, skip omitted/blank rows. No header row. No markdown.</code>
+                  <button onclick="copyImportPrompt()" id="copy-prompt-btn" style="position:absolute;top:6px;right:6px;background:var(--lavender);color:#fff;border:none;border-radius:5px;padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.1);">Copy</button>
                 </div>
               </div>
             </div>
             <div style="display:flex;gap:12px;align-items:flex-start;">
-              <span style="width:18px;height:18px;border-radius:50%;background:var(--lavender);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">3</span>
+              <span style="width:20px;height:20px;border-radius:50%;background:var(--lavender);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">3</span>
               <span>Copy the CSV output and click <strong>Next</strong> to paste it in.</span>
             </div>
           </div>

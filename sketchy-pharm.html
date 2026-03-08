@@ -430,7 +430,7 @@ Rules:
 - One row per video in list order; no match → 0,0
 - No header. No extra columns. No markdown. Just CSV.`;
   const el = document.getElementById('ti-prompt-text');
-  if (el) el.textContent = prompt;
+  if (el) { el.textContent = prompt; el.scrollTop = 0; }
 }
 
 function tiCopyPrompt() {

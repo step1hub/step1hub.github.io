@@ -1787,12 +1787,11 @@ mark.search-hl {
 .ti-steps {
   display: flex; align-items: center;
   justify-content: flex-start; gap: 0;
-  width: 100%;
 }
 .ti-step {
   display: flex; align-items: center; gap: 7px;
   font-size: 12px; font-weight: 600; color: var(--dim);
-  transition: color .2s; flex-shrink: 0;
+  transition: color .2s; flex-shrink: 0; white-space: nowrap;
 }
 .ti-step-dot {
   width: 22px; height: 22px; border-radius: 50%;
@@ -1803,10 +1802,9 @@ mark.search-hl {
   flex-shrink: 0; transition: all .2s;
 }
 .ti-step-line {
-  flex: 1; height: 2px;
+  width: 40px; flex: none; height: 2px;
   background: var(--border2);
   margin: 0 12px;
-  min-width: 20px; max-width: 60px;
 }
 
 /* Body & footer */
@@ -1869,7 +1867,8 @@ mark.search-hl {
   padding: 12px 14px;
   padding-right: 72px;
   white-space: pre-wrap; word-break: break-word;
-  max-height: 100px; overflow-y: auto;
+  max-height: 88px; overflow-y: auto;
+  scroll-behavior: auto;
 }
 .ti-copy-btn {
   position: absolute; top: 8px; right: 8px;
