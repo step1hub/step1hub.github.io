@@ -7,6 +7,10 @@
 <link rel="stylesheet" href="style.css"/>
 <title>Sketchy Pharm · Step 1 Hub</title>
 <style>
+:root {
+  --accent: var(--sakura2);
+  --accent-glow: rgba(196,80,94,.12);
+}
 /* ── Tracker shared styles ─────────────────────────────── */
 .tracker-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px;}
 .tracker-search{flex:1;min-width:160px;padding:7px 12px;border:1px solid var(--border2);border-radius:var(--r);font-size:13px;font-family:inherit;background:var(--bg);color:var(--ink2);outline:none;transition:border-color .15s;box-shadow:none;}
@@ -17,7 +21,7 @@
   border: 1px solid var(--border); background: var(--surface2); color: var(--muted);
   cursor: pointer; transition: all .15s; white-space: nowrap;
 }
-.filter-chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.filter-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 .filter-chip.f-watched.active  { background: var(--sakura2); border-color: var(--sakura2); }
 .filter-chip.f-reviewed.active { background: var(--gold); border-color: var(--gold); color: #fff; }
 .toolbar-right { display: flex; gap: 8px; margin-left: auto; }
@@ -121,6 +125,7 @@
 .accent-6 { background: var(--lavender); }
 .accent-7 { background: #7ba8cf; }
 
+.ti-modal .btn-save { background: var(--accent); border: none; }
 /* ── Tracker Import Modal ──────────────────────────────── */
 .ti-overlay {
   display:none; position:fixed; inset:0; z-index:1000;
@@ -232,7 +237,7 @@
 
 <div class="wrap">
   <header class="hero" style="padding:36px 0 16px;">
-    <div class="hero-eyebrow" style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sakura2);margin-bottom:10px;">Progress Tracker</div>
+    <div class="hero-eyebrow" style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Progress Tracker</div>
     <h1 class="hero-name" style="font-size:clamp(30px,4vw,46px);letter-spacing:-0.5px;font-weight:700;line-height:1.1;margin-bottom:6px;">Sketchy <em>Pharm</em></h1>
   </header>
 
