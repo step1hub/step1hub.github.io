@@ -9,17 +9,39 @@
 <title>Dashboard · Step 1 Hub</title>
 <style>
 /* ── Dashboard accent ────────────────────────────────────── */
-:root { --dash: var(--lavender); --dash-light: #f0eefb; --tracker-accent: var(--lavender); --nav-active-color: var(--lavender); }
+:root {
+  --dash: var(--lavender);
+  --dash-light: #f0eefb;
+  --dash-glow: rgba(139,126,184,.12);
+  --tracker-accent: var(--lavender);
+  --nav-active-color: var(--lavender);
+}
 .btn-save { background: var(--dash) !important; }
 .hero-name em { color: var(--dash); }
 
-/* ── Dashboard-specific styles ───────────────────────────── */
+/* ── Page header ─────────────────────────────────────────── */
+.dash-header {
+  padding: 36px 0 28px;
+}
+.dash-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--dash);
+  opacity: .85; margin-bottom: 10px;
+}
+.dash-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 4vw, 46px); font-weight: 700;
+  line-height: 1.1; letter-spacing: -0.5px; color: var(--ink);
+}
+.dash-title em { font-style: italic; color: var(--dash); }
+
+/* ── Shared section card ─────────────────────────────────── */
 .dash-section {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   padding: 24px 28px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 .dash-section-title {
   font-family: 'Playfair Display', serif;
@@ -30,31 +52,35 @@
 }
 
 /* ── Log tabs ────────────────────────────────────────────── */
-.log-tabs { display: flex; gap: 4px; margin-bottom: 16px; }
+.log-tabs { display: flex; gap: 4px; margin-bottom: 18px; }
 .log-tab {
-  padding: 6px 16px; border-radius: 8px;
-  border: 1px solid var(--border); background: transparent;
+  padding: 7px 18px; border-radius: 99px;
+  border: 1.5px solid var(--border); background: transparent;
   font-size: 12px; font-weight: 600; color: var(--muted);
   cursor: pointer; transition: all .15s;
 }
 .log-tab.active { background: var(--dash); color: #fff; border-color: var(--dash); }
+.log-tab:not(.active):hover {
+  border-color: var(--dash); color: var(--dash); background: var(--dash-light);
+}
 
 /* ── Log row ─────────────────────────────────────────────── */
-.log-row {
-  display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;
-}
+.log-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
 .log-field { display: flex; flex-direction: column; gap: 5px; }
 .log-field label {
   font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
   text-transform: uppercase; color: var(--muted);
 }
 .log-field input, .log-field select {
-  padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--r);
+  padding: 9px 12px; border: 1.5px solid var(--border); border-radius: var(--r);
   font-size: 14px; background: var(--bg); color: var(--ink);
-  outline: none; transition: border-color .15s; font-family: inherit;
+  outline: none; transition: border-color .15s, box-shadow .15s; font-family: inherit;
   min-width: 110px;
 }
-.log-field input:focus, .log-field select:focus { border-color: var(--dim); }
+.log-field input:focus, .log-field select:focus {
+  border-color: var(--dash);
+  box-shadow: 0 0 0 3px var(--dash-glow);
+}
 .log-field.wide { flex: 1; min-width: 160px; }
 .log-btn {
   padding: 9px 22px; border-radius: var(--r);
@@ -67,219 +93,368 @@
 .btn-ghost {
   padding: 9px 16px; border-radius: var(--r);
   background: transparent; color: var(--muted);
-  border: 1px solid var(--border); font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--border); font-size: 13px; font-weight: 600;
   cursor: pointer; transition: all .15s; white-space: nowrap; align-self: flex-end;
 }
-.btn-ghost:hover { background: var(--surface2); color: var(--ink2); }
+.btn-ghost:hover { background: var(--surface2); color: var(--ink2); border-color: var(--dim); }
 .hidden-panel { display: none !important; }
 
 /* ── Progress strip ──────────────────────────────────────── */
 .prog-strip {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 12px; margin-bottom: 18px;
+  gap: 12px; margin-bottom: 16px;
 }
 .prog-stat {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 18px 20px;
-  text-align: center;
+  border-radius: var(--r-lg); padding: 20px 22px;
+  text-align: center; position: relative;
+  transition: box-shadow .15s, border-color .15s;
+}
+.prog-stat.clickable { cursor: pointer; }
+.prog-stat.clickable:hover {
+  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--dash) 30%, var(--border));
 }
 .prog-stat-num {
   font-family: 'Playfair Display', serif;
-  font-size: 36px; font-weight: 700; line-height: 1;
-  color: var(--ink);
+  font-size: 36px; font-weight: 700; line-height: 1; color: var(--ink);
 }
-.prog-stat-lbl { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-top: 5px; }
-.prog-stat.clickable { cursor: pointer; transition: box-shadow .15s; }
-.prog-stat.clickable:hover { box-shadow: var(--shadow-md); }
+.prog-stat-lbl {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--muted); margin-top: 6px;
+}
+.prog-stat-action {
+  display: block; margin-top: 8px;
+  font-size: 10px; font-weight: 600; color: var(--dash);
+  background: none; border: none; cursor: pointer; padding: 0;
+}
+.prog-stat-action:hover { opacity: .7; }
+.prog-stat-info-btn {
+  position: absolute; top: 10px; right: 10px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--border2); border: none; cursor: pointer;
+  font-size: 9px; font-weight: 700; color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1; transition: background .15s, color .15s;
+}
+.prog-stat-info-btn:hover { background: var(--dash-light); color: var(--dash); }
 
-/* ── Progress bar ────────────────────────────────────────── */
-.prog-bar-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 20px 24px; margin-bottom: 18px; }
-.prog-bar-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
-.prog-bar-label { font-size: 13px; font-weight: 600; color: var(--ink2); }
-.prog-bar-pct { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dash); }
+/* ── Progress bar section ────────────────────────────────── */
+.prog-bar-section {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 22px 26px; margin-bottom: 16px;
+}
+.prog-bar-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+}
+.prog-bar-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px; font-weight: 600; color: var(--ink);
+}
+.prog-bar-actions { display: flex; align-items: center; gap: 10px; }
+.prog-bar-pct {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; font-weight: 700; color: var(--dash);
+}
 .prog-bg { background: var(--border2); border-radius: 99px; height: 10px; overflow: hidden; }
-.prog-fill { height: 100%; border-radius: 99px; background: var(--dash); opacity: 0.85; transition: width .6s ease; }
-.prog-bar-sub { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-top: 6px; }
+.prog-fill {
+  height: 100%; border-radius: 99px; background: var(--dash); opacity: 0.85;
+  transition: width .6s ease;
+}
+.prog-bar-sub {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--muted); margin-top: 8px;
+}
 .edit-prog-btn {
   font-size: 11px; font-weight: 600; color: var(--dash);
   background: none; border: none; cursor: pointer; padding: 0;
 }
+.edit-prog-btn:hover { opacity: .7; }
 
-/* ── Chart area ──────────────────────────────────────────── */
-.charts-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
+/* ── Charts ──────────────────────────────────────────────── */
+.charts-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 18px; flex-wrap: wrap; gap: 8px;
+}
 .chart-view-tabs { display: flex; gap: 4px; }
 .chart-view-tab {
-  padding: 5px 14px; border-radius: 99px; font-size: 12px; font-weight: 600;
-  border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all .15s;
+  padding: 5px 16px; border-radius: 99px; font-size: 12px; font-weight: 600;
+  border: 1.5px solid var(--border); background: transparent;
+  color: var(--muted); cursor: pointer; transition: all .15s;
 }
 .chart-view-tab.active { background: var(--dash); color: #fff; border-color: var(--dash); }
+.chart-view-tab:not(.active):hover {
+  border-color: var(--dash); color: var(--dash); background: var(--dash-light);
+}
 .chart-canvas-wrap { position: relative; height: 200px; }
-.chart-empty { color: var(--muted); font-size: 14px; text-align: center; padding: 40px 0; }
+.chart-empty { color: var(--muted); font-size: 14px; text-align: center; padding: 48px 0; }
 
 /* ── History table ───────────────────────────────────────── */
 .hist-table { width: 100%; border-collapse: collapse; }
-.hist-table th { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; }
-.hist-table td { padding: 10px 12px; border-bottom: 1px solid var(--border2); font-size: 13.5px; vertical-align: middle; }
+.hist-table th {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--muted);
+  padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left;
+}
+.hist-table td {
+  padding: 11px 12px; border-bottom: 1px solid var(--border2);
+  font-size: 13.5px; vertical-align: middle;
+}
 .hist-table tr:last-child td { border-bottom: none; }
 .hist-table tr:hover td { background: var(--surface2); }
 .score-chip {
-  display: inline-block; font-size: 12px; font-weight: 700;
+  display: inline-block; font-size: 11px; font-weight: 700;
   padding: 3px 10px; border-radius: 99px;
 }
 .chip-green  { background: var(--sage-light); color: var(--sage); }
 .chip-yellow { background: var(--sky-light); color: var(--sky); }
 .chip-red    { background: var(--sakura-light); color: var(--sakura2); }
 .chip-blue   { background: var(--sky-light); color: var(--sky); }
-.hist-empty { color: var(--muted); font-size: 14px; text-align: center; padding: 32px; }
+.hist-empty { color: var(--muted); font-size: 14px; text-align: center; padding: 36px; }
 .row-actions { display: flex; gap: 6px; justify-content: flex-end; }
 .row-edit-btn {
   padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 600;
   border: 1px solid var(--border); background: transparent; color: var(--ink2);
   cursor: pointer; transition: all .15s; white-space: nowrap;
 }
-.row-edit-btn:hover { background: var(--surface2); border-color: var(--lavender); color: var(--lavender); }
+.row-edit-btn:hover { background: var(--dash-light); border-color: var(--dash); color: var(--dash); }
 .row-delete-btn {
   padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 600;
   border: 1px solid var(--border); background: transparent; color: var(--muted);
   cursor: pointer; transition: all .15s; white-space: nowrap;
 }
-.row-delete-btn:hover { background: var(--dash-light); border-color: var(--dash); color: var(--dash); }
-.row-confirming .row-delete-btn {
-  background: var(--dash); border-color: var(--dash); color: #fff;
-}
+.row-delete-btn:hover { background: var(--sakura-light); border-color: var(--sakura2); color: var(--sakura2); }
 tr.editing-row td { background: var(--dash-light) !important; }
 
-/* ── Weaknesses ──────────────────────────────────────────── */
+/* ── Row icon action buttons (weak points) ───────────────── */
+.row-act-btn {
+  width: 28px; height: 28px; border-radius: 8px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--muted); font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s; flex-shrink: 0;
+}
+.row-act-btn:hover { background: var(--surface2); color: var(--ink2); border-color: var(--dim); }
+
+/* ── Weak points ─────────────────────────────────────────── */
 .weak-item {
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 12px 16px; border-radius: var(--r);
+  padding: 14px 16px; border-radius: var(--r);
   border: 1px solid var(--border); border-left: 3px solid var(--dash);
   margin-bottom: 8px; background: var(--surface);
+  transition: box-shadow .15s;
 }
+.weak-item:hover { box-shadow: var(--shadow); }
 .weak-item.med  { border-left-color: var(--fuji); }
 .weak-item.low  { border-left-color: var(--sage); }
 .weak-name { font-weight: 600; font-size: 14px; }
 .weak-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.weak-pct  { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dash); flex-shrink: 0; }
+.weak-pct {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700; color: var(--dash); flex-shrink: 0;
+}
 .weak-item.med .weak-pct { color: var(--fuji); }
 .weak-item.low .weak-pct { color: var(--sage); }
+.weak-actions { display: flex; gap: 4px; flex-shrink: 0; }
 
-/* ── Pace modal ──────────────────────────────────────────── */
-.pace-modal { max-width: 380px; }
-.pace-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border2); font-size: 14px; }
-.pace-row:last-child { border: none; }
-.pace-row strong { color: var(--dash); font-family: 'Playfair Display', serif; font-size: 18px; }
-
-/* ── Settings modal ──────────────────────────────────────── */
-.settings-modal { max-width: 580px; }
-.settings-fields { display: flex; flex-direction: column; gap: 18px; margin-bottom: 6px; }
-.settings-field-full { display: flex; flex-direction: column; gap: 6px; }
-.settings-field-full label {
-  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
-  text-transform: uppercase; color: var(--muted);
+/* ── Session count ───────────────────────────────────────── */
+.session-count-badge {
+  font-size: 12px; color: var(--muted);
+  font-family: 'DM Sans', sans-serif; font-weight: 400;
 }
-.settings-field-full input[type="number"],
-.settings-field-full input[type="date"] {
+
+/* ── Pace rows ───────────────────────────────────────────── */
+.pace-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--border2);
+}
+.pace-row:last-child { border: none; }
+.pace-row > span { font-size: 14px; color: var(--ink2); }
+.pace-row > strong {
+  font-family: 'Playfair Display', serif; font-size: 20px; color: var(--dash);
+}
+
+/* ── Settings fields ─────────────────────────────────────── */
+.settings-modal { max-width: 520px; }
+.settings-fields { display: flex; flex-direction: column; gap: 18px; margin-bottom: 6px; }
+.settings-field { display: flex; flex-direction: column; gap: 6px; }
+.settings-field > label {
+  font-size: 10px !important; font-weight: 700 !important;
+  letter-spacing: 1.2px !important; text-transform: uppercase !important;
+  color: var(--muted) !important; margin: 0 !important;
+}
+.settings-field input[type="number"],
+.settings-field input[type="date"] {
   width: 100%; padding: 11px 14px;
   border: 1.5px solid var(--border); border-radius: var(--r);
   font-size: 14px; font-family: inherit;
   background: var(--surface); color: var(--ink);
   outline: none; transition: border-color var(--t), box-shadow var(--t);
 }
-.settings-field-full input:focus {
+.settings-field input:focus {
   border-color: var(--dash);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--dash) 15%, transparent);
+  box-shadow: 0 0 0 3px var(--dash-glow);
 }
 .day-chips { display: flex; gap: 8px; flex-wrap: wrap; }
 .day-chip {
-  padding: 7px 16px; border-radius: 99px; font-size: 13px; font-weight: 600;
+  padding: 7px 16px; border-radius: 99px; font-size: 12px; font-weight: 600;
   border: 1.5px solid var(--border); background: var(--surface); color: var(--muted);
   cursor: pointer; transition: all .15s; user-select: none;
 }
 .day-chip:hover { border-color: var(--dash); color: var(--dash); background: var(--dash-light); }
 .day-chip.active { background: var(--dash); color: #fff; border-color: var(--dash); }
 
-/* ── Session pagination ─────────────────────────────────── */
+/* ── Pagination ──────────────────────────────────────────── */
 .hist-pagination {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 12px 4px;
-  font-size: 12px; color: var(--muted);
+  padding: 10px 12px 4px; font-size: 12px; color: var(--muted);
 }
 .hist-page-btns { display: flex; gap: 6px; }
 .hist-page-btn {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 6px; padding: 3px 10px; font-size: 11px;
+  border-radius: 6px; padding: 4px 12px; font-size: 11px;
   font-weight: 600; cursor: pointer; color: var(--ink2);
   transition: border-color var(--t), color var(--t);
 }
-.hist-page-btn:hover { border-color: var(--lavender); color: var(--lavender); }
+.hist-page-btn:hover { border-color: var(--dash); color: var(--dash); }
 .hist-page-btn:disabled { opacity: 0.35; cursor: default; }
 
-/* ── Import ──────────────────────────────────────────────── */
-.drop-zone {
-  border: 2px dashed var(--dash); border-radius: var(--r-lg);
-  padding: 32px; text-align: center; cursor: pointer;
-  transition: border-color .15s, background .15s; margin-top: 16px;
-  background: var(--dash-light);
+/* ── Modal close button (unified) ───────────────────────── */
+.modal-close-x {
+  background: none; border: none; cursor: pointer;
+  font-size: 20px; color: var(--dim); line-height: 1;
+  padding: 4px 6px; border-radius: 6px; flex-shrink: 0;
+  transition: color var(--t), background var(--t);
 }
-.drop-zone:hover, .drop-zone.drag-over { border-color: var(--dash); background: color-mix(in srgb, var(--dash) 12%, white); }
-.drop-zone-icon { font-size: 32px; margin-bottom: 8px; }
-.drop-zone-text { font-size: 14px; color: var(--ink2); }
-.drop-zone-text span { color: var(--dash); font-weight: 600; }
-.drop-zone-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
-.prompt-code { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 12px; font-family: 'DM Mono', monospace; display: block; margin-top: 6px; line-height: 1.8; }
-.mapper-grid { display: flex; flex-direction: column; gap: 0; margin: 14px 0 6px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-.mapper-row {
-  display: grid; grid-template-columns: 1fr 28px 1fr;
-  align-items: center; gap: 0;
-  border-bottom: 1px solid var(--border2);
-  transition: background .12s;
+.modal-close-x:hover { color: var(--ink2); background: var(--surface2); }
+
+/* ── Import modal ────────────────────────────────────────── */
+.import-modal-shell {
+  max-width: 560px; padding: 0; overflow: hidden;
+  display: flex; flex-direction: column; max-height: 90vh;
 }
-.mapper-row:last-child { border-bottom: none; }
-.mapper-row:hover { background: var(--surface2); }
-.mapper-col-info {
-  padding: 10px 14px; display: flex; flex-direction: column; gap: 2px;
+.import-modal-head { padding: 24px 28px 0; flex-shrink: 0; }
+.import-step-bar {
+  display: flex; align-items: center;
+  padding: 16px 28px 0; flex-shrink: 0;
 }
-.mapper-col-name {
-  font-size: 12.5px; font-weight: 600;
-  font-family: 'DM Mono', monospace; color: var(--ink);
+.import-step {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700;
+  white-space: nowrap; flex-shrink: 0;
+  transition: color .2s;
 }
-.mapper-col-sample { font-size: 10.5px; font-weight: 400; color: var(--muted); font-family: 'DM Sans', sans-serif; }
-.mapper-arrow { font-size: 11px; color: var(--muted); text-align: center; }
-.mapper-select {
-  appearance: none; -webkit-appearance: none;
-  padding: 8px 12px; margin: 6px 10px 6px 0;
-  border: 1.5px solid var(--border); border-radius: 8px;
-  background: var(--bg); font-size: 12px; font-family: 'DM Sans', sans-serif;
-  color: var(--ink); outline: none; cursor: pointer; width: calc(100% - 10px);
-  transition: border-color .15s;
+.import-step.active { color: var(--dash); }
+.import-step.inactive { color: var(--muted); }
+.import-step-dot {
+  width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; flex-shrink: 0; transition: all .2s;
 }
-.mapper-select:focus { border-color: var(--lavender); }
-.mapper-select.role-date  { border-color: var(--lavender); background: var(--lavender-light, #ede8f5); color: var(--lavender); font-weight: 600; }
-.mapper-select.role-qs    { border-color: var(--sakura2);  background: var(--sakura-light);            color: var(--sakura2);  font-weight: 600; }
-.mapper-select.role-name  { border-color: var(--gold);     background: var(--gold-light);              color: var(--gold);     font-weight: 600; }
-.csv-preview-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 12px; overflow-x: auto; display: block; }
-.csv-preview-table th { background: var(--surface2); padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--border); }
-.csv-preview-table td { padding: 5px 10px; border-bottom: 1px solid var(--border2); }
-.success-box { text-align: center; padding: 24px 0; }
-.success-icon { font-size: 40px; margin-bottom: 12px; }
-.success-msg { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 6px; }
-.success-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+.import-step-dot.active { background: var(--dash); color: #fff; }
+.import-step-dot.inactive { background: var(--border); color: var(--muted); }
+.import-step-line {
+  flex: none; width: 40px; height: 1px;
+  background: var(--border2); margin: 0 10px;
+}
+.import-modal-body { overflow-y: auto; flex: 1; padding: 20px 28px 0; }
+.import-modal-foot {
+  padding: 16px 28px 24px; flex-shrink: 0;
+  border-top: 1px solid var(--border2); margin-top: 16px;
+  display: flex; justify-content: space-between;
+  align-items: center; gap: 10px;
+}
+.import-foot-right { display: flex; gap: 10px; margin-left: auto; }
+.import-instr-card {
+  border: 1px solid var(--border2); border-left: 3px solid var(--dash);
+  border-radius: var(--r-lg); padding: 16px 18px;
+  font-size: 13px; color: var(--ink2); line-height: 1.8;
+}
+.import-instr-title {
+  font-size: 13px; font-weight: 700; color: var(--ink); display: block; margin-bottom: 12px;
+}
+.import-steps-list { display: flex; flex-direction: column; gap: 12px; }
+.import-step-row { display: flex; gap: 12px; align-items: flex-start; }
+.import-step-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--dash); color: #fff; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.prompt-code-wrap {
+  position: relative; margin-top: 8px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--r); overflow: hidden;
+}
+.prompt-code {
+  display: block; font-family: 'DM Mono', monospace;
+  font-size: 11px; line-height: 1.6; color: var(--ink2);
+  padding: 10px 12px; padding-right: 72px;
+  white-space: pre-wrap; word-break: break-word;
+  max-height: 88px; overflow-y: auto;
+}
+.prompt-copy-btn {
+  position: absolute; top: 6px; right: 6px;
+  background: var(--dash); color: #fff; border: none;
+  border-radius: 5px; padding: 4px 10px;
+  font-size: 10px; font-weight: 700; cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1); transition: opacity .15s;
+}
+.prompt-copy-btn:hover { opacity: .85; }
+.import-paste-label {
+  font-size: 13px; color: var(--ink2); margin-bottom: 10px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.import-paste-label-num {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--dash); color: #fff; font-size: 9px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+#import-paste {
+  width: 100%; height: 160px; padding: 12px 14px;
+  border: 1.5px solid var(--border); border-radius: var(--r);
+  font-size: 12.5px; font-family: 'DM Mono', monospace;
+  background: var(--bg); color: var(--ink); resize: vertical;
+  outline: none; line-height: 1.7; box-sizing: border-box;
+  transition: border-color .15s, box-shadow .15s;
+}
+#import-paste:focus { border-color: var(--dash); box-shadow: 0 0 0 3px var(--dash-glow); }
+.import-result-box {
+  background: color-mix(in srgb, var(--dash) 6%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--dash) 20%, var(--border2));
+  border-radius: var(--r-lg); padding: 16px 18px; margin-top: 12px;
+}
+.import-result-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 12px; display: block; }
+.import-result-nums { display: flex; gap: 20px; }
+.import-result-num-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 700; line-height: 1; color: var(--dash); display: block;
+}
+.import-result-num-lbl {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  color: var(--muted); text-transform: uppercase; margin-top: 2px; display: block;
+}
+.import-result-sub { font-size: 12px; color: var(--muted); margin: 8px 0 0; }
 
 /* ── Toast ───────────────────────────────────────────────── */
 .toast {
-  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
-  background: var(--ink); color: #fff; padding: 10px 22px; border-radius: 99px;
-  font-size: 13px; font-weight: 600; z-index: 9999; opacity: 0;
-  transition: opacity .25s, transform .25s; pointer-events: none; white-space: nowrap;
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--ink); color: #fff; padding: 10px 22px;
+  border-radius: 99px; font-size: 13px; font-weight: 600;
+  z-index: 9999; opacity: 0; transition: opacity .25s, transform .25s;
+  pointer-events: none; white-space: nowrap;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 @media (max-width: 600px) {
   .log-row { flex-direction: column; }
   .log-field input, .log-field select { min-width: unset; width: 100%; }
-
+  .dash-section { padding: 18px 18px; }
+  .prog-bar-section { padding: 18px 18px; }
 }
 </style>
 </head>
@@ -287,42 +462,43 @@ tr.editing-row td { background: var(--dash-light) !important; }
 <script src="nav.js"></script>
 
 <div class="wrap">
-  <header class="hero" style="padding:36px 0 20px;">
-    <div class="tracker-hero-eyebrow">Question Bank · Practice Exams</div>
-    <h1 class="hero-name">Study <em>Dashboard</em></h1>
+
+  <!-- ── PAGE HEADER ── -->
+  <header class="dash-header">
+    <div class="dash-eyebrow">Question Bank · Practice Exams</div>
+    <h1 class="dash-title">Study <em>Dashboard</em></h1>
   </header>
 
-  <!-- ── SETTINGS ── -->
-<!-- ── SETTINGS MODAL ── -->
-<div class="modal-overlay" id="settings-modal">
-  <div class="modal settings-modal">
-    <div class="modal-header">
-      <div>
-        <div class="modal-title">Settings</div>
-        <div class="modal-sub">Configure your QBank goals and study schedule</div>
+  <!-- ── SETTINGS MODAL ── -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal settings-modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Settings</div>
+          <div class="modal-sub">Configure your QBank goals and study schedule</div>
+        </div>
+        <button class="modal-close-x" onclick="closeModal('settings-modal')">&times;</button>
       </div>
-      <button onclick="closeModal('settings-modal')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--dim);line-height:1;padding:4px 6px;border-radius:6px;" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='none'">&times;</button>
-    </div>
-    <div class="settings-fields">
-      <div class="settings-field-full">
-        <label>Total QBank Size</label>
-        <input type="number" id="setup-total" value="3661" min="1" placeholder="3661"/>
+      <div class="settings-fields">
+        <div class="settings-field">
+          <label>Total QBank Size</label>
+          <input type="number" id="setup-total" value="3661" min="1" placeholder="3661"/>
+        </div>
+        <div class="settings-field">
+          <label>Finish QBank By</label>
+          <input type="date" id="setup-finish"/>
+        </div>
+        <div class="settings-field">
+          <label>Study Days Per Week</label>
+          <div class="day-chips" id="day-chips"></div>
+        </div>
       </div>
-      <div class="settings-field-full">
-        <label>Finish QBank By</label>
-        <input type="date" id="setup-finish"/>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal('settings-modal')">Cancel</button>
+        <button class="btn-save" onclick="saveSettings()">Save Settings ✦</button>
       </div>
-      <div class="settings-field-full">
-        <label>Study Days Per Week</label>
-        <div class="day-chips" id="day-chips"></div>
-      </div>
-    </div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal('settings-modal')">Cancel</button>
-      <button class="btn-save" onclick="saveSettings()">Save Settings ✦</button>
     </div>
   </div>
-</div>
 
   <!-- ── LOG ENTRY ── -->
   <div class="dash-section">
@@ -341,7 +517,7 @@ tr.editing-row td { background: var(--dash-light) !important; }
           <label>Questions Done</label>
           <input type="number" id="log-qs" min="1" max="120" placeholder="e.g. 40"/>
         </div>
-        <div class="log-field" style="flex:1.5;">
+        <div class="log-field wide">
           <label>Session Name <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
           <input type="text" id="log-name" placeholder="e.g. Cardio block, Test #157"/>
         </div>
@@ -385,11 +561,11 @@ tr.editing-row td { background: var(--dash-light) !important; }
 
   <!-- ── PROGRESS STATS ── -->
   <div class="prog-strip">
-    <div class="prog-stat" style="position:relative;">
+    <div class="prog-stat clickable">
+      <button class="prog-stat-info-btn" onclick="openModal('qdone-info-modal')" title="Why doesn't this match UWorld?">?</button>
       <div class="prog-stat-num" id="stat-done">0</div>
       <div class="prog-stat-lbl">Questions Done</div>
-      <button class="edit-prog-btn" onclick="promptEditProgress()" style="margin-top:5px;font-size:10px;display:block;">✎ Edit</button>
-      <button onclick="openModal('qdone-info-modal')" title="Why doesn't this match UWorld?" style="position:absolute;top:8px;right:10px;width:16px;height:16px;border-radius:50%;background:var(--border2);border:none;cursor:pointer;font-size:10px;font-weight:700;color:var(--muted);line-height:1;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='var(--dash-light)';this.style.color='var(--dash)'" onmouseout="this.style.background='var(--border2)';this.style.color='var(--muted)'">?</button>
+      <button class="prog-stat-action" onclick="promptEditProgress()">✎ Edit</button>
     </div>
     <div class="prog-stat">
       <div class="prog-stat-num" id="stat-remain" style="color:var(--muted);">0</div>
@@ -399,11 +575,11 @@ tr.editing-row td { background: var(--dash-light) !important; }
       <div class="prog-stat-num" id="stat-streak" style="color:var(--dash);">0</div>
       <div class="prog-stat-lbl">Day Streak</div>
     </div>
-    <div class="prog-stat" style="position:relative;">
+    <div class="prog-stat clickable">
+      <button class="prog-stat-info-btn" onclick="openModal('pace-modal');showPaceModal()" title="See pace breakdown">?</button>
       <div class="prog-stat-num" id="stat-needed" style="color:var(--dash);">—</div>
       <div class="prog-stat-lbl">Q / Day Needed</div>
-      <button class="edit-prog-btn" onclick="toggleSettings()" style="margin-top:5px;font-size:10px;display:block;">⚙ Settings</button>
-      <button onclick="openModal('pace-modal');showPaceModal()" title="See pace breakdown" style="position:absolute;top:8px;right:10px;width:16px;height:16px;border-radius:50%;background:var(--border2);border:none;cursor:pointer;font-size:10px;font-weight:700;color:var(--muted);line-height:1;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='var(--dash-light)';this.style.color='var(--dash)'" onmouseout="this.style.background='var(--border2)';this.style.color='var(--muted)'">?</button>
+      <button class="prog-stat-action" onclick="toggleSettings()">⚙ Settings</button>
     </div>
   </div>
 
@@ -411,10 +587,10 @@ tr.editing-row td { background: var(--dash-light) !important; }
   <div class="prog-bar-section">
     <div class="prog-bar-head">
       <span class="prog-bar-label">QBank Completion</span>
-      <span style="display:flex;align-items:center;gap:10px;">
-        <button class="btn-ghost" style="padding:5px 12px;font-size:12px;" onclick="openImportModal()">Import history</button>
+      <div class="prog-bar-actions">
+        <button class="btn-ghost" style="padding:5px 14px;font-size:12px;" onclick="openImportModal()">Import history</button>
         <span class="prog-bar-pct" id="prog-pct">0%</span>
-      </span>
+      </div>
     </div>
     <div class="prog-bg"><div class="prog-fill" id="prog-fill" style="width:0%;"></div></div>
     <div class="prog-bar-sub">
@@ -423,11 +599,10 @@ tr.editing-row td { background: var(--dash-light) !important; }
     </div>
   </div>
 
-
   <!-- ── CHARTS ── -->
   <div class="dash-section">
     <div class="charts-head">
-      <span style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;">Activity Charts</span>
+      <span class="dash-section-title" style="margin-bottom:0;">Activity Charts</span>
       <div class="chart-view-tabs">
         <button class="chart-view-tab active" onclick="setChartView('daily',this)">Daily</button>
         <button class="chart-view-tab" onclick="setChartView('weekly',this)">Weekly</button>
@@ -443,7 +618,7 @@ tr.editing-row td { background: var(--dash-light) !important; }
   <div class="dash-section">
     <div class="dash-section-title">
       Session Log
-      <span style="font-size:12px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400;" id="session-count"></span>
+      <span class="session-count-badge" id="session-count"></span>
     </div>
     <div id="history-container">
       <div class="hist-empty">No sessions logged yet.</div>
@@ -462,14 +637,17 @@ tr.editing-row td { background: var(--dash-light) !important; }
   <div class="dash-section">
     <div class="dash-section-title">
       Weak Points
-      <button class="log-btn" style="font-size:12px;padding:7px 14px;" onclick="openWeakModal()">+ Add</button>
+      <button class="log-btn" style="font-size:12px;padding:7px 16px;" onclick="openWeakModal()">+ Add</button>
     </div>
     <div id="weak-list">
       <div class="hist-empty">No weak points logged yet. Add topics you keep missing.</div>
     </div>
   </div>
 
-  <footer class="footer"><div>Step 1 Study Hub</div><div id="footer-date"></div></footer>
+  <footer class="footer">
+    <div>Step 1 Study Hub</div>
+    <div id="footer-date"></div>
+  </footer>
 </div>
 
 <!-- ── QDONE INFO MODAL ── -->
@@ -477,7 +655,7 @@ tr.editing-row td { background: var(--dash-light) !important; }
   <div class="modal" style="max-width:360px;">
     <div class="modal-header">
       <div class="modal-title">About This Number</div>
-      <button onclick="closeModal('qdone-info-modal')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--dim);">&times;</button>
+      <button class="modal-close-x" onclick="closeModal('qdone-info-modal')">&times;</button>
     </div>
     <div class="modal-sub" style="margin-bottom:16px;">Why doesn't this match your UWorld total?</div>
     <p style="font-size:13px;color:var(--ink2);line-height:1.7;margin:0 0 14px;">This counts <strong>total questions logged</strong> across all sessions — not unique questions. If you redo a block, those questions count again each time.</p>
@@ -494,7 +672,7 @@ tr.editing-row td { background: var(--dash-light) !important; }
   <div class="modal" style="max-width:380px;">
     <div class="modal-header">
       <div class="modal-title">Pace Calculator</div>
-      <button onclick="closeModal('pace-modal')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--dim);">&times;</button>
+      <button class="modal-close-x" onclick="closeModal('pace-modal')">&times;</button>
     </div>
     <div id="pace-content" style="margin-top:8px;"></div>
   </div>
@@ -505,12 +683,12 @@ tr.editing-row td { background: var(--dash-light) !important; }
   <div class="modal" style="max-width:440px;">
     <div class="modal-header">
       <div class="modal-title" id="weak-modal-title">Add Weak Point</div>
-      <button onclick="closeModal('weak-modal')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--dim);">&times;</button>
+      <button class="modal-close-x" onclick="closeModal('weak-modal')">&times;</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:14px;margin-top:8px;">
-      <div>
-        <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Subject / System</label>
-        <select id="weak-subject" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;">
+      <div class="settings-field">
+        <label>Subject / System</label>
+        <select id="weak-subject" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;outline:none;">
           <option>Cardiology</option><option>Pulmonology</option><option>Nephrology</option>
           <option>GI / Hepatology</option><option>Endocrine</option><option>Neurology</option>
           <option>Psychiatry</option><option>Pharmacology</option><option>Microbiology</option>
@@ -520,20 +698,20 @@ tr.editing-row td { background: var(--dash-light) !important; }
           <option>Physiology</option><option>Other</option>
         </select>
       </div>
-      <div>
-        <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Specific Topic</label>
+      <div class="settings-field">
+        <label>Specific Topic</label>
         <input type="text" id="weak-topic" placeholder="e.g. Antiarrhythmics, Renal tubular acidosis"
-          style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;outline:none;"/>
+          style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;outline:none;"/>
       </div>
       <div style="display:flex;gap:10px;">
-        <div style="flex:1;">
-          <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">% Correct (if known)</label>
+        <div class="settings-field" style="flex:1;">
+          <label>% Correct (if known)</label>
           <input type="number" id="weak-pct" placeholder="e.g. 42" min="0" max="100"
-            style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;outline:none;"/>
+            style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;outline:none;"/>
         </div>
-        <div style="flex:1;">
-          <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Priority</label>
-          <select id="weak-priority" style="width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;">
+        <div class="settings-field" style="flex:1;">
+          <label>Priority</label>
+          <select id="weak-priority" style="width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-size:14px;background:var(--bg);font-family:inherit;outline:none;">
             <option value="high">High</option>
             <option value="med" selected>Medium</option>
             <option value="low">Low</option>
@@ -553,12 +731,14 @@ tr.editing-row td { background: var(--dash-light) !important; }
   <div class="modal" style="max-width:360px;">
     <div class="modal-header">
       <div class="modal-title">Edit QBank Progress</div>
-      <button onclick="closeModal('edit-progress-modal')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--dim);">&times;</button>
+      <button class="modal-close-x" onclick="closeModal('edit-progress-modal')">&times;</button>
     </div>
-    <div class="modal-sub" style="margin-bottom:16px;">Manually set how many unique questions you've completed (overrides the logged total).</div>
-    <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;">Unique Questions Done</label>
-    <input type="number" id="edit-unique-input" min="0"
-      style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--r);font-size:15px;background:var(--bg);font-family:inherit;outline:none;"/>
+    <div class="modal-sub" style="margin-bottom:16px;">Manually set how many unique questions you've completed.</div>
+    <div class="settings-field">
+      <label>Unique Questions Done</label>
+      <input type="number" id="edit-unique-input" min="0"
+        style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--r);font-size:15px;background:var(--bg);font-family:inherit;outline:none;"/>
+    </div>
     <div class="modal-btns" style="margin-top:20px;">
       <button class="btn-cancel" onclick="closeModal('edit-progress-modal')">Cancel</button>
       <button class="btn-save" onclick="saveEditProgress()">Save ✦</button>
@@ -568,48 +748,44 @@ tr.editing-row td { background: var(--dash-light) !important; }
 
 <!-- ── IMPORT MODAL ── -->
 <div class="modal-overlay" id="import-modal">
-  <div class="modal" style="max-width:560px;padding:0;overflow:hidden;display:flex;flex-direction:column;max-height:90vh;">
+  <div class="modal import-modal-shell">
 
-    <!-- Fixed header -->
-    <div style="padding:24px 28px 0;flex-shrink:0;">
+    <div class="import-modal-head">
       <div class="modal-header" style="margin-bottom:0;">
         <div class="modal-title">Import Past Sessions</div>
-        <button onclick="closeModal('import-modal')" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--dim);">&times;</button>
+        <button class="modal-close-x" onclick="closeModal('import-modal')">&times;</button>
       </div>
     </div>
 
-    <!-- Step indicator -->
-    <div style="display:flex;align-items:center;padding:16px 28px 0;flex-shrink:0;">
-      <div id="dash-ind1" style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--lavender);white-space:nowrap;flex-shrink:0;">
-        <span id="dash-dot1" style="width:20px;height:20px;border-radius:50%;background:var(--lavender);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;">1</span>
+    <div class="import-step-bar">
+      <div class="import-step active" id="dash-ind1">
+        <span class="import-step-dot active" id="dash-dot1">1</span>
         Prepare
       </div>
-      <div style="width:40px;flex:none;height:1px;background:var(--border2);margin:0 10px;"></div>
-      <div id="dash-ind2" style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;flex-shrink:0;">
-        <span id="dash-dot2" style="width:20px;height:20px;border-radius:50%;background:var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;">2</span>
+      <div class="import-step-line"></div>
+      <div class="import-step inactive" id="dash-ind2">
+        <span class="import-step-dot inactive" id="dash-dot2">2</span>
         Paste CSV
       </div>
     </div>
 
-    <!-- Scrollable body -->
-    <div style="overflow-y:auto;flex:1;padding:20px 28px 0;">
-
-      <!-- Step 1: Instructions -->
+    <div class="import-modal-body">
+      <!-- Step 1 -->
       <div id="import-s1">
         <p style="font-size:13px;color:var(--ink2);margin:0 0 14px;">Copy your UWorld session table, then use AI to convert it — no file saving needed.</p>
-        <div style="border:1px solid var(--border2);border-left:3px solid var(--lavender);border-radius:10px;padding:16px 18px;font-size:13px;color:var(--ink2);line-height:1.8;">
-          <strong style="font-size:13px;font-weight:700;color:var(--ink);display:block;margin-bottom:12px;">How to get your UWorld data</strong>
-          <div style="display:flex;flex-direction:column;gap:12px;">
-            <div style="display:flex;gap:12px;align-items:flex-start;">
-              <span style="width:20px;height:20px;border-radius:50%;background:var(--lavender);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">1</span>
+        <div class="import-instr-card">
+          <strong class="import-instr-title">How to get your UWorld data</strong>
+          <div class="import-steps-list">
+            <div class="import-step-row">
+              <span class="import-step-num">1</span>
               <span>Go to <strong>Previous Tests</strong> in UWorld. Set Items/page to <strong>100</strong>, select all table rows and copy.</span>
             </div>
-            <div style="display:flex;gap:12px;align-items:flex-start;">
-              <span style="width:20px;height:20px;border-radius:50%;background:var(--lavender);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">2</span>
+            <div class="import-step-row">
+              <span class="import-step-num">2</span>
               <div style="flex:1;">
                 Copy this prompt, paste it into Claude or ChatGPT, then <strong>replace the last line</strong> with your copied table data:
-                <div style="position:relative;margin-top:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;">
-                  <code id="import-prompt-code" style="display:block;font-family:'DM Mono',monospace;font-size:11px;line-height:1.6;color:var(--ink2);padding:10px 12px;padding-right:68px;white-space:pre-wrap;word-break:break-word;max-height:88px;overflow-y:auto;">I'm pasting my UWorld "Previous Tests" table below. Convert it to a CSV with exactly 3 columns: Date, Questions, Name.
+                <div class="prompt-code-wrap">
+                  <code id="import-prompt-code" class="prompt-code">I'm pasting my UWorld "Previous Tests" table below. Convert it to a CSV with exactly 3 columns: Date, Questions, Name.
 
 Rules:
 - Date: the test date, formatted as MM/DD/YYYY
@@ -627,36 +803,34 @@ Output only the raw CSV. Example format:
 
 Here is my data:
 [paste your copied table here]</code>
-                  <button onclick="copyImportPrompt()" id="copy-prompt-btn" style="position:absolute;top:6px;right:6px;background:var(--lavender);color:#fff;border:none;border-radius:5px;padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.1);">Copy</button>
+                  <button class="prompt-copy-btn" id="copy-prompt-btn" onclick="copyImportPrompt()">Copy</button>
                 </div>
               </div>
             </div>
-            <div style="display:flex;gap:12px;align-items:flex-start;">
-              <span style="width:20px;height:20px;border-radius:50%;background:var(--lavender);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">3</span>
+            <div class="import-step-row">
+              <span class="import-step-num">3</span>
               <span>Copy the CSV output and click <strong>Next</strong> to paste it in.</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Step 2: Paste -->
+      <!-- Step 2 -->
       <div id="import-s2" style="display:none;flex-direction:column;gap:12px;">
-        <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:4px;">
-          <span style="width:18px;height:18px;border-radius:50%;background:var(--lavender);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">3</span>
-          <span style="font-size:13px;color:var(--ink2);"><strong>Paste the CSV output</strong> from the AI here:</span>
+        <div class="import-paste-label">
+          <span class="import-paste-label-num">3</span>
+          <span><strong>Paste the CSV output</strong> from the AI here:</span>
         </div>
-        <textarea id="import-paste" style="width:100%;height:160px;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--r);font-size:12.5px;font-family:'DM Mono',monospace;background:var(--bg);color:var(--ink);resize:vertical;outline:none;line-height:1.7;box-sizing:border-box;" placeholder="03/01/2026,44,Test 201&#10;02/28/2026,40,Test 200&#10;..."></textarea>
+        <textarea id="import-paste" placeholder="03/01/2026,44,Test 201&#10;02/28/2026,40,Test 200&#10;..."></textarea>
         <div id="import-paste-result" style="display:none;"></div>
       </div>
+    </div>
 
-    </div><!-- end scrollable body -->
-
-    <!-- Fixed footer -->
-    <div style="padding:16px 28px 24px;flex-shrink:0;border-top:1px solid var(--border2);margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
-      <button class="btn-cancel" id="import-back-btn" style="display:none;" onclick="importGoBack()">&#8592; Back</button>
-      <div style="display:flex;gap:10px;margin-left:auto;">
+    <div class="import-modal-foot">
+      <button class="btn-cancel" id="import-back-btn" style="display:none;" onclick="importGoBack()">← Back</button>
+      <div class="import-foot-right">
         <button class="btn-cancel" id="import-cancel-btn" onclick="closeModal('import-modal')">Cancel</button>
-        <button class="btn-save" id="import-next-btn" onclick="importGoNext()">Next &rarr;</button>
+        <button class="btn-save" id="import-next-btn" onclick="importGoNext()">Next →</button>
         <button class="btn-save" id="import-do-btn" style="display:none;" onclick="importCSV()">Import</button>
       </div>
     </div>
@@ -685,7 +859,7 @@ const DEFAULT_SETTINGS = {
   total: 3661,
   finishBy: '',
   studyDays: [1,2,3,4,5],
-  manualUnique: false,   // true = user has manually overridden uniqueDone
+  manualUnique: false,
 };
 
 let entries    = [];
@@ -701,18 +875,12 @@ let editingId     = null;
 let editingExamId = null;
 let weakEditingId = null;
 
-// ── Load / Save ───────────────────────────────────────────
-// loadAll: reads from localStorage (fast, synchronous).
-// Firebase data is already merged into localStorage by app.js
-// via onCloudSyncComplete, so this always has the latest data.
 function loadAll() {
   entries    = Store.get(K.entries, []);
   exams      = Store.get(K.exams, []);
   settings   = { ...DEFAULT_SETTINGS, ...Store.get(K.settings, {}) };
   uniqueDone = Store.get(K.unique, 0);
   weaknesses = Store.get(K.weak, []);
-
-  // Migration: strip legacy 'score' field from any existing entries
   let migrated = false;
   entries = entries.map(e => {
     if ('score' in e) { const { score, ...rest } = e; migrated = true; return rest; }
@@ -721,17 +889,13 @@ function loadAll() {
   if (migrated) CloudSync.save(K.entries, entries);
 }
 
-// Recalculate uniqueDone from entries — but only if user hasn't manually overridden it
 function recalcUniqueDone() {
   if (!settings.manualUnique) {
     uniqueDone = entries.reduce((s,e) => s + e.qs, 0);
   }
 }
 
-// saveAll: writes to localStorage immediately, then syncs each
-// changed key to Firestore in the background via CloudSync.save().
 function saveAll() {
-  // Sync entries + unique count together so they're always consistent
   CloudSync.save(K.entries, entries);
   CloudSync.save(K.exams, exams);
   CloudSync.save(K.settings, settings);
@@ -739,15 +903,11 @@ function saveAll() {
   CloudSync.save(K.weak, weaknesses);
 }
 
-// Called by app.js after Firebase sync completes (sign-in / sign-out).
-// Re-loads all data from localStorage (which was just updated from cloud)
-// and re-renders the full dashboard.
 window.onCloudSyncComplete = function() {
   loadAll();
   renderAll();
 };
 
-// ── Settings ──────────────────────────────────────────────
 function toggleSettings() {
   document.getElementById('setup-total').value = settings.total;
   document.getElementById('setup-finish').value = settings.finishBy;
@@ -781,7 +941,6 @@ function saveSettings() {
   showToast('Settings saved ✦');
 }
 
-// ── Log mode ──────────────────────────────────────────────
 function setLogMode(mode) {
   const isQ = mode === 'questions';
   document.getElementById('tab-qs').classList.toggle('active', isQ);
@@ -790,15 +949,12 @@ function setLogMode(mode) {
   document.getElementById('panel-exam').classList.toggle('hidden-panel', isQ);
 }
 
-// ── Log entry ─────────────────────────────────────────────
 function logEntry() {
   const date  = document.getElementById('log-date').value;
   const qs    = parseInt(document.getElementById('log-qs').value);
   const name  = document.getElementById('log-name').value.trim();
-
   if (!date) { showToast('Please select a date'); return; }
   if (!qs || qs < 1) { showToast('Please enter questions done'); return; }
-
   if (editingId !== null) {
     const idx = entries.findIndex(e => e.id === editingId);
     if (idx !== -1) entries[idx] = { ...entries[idx], date, qs, name };
@@ -808,7 +964,6 @@ function logEntry() {
   } else {
     entries.push({ id: Date.now(), date, qs, name });
   }
-
   entries.sort((a,b) => a.date.localeCompare(b.date));
   recalcUniqueDone();
   histPage = 0;
@@ -845,22 +1000,13 @@ function deleteEntry(id) {
   showToast('Entry deleted');
 }
 
-// ── Log exam ──────────────────────────────────────────────
 function logExam() {
   const date = document.getElementById('exam-date').value;
   const name = document.getElementById('exam-name').value;
   const epc  = parseFloat(document.getElementById('exam-epc').value);
   const epp  = parseFloat(document.getElementById('exam-epp').value);
-
   if (!date || !name) { showToast('Please select date and exam name'); return; }
-
-  const entry = {
-    id: editingExamId ?? Date.now(),
-    date, name,
-    epc: isNaN(epc) ? null : epc,
-    epp: isNaN(epp) ? null : epp,
-  };
-
+  const entry = { id: editingExamId ?? Date.now(), date, name, epc: isNaN(epc) ? null : epc, epp: isNaN(epp) ? null : epp };
   if (editingExamId !== null) {
     const idx = exams.findIndex(e => e.id === editingExamId);
     if (idx !== -1) exams[idx] = entry;
@@ -870,7 +1016,6 @@ function logExam() {
   } else {
     exams.push(entry);
   }
-
   exams.sort((a,b) => a.date.localeCompare(b.date));
   saveAll();
   document.getElementById('exam-epc').value = '';
@@ -905,16 +1050,11 @@ function deleteExam(id) {
   showToast('Exam deleted');
 }
 
-// ── Render stats ──────────────────────────────────────────
 function renderStats() {
   const total     = settings.total;
   const done      = uniqueDone;
   const remaining = Math.max(0, total - done);
   const pct       = total ? Math.min(100, Math.round(done / total * 100)) : 0;
-
-  const scored = [];
-
-  // Day streak — consecutive days with at least one session logged
   const dateset = new Set(entries.map(e => e.date));
   let streak = 0;
   const today = new Date(); today.setHours(0,0,0,0);
@@ -923,7 +1063,6 @@ function renderStats() {
     const key = d.toISOString().split('T')[0];
     if (dateset.has(key)) { streak++; } else { break; }
   }
-
   let needed = null;
   if (settings.finishBy) {
     const finish = new Date(settings.finishBy + 'T12:00:00');
@@ -935,19 +1074,16 @@ function renderStats() {
     const examDays = getDaysRemaining();
     if (examDays && examDays > 0) needed = Math.ceil(remaining / examDays);
   }
-
   document.getElementById('stat-done').textContent   = done.toLocaleString();
   document.getElementById('stat-remain').textContent = remaining.toLocaleString();
   document.getElementById('stat-streak').textContent = streak;
   document.getElementById('stat-needed').textContent = needed !== null ? needed : '—';
-
   document.getElementById('prog-pct').textContent     = pct + '%';
   document.getElementById('prog-fill').style.width    = pct + '%';
   document.getElementById('prog-sub-left').textContent  = `${done.toLocaleString()} of ${total.toLocaleString()} questions`;
   document.getElementById('prog-sub-right').textContent = remaining > 0 ? `${remaining.toLocaleString()} remaining` : '🎉 Complete!';
 }
 
-// ── Render chart ──────────────────────────────────────────
 function setChartView(view, btn) {
   chartView = view;
   document.querySelectorAll('.chart-view-tab').forEach(b => b.classList.remove('active'));
@@ -961,275 +1097,146 @@ function groupEntries(view) {
   entries.forEach(e => {
     let key;
     const d = new Date(e.date + 'T12:00:00');
-    if (view === 'daily') {
-      key = e.date;
-    } else if (view === 'weekly') {
+    if (view === 'daily') { key = e.date; }
+    else if (view === 'weekly') {
       const day = d.getDay();
-      const mon = new Date(d);
-      mon.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+      const mon = new Date(d); mon.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
       key = mon.toISOString().split('T')[0];
-    } else {
-      key = e.date.substring(0, 7);
-    }
-    if (!map.has(key)) map.set(key, { qs: 0, scores: [] });
-    const cur = map.get(key);
-    cur.qs += e.qs;
-    if (e.score !== null && e.score !== undefined) cur.scores.push(e.score);
+    } else { key = e.date.substring(0, 7); }
+    if (!map.has(key)) map.set(key, { qs: 0 });
+    map.get(key).qs += e.qs;
   });
-
-  // Fill gaps with zero so every day/week/month shows on the chart
   const sortedKeys = [...map.keys()].sort();
-  const firstKey = sortedKeys[0];
-  const lastKey  = sortedKeys[sortedKeys.length - 1];
-
+  const firstKey = sortedKeys[0], lastKey = sortedKeys[sortedKeys.length - 1];
   if (view === 'daily') {
-    const cur = new Date(firstKey + 'T12:00:00');
-    const end = new Date(lastKey  + 'T12:00:00');
-    while (cur <= end) {
-      const k = cur.toISOString().split('T')[0];
-      if (!map.has(k)) map.set(k, { qs: 0, scores: [] });
-      cur.setDate(cur.getDate() + 1);
-    }
+    const cur = new Date(firstKey + 'T12:00:00'), end = new Date(lastKey + 'T12:00:00');
+    while (cur <= end) { const k = cur.toISOString().split('T')[0]; if (!map.has(k)) map.set(k, { qs: 0 }); cur.setDate(cur.getDate() + 1); }
   } else if (view === 'weekly') {
-    const cur = new Date(firstKey + 'T12:00:00');
-    const end = new Date(lastKey  + 'T12:00:00');
-    while (cur <= end) {
-      const k = cur.toISOString().split('T')[0];
-      if (!map.has(k)) map.set(k, { qs: 0, scores: [] });
-      cur.setDate(cur.getDate() + 7);
-    }
+    const cur = new Date(firstKey + 'T12:00:00'), end = new Date(lastKey + 'T12:00:00');
+    while (cur <= end) { const k = cur.toISOString().split('T')[0]; if (!map.has(k)) map.set(k, { qs: 0 }); cur.setDate(cur.getDate() + 7); }
   } else {
-    const [fy, fm] = firstKey.split('-').map(Number);
-    const [ly, lm] = lastKey.split('-').map(Number);
+    const [fy, fm] = firstKey.split('-').map(Number), [ly, lm] = lastKey.split('-').map(Number);
     let y = fy, m = fm;
-    while (y < ly || (y === ly && m <= lm)) {
-      const k = `${y}-${String(m).padStart(2,'0')}`;
-      if (!map.has(k)) map.set(k, { qs: 0, scores: [] });
-      m++; if (m > 12) { m = 1; y++; }
-    }
+    while (y < ly || (y === ly && m <= lm)) { const k = `${y}-${String(m).padStart(2,'0')}`; if (!map.has(k)) map.set(k, { qs: 0 }); m++; if (m > 12) { m = 1; y++; } }
   }
-
-  return [...map.entries()]
-    .sort((a,b) => a[0].localeCompare(b[0]))
-    .slice(-30)
-    .map(([key, val]) => ({
-      label: formatChartLabel(key, view),
-      qs:  val.qs,
-      avg: val.scores.length ? Math.round(val.scores.reduce((s,v)=>s+v,0)/val.scores.length) : null,
-    }));
-}
-
-function formatChartLabel(key, view) {
-  if (view === 'monthly') {
-    const [y,m] = key.split('-');
-    return new Date(parseInt(y), parseInt(m)-1, 1).toLocaleDateString('en-US',{month:'short'});
-  }
-  return new Date(key + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  return [...map.entries()].sort((a,b) => a[0].localeCompare(b[0])).slice(-30).map(([key, val]) => ({
+    label: view === 'monthly'
+      ? new Date(parseInt(key.split('-')[0]), parseInt(key.split('-')[1])-1, 1).toLocaleDateString('en-US',{month:'short'})
+      : new Date(key + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}),
+    qs: val.qs,
+  }));
 }
 
 function renderChart() {
   const body = document.getElementById('charts-body');
   const data = groupEntries(chartView);
-
   if (!data.length) {
     body.innerHTML = '<div class="chart-empty">Log your first session to start tracking.</div>';
     if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
     return;
   }
-
   body.innerHTML = '<div class="chart-canvas-wrap"><canvas id="dash-chart"></canvas></div>';
   if (chartInstance) chartInstance.destroy();
-
-  const datasets = [{
-    label: 'Questions',
-    data: data.map(d => d.qs),
-    backgroundColor: 'rgba(139,126,184,0.65)',
-    borderColor: 'rgba(139,126,184,1)',
-    borderWidth: 1, borderRadius: 4,
-  }];
-
   chartInstance = new Chart(document.getElementById('dash-chart'), {
     type: 'bar',
-    data: { labels: data.map(d => d.label), datasets },
+    data: { labels: data.map(d => d.label), datasets: [{ label: 'Questions', data: data.map(d => d.qs), backgroundColor: 'rgba(139,126,184,0.55)', borderColor: 'rgba(139,126,184,0.9)', borderWidth: 1, borderRadius: 5 }] },
     options: {
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => ` Questions: ${ctx.raw}`
-          }
-        }
-      },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` Questions: ${ctx.raw}` } } },
       scales: {
         x: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 45 } },
-        y: {
-          beginAtZero: true,
-          grid: { color: 'rgba(0,0,0,.05)' },
-          ticks: { font: { size: 11 }, precision: 0 },
-          title: { display: true, text: 'Questions', font: { size: 11 } }
-        }
+        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,.04)' }, ticks: { font: { size: 11 }, precision: 0 }, title: { display: true, text: 'Questions', font: { size: 11 } } }
       }
     }
   });
 }
 
-// ── Render history (paginated) ────────────────────────────
 function renderHistory() {
   const el    = document.getElementById('history-container');
   const count = document.getElementById('session-count');
-
   if (!entries.length) {
     el.innerHTML = '<div class="hist-empty">No sessions logged yet.</div>';
     if (count) count.textContent = '';
-    histPage = 0;
-    return;
+    histPage = 0; return;
   }
-
   const totalQs = entries.reduce((s,e) => s + e.qs, 0);
   if (count) count.textContent = `${entries.length} sessions · ${totalQs.toLocaleString()} Qs`;
-
-  const sorted  = [...entries].reverse();
-  const total   = sorted.length;
-  const pages   = Math.ceil(total / HIST_PAGE_SIZE);
-  histPage      = Math.min(histPage, pages - 1);
-  const start   = histPage * HIST_PAGE_SIZE;
-  const pageRows = sorted.slice(start, start + HIST_PAGE_SIZE);
-
-  const rows = pageRows.map(e => {
+  const sorted = [...entries].reverse();
+  const total = sorted.length, pages = Math.ceil(total / HIST_PAGE_SIZE);
+  histPage = Math.min(histPage, pages - 1);
+  const start = histPage * HIST_PAGE_SIZE;
+  const rows = sorted.slice(start, start + HIST_PAGE_SIZE).map(e => {
     const dateStr = new Date(e.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
     const isEditing = e.id === editingId;
     return `<tr id="row-${e.id}" class="${isEditing ? 'editing-row' : ''}">
       <td>${dateStr}</td>
       <td style="font-weight:600;">${e.qs.toLocaleString()}</td>
       <td style="color:var(--dim);font-size:12.5px;">${e.name || ''}</td>
-      <td>
-        <div class="row-actions">
-          <button class="row-edit-btn" onclick="editEntry(${e.id})">${isEditing ? '✦ Editing…' : 'Edit'}</button>
-          <button class="row-delete-btn" id="del-${e.id}" onclick="confirmDelete(${e.id})">Delete</button>
-        </div>
-      </td>
+      <td><div class="row-actions">
+        <button class="row-edit-btn" onclick="editEntry(${e.id})">${isEditing ? '✦ Editing…' : 'Edit'}</button>
+        <button class="row-delete-btn" id="del-${e.id}" onclick="confirmDelete(${e.id})">Delete</button>
+      </div></td>
     </tr>`;
   }).join('');
-
-  const pagination = total > HIST_PAGE_SIZE ? `
-    <div class="hist-pagination">
-      <span>${start + 1}–${Math.min(start + HIST_PAGE_SIZE, total)} of ${total} sessions</span>
-      <div class="hist-page-btns">
-        <button class="hist-page-btn" onclick="histPageNav(-1)" ${histPage === 0 ? 'disabled' : ''}>← Prev</button>
-        <button class="hist-page-btn" onclick="histPageNav(1)" ${histPage >= pages - 1 ? 'disabled' : ''}>Next →</button>
-      </div>
-    </div>` : '';
-
-  el.innerHTML = `<table class="hist-table">
-    <thead><tr><th>Date</th><th>Questions</th><th>Name</th><th></th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table>${pagination}`;
+  const pagination = total > HIST_PAGE_SIZE ? `<div class="hist-pagination">
+    <span>${start + 1}–${Math.min(start + HIST_PAGE_SIZE, total)} of ${total} sessions</span>
+    <div class="hist-page-btns">
+      <button class="hist-page-btn" onclick="histPageNav(-1)" ${histPage === 0 ? 'disabled' : ''}>← Prev</button>
+      <button class="hist-page-btn" onclick="histPageNav(1)" ${histPage >= pages - 1 ? 'disabled' : ''}>Next →</button>
+    </div></div>` : '';
+  el.innerHTML = `<table class="hist-table"><thead><tr><th>Date</th><th>Questions</th><th>Name</th><th></th></tr></thead><tbody>${rows}</tbody></table>${pagination}`;
 }
 
 function histPageNav(dir) {
-  const pages = Math.ceil(entries.length / HIST_PAGE_SIZE);
-  histPage = Math.max(0, Math.min(histPage + dir, pages - 1));
+  histPage = Math.max(0, Math.min(histPage + dir, Math.ceil(entries.length / HIST_PAGE_SIZE) - 1));
   renderHistory();
   document.getElementById('history-container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-// Two-step delete: first click turns button red + says "Sure?", second click confirms
 const pendingDeletes = new Set();
 function confirmDelete(id) {
-  if (pendingDeletes.has(id)) {
-    // Second click — actually delete
-    pendingDeletes.delete(id);
-    deleteEntry(id);
-  } else {
-    // First click — arm the button
-    pendingDeletes.add(id);
-    const btn = document.getElementById('del-' + id);
-    if (btn) {
-      btn.textContent = 'Sure?';
-      btn.style.background = 'var(--lavender)';
-      btn.style.borderColor = 'var(--lavender)';
-      btn.style.color = '#fff';
-      // Auto-disarm after 3 seconds
-      setTimeout(() => {
-        pendingDeletes.delete(id);
-        if (btn && btn.isConnected) {
-          btn.textContent = 'Delete';
-          btn.style.background = '';
-          btn.style.borderColor = '';
-          btn.style.color = '';
-        }
-      }, 3000);
-    }
+  if (pendingDeletes.has(id)) { pendingDeletes.delete(id); deleteEntry(id); return; }
+  pendingDeletes.add(id);
+  const btn = document.getElementById('del-' + id);
+  if (btn) {
+    btn.textContent = 'Sure?'; btn.style.background = 'var(--lavender)'; btn.style.borderColor = 'var(--lavender)'; btn.style.color = '#fff';
+    setTimeout(() => { pendingDeletes.delete(id); if (btn?.isConnected) { btn.textContent = 'Delete'; btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = ''; } }, 3000);
   }
 }
 
-// ── Render exams ──────────────────────────────────────────
 function renderExams() {
   const el = document.getElementById('exam-container');
   if (!exams.length) { el.innerHTML = '<div class="hist-empty">No practice exams logged yet.</div>'; return; }
-
   const rows = [...exams].reverse().map(e => {
     const dateStr = new Date(e.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-    const epcChip = e.epc !== null && e.epc !== undefined
-      ? `<span class="score-chip ${e.epc>=70?'chip-green':e.epc>=55?'chip-yellow':'chip-red'}">${e.epc}%</span>` : '—';
-    const eppChip = e.epp !== null && e.epp !== undefined
-      ? `<span class="score-chip chip-blue">${e.epp}% pass</span>` : '—';
+    const epcChip = e.epc != null ? `<span class="score-chip ${e.epc>=70?'chip-green':e.epc>=55?'chip-yellow':'chip-red'}">${e.epc}%</span>` : '—';
+    const eppChip = e.epp != null ? `<span class="score-chip chip-blue">${e.epp}% pass</span>` : '—';
     const isEditing = e.id === editingExamId;
     return `<tr id="exam-row-${e.id}" class="${isEditing ? 'editing-row' : ''}">
-      <td>${dateStr}</td>
-      <td style="font-weight:600;">${e.name}</td>
-      <td>${epcChip}</td>
-      <td>${eppChip}</td>
-      <td>
-        <div class="row-actions">
-          <button class="row-edit-btn" onclick="editExam(${e.id})">${isEditing ? '✦ Editing…' : 'Edit'}</button>
-          <button class="row-delete-btn" id="exam-del-${e.id}" onclick="confirmDeleteExam(${e.id})">Delete</button>
-        </div>
-      </td>
-    </tr>`;
+      <td>${dateStr}</td><td style="font-weight:600;">${e.name}</td><td>${epcChip}</td><td>${eppChip}</td>
+      <td><div class="row-actions">
+        <button class="row-edit-btn" onclick="editExam(${e.id})">${isEditing ? '✦ Editing…' : 'Edit'}</button>
+        <button class="row-delete-btn" id="exam-del-${e.id}" onclick="confirmDeleteExam(${e.id})">Delete</button>
+      </div></td></tr>`;
   }).join('');
-
-  el.innerHTML = `<table class="hist-table">
-    <thead><tr><th>Date</th><th>Exam</th><th>% Correct</th><th>Est. Pass</th><th></th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table>`;
+  el.innerHTML = `<table class="hist-table"><thead><tr><th>Date</th><th>Exam</th><th>% Correct</th><th>Est. Pass</th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 const pendingExamDeletes = new Set();
 function confirmDeleteExam(id) {
-  if (pendingExamDeletes.has(id)) {
-    pendingExamDeletes.delete(id);
-    deleteExam(id);
-  } else {
-    pendingExamDeletes.add(id);
-    const btn = document.getElementById('exam-del-' + id);
-    if (btn) {
-      btn.textContent = 'Sure?';
-      btn.style.background = 'var(--lavender)';
-      btn.style.borderColor = 'var(--lavender)';
-      btn.style.color = '#fff';
-      setTimeout(() => {
-        pendingExamDeletes.delete(id);
-        if (btn && btn.isConnected) {
-          btn.textContent = 'Delete';
-          btn.style.background = '';
-          btn.style.borderColor = '';
-          btn.style.color = '';
-        }
-      }, 3000);
-    }
+  if (pendingExamDeletes.has(id)) { pendingExamDeletes.delete(id); deleteExam(id); return; }
+  pendingExamDeletes.add(id);
+  const btn = document.getElementById('exam-del-' + id);
+  if (btn) {
+    btn.textContent = 'Sure?'; btn.style.background = 'var(--lavender)'; btn.style.borderColor = 'var(--lavender)'; btn.style.color = '#fff';
+    setTimeout(() => { pendingExamDeletes.delete(id); if (btn?.isConnected) { btn.textContent = 'Delete'; btn.style.background = ''; btn.style.borderColor = ''; btn.style.color = ''; } }, 3000);
   }
 }
 
-// ── Render weak points ────────────────────────────────────
 function renderWeak() {
   const el = document.getElementById('weak-list');
-  if (!weaknesses.length) {
-    el.innerHTML = '<div class="hist-empty">No weak points logged yet. Add topics you keep missing.</div>';
-    return;
-  }
+  if (!weaknesses.length) { el.innerHTML = '<div class="hist-empty">No weak points logged yet. Add topics you keep missing.</div>'; return; }
   const sorted = [...weaknesses].sort((a,b) => ({high:0,med:1,low:2}[a.priority]||1) - ({high:0,med:1,low:2}[b.priority]||1));
   el.innerHTML = sorted.map(w => `
     <div class="weak-item ${w.priority==='med'?'med':w.priority==='low'?'low':''}">
@@ -1237,20 +1244,19 @@ function renderWeak() {
         <div class="weak-name">${w.topic}</div>
         <div class="weak-meta">${w.subject} · ${w.priority==='high'?'High priority':w.priority==='low'?'Low priority':'Medium priority'}</div>
       </div>
-      ${w.pct !== null && w.pct !== undefined ? `<div class="weak-pct">${w.pct}%</div>` : ''}
-      <div style="display:flex;gap:4px;">
+      ${w.pct != null ? `<div class="weak-pct">${w.pct}%</div>` : ''}
+      <div class="weak-actions">
         <button class="row-act-btn" onclick="editWeak(${w.id})" title="Edit">✎</button>
         <button class="row-act-btn" onclick="deleteWeak(${w.id})" title="Delete">×</button>
       </div>
     </div>`).join('');
 }
 
-// ── Weak modal ────────────────────────────────────────────
 function openWeakModal() {
   weakEditingId = null;
   document.getElementById('weak-modal-title').textContent = 'Add Weak Point';
-  document.getElementById('weak-topic').value    = '';
-  document.getElementById('weak-pct').value      = '';
+  document.getElementById('weak-topic').value = '';
+  document.getElementById('weak-pct').value = '';
   document.getElementById('weak-priority').value = 'med';
   openModal('weak-modal');
 }
@@ -1273,18 +1279,12 @@ function saveWeak() {
   const pct      = parseFloat(document.getElementById('weak-pct').value);
   const priority = document.getElementById('weak-priority').value;
   if (!topic) { showToast('Please enter a topic'); return; }
-
   const entry = { subject, topic, pct: isNaN(pct) ? null : pct, priority };
   if (weakEditingId !== null) {
     const idx = weaknesses.findIndex(w => w.id === weakEditingId);
     if (idx !== -1) weaknesses[idx] = { ...weaknesses[idx], ...entry };
-  } else {
-    weaknesses.push({ id: Date.now(), ...entry });
-  }
-  saveAll();
-  closeModal('weak-modal');
-  renderWeak();
-  showToast('Saved ✦');
+  } else { weaknesses.push({ id: Date.now(), ...entry }); }
+  saveAll(); closeModal('weak-modal'); renderWeak(); showToast('Saved ✦');
 }
 
 function deleteWeak(id) {
@@ -1293,13 +1293,11 @@ function deleteWeak(id) {
   saveAll(); renderWeak();
 }
 
-// ── Pace modal ────────────────────────────────────────────
 function showPaceModal() {
   const remaining = Math.max(0, settings.total - uniqueDone);
   const examDays  = getDaysRemaining();
-  let html = `<div style="display:flex;flex-direction:column;gap:1px;">`;
+  let html = '<div>';
   html += paceRow('Questions remaining', remaining.toLocaleString());
-
   if (settings.finishBy) {
     const finish = new Date(settings.finishBy + 'T12:00:00');
     const now = new Date(); now.setHours(0,0,0,0);
@@ -1310,30 +1308,22 @@ function showPaceModal() {
     html += paceRow(`Study days (${settings.studyDays.length} days/wk)`, studyDays, 'var(--fuji)');
     html += paceRow('Questions / study day', qDay, 'var(--lavender)');
   }
-
   if (examDays !== null) {
     const qDay = examDays > 0 ? Math.ceil(remaining / examDays) : '—';
     html += paceRow('Days until exam', examDays, 'var(--lavender)');
     html += paceRow('Q/day (by exam date)', qDay, 'var(--sakura2)');
   }
-
   if (!settings.finishBy && examDays === null) {
     html += `<div style="color:var(--muted);font-size:13px;margin-top:8px;">Set a finish date in Settings or set your exam date in the nav to calculate pace.</div>`;
   }
-
   html += '</div>';
   document.getElementById('pace-content').innerHTML = html;
-  // modal opened via onclick
 }
 
 function paceRow(label, val, color = 'var(--ink)') {
-  return `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border2);">
-    <span style="font-size:14px;color:var(--ink2);">${label}</span>
-    <strong style="font-family:'Playfair Display',serif;font-size:20px;color:${color};">${val}</strong>
-  </div>`;
+  return `<div class="pace-row"><span>${label}</span><strong style="color:${color};">${val}</strong></div>`;
 }
 
-// ── Edit progress ─────────────────────────────────────────
 function promptEditProgress() {
   document.getElementById('edit-unique-input').value = uniqueDone;
   openModal('edit-progress-modal');
@@ -1343,7 +1333,7 @@ function saveEditProgress() {
   const val = parseInt(document.getElementById('edit-unique-input').value);
   if (!isNaN(val) && val >= 0) {
     uniqueDone = val;
-    settings.manualUnique = true;  // prevent auto-recalc from overwriting this
+    settings.manualUnique = true;
     CloudSync.save(K.unique, uniqueDone);
     CloudSync.save(K.settings, settings);
     renderStats();
@@ -1353,19 +1343,13 @@ function saveEditProgress() {
 }
 
 // ── CSV Import ────────────────────────────────────────────
-let csvRows = [], csvHeaders = [];
-
 function openImportModal() { resetImport(); openModal('import-modal'); }
 
 function importGoNext() {
-  // Step 1 → Step 2
   document.getElementById('import-s1').style.display = 'none';
   document.getElementById('import-s2').style.display = 'flex';
-  // Activate step 2 indicator
-  document.getElementById('dash-dot2').style.background = 'var(--lavender)';
-  document.getElementById('dash-dot2').style.color = '#fff';
-  document.getElementById('dash-ind2').style.color = 'var(--lavender)';
-  // Swap buttons
+  document.getElementById('dash-dot2').className = 'import-step-dot active';
+  document.getElementById('dash-ind2').className = 'import-step active';
   document.getElementById('import-next-btn').style.display = 'none';
   document.getElementById('import-do-btn').style.display = 'block';
   document.getElementById('import-back-btn').style.display = 'block';
@@ -1374,9 +1358,8 @@ function importGoNext() {
 function importGoBack() {
   document.getElementById('import-s2').style.display = 'none';
   document.getElementById('import-s1').style.display = 'block';
-  document.getElementById('dash-dot2').style.background = 'var(--border)';
-  document.getElementById('dash-dot2').style.color = 'var(--muted)';
-  document.getElementById('dash-ind2').style.color = 'var(--muted)';
+  document.getElementById('dash-dot2').className = 'import-step-dot inactive';
+  document.getElementById('dash-ind2').className = 'import-step inactive';
   document.getElementById('import-next-btn').style.display = 'block';
   document.getElementById('import-do-btn').style.display = 'none';
   document.getElementById('import-back-btn').style.display = 'none';
@@ -1391,78 +1374,38 @@ function copyImportPrompt() {
   }).catch(() => showToast('Copy failed — please copy manually'));
 }
 
-// RFC-4180 CSV parser — handles quoted fields with commas inside
 function parseCSVLine(line) {
-  const result = [];
-  let cur = '', inQuote = false;
+  const result = []; let cur = '', inQuote = false;
   for (let i = 0; i < line.length; i++) {
     const ch = line[i];
-    if (ch === '"') {
-      if (inQuote && line[i+1] === '"') { cur += '"'; i++; }
-      else inQuote = !inQuote;
-    } else if (ch === ',' && !inQuote) {
-      result.push(cur.trim());
-      cur = '';
-    } else {
-      cur += ch;
-    }
+    if (ch === '"') { if (inQuote && line[i+1] === '"') { cur += '"'; i++; } else inQuote = !inQuote; }
+    else if (ch === ',' && !inQuote) { result.push(cur.trim()); cur = ''; }
+    else { cur += ch; }
   }
-  result.push(cur.trim());
-  return result;
+  result.push(cur.trim()); return result;
 }
 
-
-// ── Flexible date parser (no timezone shifting) ───────────
 function parseFlexDate(str) {
-  if (!str) return null;
-  str = str.trim();
-
-  // ISO format: 2026-03-06
-  let m = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-  if (m) return str.substring(0,10);
-
-  // "Mar 06, 2026" or "Mar 6 2026" or "March 06, 2026"
-  const MONTHS = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+  if (!str) return null; str = str.trim();
+  let m = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/); if (m) return str.substring(0,10);
+  const MO = {jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
   m = str.match(/^([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})$/);
-  if (m) {
-    const mo = MONTHS[m[1].toLowerCase().substring(0,3)];
-    if (!mo) return null;
-    return m[3] + '-' + String(mo).padStart(2,'0') + '-' + m[2].padStart(2,'0');
-  }
-
-  // MM/DD/YYYY or M/D/YYYY
-  m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if (m) return m[3] + '-' + m[1].padStart(2,'0') + '-' + m[2].padStart(2,'0');
-
-  // DD/MM/YYYY fallback — only if month > 12
-  m = str.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
-  if (m) return m[3] + '-' + m[2].padStart(2,'0') + '-' + m[1].padStart(2,'0');
-
-  // Last resort: JS Date (may have timezone issues)
-  const d = new Date(str);
-  if (!isNaN(d.getTime())) {
-    const y = d.getFullYear(), mo = d.getMonth()+1, dy = d.getDate();
-    return y + '-' + String(mo).padStart(2,'0') + '-' + String(dy).padStart(2,'0');
-  }
+  if (m) { const mo = MO[m[1].toLowerCase().substring(0,3)]; if (!mo) return null; return m[3] + '-' + String(mo).padStart(2,'0') + '-' + m[2].padStart(2,'0'); }
+  m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); if (m) return m[3] + '-' + m[1].padStart(2,'0') + '-' + m[2].padStart(2,'0');
+  m = str.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/); if (m) return m[3] + '-' + m[2].padStart(2,'0') + '-' + m[1].padStart(2,'0');
+  const d = new Date(str); if (!isNaN(d.getTime())) return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
   return null;
 }
-
 
 function importCSV() {
   const raw = document.getElementById('import-paste').value.trim();
   if (!raw) { showToast('Please paste the CSV first'); return; }
-
   const btn = document.getElementById('import-do-btn');
-  btn.disabled = true;
-  btn.textContent = 'Importing…';
-
+  btn.disabled = true; btn.textContent = 'Importing…';
   const lines = raw.split(/\r?\n/).filter(l => l.trim());
-  // Skip header row if present
   const dataLines = lines[0].toLowerCase().includes('date') ? lines.slice(1) : lines;
-
   let imported = 0, skipped = 0;
   const existing = new Set(entries.map(e => e.date + '|' + (e.name || '') + '|' + e.qs));
-
   dataLines.forEach(line => {
     const row = parseCSVLine(line);
     if (row.length < 2) { skipped++; return; }
@@ -1474,47 +1417,31 @@ function importCSV() {
     const key = date + '|' + entryName + '|' + qs;
     if (existing.has(key)) { skipped++; return; }
     entries.push({ id: Date.now() + imported, date, qs, name: entryName });
-    existing.add(key);
-    imported++;
+    existing.add(key); imported++;
   });
-
   entries.sort((a,b) => a.date.localeCompare(b.date));
-  // Import gives us a fresh complete dataset — reset manual override and recalc
-  settings.manualUnique = false;
-  recalcUniqueDone();
-  histPage = 0;
-  saveAll();
-  renderAll();
-
-  // Show inline result, swap footer to Done
+  settings.manualUnique = false; recalcUniqueDone(); histPage = 0; saveAll(); renderAll();
   const resultEl = document.getElementById('import-paste-result');
-  resultEl.innerHTML = `<div style="background:color-mix(in srgb,var(--lavender) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--lavender) 20%,var(--border2));border-radius:10px;padding:16px 18px;margin-top:12px;">
-    <strong style="display:block;font-size:13px;color:var(--ink);margin-bottom:10px;">Import complete</strong>
-    <div style="display:flex;gap:20px;">
-      <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--lavender);">${imported}</div><div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:2px;">Imported</div></div>
-      ${skipped ? `<div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--muted);">${skipped}</div><div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:2px;">Skipped</div></div>` : ''}
+  resultEl.innerHTML = `<div class="import-result-box">
+    <strong class="import-result-title">Import complete</strong>
+    <div class="import-result-nums">
+      <div><span class="import-result-num-val">${imported}</span><span class="import-result-num-lbl">Imported</span></div>
+      ${skipped ? `<div><span class="import-result-num-val" style="color:var(--muted);">${skipped}</span><span class="import-result-num-lbl">Skipped</span></div>` : ''}
     </div>
-    <p style="font-size:12px;color:var(--muted);margin:8px 0 0;">Stats, charts, and history have been updated.</p>
+    <p class="import-result-sub">Stats, charts, and history have been updated.</p>
   </div>`;
   resultEl.style.display = 'block';
-
-  btn.disabled = false;
-  btn.textContent = 'Done';
-  btn.onclick = () => closeModal('import-modal');
+  btn.disabled = false; btn.textContent = 'Done'; btn.onclick = () => closeModal('import-modal');
   document.getElementById('import-back-btn').style.display = 'none';
 }
 
 function resetImport() {
-  // Reset step indicators
-  document.getElementById('dash-dot2').style.background = 'var(--border)';
-  document.getElementById('dash-dot2').style.color = 'var(--muted)';
-  document.getElementById('dash-ind2').style.color = 'var(--muted)';
-  // Show step 1
+  document.getElementById('dash-dot2').className = 'import-step-dot inactive';
+  document.getElementById('dash-ind2').className = 'import-step inactive';
   document.getElementById('import-s1').style.display = 'block';
   document.getElementById('import-s2').style.display = 'none';
   if (document.getElementById('import-paste')) document.getElementById('import-paste').value = '';
   document.getElementById('import-paste-result').style.display = 'none';
-  // Reset footer
   document.getElementById('import-back-btn').style.display = 'none';
   document.getElementById('import-next-btn').style.display = 'block';
   document.getElementById('import-do-btn').style.display = 'none';
@@ -1523,34 +1450,19 @@ function resetImport() {
   document.getElementById('import-cancel-btn').style.display = 'block';
 }
 
+function renderAll() { renderStats(); renderChart(); renderHistory(); renderExams(); renderWeak(); }
 
-
-// ── Master render ─────────────────────────────────────────
-function renderAll() {
-  renderStats();
-  renderChart();
-  renderHistory();
-  renderExams();
-  renderWeak();
-}
-
-// ── Toast ─────────────────────────────────────────────────
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// ── Init ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   loadAll();
-
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('log-date').value  = today;
   document.getElementById('exam-date').value = today;
-
-  // Drag-and-drop on import zone
 });
 </script>
 </body>
