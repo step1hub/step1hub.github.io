@@ -188,6 +188,68 @@
 .btn-save-sage { background: var(--sage); }
 .pearl-box-sage { background: var(--sage-light); border-color: #b0d4bc; }
 .pearl-box-sage .drug-label { color: var(--sage); }
+
+/* ── Combined Progress Banner ── */
+.progress-banner {
+  display: grid;
+  grid-template-columns: 200px 1px 1fr auto;
+  align-items: center;
+  gap: 0;
+  padding: 22px 24px;
+  text-decoration: none; color: inherit;
+  cursor: pointer;
+}
+.progress-banner:hover { transform: var(--lift); box-shadow: var(--shadow-md); }
+.progress-banner:hover .pb-cta-badge { opacity: 1; color: var(--lavender); }
+
+.pb-uw { display: flex; flex-direction: column; gap: 4px; padding-right: 24px; }
+.pb-uw-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.pb-uw-pct { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; line-height: 1; color: var(--lavender); }
+.pb-uw-sub { font-size: 11px; color: var(--dim); margin-bottom: 6px; }
+.pb-uw-stats { display: flex; align-items: center; gap: 0; margin-bottom: 10px; }
+.pb-stat { text-align: center; padding: 0 10px 0 0; }
+.pb-stat:last-child { padding-left: 10px; padding-right: 0; }
+.pb-stat-v { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; line-height: 1; color: var(--ink2); }
+.pb-stat-l { font-size: 8px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+.pb-stat-div { width: 1px; height: 24px; background: var(--border2); margin: 0 4px; }
+.pb-bar-wrap { }
+.pb-bar-bg { width: 100%; height: 5px; background: var(--border2); border-radius: 99px; overflow: hidden; }
+.pb-bar-fill { height: 100%; border-radius: 99px; transition: width .9s cubic-bezier(.4,0,.2,1); }
+.pb-fill-uw { background: var(--lavender); opacity: 0.75; }
+
+.pb-divider { width: 1px; background: var(--border2); align-self: stretch; margin: 0 24px; }
+
+.pb-trackers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.pb-tracker {
+  padding: 12px 14px; border-radius: var(--r);
+  border: 1px solid var(--border2);
+  background: var(--bg);
+  transition: border-color var(--t), background var(--t);
+  cursor: pointer;
+}
+.pb-tracker:hover { border-color: color-mix(in srgb, var(--card-accent, var(--sakura2)) 40%, var(--border2)); background: var(--surface); }
+.pb-tr-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+.pb-tr-labels { display: flex; flex-direction: column; gap: 1px; }
+.pb-tr-sub { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.pb-tr-name { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+.pb-tr-pct { font-size: 12px; font-weight: 700; color: var(--card-accent, var(--sakura2)); }
+.pb-tr-bar-bg { width: 100%; height: 4px; background: var(--border2); border-radius: 99px; overflow: hidden; position: relative; margin-bottom: 7px; }
+.pb-tr-bar-w { position: absolute; height: 100%; border-radius: 99px; background: color-mix(in srgb, var(--card-accent, var(--sakura2)) 35%, transparent); transition: width .7s ease; }
+.pb-tr-bar-r { position: absolute; height: 100%; border-radius: 99px; background: var(--card-accent, var(--sakura2)); opacity: 0.7; transition: width .7s ease; }
+.pb-tr-stat { font-size: 10px; color: var(--muted); }
+
+.pb-cta-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+  color: var(--muted); white-space: nowrap; padding-left: 20px;
+  opacity: 0; transition: opacity var(--t), color var(--t);
+}
+
+@media (max-width: 860px) {
+  .progress-banner { grid-template-columns: 1fr; gap: 16px; }
+  .pb-divider { display: none; }
+  .pb-cta-badge { display: none; }
+  .pb-uw { padding-right: 0; }
+}
 </style>
 </head>
 <body>
@@ -225,8 +287,6 @@
   <!-- ── TODAY'S HIGH YIELD ─────────────────────────────── -->
   <div class="sec-label">Today's High Yield</div>
   <div class="daily-grid">
-
-    <!-- Skeleton shown until JS fires -->
     <div class="feat-skeleton i-card" id="dotd-skeleton" aria-hidden="true">
       <div class="skel-line skel-accent-drug" style="height:10px; width:40%;"></div>
       <div class="skel-line" style="height:20px; width:70%;"></div>
@@ -239,8 +299,6 @@
       <div class="skel-line" style="height:13px; width:90%;"></div>
       <div class="skel-line" style="height:13px; width:75%;"></div>
     </div>
-
-    <!-- Real cards, hidden until hydrated -->
     <div class="feat-card feat-drug i-card" id="dotd-card" onclick="openDotdModal()" role="button" tabindex="0" aria-label="Drug of the Day — click to expand">
       <div class="feat-eyebrow">Drug of the Day</div>
       <div class="feat-name" id="dotd-name"></div>
@@ -255,74 +313,87 @@
     </div>
   </div>
 
-  <!-- ── UWORLD PROGRESS (always visible) ──────────────── -->
-  <a class="uw-strip i-card" id="uw-strip" href="dashboard.html" aria-label="UWorld progress — click to open dashboard">
-    <div class="uw-top-row">
-      <div class="uw-left">
-        <div class="uw-eyebrow">UWorld Progress</div>
-        <div class="uw-big-pct" id="uw-pct">0%</div>
-        <div class="uw-sub" id="uw-sub">0 / 3,661 done</div>
-      </div>
-      <div class="uw-stats">
-        <div class="uw-stat">
-          <div class="uw-stat-v" id="uw-qday">—</div>
-          <div class="uw-stat-l">Q / Day</div>
-        </div>
-        <div class="uw-stat-div"></div>
-        <div class="uw-stat">
-          <div class="uw-stat-v" id="uw-remaining">—</div>
-          <div class="uw-stat-l">Remaining</div>
-        </div>
-      </div>
-      <div class="uw-cta-badge">View Dashboard</div>
-    </div>
-    <div class="uw-bar-wrap">
-      <div class="uw-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="uw-bar-role">
-        <div class="uw-fill" id="uw-fill" style="width:0%"></div>
-      </div>
-    </div>
-  </a>
+  <!-- ── PROGRESS BANNER (UWorld + Trackers combined) ──────── -->
+  <div class="sec-label">Progress</div>
+  <a class="progress-banner i-card" href="dashboard.html" aria-label="Progress overview — click to open dashboard">
 
-  <!-- ── PROGRESS TRACKERS ──────────────────────────────── -->
-  <div class="sec-label">Progress Trackers</div>
-  <div class="tracker-grid">
-    <a class="tracker-card i-card card-spharm" href="sketchy-pharm.html" aria-label="Sketchy Pharm tracker">
-      <span class="tc-arrow" aria-hidden="true">↗</span>
-      <div class="tc-lbl">Sketchy</div>
-      <div class="tc-title">Pharm</div>
-      <div class="tc-bg" role="progressbar" aria-valuemin="0" aria-valuemax="101">
-        <div class="tc-fill-w" id="tp-bar-w" style="width:0%"></div><div class="tc-fill-r" id="tp-bar-r" style="width:0%"></div>
+    <!-- UWorld left column -->
+    <div class="pb-uw">
+      <div class="pb-uw-eyebrow">UWorld</div>
+      <div class="pb-uw-pct" id="uw-pct">0%</div>
+      <div class="pb-uw-sub" id="uw-sub">Set up in Dashboard</div>
+      <div class="pb-uw-stats">
+        <div class="pb-stat">
+          <div class="pb-stat-v" id="uw-qday">—</div>
+          <div class="pb-stat-l">Q / Day</div>
+        </div>
+        <div class="pb-stat-div"></div>
+        <div class="pb-stat">
+          <div class="pb-stat-v" id="uw-remaining">—</div>
+          <div class="pb-stat-l">Left</div>
+        </div>
       </div>
-      <div class="tc-stats">
-        <span id="tp-stats">0 / 101 reviewed</span>
-        <span class="tc-pct" id="tp-pct">0%</span>
+      <div class="pb-bar-wrap">
+        <div class="pb-bar-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="uw-bar-role">
+          <div class="pb-bar-fill pb-fill-uw" id="uw-fill" style="width:0%"></div>
+        </div>
       </div>
-    </a>
-    <a class="tracker-card i-card card-smicro" href="sketchy-micro.html" aria-label="Sketchy Micro tracker">
-      <span class="tc-arrow" aria-hidden="true">↗</span>
-      <div class="tc-lbl">Sketchy</div>
-      <div class="tc-title">Micro</div>
-      <div class="tc-bg" role="progressbar" aria-valuemin="0" aria-valuemax="104">
-        <div class="tc-fill-w" id="tm-bar-w" style="width:0%"></div><div class="tc-fill-r" id="tm-bar-r" style="width:0%"></div>
+    </div>
+
+    <div class="pb-divider"></div>
+
+    <!-- Trackers right column -->
+    <div class="pb-trackers">
+
+      <div class="pb-tracker card-spharm" onclick="event.preventDefault(); window.location='sketchy-pharm.html'">
+        <div class="pb-tr-top">
+          <div class="pb-tr-labels">
+            <span class="pb-tr-sub">Sketchy</span>
+            <span class="pb-tr-name">Pharm</span>
+          </div>
+          <span class="pb-tr-pct" id="tp-pct">0%</span>
+        </div>
+        <div class="pb-tr-bar-bg">
+          <div class="pb-tr-bar-w" id="tp-bar-w" style="width:0%"></div>
+          <div class="pb-tr-bar-r" id="tp-bar-r" style="width:0%"></div>
+        </div>
+        <div class="pb-tr-stat" id="tp-stats">0 / 101 reviewed</div>
       </div>
-      <div class="tc-stats">
-        <span id="tm-stats">0 / 104 reviewed</span>
-        <span class="tc-pct" id="tm-pct">0%</span>
+
+      <div class="pb-tracker card-smicro" onclick="event.preventDefault(); window.location='sketchy-micro.html'">
+        <div class="pb-tr-top">
+          <div class="pb-tr-labels">
+            <span class="pb-tr-sub">Sketchy</span>
+            <span class="pb-tr-name">Micro</span>
+          </div>
+          <span class="pb-tr-pct" id="tm-pct">0%</span>
+        </div>
+        <div class="pb-tr-bar-bg">
+          <div class="pb-tr-bar-w" id="tm-bar-w" style="width:0%"></div>
+          <div class="pb-tr-bar-r" id="tm-bar-r" style="width:0%"></div>
+        </div>
+        <div class="pb-tr-stat" id="tm-stats">0 / 104 reviewed</div>
       </div>
-    </a>
-    <a class="tracker-card i-card card-pix" href="pixorize.html" aria-label="Pixorize tracker">
-      <span class="tc-arrow" aria-hidden="true">↗</span>
-      <div class="tc-lbl">Pixorize</div>
-      <div class="tc-title">Biochem &amp; Immuno</div>
-      <div class="tc-bg" role="progressbar" aria-valuemin="0" aria-valuemax="244">
-        <div class="tc-fill-w" id="tpx-bar-w" style="width:0%"></div><div class="tc-fill-r" id="tpx-bar-r" style="width:0%"></div>
+
+      <div class="pb-tracker card-pix" onclick="event.preventDefault(); window.location='pixorize.html'">
+        <div class="pb-tr-top">
+          <div class="pb-tr-labels">
+            <span class="pb-tr-sub">Pixorize</span>
+            <span class="pb-tr-name">Biochem &amp; Immuno</span>
+          </div>
+          <span class="pb-tr-pct" id="tpx-pct">0%</span>
+        </div>
+        <div class="pb-tr-bar-bg">
+          <div class="pb-tr-bar-w" id="tpx-bar-w" style="width:0%"></div>
+          <div class="pb-tr-bar-r" id="tpx-bar-r" style="width:0%"></div>
+        </div>
+        <div class="pb-tr-stat" id="tpx-stats">0 / 244 reviewed</div>
       </div>
-      <div class="tc-stats">
-        <span id="tpx-stats">0 / 244 reviewed</span>
-        <span class="tc-pct" id="tpx-pct">0%</span>
-      </div>
-    </a>
-  </div>
+
+    </div>
+
+    <div class="pb-cta-badge">View Dashboard</div>
+  </a>
 
   <!-- ── REFERENCE ──────────────────────────────────────── -->
   <div class="sec-label">Reference</div>
