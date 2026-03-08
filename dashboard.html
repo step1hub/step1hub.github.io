@@ -10,6 +10,7 @@
 <style>
 /* ── Dashboard accent ────────────────────────────────────── */
 :root { --dash: var(--lavender); --dash-light: #f0eefb; --tracker-accent: var(--lavender); --nav-active-color: var(--lavender); }
+.btn-save { background: var(--dash) !important; }
 .hero-name em { color: var(--dash); }
 
 /* ── Dashboard-specific styles ───────────────────────────── */
@@ -606,9 +607,26 @@ tr.editing-row td { background: var(--dash-light) !important; }
             <div style="display:flex;gap:12px;align-items:flex-start;">
               <span style="width:20px;height:20px;border-radius:50%;background:var(--lavender);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">2</span>
               <div style="flex:1;">
-                Paste into Claude or ChatGPT with this prompt:
+                Copy this prompt, paste it into Claude or ChatGPT, then <strong>replace the last line</strong> with your copied table data:
                 <div style="position:relative;margin-top:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;">
-                  <code id="import-prompt-code" style="display:block;font-family:'DM Mono',monospace;font-size:11px;line-height:1.6;color:var(--ink2);padding:10px 12px;padding-right:68px;white-space:pre-wrap;word-break:break-word;max-height:88px;overflow-y:auto;">Convert this UWorld test history into a CSV with exactly 3 columns: Date, Questions, Name. Date = date column. Questions = # QS. Name = test name/number (e.g. "Test 157"). One row per test, skip omitted/blank rows. No header row. No markdown.</code>
+                  <code id="import-prompt-code" style="display:block;font-family:'DM Mono',monospace;font-size:11px;line-height:1.6;color:var(--ink2);padding:10px 12px;padding-right:68px;white-space:pre-wrap;word-break:break-word;max-height:88px;overflow-y:auto;">I'm pasting my UWorld "Previous Tests" table below. Convert it to a CSV with exactly 3 columns: Date, Questions, Name.
+
+Rules:
+- Date: the test date, formatted as MM/DD/YYYY
+- Questions: the number in the "Items" or "# Qs" column (integer only, no decimals)
+- Name: the test name or number exactly as shown (e.g. "Test 157", "Free 120")
+- One row per test session
+- Skip any rows where Items/Qs is blank, 0, or omitted
+- Skip any exam review rows or summary rows
+- No header row in output
+- No markdown, no code fences, no extra columns
+
+Output only the raw CSV. Example format:
+03/01/2026,44,Test 201
+02/28/2026,40,Test 200
+
+Here is my data:
+[paste your copied table here]</code>
                   <button onclick="copyImportPrompt()" id="copy-prompt-btn" style="position:absolute;top:6px;right:6px;background:var(--lavender);color:#fff;border:none;border-radius:5px;padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.1);">Copy</button>
                 </div>
               </div>
