@@ -909,10 +909,17 @@ function loadAll() {
   if (migrated) CloudSync.save(K.entries, entries);
 }
 
-function recalcUniqueDone() {
+function recalcUniqueDone(addedQs = null) {
   if (!settings.manualUnique) {
+    // Auto mode: sum all entries
     uniqueDone = entries.reduce((s,e) => s + e.qs, 0);
+  } else if (addedQs !== null) {
+    // Manual mode: just add the new session on top
+    uniqueDone += addedQs;
+    CloudSync.save(K.unique, uniqueDone);
+    CloudSync.save(K.settings, settings);
   }
+  // If manualUnique and addedQs is null (e.g. edit/delete), leave uniqueDone unchanged
 }
 
 function saveAll() {
@@ -975,6 +982,7 @@ function logEntry() {
   const name  = document.getElementById('log-name').value.trim();
   if (!date) { showToast('Please select a date'); return; }
   if (!qs || qs < 1) { showToast('Please enter questions done'); return; }
+  let newQs = null;
   if (editingId !== null) {
     const idx = entries.findIndex(e => e.id === editingId);
     if (idx !== -1) entries[idx] = { ...entries[idx], date, qs, name };
@@ -983,9 +991,10 @@ function logEntry() {
     document.getElementById('cancel-edit').classList.add('hidden-panel');
   } else {
     entries.push({ id: Date.now(), date, qs, name });
+    newQs = qs; // new session — add on top of manual baseline if set
   }
   entries.sort((a,b) => a.date.localeCompare(b.date));
-  recalcUniqueDone();
+  recalcUniqueDone(newQs);
   histPage = 0;
   saveAll();
   document.getElementById('log-qs').value = '';
