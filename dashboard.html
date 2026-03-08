@@ -364,10 +364,11 @@ tr.editing-row td { background: var(--dash-light) !important; }
     <div class="prog-stat" style="position:relative;">
       <div class="prog-stat-num" id="stat-done">0</div>
       <div class="prog-stat-lbl">Questions Done</div>
+      <button class="edit-prog-btn" onclick="promptEditProgress()" style="margin-top:5px;font-size:10px;display:block;">✎ Edit</button>
       <button id="qdone-info-btn" onclick="toggleQDoneInfo()" title="Why doesn't this match UWorld?" style="position:absolute;top:8px;right:10px;width:16px;height:16px;border-radius:50%;background:var(--border2);border:none;cursor:pointer;font-size:10px;font-weight:700;color:var(--muted);line-height:1;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='var(--dash-light)';this.style.color='var(--dash)'" onmouseout="this.style.background='var(--border2)';this.style.color='var(--muted)'">?</button>
       <div id="qdone-info-popover" style="display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:8px;width:240px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--ink2);line-height:1.6;box-shadow:var(--shadow-md);z-index:100;text-align:left;">
         <strong style="display:block;margin-bottom:4px;color:var(--ink);font-size:12px;">Unique vs. total questions</strong>
-        This counts the total questions logged across all sessions — not unique questions. If you redid a test block, those count again. To track unique questions completed, use <em>Edit Progress</em> to set the exact number.
+        This counts total questions logged across all sessions — not unique. If you redo a block, those count again. Use <button onclick="toggleQDoneInfo();promptEditProgress()" style="background:none;border:none;padding:0;color:var(--dash);font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;">Edit</button> to set the exact unique count.
         <button onclick="toggleQDoneInfo()" style="display:block;margin-top:8px;background:none;border:none;font-size:11px;color:var(--dash);cursor:pointer;padding:0;font-weight:600;">Got it</button>
       </div>
     </div>
@@ -380,10 +381,9 @@ tr.editing-row td { background: var(--dash-light) !important; }
       <div class="prog-stat-lbl">Day Streak</div>
     </div>
     <div class="prog-stat" style="position:relative;">
-      <button onclick="showPaceModal()" title="Pace calculator" style="background:none;border:none;padding:0;cursor:pointer;width:100%;text-align:center;">
-        <div class="prog-stat-num" id="stat-needed" style="color:var(--dash);">—</div>
-        <div class="prog-stat-lbl">Q / Day Needed <span style="font-size:9px;display:block;color:var(--dim);">tap for calc</span></div>
-      </button>
+      <div class="prog-stat-num" id="stat-needed" style="color:var(--dash);">—</div>
+      <div class="prog-stat-lbl">Q / Day Needed</div>
+      <button class="edit-prog-btn" onclick="showPaceModal()" style="margin-top:5px;font-size:10px;display:block;">✎ Calc</button>
       <button onclick="toggleSettings()" id="settings-gear-btn" title="Settings" style="position:absolute;top:8px;right:10px;background:none;border:none;cursor:pointer;font-size:14px;color:var(--muted);line-height:1;padding:2px;" onmouseover="this.style.color='var(--dash)'" onmouseout="this.style.color='var(--muted)'">⚙</button>
     </div>
   </div>
@@ -391,10 +391,7 @@ tr.editing-row td { background: var(--dash-light) !important; }
   <!-- ── PROGRESS BAR ── -->
   <div class="prog-bar-section">
     <div class="prog-bar-head">
-      <span class="prog-bar-label">
-        QBank Completion
-        <button class="edit-prog-btn" onclick="promptEditProgress()" style="margin-left:10px;">✎ Edit Progress</button>
-      </span>
+      <span class="prog-bar-label">QBank Completion</span>
       <span style="display:flex;align-items:center;gap:10px;">
         <button class="btn-ghost" style="padding:5px 12px;font-size:12px;" onclick="openImportModal()">Import history</button>
         <span class="prog-bar-pct" id="prog-pct">0%</span>
@@ -405,6 +402,28 @@ tr.editing-row td { background: var(--dash-light) !important; }
       <span id="prog-sub-left"></span>
       <span id="prog-sub-right"></span>
     </div>
+  </div>
+
+  <div class="dash-section" id="settings-section" style="display:none;">
+    <div class="dash-section-title">
+      Settings
+      <button class="btn-ghost" onclick="toggleSettings()">Close</button>
+    </div>
+    <div class="settings-grid">
+      <div class="settings-field">
+        <label>Total QBank Size</label>
+        <input type="number" id="setup-total" value="3661" min="1"/>
+      </div>
+      <div class="settings-field">
+        <label>Finish QBank By</label>
+        <input type="date" id="setup-finish"/>
+      </div>
+    </div>
+    <div class="settings-field" style="margin-bottom:14px;">
+      <label style="display:block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Study Days Per Week</label>
+      <div class="day-chips" id="day-chips"></div>
+    </div>
+    <button class="log-btn" onclick="saveSettings()">Save Settings ✦</button>
   </div>
 
   <!-- ── CHARTS ── -->
