@@ -339,26 +339,54 @@ function getFiltered() {
 function esc(s) {
   return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
 function fmt(text, q) {
   if (!text) return '';
   let out = esc(text);
+
+  // 1. Step 1 Greek Letter Rendering
+  out = out.replace(/\$?\\beta\$?/g,  'β');
+  out = out.replace(/\$?\\alpha\$?/g, 'α');
+  out = out.replace(/\$?\\gamma\$?/g, 'γ');
+  out = out.replace(/\$?\\kappa\$?/g, 'κ');
+  out = out.replace(/\$?\\delta\$?/g, 'δ');
+  
+  // 2. Step 1 Ion and Subscript Rendering
+  out = out.replace(/\$Na\^\{\+\}\$/g, 'Na⁺');
+  out = out.replace(/\$K\^\{\+\}\$/g, 'K⁺');
+  out = out.replace(/\$Ca\^\{2\+\}\$/g, 'Ca²⁺');
+  out = out.replace(/\$Mg\^\{2\+\}\$/g, 'Mg²⁺');
+  out = out.replace(/\$Cl\^\{-\}\$/g, 'Cl⁻');
+  out = out.replace(/\$HCO_3\^\{-\}\$/g, 'HCO₃⁻');
+  out = out.replace(/\$O_2\$/g, 'O₂');
+  out = out.replace(/\$CO_2\$/g, 'CO₂');
+  
+  // Clean up any remaining LaTeX markup for simple ions
+  out = out.replace(/\$([A-Z][a-z]?)\^\{\+\}\$/g, '$1⁺');
+  out = out.replace(/\$([A-Z][a-z]?)\^\{2\+\}\$/g, '$1²⁺');
+
+  // 3. Handle Bold Markdown (**text**)
   out = out.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+  // 4. Handle Search Highlighting
   if (q) {
     const sq = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     out = out.replace(new RegExp(`(${sq})(?![^<]*>)`, 'gi'), '<mark class="search-hl">$1</mark>');
   }
   return out;
 }
+
 function fmtLines(text, q) {
   if (!text) return '';
-  const parts = text.split('\n').map(s => s.trim()).filter(Boolean);
-  if (parts.length <= 1) return `<div class="info-line">${fmt(text, q)}</div>`;
-  return parts.map(p => `<div class="info-line">${fmt(p, q)}</div>`).join('');
+  // Split by the \n character in drug_data.js and filter empty lines
+  const lines = text.split('\n').map(s => s.trim()).filter(Boolean);
+  // Stack each point vertically with standard margins
+  return lines.map(line => `<div class="info-line" style="margin-bottom: 8px; line-height: 1.5;">${fmt(line, q)}</div>`).join('');
 }
+
 function stripMd(text) {
   return (text||'').replace(/\*\*(.*?)\*\*/g, '$1');
 }
-
 // ── Main render ────────────────────────────────────────────
 function render() {
   const filtered = getFiltered();
