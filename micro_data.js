@@ -817,6 +817,16 @@ viruses: [
     color: "vir",
     organisms: [
       {
+        name: "Influenza (Orthomyxovirus)",
+        summary: "ssRNA(-), segmented envelope Orthomyxovirus annual epidemics via antigenic drift; pandemics via antigenic shift; treat with oseltamivir; vaccine yearly",
+        gram: "ssRNA (-), segmented (8 segments), enveloped (Orthomyxoviridae)",
+        virulence: "**Hemagglutinin (HA):** binds sialic acid receptors on respiratory epithelium → cell entry. **Neuraminidase (NA):** cleaves sialic acid → releases new virions. **Antigenic drift:** point mutations in HA/NA → annual epidemics (vaccine must be updated yearly). **Antigenic shift:** reassortment of gene segments between human and animal strains (e.g., avian, swine) → novel HA/NA subtypes → pandemic potential (no pre-existing immunity). **M2 ion channel:** required for viral uncoating.",
+        disease: "**Influenza A & B:** abrupt onset fever, **myalgias** (hallmark — severe, diffuse), headache, dry cough, malaise. Rhinorrhea is mild. **Complications:** primary viral pneumonia, secondary bacterial pneumonia (S. aureus, S. pneumoniae, H. influenzae), otitis media. **Reye syndrome:** aspirin use in children with influenza or VZV → acute encephalopathy + hepatic failure. **High-risk groups:** elderly, immunocompromised, pregnant, cardiac/pulmonary disease. **Influenza C:** mild, no epidemics.",
+        lab_diagnosis: "**Tests:** Rapid influenza diagnostic tests (RIDTs) — antigen detection (moderate sensitivity, high specificity). PCR (most sensitive and specific — gold standard). **Culture:** MDCK cells (reference standard, slow). **Serology:** retrospective only. **Microscopy:** no specific finding; clinical diagnosis in epidemic season.",
+        tx: "**Neuraminidase inhibitors:** **oseltamivir (Tamiflu)** oral or **zanamivir** inhaled — start within 48 hours of symptom onset; reduce duration by ~1 day; indicated for severe/hospitalized and high-risk patients. **Baloxavir:** cap-dependent endonuclease inhibitor (single dose, newer). **M2 inhibitors (amantadine/rimantadine):** resistance is now universal among influenza A; not recommended. **Prevention:** annual inactivated influenza vaccine (IIV) or live attenuated (LAIV — intranasal, healthy non-pregnant 2–49 yr).",
+        pearl: "**Antigenic shift vs. drift:** drift = gradual point mutations (annual epidemics, update vaccine); shift = abrupt gene segment reassortment between species (pandemic, no immunity). Oseltamivir must be started within 48 hours to be effective — do not wait for lab confirmation in high-risk patients during flu season. **Reye syndrome** is the reason aspirin is contraindicated in children with any viral illness."
+      },
+      {
         name: "Rhabdovirus (Rabies)",
         summary: "ssRNA(-), enveloped, bullet-shaped animal bite → retrograde axonal transport to CNS; encephalitis with hydrophobia; Negri bodies; near-universally fatal once symptomatic",
         gram: "ssRNA (-), enveloped (bullet-shaped virion - Rhabdoviridae)",
