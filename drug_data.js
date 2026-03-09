@@ -447,14 +447,14 @@ blood: [
     drugs: [
       {
         name: "Aspirin (Antiplatelet)",
-        aka: "Aspirin (ASA, Bayer, Ecotrin) · Acetylsalicylic Acid",
-        summary: "Irreversibly inhibits COX-1 to block thromboxane A2 synthesis, permanently impairing platelet aggregation for the platelet's lifespan. Low-dose aspirin is the cornerstone of antiplatelet therapy in ACS and ASCVD.",
-        moa: "Irreversible acetylation of **COX-1 (cyclooxygenase-1)** → ↓ TXA₂ synthesis in platelets (COX-1 only, no nucleus for new protein) → permanently ↓ platelet aggregation for 7–10 days (platelet lifespan); also inhibits prostacyclin (PGI₂) in endothelium (but endothelium can regenerate COX)",
-        use: "Acute MI/ACS (chewed — fastest absorption); secondary prevention of MI, stroke, peripheral artery disease (ASCVD); dual antiplatelet therapy (DAPT) with P2Y12 inhibitor post-PCI; pre-eclampsia prevention (low-dose); Kawasaki disease (high-dose anti-inflammatory + low-dose antiplatelet); colorectal cancer chemoprevention (long-term use)",
-        se: "**GI irritation/ulceration** (COX-1 inhibition → ↓ PGE₂ → ↓ gastric mucus/bicarbonate — use with PPI); **bleeding** (prolonged bleeding time); **Reye syndrome** (in children with viral illness — avoid <16 yr); **hypersensitivity/aspirin-exacerbated respiratory disease** (AERD — in asthma); tinnitus/salicylism (high doses)",
-        ci: "Children with viral illness (Reye syndrome risk); NSAID/aspirin hypersensitivity; active peptic ulcer disease (relative); third trimester pregnancy (↓ PGE₂ → premature closure of ductus arteriosus)",
-        pk: "Oral; hydrolyzed to salicylate; COX inhibition within 15–30 min (chewed faster); antiplatelet effect lasts 7–10 days (platelet lifespan). New platelet production after cessation: ~10%/day — platelet function recovers in 5–7 days. High doses (>1.5 g/day): anti-inflammatory; low dose (81 mg): antiplatelet; intermediate dose: neither optimal.",
-        pearl: "**Aspirin is unique among NSAIDs — its COX inhibition is irreversible.** All other NSAIDs are reversible competitive inhibitors. If a patient needs surgery, stop aspirin 5–7 days before (new platelets restore function). **Aspirin overdose:** respiratory alkalosis (early — direct respiratory center stimulation) → metabolic acidosis (late — uncouples oxidative phosphorylation)."
+        aka: "Aspirin (ASA) · Acetylsalicylic Acid",
+        summary: "**Irreversible COX-1 inhibitor** — the cornerstone antiplatelet agent for ASCVD prevention.",
+        moa: "Irreversibly **acetylates COX-1** → permanently inhibits TXA₂ synthesis in platelets (no nucleus → can't regenerate COX).\nAlso inhibits PGI₂ in endothelium (endothelium can regenerate COX) — net effect is antiplatelet.",
+        use: "**ACS** (chew immediately in STEMI/NSTEMI — fastest absorption).\n**ASCVD secondary prevention** (post-MI, post-stroke, PAD).\n**DAPT** with P2Y12 inhibitor post-PCI.\n**Low-dose:** pre-eclampsia prevention; colorectal cancer chemoprevention.\n**High-dose:** Kawasaki disease (anti-inflammatory).",
+        se: "**GI bleeding/ulceration** (COX-1 protects gastric mucosa — use PPI).\n**Reye syndrome** in children with viral infections (avoid <16 yr).\n**NSAID-exacerbated respiratory disease** (AERD — aspirin-sensitive asthma, leukotriene shunting).\n**Salicylism:** tinnitus, nausea (high doses).",
+        ci: "Children with viral infections (Reye syndrome); NSAID-sensitive asthma; active GI bleeding; severe renal failure.\nThird trimester pregnancy (↓ PGE₂ → premature closure of ductus arteriosus).",
+        pk: "Antiplatelet effect lasts **entire platelet lifespan (~7–10 days)** — platelets can't synthesize new COX.\nStop 7–10 days before elective surgery. 81 mg = antiplatelet; >1.5 g/day = anti-inflammatory.",
+        pearl: "**Aspirin overdose:** (1) early **respiratory alkalosis** (salicylate directly stimulates respiratory center) → (2) **high anion gap metabolic acidosis** (uncouples oxidative phosphorylation).\nThis biphasic mixed acid-base picture is classic and high-yield."
       },
       {
         name: "P2Y12 & GP IIb/IIIa Blockers",
