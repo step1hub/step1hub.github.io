@@ -15,16 +15,16 @@
 }
 
 /* ── Sketchy Panel ── */
-.sketchy-panel { margin-top: 18px; border: 1.5px solid var(--sakura2); border-radius: 12px; overflow: hidden; }
-.sketchy-panel-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: color-mix(in srgb, var(--sakura2) 10%, transparent); cursor: pointer; font-size: 13px; font-weight: 600; color: var(--sakura2); user-select: none; }
+.sketchy-panel { margin-top: 18px; border: 1.5px solid var(--cat-color, var(--sakura2)); border-radius: 12px; overflow: hidden; }
+.sketchy-panel-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: color-mix(in srgb, var(--cat-color, var(--sakura2)) 10%, transparent); cursor: pointer; font-size: 13px; font-weight: 600; color: var(--cat-color, var(--sakura2)); user-select: none; }
 .sketchy-panel-header-chevron { margin-left: auto; font-size: 10px; transition: transform .2s; }
 .sketchy-panel.collapsed .sketchy-panel-header-chevron { transform: rotate(-90deg); }
 .sketchy-panel.collapsed .sketchy-panel-body { display: none; }
 .sketchy-panel-body { padding: 10px 12px 12px; }
 .sketchy-scene-tabs { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
-.sketchy-scene-tab { padding: 3px 10px; border-radius: 20px; border: 1.5px solid var(--sakura2); background: transparent; color: var(--sakura2); font-size: 12px; cursor: pointer; transition: all .15s; }
-.sketchy-scene-tab:hover { background: color-mix(in srgb, var(--sakura2) 12%, transparent); }
-.sketchy-scene-tab.active { background: var(--sakura2); color: #fff; }
+.sketchy-scene-tab { padding: 3px 10px; border-radius: 20px; border: 1.5px solid var(--cat-color, var(--sakura2)); background: transparent; color: var(--cat-color, var(--sakura2)); font-size: 12px; cursor: pointer; transition: all .15s; }
+.sketchy-scene-tab:hover { background: color-mix(in srgb, var(--cat-color, var(--sakura2)) 12%, transparent); }
+.sketchy-scene-tab.active { background: var(--cat-color, var(--sakura2)); color: #fff; }
 .sketchy-img-wrap img { width: 100%; border-radius: 8px; cursor: zoom-in; display: block; }
 .sketchy-lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 9999; align-items: center; justify-content: center; }
 .sketchy-lightbox.open { display: flex; }
