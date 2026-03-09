@@ -46,7 +46,7 @@
     'sketchy-pharm.html': 'var(--sakura2)',
     'sketchy-micro.html': 'var(--sage)',
     'pixorize.html':      'var(--sky)',
-    'dashboard.html':     'var(--gold)',
+    'dashboard.html':     'var(--lavender)',
   };
   const pageColor = PAGE_COLORS[currentPage];
   if (pageColor && !document.documentElement.style.getPropertyValue('--nav-active-color')) {
