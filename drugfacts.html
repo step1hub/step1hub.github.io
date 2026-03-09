@@ -5,53 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="style.css"/>
-<title>Micro Facts · Step 1 Hub</title>
+<title>Drug Facts · Step 1 Hub</title>
 <style>
-/* ── Micro Facts: accent colour overrides (sage instead of sakura) ── */
+:root { --nav-active-color: var(--sakura2); }
 :root {
-  --accent:       var(--sage);
-  --accent-light: var(--sage-light);
-  --accent-glow:  rgba(94,154,112,.12);
-  --nav-active-color: var(--sage);
+  --accent:       var(--sakura2);
+  --accent-light: var(--sakura-light);
+  --accent-glow:  rgba(196,80,94,.10);
 }
-/* Modal topbar default border before JS sets --cat-color */
-.drug-modal-topbar { border-top-color: var(--sage); }
-.rcard-bk-dot { display:inline-block; font-size:10px; color:var(--gold); margin-left:5px; line-height:1; }
-.rcard-bk-dot::before { content:"★"; }
-.bk-count { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; border-radius:99px; background:var(--gold); color:#fff; font-size:10px; font-weight:700; margin-left:4px; }
-/* Modal pearl border uses sage fallback */
-.drug-modal-body .rcard-pearl {
-  border: 1px solid color-mix(in srgb, var(--cat-color, var(--sage)) 25%, transparent);
-}
-/* Search highlight uses sage tint */
-mark.search-hl { background: rgba(94,154,112,.18); color: var(--ink); border-radius: 2px; padding: 0 2px; }
 
-/* ── Sketchy panel ───────────────────────────────────────── */
-.sketchy-panel { margin-top: 18px; border: 1.5px solid var(--cat-color, var(--sage)); border-radius: 12px; overflow: hidden; }
-.sketchy-panel-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: color-mix(in srgb, var(--cat-color, var(--sage)) 10%, transparent); cursor: pointer; font-size: 13px; font-weight: 600; color: var(--cat-color, var(--sage)); user-select: none; }
-.sketchy-panel-header-icon { font-size: 13px; }
+/* ── Sketchy Panel ── */
+.sketchy-panel { margin-top: 18px; border: 1.5px solid var(--cat-color, var(--sakura2)); border-radius: 12px; overflow: hidden; }
+.sketchy-panel-header { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: color-mix(in srgb, var(--cat-color, var(--sakura2)) 10%, transparent); cursor: pointer; font-size: 13px; font-weight: 600; color: var(--cat-color, var(--sakura2)); user-select: none; }
 .sketchy-panel-header-chevron { margin-left: auto; font-size: 10px; transition: transform .2s; }
 .sketchy-panel.collapsed .sketchy-panel-header-chevron { transform: rotate(-90deg); }
 .sketchy-panel.collapsed .sketchy-panel-body { display: none; }
 .sketchy-panel-body { padding: 10px 12px 12px; }
 .sketchy-scene-tabs { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
-.sketchy-scene-tab { padding: 3px 10px; border-radius: 20px; border: 1.5px solid var(--cat-color, var(--sage)); background: transparent; color: var(--cat-color, var(--sage)); font-size: 12px; cursor: pointer; transition: all .15s; }
-.sketchy-scene-tab:hover { background: color-mix(in srgb, var(--cat-color, var(--sage)) 12%, transparent); }
-.sketchy-scene-tab.active { background: var(--cat-color, var(--sage)); color: #fff; }
+.sketchy-scene-tab { padding: 3px 10px; border-radius: 20px; border: 1.5px solid var(--cat-color, var(--sakura2)); background: transparent; color: var(--cat-color, var(--sakura2)); font-size: 12px; cursor: pointer; transition: all .15s; }
+.sketchy-scene-tab:hover { background: color-mix(in srgb, var(--cat-color, var(--sakura2)) 12%, transparent); }
+.sketchy-scene-tab.active { background: var(--cat-color, var(--sakura2)); color: #fff; }
 .sketchy-img-wrap img { width: 100%; border-radius: 8px; cursor: zoom-in; display: block; }
-/* ── Lightbox ────────────────────────────────────────────── */
-.sketchy-lightbox {
-  display: none; position: fixed; inset: 0; z-index: 9999;
-  background: rgba(0,0,0,.88);
-  align-items: center; justify-content: center;
-  cursor: zoom-out;
-}
+.sketchy-lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.85); z-index: 9999; align-items: center; justify-content: center; }
 .sketchy-lightbox.open { display: flex; }
-.sketchy-lightbox img {
-  max-width: 92vw; max-height: 92vh;
-  border-radius: 8px; box-shadow: 0 8px 48px rgba(0,0,0,.6);
-}
-
+.sketchy-lightbox img { max-width: 95vw; max-height: 92vh; border-radius: 10px; }
+.sketchy-lightbox-close { position: absolute; top: 18px; right: 24px; font-size: 28px; color: #fff; cursor: pointer; line-height: 1; }
 </style>
 </head>
 <body>
@@ -69,12 +47,14 @@ mark.search-hl { background: rgba(94,154,112,.18); color: var(--ink); border-rad
 
   <div class="ref-page-header">
     <div>
-      <div class="ref-page-eyebrow">Microbiology Reference</div>
-      <h1 class="ref-page-title">Micro <em>Facts</em></h1>
+      <div class="ref-page-eyebrow">Pharmacology Reference</div>
+      <h1 class="ref-page-title">Drug <em>Facts</em></h1>
+      <p class="ref-page-sub">MOA · Uses · Side Effects · PK · Clinical Pearls</p>
     </div>
     <div class="ref-count" id="results-meta"></div>
   </div>
 
+  <!-- Search row -->
   <div class="ref-search-row">
     <div class="ref-search-wrap">
       <span class="ref-search-icon">
@@ -82,28 +62,33 @@ mark.search-hl { background: rgba(94,154,112,.18); color: var(--ink); border-rad
           <circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/>
         </svg>
       </span>
-      <input class="ref-search-input" type="text" id="micro-search"
-             placeholder="Organism, disease, treatment, pearl…"
+      <input class="ref-search-input" type="text" id="drug-search"
+             placeholder="Search drug, class, mechanism, side effect…"
              oninput="onSearch()" autocomplete="off"/>
+      <button class="ref-search-clear" id="search-clear-btn" title="Clear search" onclick="clearSearch()">✕</button>
     </div>
     <button class="bookmark-filter-btn" id="bookmark-filter-btn" onclick="toggleBookmarkFilter()">
       ★ Bookmarked <span class="bk-count" id="bk-count">0</span>
     </button>
   </div>
 
+  <!-- Tab bar -->
   <div class="cat-tab-bar" id="cat-tabs" role="tablist"></div>
+
+  <!-- Browse panels -->
   <div id="panels-container"></div>
+
 
 </div>
 
-<!-- Organism detail modal -->
-<div class="drug-modal-overlay" id="micro-modal-overlay" onclick="handleModalOverlayClick(event)">
-  <div class="drug-modal" id="micro-modal">
+<!-- Drug detail modal -->
+<div class="drug-modal-overlay" id="drug-modal-overlay" onclick="handleModalOverlayClick(event)">
+  <div class="drug-modal" id="drug-modal">
 
-    <div class="drug-modal-topbar" id="modal-topbar">
-      <div class="drug-modal-breadcrumb" id="modal-banner"></div>
+    <div class="drug-modal-topbar" id="modal-banner">
+      <div class="drug-modal-breadcrumb" id="modal-breadcrumb"></div>
       <div class="drug-modal-topbar-right">
-        <button class="rcard-star" id="modal-star-btn" style="font-size:16px;padding:4px 8px;" onclick="toggleModalBookmark()" title="Bookmark (S)">☆</button>
+        <button id="modal-star-btn" class="rcard-star" style="font-size:16px;padding:4px 8px;" onclick="toggleModalBookmark()" title="Bookmark (S)">☆</button>
         <span class="drug-modal-counter" id="modal-counter"></span>
         <button class="drug-modal-nav-btn" id="modal-prev" onclick="modalNav(-1)" title="Previous">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2L4 6l4 4"/></svg>
@@ -130,113 +115,270 @@ mark.search-hl { background: rgba(94,154,112,.18); color: var(--ink); border-rad
   </div>
 </div>
 
-<script src="micro_data.js"></script>
+<script src="drug_data.js"></script>
 <script src="sketchy_map.js"></script>
 <script src="app.js"></script>
 <script>
-const CAT_META = {
-  bacteria:  { label: 'Bacteria',   color: '#3a7a5a', desc: 'Organized by Gram stain and morphology — the same way boards will test you. Master the GP/GN divide first, then nail the atypicals. Virulence factors and toxin mechanisms are highest-yield; memorize one unique fact per organism.' },
-  viruses:   { label: 'Viruses',    color: '#5a4490', desc: 'DNA viruses are mostly double-stranded and replicate in the nucleus. RNA viruses are mostly single-stranded and cytoplasmic. Know herpesvirus reactivation patterns cold — perennial vignettes. HIV lifecycle and antiretroviral mechanisms are guaranteed questions.' },
-  fungi:     { label: 'Fungi',      color: '#9e6a3d', desc: 'Systemic mycoses are tested by geography and exposure history. Opportunistic fungi appear almost exclusively in immunocompromised vignettes (HIV, transplant). The dimorphic rule: mold in the cold, yeast in the heat.' },
-  parasites: { label: 'Parasites',  color: '#3d6e8a', desc: 'Transmission route is the single highest-yield fact for every parasite. Plasmodium (malaria) is the most tested parasite — know all four species. Toxoplasma and Cryptosporidium are classic HIV vignettes.' },
-};
+/* ============================================================
+   DRUG FACTS PAGE LOGIC
+   ============================================================ */
 
-let allOrgs = [], activeTab = 'bacteria', searchQ = '', bookmarkFilter = false;
+// CAT_META is defined in drug_data.js — edit labels, colors,
+// and descriptions there. Add new categories to that file only;
+// this HTML will pick them up automatically.
 
-function buildOrgList() {
+// ── State ──────────────────────────────────────────────────
+let allDrugs = [];
+let activeTab = 'autonomic';
+let searchQ = '';
+let bookmarkFilter = false;
+
+// ── SM-2 Spaced Repetition Engine ─────────────────────────
+// Stores per-drug: { interval, easeFactor, dueDate, reps, lapses }
+const SR_KEY = 'df-sr-data';
+let srData = {};
+
+function srLoad() {
+  try { srData = JSON.parse(localStorage.getItem(SR_KEY) || '{}'); } catch(e) { srData = {}; }
+}
+
+function srSave() {
+  localStorage.setItem(SR_KEY, JSON.stringify(srData));
+  // Sync to cloud if signed in
+  if (window.db && window.currentUser) {
+    window.db.collection('users').doc(window.currentUser.uid)
+      .collection('data').doc(SR_KEY)
+      .set({ payload: JSON.stringify(srData), updatedAt: Date.now() })
+      .catch(e => console.warn('SR cloud save failed:', e));
+  }
+}
+
+async function srLoadCloud() {
+  if (!window.db || !window.currentUser) return;
+  try {
+    const doc = await window.db.collection('users').doc(window.currentUser.uid)
+      .collection('data').doc(SR_KEY).get();
+    if (doc.exists) {
+      const cloud = JSON.parse(doc.data().payload || '{}');
+      // Merge: prefer the entry with the more recent review
+      for (const [k, v] of Object.entries(cloud)) {
+        if (!srData[k] || (v.lastReview || 0) > (srData[k].lastReview || 0)) {
+          srData[k] = v;
+        }
+      }
+      localStorage.setItem(SR_KEY, JSON.stringify(srData));
+    }
+  } catch(e) { console.warn('SR cloud load failed:', e); }
+}
+
+// SM-2 algorithm: rating 0=Again, 3=Hard, 4=Good, 5=Easy
+function srRate(drugName, rating) {
+  const today = todayStr();
+  let c = srData[drugName] || { interval: 0, easeFactor: 2.5, reps: 0, lapses: 0, dueDate: today, lastReview: null };
+
+  if (rating === 0) {
+    // Again — reset to relearn
+    c.reps = 0;
+    c.lapses = (c.lapses || 0) + 1;
+    c.interval = 1;
+  } else {
+    // Update ease factor: EF' = EF + (0.1 - (5-q)*(0.08 + (5-q)*0.02))
+    c.easeFactor = Math.max(1.3, c.easeFactor + 0.1 - (5 - rating) * (0.08 + (5 - rating) * 0.02));
+    if (c.reps === 0) {
+      c.interval = 1;
+    } else if (c.reps === 1) {
+      c.interval = 6;
+    } else {
+      c.interval = Math.round(c.interval * c.easeFactor);
+    }
+    c.reps++;
+  }
+
+  const due = new Date();
+  due.setDate(due.getDate() + c.interval);
+  c.dueDate = due.toISOString().split('T')[0];
+  c.lastReview = today;
+  srData[drugName] = c;
+  srSave();
+}
+
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function srGetDue(drugs) {
+  const today = todayStr();
+  return drugs.filter(d => {
+    const c = srData[d.name];
+    return !c || c.dueDate <= today;
+  });
+}
+
+function srGetStats(drugs) {
+  const today = todayStr();
+  let due = 0, learning = 0, known = 0, newCards = 0;
+  for (const d of drugs) {
+    const c = srData[d.name];
+    if (!c) { newCards++; continue; }
+    if (c.dueDate <= today) due++;
+    else if (c.interval <= 7) learning++;
+    else known++;
+  }
+  return { due, learning, known, newCards };
+}
+
+// ── Bookmarks (localStorage + Firebase sync) ──────────────
+const BK_LS_KEY = 'df-bookmarks';
+const BK_FS_KEY = 'df-bookmarks';
+
+function loadBookmarks() {
+  try {
+    const saved = localStorage.getItem(BK_LS_KEY);
+    bookmarks = saved ? new Set(JSON.parse(saved)) : new Set();
+  } catch { bookmarks = new Set(); }
+}
+
+function saveBookmarks() {
+  const arr = [...bookmarks];
+  localStorage.setItem(BK_LS_KEY, JSON.stringify(arr));
+  syncBookmarkCount();
+  // Push to Firestore if signed in
+  if (window.db && window.currentUser) {
+    window.db.collection('users').doc(window.currentUser.uid)
+      .collection('data').doc(BK_FS_KEY)
+      .set({ payload: JSON.stringify(arr), updatedAt: Date.now() })
+      .catch(e => console.warn('Bookmark sync failed:', e));
+  }
+}
+
+async function loadBookmarksFromCloud() {
+  if (!window.db || !window.currentUser) return;
+  try {
+    const doc = await window.db.collection('users').doc(window.currentUser.uid)
+      .collection('data').doc(BK_FS_KEY).get();
+    if (doc.exists) {
+      const cloud = JSON.parse(doc.data().payload || '[]');
+      // Merge: union of local + cloud
+      cloud.forEach(n => bookmarks.add(n));
+      localStorage.setItem(BK_LS_KEY, JSON.stringify([...bookmarks]));
+      syncBookmarkCount();
+      render();
+    }
+  } catch(e) { console.warn('Cloud bookmark load failed:', e); }
+}
+function syncBookmarkCount() {
+  const cnt = document.getElementById('bk-count');
+  const btn = document.getElementById('bookmark-filter-btn');
+  if (cnt) cnt.textContent = bookmarks.size;
+  if (btn) btn.classList.toggle('active', bookmarkFilter);
+}
+function toggleBookmark(name) {
+  if (bookmarks.has(name)) bookmarks.delete(name);
+  else bookmarks.add(name);
+  saveBookmarks();
+}
+function toggleBookmarkFilter() {
+  bookmarkFilter = !bookmarkFilter;
+  document.getElementById('bookmark-filter-btn').classList.toggle('active', bookmarkFilter);
+  render();
+}
+function toggleModalBookmark() {
+  const d = modalDrugs[modalIdx];
+  if (!d) return;
+  toggleBookmark(d.name);
+  updateModalStarBtn(d.name);
+  refreshCardStar(d.name);
+}
+function updateModalStarBtn(name) {
+  const btn = document.getElementById('modal-star-btn');
+  if (!btn) return;
+  const starred = bookmarks.has(name);
+  btn.textContent = starred ? '★' : '☆';
+  btn.classList.toggle('starred', starred);
+  btn.title = starred ? 'Remove bookmark (S)' : 'Bookmark (S)';
+}
+function refreshCardStar(name) {
+  document.querySelectorAll('.rcard').forEach(c => {
+    if (c.dataset.drugName === name) {
+      const star = c.querySelector('.rcard-star');
+      if (star) {
+        const s = bookmarks.has(name);
+        star.textContent = s ? '★' : '☆';
+        star.classList.toggle('starred', s);
+      }
+    }
+  });
+}
+
+// ── Build drug list ────────────────────────────────────────
+function buildDrugList() {
   const list = [];
-  Object.entries(MICRO).forEach(([cat, groups]) =>
+  Object.entries(DRUGS).forEach(([cat, groups]) =>
     groups.forEach(grp =>
-      (grp.organisms || []).forEach(o => list.push({ ...o, category: cat, groupName: grp.group }))
+      grp.drugs.forEach(d => list.push({ ...d, category: cat, groupName: grp.group }))
     )
   );
   return list;
 }
 
-const SEARCH_ALIASES = [
-  { patterns: ['gram positive', 'gram+', 'gram +', 'gram-positive'], replace: 'gp' },
-  { patterns: ['gram negative', 'gram-', 'gram -', 'gram-negative'], replace: 'gn' },
-  { patterns: ['gp cocci', 'gram positive cocci', 'gram+ cocci'], replace: 'gp cocci' },
-  { patterns: ['gn cocci', 'gram negative cocci', 'gram- cocci'], replace: 'gn cocci' },
-  { patterns: ['gp rods', 'gram positive rods', 'gram+ rods', 'gp bacilli', 'gram positive bacilli'], replace: 'gp rods' },
-  { patterns: ['gn rods', 'gram negative rods', 'gram- rods', 'gn bacilli', 'gram negative bacilli'], replace: 'gn rods' },
-];
-
-function normalizeQuery(q) {
-  for (const alias of SEARCH_ALIASES) {
-    for (const pat of alias.patterns) {
-      // exact match OR the query is a prefix of a pattern (handles mid-typing)
-      if (pat === q || pat.startsWith(q)) return alias.replace;
-    }
-  }
-  return q;
-}
-
 function getFiltered() {
+  let drugs = allDrugs;
+  if (bookmarkFilter) drugs = drugs.filter(d => bookmarks.has(d.name));
   if (searchQ) {
-    const nq = normalizeQuery(searchQ);
-    return allOrgs.filter(o => {
-      const blob = [o.name, o.gram, o.summary, o.disease, o.tx, o.pearl, o.virulence, o.lab_diagnosis]
+    return drugs.filter(d => {
+      const blob = [d.name, d.aka, d.summary, d.moa, d.use, d.se, d.ci, d.pk, d.pearl]
         .filter(Boolean).join(' ').toLowerCase();
-      return blob.includes(nq);
+      return blob.includes(searchQ);
     });
   }
-  if (activeTab === 'bookmarks' || bookmarkFilter) return allOrgs.filter(o => isBookmarked(o.name));
-  return allOrgs.filter(o => o.category === activeTab);
+  if (bookmarkFilter) return drugs;
+  return drugs.filter(d => d.category === activeTab);
 }
 
+// ── Text helpers ───────────────────────────────────────────
 function esc(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 function fmt(text, q) {
   if (!text) return '';
   let out = esc(text);
   out = out.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   if (q) {
-    const nq = normalizeQuery(q);
-    const terms = nq !== q ? [nq, q] : [q];
-    for (const term of terms) {
-      const sq = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      out = out.replace(new RegExp(`(${sq})(?![^<]*>)`, 'gi'), '<mark class="search-hl">$1</mark>');
-    }
+    const sq = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    out = out.replace(new RegExp(`(${sq})(?![^<]*>)`, 'gi'), '<mark class="search-hl">$1</mark>');
   }
   return out;
 }
-
 function fmtLines(text, q) {
   if (!text) return '';
-  let out = fmt(text, q);
-  // Split on \n line breaks embedded in the data
-  const parts = out.split(/\n/);
-  if (parts.length > 1) {
-    return parts.map(p => p.trim()).filter(Boolean)
-      .map(p => `<div class="info-line">${p}</div>`).join('');
-  }
-  // Fallback: split on period + space before a bold segment
-  const parts2 = out.split(/(?<=\.) (?=<strong>)/);
-  if (parts2.length > 1) {
-    return parts2.map(p => `<div class="info-line">${p.trim()}</div>`).join('');
-  }
-  return `<div class="info-line">${out}</div>`;
+  const parts = text.split('\n').map(s => s.trim()).filter(Boolean);
+  if (parts.length <= 1) return `<div class="info-line">${fmt(text, q)}</div>`;
+  return parts.map(p => `<div class="info-line">${fmt(p, q)}</div>`).join('');
+}
+function stripMd(text) {
+  return (text||'').replace(/\*\*(.*?)\*\*/g, '$1');
 }
 
+// ── Main render ────────────────────────────────────────────
 function render() {
   const filtered = getFiltered();
   const isSearch = searchQ.length > 0;
+  const isBmFilter = bookmarkFilter;
 
-  document.getElementById('results-meta').innerHTML = isSearch
-    ? `<strong>${filtered.length}</strong> of ${allOrgs.length} organisms`
-    : `<strong>${allOrgs.length}</strong> organisms`;
+  document.getElementById('results-meta').innerHTML = (isSearch || isBmFilter)
+    ? `<strong>${filtered.length}</strong> of ${allDrugs.length} drugs`
+    : `<strong>${allDrugs.length}</strong> drugs`;
 
+  document.getElementById('search-clear-btn').classList.toggle('visible', searchQ.length > 0);
+  syncBookmarkCount();
   renderTabs();
-  renderPanels(filtered, isSearch);
+  renderPanels(filtered, isSearch || isBmFilter);
 }
 
 function renderTabs() {
   let html = '';
   Object.entries(CAT_META).forEach(([cat, meta]) => {
-    const isActive = (activeTab === cat && !searchQ);
+    const isActive = (activeTab === cat && !searchQ && !bookmarkFilter);
     html += `<button class="cat-tab${isActive ? ' active' : ''}"
       onclick="switchTab('${cat}')" role="tab">
       <span class="tab-dot" style="background:${meta.color}"></span>${meta.label}
@@ -257,14 +399,14 @@ function renderPanels(filtered, isSearch) {
         </div></div>`;
       return;
     }
-    const cats = Object.keys(CAT_META).filter(c => filtered.some(o => o.category === c));
+    const cats = Object.keys(CAT_META).filter(c => filtered.some(d => d.category === c));
     container.innerHTML = cats.map(cat => {
-      const catOrgs = filtered.filter(o => o.category === cat);
-      if (!catOrgs.length) return '';
+      const catDrugs = filtered.filter(d => d.category === cat);
+      if (!catDrugs.length) return '';
       const meta = CAT_META[cat];
       return `<div class="ref-panel" id="panel-${cat}">
         <div class="search-cat-label" style="color:${meta.color}">${meta.label}</div>
-        <div class="cards-grid">${catOrgs.map(o => renderCard(o, meta.color)).join('')}</div>
+        <div class="cards-grid">${catDrugs.map(d => renderCard(d, meta.color)).join('')}</div>
       </div>`;
     }).join('');
     return;
@@ -273,15 +415,15 @@ function renderPanels(filtered, isSearch) {
   if (!filtered.length) {
     container.innerHTML = `<div class="cards-grid" style="margin-top:16px;">
       <div class="ref-empty">
-        <div class="ref-empty-title">Nothing here yet</div>
-        <div class="ref-empty-sub">This category has no entries.</div>
+        <div class="ref-empty-title">${bookmarkFilter ? 'No bookmarks yet' : 'Nothing here yet'}</div>
+        <div class="ref-empty-sub">${bookmarkFilter ? 'Click ☆ on any drug card to save it here.' : 'This category has no entries.'}</div>
       </div></div>`;
     return;
   }
 
   const cat = activeTab;
   const meta = CAT_META[cat];
-  const groups = [...new Set(filtered.map(o => o.groupName))];
+  const groups = [...new Set(filtered.map(d => d.groupName))];
 
   const introHtml = `
     <div class="cat-intro" style="--cat-color:${meta.color}">
@@ -290,7 +432,7 @@ function renderPanels(filtered, isSearch) {
     </div>`;
 
   const groupsHtml = groups.map((grp, gi) => {
-    const grpOrgs = filtered.filter(o => o.groupName === grp);
+    const grpDrugs = filtered.filter(d => d.groupName === grp);
     const gid = `grp-${cat}-${gi}`;
     return `<div class="group-section">
       <div class="class-group-header">
@@ -300,7 +442,7 @@ function renderPanels(filtered, isSearch) {
         <button class="group-expand-btn" style="--cat-color:${meta.color}" onclick="toggleGroup('${gid}',this)">▲ Collapse</button>
       </div>
       <div class="cards-grid" id="${gid}" style="display:grid;">
-        ${grpOrgs.map(o => renderCard(o, meta.color)).join('')}
+        ${grpDrugs.map(d => renderCard(d, meta.color)).join('')}
       </div>
     </div>`;
   }).join('');
@@ -308,69 +450,96 @@ function renderPanels(filtered, isSearch) {
   container.innerHTML = `<div class="ref-panel" id="panel-${cat}">${introHtml}${groupsHtml}</div>`;
 }
 
-function renderCard(o, catColor) {
-  const color = catColor || CAT_META[o.category]?.color || 'var(--accent)';
+function renderCard(d, catColor) {
+  const color = catColor || CAT_META[d.category]?.color || 'var(--accent)';
   const q = searchQ;
-  const bk = isBookmarked(o.name);
+  const isStarred = bookmarks.has(d.name);
+  const akaHtml = d.aka
+    ? d.aka.replace(/\|/g,'·').replace(/·+/g,'·').split('·')
+        .map(s => s.trim()).filter(Boolean)
+        .map(s => `<span class="aka-token">${s}</span>`)
+        .join('<span class="dot-sep">·</span>')
+    : '';
 
-  return `<div class="rcard" data-cat="${o.category}" style="border-left-color:${color};--cat-color:${color}"
-    tabindex="0" role="button" aria-label="${esc(o.name)}"
-    onclick="openModal(this)">
+  return `<div class="rcard" data-cat="${d.category}" data-drug-name="${esc(d.name)}"
+    style="--cat-color:${color};border-left-color:${color}"
+    tabindex="0" role="button" aria-label="${esc(d.name)}"
+    onclick="openCardModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCardModal(this);}">
     <div class="rcard-header">
       <div class="rcard-header-left">
-        <div class="rcard-name">${fmt(o.name, q)}</div>
-        ${o.gram ? `<div class="rcard-aka" style="color:${color}">${esc(o.gram)}</div>` : ''}
-        ${bk ? '<span class="rcard-bk-dot"></span>' : ''}
+        <div class="rcard-name">${fmt(d.name, q)}</div>
+        ${akaHtml ? `<div class="rcard-aka">${akaHtml}</div>` : ''}
       </div>
-      <button class="rcard-toggle" style="color:${color}" tabindex="-1" aria-hidden="true">▼</button>
+      <button class="rcard-star${isStarred ? ' starred' : ''}" tabindex="0"
+        aria-label="Bookmark ${esc(d.name)}"
+        onclick="event.stopPropagation();toggleCardBookmark(this,'${esc(d.name)}')">${isStarred ? '★' : '☆'}</button>
     </div>
-    <div class="rcard-summary">${fmt(o.summary, q)}</div>
+    <div class="rcard-summary">${fmt(d.summary, q)}</div>
   </div>`;
 }
 
-/* ── Modal ───────────────────────────────────────────────── */
-let modalOrgs = [], modalIdx = 0;
+function toggleCardBookmark(btn, name) {
+  // decode HTML entities that esc() may have added
+  const decoded = name.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');
+  toggleBookmark(decoded);
+  const isStarred = bookmarks.has(decoded);
+  btn.textContent = isStarred ? '★' : '☆';
+  btn.classList.toggle('starred', isStarred);
+  syncBookmarkCount();
+  if (bookmarkFilter && !isStarred) render();
+}
 
-function openModal(cardEl) {
+// ── Modal ──────────────────────────────────────────────────
+let modalDrugs = [], modalIdx = 0;
+
+function openCardModal(cardEl) {
   if (window.getSelection().toString().length > 0) return;
   const filtered = getFiltered();
-  modalOrgs = filtered;
+  modalDrugs = filtered;
   const cat = cardEl.dataset.cat;
-  const name = cardEl.querySelector('.rcard-name')?.textContent;
-  const idx = modalOrgs.findIndex(o => o.category === cat && o.name === name);
+  const name = cardEl.dataset.drugName;
+  const idx = modalDrugs.findIndex(d => d.category === cat && d.name === name);
   modalIdx = idx >= 0 ? idx : 0;
   showModal();
 }
 
 function showModal() {
-  const o = modalOrgs[modalIdx];
-  if (!o) return;
-  const color = CAT_META[o.category]?.color || 'var(--accent)';
-  const catLabel = CAT_META[o.category]?.label || o.category;
+  const d = modalDrugs[modalIdx];
+  if (!d) return;
+  const color = CAT_META[d.category]?.color || 'var(--accent)';
+  const catLabel = CAT_META[d.category]?.label || d.category;
   const q = searchQ;
 
-  document.getElementById('micro-modal').style.setProperty('--cat-color', color);
-  document.getElementById('modal-topbar').style.borderTopColor = color;
-
-  document.getElementById('modal-banner').innerHTML = `
+  document.getElementById('modal-breadcrumb').innerHTML = `
     <span class="drug-modal-banner-cat" style="color:${color};border-color:${color}50;background:${color}12;">${catLabel}</span>
     <span class="drug-modal-banner-sep">›</span>
-    <span class="drug-modal-banner-grp">${o.groupName || ''}</span>
+    <span class="drug-modal-banner-grp">${d.groupName || ''}</span>
   `;
-  document.getElementById('modal-title').innerHTML = fmt(o.name, q);
+  document.getElementById('drug-modal').style.setProperty('--cat-color', color);
+  document.getElementById('modal-banner').style.borderBottom = `1px solid ${color}20`;
+  document.getElementById('modal-banner').style.borderTop = `3px solid ${color}`;
+  document.getElementById('modal-header').style.borderTop = 'none';
+  document.getElementById('modal-title').innerHTML = fmt(d.name, q);
 
+  const akaHtml = d.aka
+    ? d.aka.replace(/\|/g,'·').replace(/·+/g,'·').split('·')
+        .map(s => s.trim()).filter(Boolean)
+        .map(s => `<span class="aka-token">${s}</span>`)
+        .join('<span class="dot-sep">·</span>')
+    : '';
   const akaEl = document.getElementById('modal-aka');
-  akaEl.textContent = o.gram || '';
-  akaEl.style.display = o.gram ? '' : 'none';
+  akaEl.innerHTML = akaHtml;
+  akaEl.style.display = akaHtml ? '' : 'none';
 
-  document.getElementById('modal-summary').innerHTML = fmt(o.summary, q);
-  document.getElementById('modal-counter').textContent = `${modalIdx + 1} / ${modalOrgs.length}`;
+  document.getElementById('modal-summary').innerHTML = fmt(d.summary, q);
+  document.getElementById('modal-counter').textContent = `${modalIdx + 1} / ${modalDrugs.length}`;
 
   const sections = [
-    { label: 'Virulence',     cls: 'lbl-vir', val: o.virulence     },
-    { label: 'Diseases',      cls: 'lbl-dis', val: o.disease       },
-    { label: 'Lab Diagnosis', cls: 'lbl-dx',  val: o.lab_diagnosis },
-    { label: 'Treatment',     cls: 'lbl-tx',  val: o.tx            },
+    { label: 'Mechanism',         cls: 'lbl-moa', val: d.moa },
+    { label: 'Clinical Use',      cls: 'lbl-use', val: d.use },
+    { label: 'Side Effects',      cls: 'lbl-se',  val: d.se  },
+    { label: 'Contraindications', cls: 'lbl-ci',  val: d.ci  },
+    { label: 'Pharmacokinetics',  cls: 'lbl-pk',  val: d.pk  },
   ].filter(s => s.val);
 
   document.getElementById('modal-body').innerHTML = `
@@ -379,247 +548,155 @@ function showModal() {
         <span class="rcard-field-label ${s.cls}">${s.label}</span>
         <div class="rcard-field-text">${fmtLines(s.val, q)}</div>
       </div>`).join('')}
-    ${o.pearl ? `
+    ${d.pearl ? `
       <div class="rcard-pearl">
         <span class="pearl-diamond" style="color:${color}">◆</span>
         <div class="pearl-body">
-          <div class="pearl-text"><span class="pearl-label" style="color:${color}">Step 1 Pearl:</span> ${fmt(o.pearl, q)}</div>
+          <div class="pearl-text"><span class="pearl-label" style="color:${color}">Step 1 Pearl:</span> ${fmt(d.pearl, q)}</div>
         </div>
       </div>` : ''}
   `;
 
   document.getElementById('modal-prev').disabled = modalIdx === 0;
-  document.getElementById('modal-next').disabled = modalIdx === modalOrgs.length - 1;
+  document.getElementById('modal-next').disabled = modalIdx === modalDrugs.length - 1;
   document.getElementById('modal-body').scrollTop = 0;
-  const starBtn = document.getElementById('modal-star-btn');
-  if (starBtn) { updateStarBtn(modalOrgs[modalIdx]?.name || ''); }
 
-  // ── Sketchy panel ──────────────────────────────────────────
-  const sketchyEntry = (typeof SKETCHY_MAP !== 'undefined') ? SKETCHY_MAP[o.name] : null;
+  // ── Sketchy Pharm panel ──
+  const sketchyEntry = (typeof SKETCHY_MAP !== 'undefined') ? SKETCHY_MAP[d.name] : null;
   const existingPanel = document.getElementById('sketchy-panel');
   if (existingPanel) existingPanel.remove();
-  if (sketchyEntry && sketchyEntry.scenes?.length) {
-    const scenes = sketchyEntry.scenes;
-    const tabsHtml = scenes.length > 1
-      ? `<div class="sketchy-scene-tabs">${scenes.map((s,i) =>
-          `<button class="sketchy-scene-tab${i===0?' active':''}" onclick="sketchyTab(this,${i})">${s.title}</button>`
-        ).join('')}</div>`
-      : '';
+  if (sketchyEntry) {
     const panel = document.createElement('div');
     panel.id = 'sketchy-panel';
     panel.className = 'sketchy-panel';
+    const scenes = sketchyEntry.scenes;
+    const tabsHtml = scenes.length > 1
+      ? `<div class="sketchy-scene-tabs">${scenes.map((s,i) => `<button class="sketchy-scene-tab${i===0?' active':''}" onclick="sketchyTab(this,${i},'sketchy-panel')">${s.title}</button>`).join('')}</div>`
+      : '';
     panel.innerHTML = `
       <div class="sketchy-panel-header" onclick="this.closest('.sketchy-panel').classList.toggle('collapsed')">
-        <span class="sketchy-panel-header-icon"></span>
-        Sketchy Micro
+        Sketchy Pharm
         <span class="sketchy-panel-header-chevron">▼</span>
       </div>
       <div class="sketchy-panel-body">
         ${tabsHtml}
         <div class="sketchy-img-wrap">
-          <img id="sketchy-img" src="${scenes[0].img}" alt="${scenes[0].title}"
-               onclick="sketchyLightbox('${scenes[0].img}')">
+          <img src="${scenes[0].img}" alt="${scenes[0].title}" onclick="sketchyLightbox(this.src)">
         </div>
       </div>`;
     document.getElementById('modal-body').appendChild(panel);
-    panel._scenes = scenes;
   }
 
-  document.getElementById('micro-modal-overlay').classList.add('open');
+  document.getElementById('drug-modal-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+  updateModalStarBtn(d.name);
 }
 
 function closeModal() {
-  document.getElementById('micro-modal-overlay').classList.remove('open');
+  document.getElementById('drug-modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
-// ── Sketchy helpers ────────────────────────────────────────
-function sketchyTab(btn, idx) {
-  const panel = btn.closest('.sketchy-panel');
-  panel.querySelectorAll('.sketchy-scene-tab').forEach((t,i) =>
-    t.classList.toggle('active', i === idx));
-  const scene = panel._scenes[idx];
-  const img = document.getElementById('sketchy-img');
-  img.src = scene.img;
-  img.alt = scene.title;
-  img.onclick = () => sketchyLightbox(scene.img);
+function sketchyTab(btn, idx, panelId) {
+  const panel = document.getElementById(panelId);
+  panel.querySelectorAll('.sketchy-scene-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  const entry = SKETCHY_MAP[modalDrugs[modalIdx].name];
+  const img = panel.querySelector('.sketchy-img-wrap img');
+  img.src = entry.scenes[idx].img;
+  img.alt = entry.scenes[idx].title;
 }
 function sketchyLightbox(src) {
-  const lb = document.getElementById('sketchy-lightbox');
-  lb.querySelector('img').src = src;
-  lb.classList.add('open');
+  document.getElementById('sketchy-lightbox-img').src = src;
+  document.getElementById('sketchy-lightbox').classList.add('open');
 }
 function sketchyLightboxClose() {
   document.getElementById('sketchy-lightbox').classList.remove('open');
 }
 
-// ── Bookmark filter button ──────────────────────────────────
-function syncBookmarkCount() {
-  const cnt = document.getElementById('bk-count');
-  const btn = document.getElementById('bookmark-filter-btn');
-  const bks = getBookmarks();
-  if (cnt) cnt.textContent = bks.length;
-  if (btn) btn.classList.toggle('active', bookmarkFilter);
-}
-function toggleBookmarkFilter() {
-  bookmarkFilter = !bookmarkFilter;
-  const btn = document.getElementById('bookmark-filter-btn');
-  if (btn) btn.classList.toggle('active', bookmarkFilter);
-  // If activating filter, switch to bookmarks tab; if deactivating, go back to bacteria
-  activeTab = 'bacteria';
-  renderTabs();
-  render();
-}
-
-// ── Bookmarks (localStorage + Firebase sync) ───────────────
-const BK_KEY = 'micro-bookmarks';
-let _bookmarks = null;
-
-function getBookmarks() {
-  if (_bookmarks) return _bookmarks;
-  try { _bookmarks = JSON.parse(localStorage.getItem(BK_KEY) || '[]'); }
-  catch { _bookmarks = []; }
-  return _bookmarks;
-}
-
-function saveBookmarks(arr) {
-  _bookmarks = arr;
-  localStorage.setItem(BK_KEY, JSON.stringify(arr));
-  syncBookmarkCount();
-  // Push to Firestore if signed in
-  if (window.db && window.currentUser) {
-    window.db.collection('users').doc(window.currentUser.uid)
-      .collection('data').doc(BK_KEY)
-      .set({ payload: JSON.stringify(arr), updatedAt: Date.now() })
-      .catch(e => console.warn('Bookmark sync failed:', e));
-  }
-}
-
-function isBookmarked(name) { return getBookmarks().includes(name); }
-
-async function loadBookmarksFromCloud() {
-  if (!window.db || !window.currentUser) return;
-  try {
-    const doc = await window.db.collection('users').doc(window.currentUser.uid)
-      .collection('data').doc(BK_KEY).get();
-    if (doc.exists) {
-      const cloud = JSON.parse(doc.data().payload || '[]');
-      // Merge: union of local + cloud
-      const merged = [...new Set([...getBookmarks(), ...cloud])];
-      _bookmarks = merged;
-      localStorage.setItem(BK_KEY, JSON.stringify(merged));
-      renderTabs();
-      render();
-    }
-  } catch(e) { console.warn('Cloud bookmark load failed:', e); }
-}
-
-function toggleModalBookmark() {
-  const org = modalOrgs[modalIdx];
-  if (!org) return;
-  const bks = getBookmarks();
-  const idx = bks.indexOf(org.name);
-  if (idx >= 0) { bks.splice(idx, 1); } else { bks.push(org.name); }
-  saveBookmarks(bks);
-  updateStarBtn(org.name);
-  renderTabs(); // update count badge
-  // Refresh card star indicators
-  document.querySelectorAll('.rcard').forEach(c => {
-    const n = c.querySelector('.rcard-name')?.textContent;
-    if (n === org.name) {
-      let dot = c.querySelector('.rcard-bk-dot');
-      if (isBookmarked(n)) {
-        if (!dot) { dot = document.createElement('span'); dot.className = 'rcard-bk-dot'; c.querySelector('.rcard-header-left').appendChild(dot); }
-      } else { dot?.remove(); }
-    }
-  });
-  if (activeTab === 'bookmarks') render();
-}
-
-function updateStarBtn(name) {
-  const btn = document.getElementById('modal-star-btn');
-  if (!btn) return;
-  const bk = isBookmarked(name);
-  btn.textContent = bk ? '★' : '☆';
-  btn.style.color = bk ? 'var(--cat-color, var(--sage))' : '';
-}
-
 function modalNav(dir) {
   const next = modalIdx + dir;
-  if (next >= 0 && next < modalOrgs.length) { modalIdx = next; showModal(); }
+  if (next >= 0 && next < modalDrugs.length) { modalIdx = next; showModal(); }
 }
-
 function handleModalOverlayClick(e) {
-  if (e.target === document.getElementById('micro-modal-overlay')) closeModal();
+  if (e.target === document.getElementById('drug-modal-overlay')) closeModal();
 }
 
+// ── Browse helpers ─────────────────────────────────────────
 function toggleGroup(gid, btn) {
   const grid = document.getElementById(gid);
-  const hidden = grid.style.display === 'none';
-  grid.style.display = hidden ? '' : 'none';
-  btn.textContent = hidden ? '▲ Collapse' : '▼ Expand';
+  const isHidden = grid.style.display === 'none';
+  grid.style.display = isHidden ? 'grid' : 'none';
+  btn.textContent = isHidden ? '▲ Collapse' : '▼ Expand';
 }
 
 function switchTab(cat) {
   activeTab = cat;
   searchQ = '';
-  document.getElementById('micro-search').value = '';
+  bookmarkFilter = false;
+  document.getElementById('drug-search').value = '';
+  document.getElementById('bookmark-filter-btn').classList.remove('active');
   render();
 }
 
 function onSearch() {
-  searchQ = document.getElementById('micro-search').value.toLowerCase().trim();
+  searchQ = document.getElementById('drug-search').value.toLowerCase().trim();
   render();
 }
 
+function clearSearch() {
+  document.getElementById('drug-search').value = '';
+  searchQ = '';
+  render();
+  document.getElementById('drug-search').focus();
+}
+
+// ── Keyboard shortcuts ─────────────────────────────────────
 document.addEventListener('keydown', e => {
-  const search = document.getElementById('micro-search');
-  const modalOpen = document.getElementById('micro-modal-overlay').classList.contains('open');
+  const search = document.getElementById('drug-search');
+  const modalOpen = document.getElementById('drug-modal-overlay').classList.contains('open');
 
   if (modalOpen) {
     if (e.key === 'Escape') closeModal();
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); modalNav(1); }
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); modalNav(-1); }
+    if (e.key === 's' || e.key === 'S') toggleModalBookmark();
     return;
   }
 
   if (e.key === '/' && document.activeElement !== search) {
     e.preventDefault(); search.focus(); search.select();
   }
-  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('rcard')) {
-    e.preventDefault(); openModal(e.target);
-  }
-  if (e.key === 'Escape' && searchQ) { search.value = ''; onSearch(); }
+  if (e.key === 'Escape' && searchQ) clearSearch();
 });
 
 window.addEventListener('appAuthStateChanged', (e) => {
   if (e.detail?.user) {
-    loadBookmarksFromCloud().then(() => { if (allOrgs.length) { renderTabs(); render(); } });
+    Promise.all([loadBookmarksFromCloud(), srLoadCloud()]).then(() => { if (allDrugs.length) render(); });
   } else {
-    _bookmarks = [];
-    localStorage.removeItem(BK_KEY);
-    if (allOrgs.length) { renderTabs(); render(); }
+    bookmarks = new Set();
+    localStorage.removeItem(BK_LS_KEY);
+    syncBookmarkCount();
+    if (allDrugs.length) render();
   }
 });
 
 // Called by app.js after full cloud sync completes on sign-in
 window.onCloudSyncComplete = function() {
-  _bookmarks = null; // force reload from updated localStorage
+  loadBookmarks(); // reload from updated localStorage
   syncBookmarkCount();
-  renderTabs();
-  render();
+  if (allDrugs.length) render();
 };
+
 document.addEventListener('DOMContentLoaded', () => {
-  allOrgs = buildOrgList();
-  syncBookmarkCount();
-  activeTab = 'bacteria';
+  srLoad();
+  loadBookmarks();
+  allDrugs = buildDrugList();
+  activeTab = 'autonomic';
   render();
 });
 </script>
 <div class="sketchy-lightbox" id="sketchy-lightbox" onclick="sketchyLightboxClose()">
-  <img src="" alt="Sketchy scene">
+  <span class="sketchy-lightbox-close" onclick="sketchyLightboxClose()">✕</span>
+  <img id="sketchy-lightbox-img" src="" alt="">
 </div>
-
 </body>
 </html>
