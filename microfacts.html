@@ -163,13 +163,13 @@ const SEARCH_ALIASES = [
 ];
 
 function normalizeQuery(q) {
-  let normalized = q;
   for (const alias of SEARCH_ALIASES) {
     for (const pat of alias.patterns) {
-      if (normalized === pat) return alias.replace;
+      // exact match OR the query is a prefix of a pattern (handles mid-typing)
+      if (pat === q || pat.startsWith(q)) return alias.replace;
     }
   }
-  return normalized;
+  return q;
 }
 
 function getFiltered() {
