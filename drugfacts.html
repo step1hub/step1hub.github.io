@@ -132,6 +132,7 @@ let allDrugs = [];
 let activeTab = 'autonomic';
 let searchQ = '';
 let bookmarkFilter = false;
+let bookmarks = new Set();
 
 // ── SM-2 Spaced Repetition Engine ─────────────────────────
 // Stores per-drug: { interval, easeFactor, dueDate, reps, lapses }
