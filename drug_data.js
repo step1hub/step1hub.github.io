@@ -555,7 +555,7 @@ neuro: [
         use: "**Status Epilepticus**: IV Lorazepam (first-line).\n**Alcohol Withdrawal**: Chlordiazepoxide.\n**Procedural Sedation**: Midazolam (fastest onset/amnesia).\nAnxiety, Insomnia, Spasticity.",
         se: "**Respiratory Depression** (especially with Alcohol/Opioids).\n**Sedation/Ataxia/Amnesia**.\n**Paradoxical Excitement** (elderly/children).\nDependence and fatal withdrawal seizures.",
         ci: "**Severe Hepatic Failure** (except LOT).\n**Narrow-angle glaucoma**.\n**Myasthenia Gravis**.",
-        pk: "Hepatic CYP3A4 metabolism to active metabolites.\n**'LOT' drugs** (Lorazepam, Oxazepam, Temazepam): No active metabolites; safe in liver failure/elderly.\n**Reversal**: Flumazenil (competitive antagonist).",
+        pk: "**Short-acting (ATOM)**: **A**lprazolam, **T**riazolam, **O**xazepam, **M**idazolam (High addiction potential).\n**Intermediate**: **L**orazepam, **T**emazepam.\n**Long-acting**: **D**iazepam, **C**hlordiazepoxide (High risk in elderly).\n**'LOT' drugs**: No active metabolites; safe in liver failure/elderly.\n**Reversal**: Flumazenil.",
         pearl: "**Frequency vs. Duration**: Benzos increase **Frequency**; Barbiturates increase **Duration**.\nFlumazenil can precipitate seizures in dependent patients."
       },
       {
