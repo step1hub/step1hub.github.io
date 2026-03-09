@@ -543,45 +543,360 @@ blood: [
     ]
   }
 ],
-toxicology: [
+neuro: [
   {
-    group: "Toxicology",
+    group: "Anxiolytics & Sedatives",
     drugs: [
       {
-        name: "Drug Antidotes (High-Yield Pairs)",
-        aka: "Flumazenil · Naloxone · N-Acetylcysteine · Atropine · Pralidoxime · Physostigmine · Protamine · Digoxin Fab · Methylene Blue · Hydroxocobalamin · Fomepizole · Glucagon · Deferoxamine",
-        summary: "Specific agents to reverse life-threatening poisoning.\nFocus on the mechanism of the toxin and the corresponding antidote.",
-        moa: "**Flumazenil**: Competitive **BZD receptor** antagonist.\n**Naloxone**: Competitive **$\mu$-opioid receptor** antagonist.\n**N-Acetylcysteine**: Restores **Glutathione** to neutralize NAPQI.\n**Atropine**: Competitive **Muscarinic** antagonist.\n**Pralidoxime (2-PAM)**: Regenerates **AChE** (must give before aging).\n**Physostigmine**: Reversible **AChE inhibitor** (crosses BBB).\n**Protamine Sulfate**: Ionic binding neutralizes Heparin.\n**Digoxin Fab**: Binds free Digoxin.\n**Methylene Blue**: Reduces $Fe^{3+}$ back to $Fe^{2+}$ (Methemoglobinemia).\n**Hydroxocobalamin**: Binds $CN^-$ to form Cyanocobalamin.\n**Fomepizole**: Inhibits **Alcohol Dehydrogenase**.\n**Glucagon**: ↑ $cAMP$ via non-$\beta$ receptors.\n**Deferoxamine**: Iron chelation.",
-        use: "**Flumazenil** $\rightarrow$ Benzo OD (Warning: May precipitate seizures).\n**Naloxone** $\rightarrow$ Opioid OD.\n**Atropine + 2-PAM** $\rightarrow$ Organophosphates.\n**Physostigmine** $\rightarrow$ Anticholinergic syndrome (NOT for TCA toxicity).\n**Fomepizole** $\rightarrow$ Methanol or Ethylene Glycol.\n**Glucagon** $\rightarrow$ $\beta$-blocker or CCB overdose.\n**Chelation** $\rightarrow$ Lead, Arsenic, or Mercury poisoning.",
-        se: "**Flumazenil**: Seizures in dependent patients.\n**Physostigmine**: Cholinergic crisis (DUMBBELLS).\n**Methylene Blue**: Hemolysis in **G6PD Deficiency**.\n**Protamine**: Hypotension; anaphylaxis.\n**Hydroxocobalamin**: Red skin/urine discoloration.",
-        ci: "**Flumazenil**: TCA overdose (seizure risk).\n**Physostigmine**: Suspected TCA toxicity.\n**Methylene Blue**: G6PD Deficiency.",
-        pk: "Flumazenil and Naloxone have short $t_{1/2}$ (~1 hr) and may require redosing or infusion.",
-        pearl: "**Glucagon for $\beta$-blockers**: Bypasses the blocked $\beta$-receptor to increase inotropy via its own receptor."
+        name: "Benzodiazepines",
+        aka: "Diazepam · Lorazepam · Alprazolam · Clonazepam · Midazolam · Triazolam · Oxazepam · Temazepam · Chlordiazepoxide",
+        summary: "Positive allosteric modulators of **GABA-A** receptors.\nUsed for anxiety, seizures, and alcohol withdrawal.",
+        moa: "Bind **GABA-A** (between $\alpha$ and $\gamma$ subunits).\n↑ **Frequency** of $Cl^-$ channel opening.\nRequires GABA to be present to function.",
+        use: "**Status Epilepticus**: IV Lorazepam (first-line).\n**Alcohol Withdrawal**: Chlordiazepoxide.\n**Procedural Sedation**: Midazolam (fastest onset/amnesia).\nAnxiety, Insomnia, Spasticity.",
+        se: "**Respiratory Depression** (especially with Alcohol/Opioids).\n**Sedation/Ataxia/Amnesia**.\n**Paradoxical Excitement** (elderly/children).\nDependence and fatal withdrawal seizures.",
+        ci: "**Severe Hepatic Failure** (except LOT).\n**Narrow-angle glaucoma**.\n**Myasthenia Gravis**.",
+        pk: "Hepatic CYP3A4 metabolism to active metabolites.\n**'LOT' drugs** (Lorazepam, Oxazepam, Temazepam): No active metabolites; safe in liver failure/elderly.\n**Reversal**: Flumazenil (competitive antagonist).",
+        pearl: "**Frequency vs. Duration**: Benzos increase **Frequency**; Barbiturates increase **Duration**.\nFlumazenil can precipitate seizures in dependent patients."
       },
       {
-        name: "Acetaminophen Toxicity & N-Acetylcysteine",
-        aka: "N-Acetylcysteine (NAC) · Acetaminophen (APAP)",
-        summary: "Hepatotoxicity occurs when **NAPQI** overwhelms glutathione.\n**Rumack-Matthew Nomogram** guides treatment timing.",
-        moa: "**Acetaminophen**: 5–10% converted by **CYP2E1** to **NAPQI** (toxic electrophile).\n**NAPQI**: Normally detoxified by **Glutathione**; when depleted, it causes **Centrilobular (Zone 3) Necrosis**.\n**NAC**: Provides **Cysteine** to replenish Glutathione synthesis.",
-        use: "**Acetaminophen Overdose**: Ideally within 8 hr of ingestion; give even if late.",
-        se: "**Anaphylactoid Reaction**: IV NAC can cause flushing/hives (non-IgE; slow infusion).\nNausea/Vomiting (Oral NAC smells like rotten eggs).",
-        ci: "No absolute contraindications to NAC treatment.",
-        pk: "Rumack-Matthew Nomogram: Start NAC if 4-hr level is $>150 \mu g/mL$.",
-        pearl: "**NAC is most effective within 8 hours**, but can be used up to 72 hr post-ingestion to improve hepatic microcirculation."
+        name: "Non-Benzodiazepine Hypnotics (Z-drugs) & Ramelteon",
+        aka: "Zolpidem · Zaleplon · Eszopiclone · Ramelteon · Suvorexant",
+        summary: "Selective sleep aids with fewer respiratory effects than Benzos.\nPreferred for insomnia in the elderly.",
+        moa: "**Z-drugs**: Selective for **$\alpha_1$ GABA-A** subunit.\n**Ramelteon**: **MT1/MT2 Melatonin** agonist in the SCN.\n**Suvorexant**: **Orexin** receptor antagonist.",
+        use: "**Insomnia**: Zolpidem/Zaleplon (initiation); Eszopiclone (maintenance).\n**Ramelteon**: Elderly patients (no abuse potential).",
+        se: "**Complex Sleep Behaviors** (Sleep-walking/driving; FDA Black Box).\n**Amnesia** and daytime sedation.\nSuvorexant: Abnormal dreams.",
+        ci: "**Severe Hepatic Impairment**.\nSuvorexant: **Narcolepsy**.",
+        pk: "Zolpidem: $t_{1/2}$ ~2.5 hr.\nZaleplon: $t_{1/2}$ ~1 hr (ultra-short).\nRamelteon: Not a controlled substance.",
+        pearl: "**Ramelteon** is the only hypnotic with **No abuse potential**.\nZ-drugs provide sedation with minimal anxiolysis or anticonvulsant effect."
       },
       {
-        name: "Ethanol Metabolism, Disulfiram & Alcohol Antidotes",
-        aka: "Disulfiram · Naltrexone · Acamprosate · Fomepizole · Thiamine (B1)",
-        summary: "Management of **Alcohol Use Disorder** and metabolic consequences.\n**Thiamine** must be given **BEFORE** Glucose.",
-        moa: "**Disulfiram**: Inhibits **Aldehyde Dehydrogenase** $\rightarrow$ **Acetaldehyde** buildup $\rightarrow$ sickness.\n**Naltrexone**: Blocks $\mu$-opioid receptors to ↓ cravings.\n**Fomepizole**: Inhibits **Alcohol Dehydrogenase** to stop toxic metabolite formation.\n**Thiamine**: Essential cofactor for **Transketolase**.",
-        use: "**Disulfiram**: Aversion therapy.\n**Naltrexone**: Reduces 'reward' of drinking.\n**Fomepizole**: Methanol (stops blindness) and Ethylene Glycol (stops renal failure).\n**Thiamine**: Prevents **Wernicke Encephalopathy**.",
-        se: "**Disulfiram**: Cardiovascular collapse if ethanol is ingested.\n**Thiamine**: Essentially non-toxic.\n**Fomepizole**: Headache; nausea.",
-        ci: "**Disulfiram**: Recent alcohol use; Opioid use.\n**Naltrexone**: Active opioid use (precipitates withdrawal).",
-        pk: "Disulfiram inhibition is irreversible; effect lasts 1–2 weeks after stopping.",
-        pearl: "**Thiamine Rule**: Always give Thiamine before Glucose. Glucose in a B1-deficient patient exhausts remaining stores and triggers Wernicke."
+        name: "Propofol, Etomidate & Ketamine",
+        aka: "Propofol · Etomidate · Ketamine",
+        summary: "**IV Anesthetics** with distinct hemodynamic profiles.\nUsed for induction and RSI.",
+        moa: "**Propofol**: Potentiates **GABA-A** + inhibits **NMDA**.\n**Etomidate**: Potentiates **GABA-A**.\n**Ketamine**: Blocks **NMDA** receptors.",
+        use: "**Propofol**: Maintenance of anesthesia; ICU sedation.\n**Etomidate**: Hemodynamically unstable patients (Trauma/Shock).\n**Ketamine**: RSI in patients with **Bronchospasm** or **Hypotension**.",
+        se: "**Propofol**: Hypotension; **Propofol Infusion Syndrome** (acidosis/rhabdo).\n**Etomidate**: **Adrenal Suppression** (inhibits 11$\beta$-hydroxylase).\n**Ketamine**: **Emergence Reactions** (hallucinations); ↑ ICP/IOP.",
+        ci: "Etomidate: Septic shock.\nKetamine: Active psychosis.",
+        pk: "Rapid redistribution to fat/muscle limits duration.\nPropofol: Green-colored urine/secretions.",
+        pearl: "**Etomidate** preserves BP but suppresses cortisol.\n**Ketamine** is unique: it increases SNS activity (↑ HR/BP) and causes bronchodilation."
+      },
+      {
+        name: "Inhaled Anesthetics",
+        aka: "Sevoflurane · Desflurane · Isoflurane · Halothane · Nitrous Oxide",
+        summary: "Volatile agents for general anesthesia maintenance.\nCharacterized by **MAC** (potency) and blood-gas solubility (speed).",
+        moa: "Potentiate **GABA-A/Glycine** + inhibit **NMDA**.\nGeneralized CNS depression.",
+        use: "General anesthesia maintenance.\n**Sevoflurane**: Preferred for pediatric mask induction (low pungency).\n**Nitrous Oxide**: Analgesia in dentistry/obstetrics.",
+        se: "**Malignant Hyperthermia** (triggered by all except $N_2O$).\n**Halothane**: Massive hepatic necrosis.\n**Nitrous Oxide**: Expansion of gas-filled cavities (pneumothorax/bowel obstruction).",
+        ci: "**Malignant Hyperthermia** history.\n$N_2O$: **Bowel obstruction**; Pneumothorax.",
+        pk: "Speed of induction: Low Blood-Gas solubility = Fast induction/recovery.\nPotency: Low **MAC** = High lipid solubility = High potency.",
+        pearl: "**Malignant Hyperthermia**: Ryanodine receptor mutation → uncontrolled $Ca^{2+}$ release.\n**Treatment**: Dantrolene (blocks RyR1)."
+      },
+      {
+        name: "Barbiturates",
+        aka: "Phenobarbital · Thiopental · Methohexital · Pentobarbital · Secobarbital · Primidone",
+        summary: "Potentiate **GABA-A** by increasing $Cl^-$ channel open duration.\nNarrow therapeutic window; high lethality in overdose.",
+        moa: "Bind **GABA-A** receptor.\n↑ **Duration** of $Cl^-$ channel opening.\nCan open channel directly without GABA at high doses.",
+        use: "**Phenobarbital**: Neonatal seizures; status epilepticus.\n**Thiopental**: Rapid induction (ultra-short action due to redistribution).\n**Pentobarbital**: Refractory elevated ICP.",
+        se: "**Severe Respiratory Depression** (no reversal agent).\n**Potent CYP450 Induction**.\n**Cardiovascular depression**.",
+        ci: "**Porphyria** (↑ heme synthesis enzymes → precipitates attacks).",
+        pk: "Phenobarbital: $t_{1/2}$ ~4 days.\nThiopental: Ultra-short duration due to **redistribution** into fat.",
+        pearl: "**Barbiturates = Duration**; **Benzos = Frequency**.\nPorphyria contraindication is a classic Step 1 trap."
       }
     ]
-  }
+  },
+  {
+    group: "Analgesics",
+    drugs: [
+      {
+        name: "Opioid Analgesics",
+        aka: "Morphine · Oxycodone · Hydrocodone · Fentanyl · Hydromorphone · Codeine · Tramadol · Methadone · Meperidine",
+        summary: "Agonists at **$\mu, \kappa, \delta$** receptors for moderate-to-severe pain.\nPrimary risks: respiratory depression, constipation, and addiction.",
+        moa: "Open **$K^+$ channels** (hyperpolarization) + close **$Ca^{2+}$ channels**.\n↓ synaptic transmission and neurotransmitter release (Glutamate, $ACh$, $NE$).",
+        use: "Pain management; Palliative care.\n**Codeine**: Cough suppression.\n**Loperamide**: Diarrhea.\n**Methadone**: Opioid Use Disorder maintenance.",
+        se: "**Respiratory Depression** (cause of death in overdose).\n**Constipation** (Tolerance does NOT develop).\n**Miosis** (Pinpoint pupils; Tolerance does NOT develop).\n**Meperidine**: Seizures (normeperidine accumulation in renal failure).\n**Tramadol**: Serotonin syndrome; lowers seizure threshold.",
+        ci: "**MAOIs** (Serotonin syndrome with Meperidine/Tramadol).\n**Head trauma** (↑ ICP due to $CO_2$ retention).",
+        pk: "Morphine: Active metabolite **M6G** accumulates in renal failure.\nCodeine: Prodrug activated by **CYP2D6**.\n**Reversal**: Naloxone (short $t_{1/2}$).",
+        pearl: "**The Two No-Tolerance SEs**: Miosis and Constipation.\nAlways prescribe a bowel regimen with chronic opioids."
+      },
+      {
+        name: "NSAIDs (Non-Opioid Analgesics)",
+        aka: "Ibuprofen · Naproxen · Indomethacin · Ketorolac · Diclofenac · Celecoxib · Acetaminophen",
+        summary: "Inhibit **Cyclooxygenase (COX)** to ↓ prostaglandin synthesis.\nAnalgesic, antipyretic, and anti-inflammatory.",
+        moa: "**NSAIDs**: Reversible inhibition of **COX-1 and COX-2**.\n**Celecoxib**: Selective **COX-2** inhibitor (spares GI mucosa).\n**Acetaminophen**: Central COX inhibitor (No peripheral anti-inflammatory effect).",
+        use: "**Indomethacin**: Acute Gout; Patent Ductus Arteriosus (PDA) closure.\n**Ketorolac**: Severe acute pain (limit to 5 days).\n**Celecoxib**: Osteoarthritis/RA in patients with GI ulcers.\n**Acetaminophen**: First-line for pain/fever in pregnancy/children.",
+        se: "**NSAIDs**: GI ulcers; **Renal Toxicity** (afferent vasoconstriction via ↓ $PGE_2$); **Hyperkalemia**.\n**Celecoxib**: ↑ Risk of MI/Stroke.\n**Acetaminophen**: **Hepatotoxicity** (NAPQI metabolite depletes Glutathione).",
+        ci: "NSAIDs: **CKD**; **3rd Trimester** (premature DA closure).\nAcetaminophen: Severe liver disease.",
+        pk: "Acetaminophen Antidote: **N-acetylcysteine** (replenishes glutathione).",
+        pearl: "**Aspirin-Exacerbated Respiratory Disease (AERD)**: NSAIDs shift arachidonic acid to the Leukotriene pathway.\n**Acetaminophen** is the drug of choice for fever in children to avoid Reye Syndrome."
+      },
+      {
+        name: "Naloxone, Naltrexone & Buprenorphine",
+        aka: "Naloxone · Naltrexone · Buprenorphine · Suboxone",
+        summary: "Opioid receptor modulators for overdose reversal and addiction treatment.",
+        moa: "**Naloxone/Naltrexone**: Competitive **$\mu$-receptor** antagonists.\n**Buprenorphine**: **Partial $\mu$-agonist** with high affinity.",
+        use: "**Naloxone**: Acute opioid overdose (short-acting).\n**Naltrexone**: Alcohol and Opioid dependence; ↓ cravings.\n**Buprenorphine**: Opioid maintenance therapy (gold standard).",
+        se: "**Precipitated Withdrawal**: Buprenorphine (displaces full agonists).\nNaltrexone: Hepatotoxicity.",
+        ci: "Naltrexone: Current opioid use.",
+        pk: "Naloxone: $t_{1/2}$ ~1 hr (shorter than most opioids; monitor for re-sedation).\nBuprenorphine: Ceiling effect on respiratory depression.",
+        pearl: "**Suboxone** (Buprenorphine + Naloxone): Naloxone is only active if injected, preventing IV abuse.\n**Alcohol**: Naltrexone reduces the 'reward' of drinking."
+      },
+    ]
+  },
+  {
+    group: "Antidepressants",
+    drugs: [
+      {
+        name: "SSRIs & SNRIs",
+        aka: "Fluoxetine · Sertraline · Escitalopram · Paroxetine · Citalopram | Venlafaxine · Duloxetine",
+        summary: "First-line agents for Depression, Anxiety, PTSD, and OCD.",
+        moa: "Block **SERT (5-HT)** and/or **NET (NE)** reuptake transporters.\nRequires weeks for clinical effect due to autoreceptor downregulation.",
+        use: "MDD, GAD, OCD, PTSD.\n**Duloxetine**: Diabetic neuropathy and Fibromyalgia.\n**Fluoxetine**: Bulimia nervosa.",
+        se: "**Sexual Dysfunction** (most common reason for stopping).\n**Serotonin Syndrome** (hyperreflexia, clonus, diarrhea).\n**SIADH** (especially in elderly).\n**QTc Prolongation**: Citalopram.",
+        ci: "**MAOIs** within 14 days (fatal serotonin syndrome).",
+        pk: "**Fluoxetine**: Longest $t_{1/2}$ (~5 days); self-tapers.\n**Paroxetine**: Shortest $t_{1/2}$; worst discontinuation syndrome.",
+        pearl: "**Serotonin Syndrome vs. NMS**: Serotonin syndrome has **Clonus/Hyperreflexia**; NMS has **Lead-pipe Rigidity**.\nTreatment for Serotonin Syndrome: Cyproheptadine."
+      },
+      {
+        name: "Tricyclic Antidepressants (TCAs)",
+        aka: "Amitriptyline · Nortriptyline · Imipramine · Desipramine · Clomipramine · Doxepin",
+        summary: "Multi-receptor blockers used for neuropathic pain and refractory depression.\nHigh toxicity in overdose.",
+        moa: "Block **SERT** and **NET**.\nAlso block: **$\alpha_1$** (hypotension), **$H_1$** (sedation), **Muscarinic** (anticholinergic), and **Cardiac $Na^+$ channels**.",
+        use: "**Neuropathic Pain**: Amitriptyline/Nortriptyline.\n**Enuresis**: Imipramine.\n**OCD**: Clomipramine.",
+        se: "**The 3 Cs**: **C**ardiotoxicity (QRS widening), **C**onvulsions, **C**oma.\n**Anticholinergic** effects (dry mouth, retention, confusion).\n**Orthostatic Hypotension**.",
+        ci: "**Recent MI**; Pro-arrhythmic risk.",
+        pk: "Nortriptyline is less likely to cause orthostatic hypotension (secondary amine).",
+        pearl: "**Overdose Treatment**: Sodium Bicarbonate ($NaHCO_3$).\n$NaHCO_3$ outcompetes TCA for $Na^+$ channels and shrinks the QRS."
+      },
+      {
+        name: "MAO Inhibitors (MAOIs)",
+        aka: "Phenelzine · Tranylcypromine · Isocarboxazid · Selegiline",
+        summary: "Inhibit monoamine oxidase to increase synaptic monoamines.\nReserved for refractory or atypical depression.",
+        moa: "Irreversible inhibition of **MAO-A** (NE, 5-HT) and **MAO-B** (Dopamine).\nSelegiline: Selective for **MAO-B** at low doses.",
+        use: "Refractory or Atypical depression (mood reactivity, hyperphagia, hypersomnia).\n**Selegiline**: Parkinson disease adjunct.",
+        se: "**Hypertensive Crisis**: 'Cheese reaction' due to **Tyramine** intake.\n**Serotonin Syndrome**.\nWeight gain; Orthostatic hypotension.",
+        ci: "**Serotonergic drugs** (SSRI, SNRI, TCA, Meperidine).\n**Tyramine-rich foods** (Aged cheese, wine, cured meats).",
+        pk: "14-day washout period required when switching antidepressants.\n5-week washout for Fluoxetine.",
+        pearl: "**Hypertensive Crisis Treatment**: Phentolamine ($\alpha$-blocker).\nTyramine causes massive release of stored Norepinephrine."
+      },
+      {
+        name: "Atypical Antidepressants",
+        aka: "Bupropion · Mirtazapine · Trazodone · Vilazodone · Vortioxetine",
+        summary: "Mechanistically diverse alternatives to SSRIs.",
+        moa: "**Bupropion**: Inhibits **DAT** and **NET**.\n**Mirtazapine**: **$\alpha_2$-antagonist** (↑ NE/5-HT) + **$H_1$** antagonist.\n**Trazodone**: Blocks **5-HT2**, **$H_1$**, and **$\alpha_1$** receptors.",
+        use: "**Bupropion**: MDD; Smoking cessation; **No sexual side effects**.\n**Mirtazapine**: MDD with insomnia/weight loss (elderly).\n**Trazodone**: Insomnia.",
+        se: "**Bupropion**: **Seizures** (dose-dependent).\n**Mirtazapine**: Sedation and **Weight Gain**.\n**Trazodone**: **Priapism** ('Trazobone').",
+        ci: "**Bupropion**: **Eating Disorders** (Bulimia/Anorexia) due to seizure risk.",
+        pk: "Trazodone causes orthostatic hypotension via $\alpha_1$ blockade.",
+        pearl: "**Bupropion** is the antidepressant that does **NOT cause sexual dysfunction** or weight gain."
+      },
+    ]
+  },
+  {
+    group: "Mood Stabilizers",
+    drugs: [
+      {
+        name: "Lithium",
+        aka: "Lithium Carbonate",
+        summary: "First-line for Bipolar Mania and Maintenance.\nReduces suicide risk in Bipolar Disorder.",
+        moa: "Inhibits **Inositol Monophosphatase** pathway.\nModulates multiple neurotransmitter systems.",
+        use: "**Bipolar Disorder**: Acute mania and long-term prophylaxis.\n**SIADH**: Used to induce nephrogenic DI.",
+        se: "**The 5 L's**: **L**ithium, **L**ow Thyroid (hypothyroidism), **L**eukocytosis, **L**imp (tremor), **L**ots of urine (NDI).\n**Teratogenic**: **Ebstein Anomaly** (tricuspid displacement).\nFine hand tremor.",
+        ci: "**Thiazide Diuretics/NSAIDs**: ↓ Lithium clearance → **Toxicity**.\n**Pregnancy** (especially 1st trimester).",
+        pk: "Exclusively renally excreted.\nBehaves like **Sodium**; reabsorbed in the Proximal Tubule.\nNarrow therapeutic index: **0.6–1.2 mEq/L**.",
+        pearl: "**Lithium Toxicity**: Coarse tremor, ataxia, seizures.\nTreatment for severe toxicity: Hemodialysis."
+      },
+    ]
+  },
+  {
+    group: "Antiepileptics",
+    drugs: [
+      {
+        name: "Valproate",
+        aka: "Valproic Acid · Depakote",
+        summary: "**Broad-spectrum** AED for generalized seizures and Mania.",
+        moa: "↑ **GABA** synthesis/↓ degradation + blocks **$Na^+$ channels** + blocks **T-type $Ca^{2+}$ channels**.",
+        use: "Generalized Tonic-Clonic; **Absence Seizures** (if T-type covered); Bipolar Mania; Migraine prophylaxis.",
+        se: "**Hepatotoxicity** (fatal in children); **Pancreatitis**; **Weight Gain**.\n**Highly Teratogenic**: Neural Tube Defects (Spina Bifida).",
+        ci: "**Pregnancy**.",
+        pk: "P450 **Inhibitor**.",
+        pearl: "**Broadest coverage** but **most teratogenic**."
+      },
+      {
+        name: "Phenytoin",
+        aka: "Phenytoin · Dilantin · Fosphenytoin",
+        summary: "Voltage-gated $Na^+$ channel blocker for tonic-clonic seizures.",
+        moa: "Blocks **$Na^+$ channels** in the inactivated state.\nUse-dependent block.",
+        use: "Tonic-clonic seizures; **Status Epilepticus** (maintenance after Benzos).",
+        se: "**Hirsutism**, **Gingival Hyperplasia**, **Facial Coarsening**.\n**Nystagmus** and **Ataxia** (signs of toxicity).\n**Fetal Hydantoin Syndrome**.",
+        ci: "Heart block.",
+        pk: "**Zero-order kinetics** at high doses; Potent **P450 Inducer**.",
+        pearl: "Gingival hyperplasia occurs via ↑ PDGF secretion."
+      },
+      {
+        name: "Carbamazepine",
+        aka: "Carbamazepine · Tegretol",
+        summary: "$Na^+$ channel blocker for focal seizures and Trigeminal Neuralgia.",
+        moa: "Blocks **$Na^+$ channels**.",
+        use: "Focal seizures; **Trigeminal Neuralgia** (first-line).",
+        se: "**SIADH** (hyponatremia); **Aplastic Anemia**; **SJS/TEN** (HLA-B*1502).",
+        ci: "HLA-B*1502 (Asian ancestry).",
+        pk: "Potent **P450 Inducer**; **Autoinduction** (induces its own metabolism).",
+        pearl: "Always screen for **HLA-B*1502** in Asian patients due to SJS risk."
+      },
+      {
+        name: "Lamotrigine",
+        aka: "Lamotrigine · Lamictal",
+        summary: "Broad-spectrum AED; first-line for Bipolar Depression.",
+        moa: "Blocks **$Na^+$ channels** and inhibits **Glutamate** release.",
+        use: "Epilepsy; **Bipolar Depression**.",
+        se: "**SJS/TEN** (Rash — start low, go slow).",
+        ci: "History of SJS.",
+        pk: "$t_{1/2}$ doubled by Valproate.",
+        pearl: "**Valproate + Lamotrigine** significantly ↑ SJS risk."
+      },
+      {
+        name: "Ethosuximide",
+        aka: "Ethosuximide · Zarontin",
+        summary: "Drug of choice for **Absence Seizures**.",
+        moa: "Blocks **T-type $Ca^{2+}$ channels** in the Thalamus.",
+        use: "**Childhood Absence Epilepsy**.",
+        se: "**EFGHIJ**: **E**thosuximide, **F**atigue, **G**I, **H**eadache, **I**tching, **J**aundice (SJS).",
+        ci: "Tonic-clonic seizures (ineffective).",
+        pk: "Hepatic metabolism.",
+        pearl: "Does **NOT** treat tonic-clonic seizures; only staring spells."
+      },
+      {
+        name: "Topiramate",
+        aka: "Topiramate · Topamax",
+        summary: "Broad-spectrum AED used for Migraine prophylaxis and Weight Loss.",
+        moa: "Blocks **$Na^+$ channels** + ↑ **GABA** + blocks **AMPA** (Glutamate).",
+        use: "Seizures; Migraine prophylaxis; Obesity (with Phentermine).",
+        se: "**Cognitive dulling** ('Dopamax'); **Weight Loss**; **Kidney Stones**.",
+        ci: "Nephrolithiasis.",
+        pk: "Carbonic anhydrase inhibition → Metabolic Acidosis.",
+        pearl: "Causes word-finding difficulties and memory impairment."
+      },
+      {
+        name: "Levetiracetam",
+        aka: "Levetiracetam · Keppra",
+        summary: "Modern broad-spectrum AED with minimal drug interactions.",
+        moa: "Binds **SV2A** synaptic vesicle protein → ↓ neurotransmitter release.",
+        use: "Generalized and focal seizures; Status Epilepticus.",
+        se: "**Irritability/Aggression** ('Keppra Rage').",
+        ci: "Psychosis history.",
+        pk: "Renally cleared; No CYP450 interactions.",
+        pearl: "B6 (Pyridoxine) may reduce behavioral side effects."
+      },
+      {
+        name: "Gabapentin, Tiagabine & Vigabatrin",
+        aka: "Gabapentin · Pregabalin · Tiagabine · Vigabatrin",
+        summary: "GABA-ergic agents used for seizures and Neuropathic Pain.",
+        moa: "**Gabapentin/Pregabalin**: Block **$\alpha_2\delta$ $Ca^{2+}$ channels**.\n**Vigabatrin**: Irreversible **GABA-T** inhibitor.",
+        use: "Neuropathic pain (first-line); Infantile Spasms (Vigabatrin).",
+        se: "**Vigabatrin**: **Permanent Visual Field Loss** (Black Box).\nGabapentin: Sedation/Edema.",
+        ci: "Pre-existing vision issues.",
+        pk: "Gabapentin has saturable absorption (non-linear).",
+        pearl: "Gabapentin does **NOT** bind GABA receptors despite its name."
+      },
+    ]
+  },
+  {
+    group: "Antipsychotics",
+    drugs: [
+      {
+        name: "Antipsychotics — First Generation (FGAs)",
+        aka: "Haloperidol · Chlorpromazine · Fluphenazine · Thioridazine",
+        summary: "**D2 Antagonists** primarily for positive symptoms of Schizophrenia.",
+        moa: "Competitive **D2 blockade** in the mesolimbic pathway.",
+        use: "Schizophrenia; Acute agitation; Tourette syndrome.",
+        se: "**EPS**: Dystonia (hrs), Akathisia (days), Parkinsonism (wks), Tardive Dyskinesia (yrs).\n**NMS**: Hyperthermia + Rigidity (Dantrolene).\n**Hyperprolactinemia**.",
+        ci: "Parkinson Disease.",
+        pk: "High-potency (Haloperidol) = ↑ EPS; Low-potency (Chlorpromazine) = ↑ Autonomic SE.",
+        pearl: "Chlorpromazine causes corneal deposits; Thioridazine causes retinal deposits."
+      },
+      {
+        name: "Antipsychotics — Second Generation (SGAs / Atypicals)",
+        aka: "Clozapine · Olanzapine · Risperidone · Quetiapine · Aripiprazole",
+        summary: "**5-HT2 / D2 Antagonists** with fewer motor side effects.",
+        moa: "**5-HT2A** + **D2** antagonism; Aripiprazole: **D2 partial agonist**.",
+        use: "Schizophrenia (positive + negative symptoms); **Clozapine**: Treatment-resistant Schizophrenia.",
+        se: "**Metabolic Syndrome** (Weight gain/DM/Lipids) — Olanzapine/Clozapine.\n**Clozapine**: **Agranulocytosis** (Weekly CBC) and **Myocarditis**.\n**Risperidone**: Hyperprolactinemia.",
+        ci: "Clozapine: ANC <1500.",
+        pk: "Quetiapine is safest for Parkinson psychosis.",
+        pearl: "**Clozapine** is the only drug proven to ↓ suicide in Schizophrenia."
+      },
+    ]
+  },
+  {
+    group: "Parkinson's Agents",
+    drugs: [
+      {
+        name: "Levodopa / Carbidopa",
+        aka: "Sinemet",
+        summary: "**Gold Standard** for Parkinson Disease.",
+        moa: "Levodopa: **Dopamine precursor** crosses BBB.\nCarbidopa: **DOPA-decarboxylase inhibitor** (peripheral only).",
+        use: "Parkinson motor symptoms.",
+        se: "**Wearing-off** (end-of-dose); **On-off** phenomenon; **Dyskinesias**.",
+        ci: "Non-selective MAOIs.",
+        pk: "High-protein meals ↓ absorption.",
+        pearl: "Carbidopa allows more Levodopa to reach the brain while ↓ peripheral SE (nausea)."
+      },
+      {
+        name: "Dopamine Agonists (Parkinson's)",
+        aka: "Pramipexole · Ropinirole · Bromocriptine",
+        summary: "Directly activate Dopamine receptors.",
+        moa: "Agonists at **D2/D3** receptors.",
+        use: "Parkinson (initial monotherapy in young); **Restless Legs Syndrome**.",
+        se: "**Impulse Control Disorders** (Gambling, shopping).",
+        ci: "Psychosis history.",
+        pk: "Ropinirole is non-ergot; Bromocriptine is ergot (fibrosis risk).",
+        pearl: "Pramipexole and Ropinirole are first-line for RLS."
+      },
+      {
+        name: "Entacapone & Tolcapone (COMT Inhibitors)",
+        aka: "Entacapone · Tolcapone",
+        summary: "Extend Levodopa duration by blocking degradation.",
+        moa: "Inhibit **COMT**; ↓ peripheral (Entacapone) or central/peripheral (Tolcapone) Levodopa metabolism.",
+        use: "Adjunct to Levodopa for 'wearing-off'.",
+        se: "**Tolcapone**: Fatal **Hepatotoxicity**.\n**Entacapone**: Orange urine (benign).",
+        ci: "Liver disease (Tolcapone).",
+        pk: "Always give with Levodopa.",
+        pearl: "Entacapone is preferred due to lack of liver risk."
+      },
+    ]
+  },
+  {
+    group: "CNS Stimulants",
+    drugs: [
+      {
+        name: "Amphetamines & Methylphenidate",
+        aka: "Adderall · Ritalin · Vyvanse",
+        summary: "Schedule II stimulants for ADHD and Narcolepsy.",
+        moa: "Force release of **NE** and **Dopamine** (reverse transporter) + block reuptake.",
+        use: "ADHD; Narcolepsy; Binge eating.",
+        se: "**Insomnia**, **Anorexia**, Weight loss; Hypertension; Tachycardia.",
+        ci: "MAOIs; Cardiovascular disease.",
+        pk: "Methylphenidate has a shorter $t_{1/2}$ than amphetamines.",
+        pearl: "Monitor growth (height/weight) in children."
+      },
+    ]
+  },
+  {
+    group: "Headache / Migraine",
+    drugs: [
+      {
+        name: "Sumatriptan (Triptans)",
+        aka: "Sumatriptan · Imitrex",
+        summary: "First-line acute treatment for severe Migraine.",
+        moa: "**5-HT1B/1D** agonists → Cranial **Vasoconstriction** + ↓ trigeminal inflammation.",
+        use: "Acute Migraine; Cluster Headache (SC).",
+        se: "**Chest pressure/tightness** ('Triptan sensations').",
+        ci: "**CAD**; **Prinzmetal Angina**; **Pregnancy**; Stroke history.",
+        pk: "Short acting ($t_{1/2}$ ~2 hr).",
+        pearl: "Absolute CI in CAD due to coronary vasospasm risk."
+      },
+    ]
+  },
 ],
 
 micro: [
