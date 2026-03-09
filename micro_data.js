@@ -582,7 +582,7 @@ viruses: [
       organisms: [
         {
           name: "HSV-1 and HSV-2",
-          summary: "dsDNA, enveloped; latent in sensory ganglia; HSV-1: oral herpes, encephalitis (temporal lobe); HSV-2: genital; acyclovir",
+          summary: "Latent in sensory ganglia; HSV-1: oral herpes, temporal lobe encephalitis; HSV-2: genital herpes; acyclovir",
           gram: "dsDNA, enveloped (Herpesviridae)",
           virulence: "**Glycoproteins (gB, gC, gD)** mediate cell entry via heparan sulfate. **Viral thymidine kinase (TK):** phosphorylates acyclovir. **LAT (latency-associated transcripts):** maintain latency in neurons.",
           disease: "**HSV-1:** primary gingivostomatitis, herpes labialis, keratoconjunctivitis (dendritic corneal ulcers), **herpes encephalitis** (temporal lobe). **HSV-2:** genital herpes, **neonatal herpes** (disseminated or CNS). **Both:** esophagitis, herpetic whitlow.",
@@ -592,7 +592,7 @@ viruses: [
         },
         {
           name: "VZV (HHV-3) - Varicella-Zoster Virus",
-          summary: "dsDNA, enveloped; chickenpox (primary); latent in DRG → shingles; Ramsay Hunt (CN VII); tzanck smear; acyclovir",
+          summary: "Chickenpox (primary airborne); latent in DRG → shingles; Ramsay Hunt (CN VII); Tzanck smear; acyclovir",
           gram: "dsDNA, enveloped (Herpesviridae)",
           virulence: "Highly contagious via **airborne and droplet contact**. Establishes **latency in dorsal root ganglia** (sensory).",
           disease: "**Varicella (chickenpox):** pruritic rash (papules → vesicles → crusts) with **all stages simultaneously present**. **Herpes zoster (shingles):** reactivation in single dermatome, post-herpetic neuralgia. **Zoster ophthalmicus (V1):** Hutchinson's sign. **Ramsay Hunt syndrome:** reactivation in geniculate ganglion causing CN VII palsy.",
@@ -602,7 +602,7 @@ viruses: [
         },
         {
           name: "EBV (HHV-4) - Epstein-Barr Virus",
-          summary: "dsDNA, enveloped; mono (fever, pharyngitis, LAD); heterophile ab (Monospot); atypical lymphocytes; ampicillin rash; Burkitt/nasopharyngeal CA",
+          summary: "Mono (fever, pharyngitis, LAD); heterophile ab (Monospot); atypical lymphocytes; ampicillin rash; Burkitt/nasopharyngeal CA",
           gram: "dsDNA, enveloped (Herpesviridae)",
           virulence: "Infects **B cells via CD21**. **EBNA** and **LMP** immortalize B cells and drive lymphomagenesis. Infects oropharyngeal epithelium first, then B cells.",
           disease: "**Infectious mononucleosis:** fever, **exudative pharyngitis**, **posterior cervical lymphadenopathy**, **splenomegaly**, profound fatigue. **EBV-associated malignancies:** Burkitt lymphoma (endemic African, jaw mass), CNS lymphoma (HIV CD4 <50), nasopharyngeal carcinoma, Hodgkin lymphoma (mixed cellularity).",
@@ -612,7 +612,7 @@ viruses: [
         },
         {
           name: "CMV (HHV-5) - Cytomegalovirus",
-          summary: "dsDNA, enveloped; owl-eye inclusions; congenital CMV; immunocompromised → retinitis, esophagitis, colitis; ganciclovir",
+          summary: "Owl-eye intranuclear inclusions; congenital CMV; immunocompromised → retinitis, esophagitis, colitis; ganciclovir",
           gram: "dsDNA, enveloped (Herpesviridae largest herpesvirus)",
           virulence: "Latent in **mononuclear cells (monocytes, CD34+ progenitors)**. Downregulates MHC class I.",
           disease: "**Congenital CMV:** periventricular calcifications, sensorineural hearing loss, chorioretinitis, thrombocytopenic petechiae. **Immunocompromised (HIV/transplant):** **CMV retinitis** (CD4 <50, 'pizza pie fundus'), **esophagitis** (linear ulcers), colitis. **Healthy adults:** heterophile-negative mononucleosis.",
@@ -622,7 +622,7 @@ viruses: [
         },
         {
           name: "HHV-6 - Roseola",
-          summary: "dsDNA, enveloped; roseola infantum — high fever 3–5 days → defervescence → truncal rash; febrile seizures; #1 cause in infants",
+          summary: "Roseola infantum — high fever 3–5 days → sudden defervescence → truncal rash; febrile seizures; #1 cause in infants",
           gram: "dsDNA, enveloped (Herpesviridae)",
           virulence: "Infects **CD4+ T cells and monocytes** via CD46 receptor. Can integrate into host chromosomal telomeres. Reactivates with immunosuppression.",
           disease: "**Roseola infantum:** high fever (39-40°C) for 3-5 days in an infant who appears remarkably well. Sudden fever break is followed by a rose-colored blanching macular rash on the trunk. **Febrile seizures** common during fever phase. **Transplant recipients:** limbic encephalitis, hepatitis.",
@@ -632,7 +632,7 @@ viruses: [
         },
         {
           name: "HHV-8 - Kaposi Sarcoma Herpesvirus",
-          summary: "dsDNA, enveloped; Kaposi's sarcoma (violaceous lesions) in AIDS/transplant; primary effusion lymphoma; multicentric Castleman",
+          summary: "Kaposi's sarcoma (violaceous lesions) in AIDS/transplant; primary effusion lymphoma; multicentric Castleman disease",
           gram: "dsDNA, enveloped (Herpesviridae)",
           virulence: "**Viral oncogenes:** v-cyclin, v-FLIP, vIL-6. **VEGF upregulation** causes abnormal vascular proliferation. Infects B cells and endothelial cells.",
           disease: "**Kaposi's sarcoma (KS):** violaceous vascular skin lesions. **AIDS-KS:** widespread skin, **hard palate** (pathognomonic location), visceral involvement. **Primary effusion lymphoma (PEL):** B-cell lymphoma growing in body cavities without solid tumor mass. **Multicentric Castleman disease.**",
@@ -648,7 +648,7 @@ viruses: [
       organisms: [
         {
           name: "Polyomavirus (JC Virus & BK Virus)",
-          summary: "dsDNA, non-enveloped; latent in kidneys; JC → PML in AIDS; BK → hemorrhagic cystitis/nephropathy in transplant",
+          summary: "Latent in kidneys; JC → PML in AIDS; BK → hemorrhagic cystitis/nephropathy in transplant",
           gram: "dsDNA, non-enveloped (Polyomaviridae)",
           virulence: "Latent in kidney tubular epithelium. JC virus is also latent in oligodendrocytes. Reactivation destroys host cells.",
           disease: "**JC virus → PML (Progressive Multifocal Leukoencephalopathy):** AIDS (CD4 <100) or natalizumab therapy. Rapidly progressive multifocal neurological deficits, no fever. **BK virus:** renal transplant → hemorrhagic cystitis and BK nephropathy.",
@@ -658,7 +658,7 @@ viruses: [
         },
         {
           name: "HPV (Human Papillomavirus)",
-          summary: "dsDNA, non-enveloped; low-risk (6, 11: warts); high-risk (16, 18: cervical/oropharyngeal CA); E6 degrades p53, E7 inactivates Rb",
+          summary: "Low-risk (6, 11: warts); high-risk (16, 18: cervical/oropharyngeal CA); E6 degrades p53, E7 inactivates Rb; koilocytes",
           gram: "dsDNA, non-enveloped (Papillomaviridae)",
           virulence: "**E6 oncoprotein:** targets **p53** for degradation. **E7 oncoprotein:** inactivates **Rb**. **Integration of HPV DNA** into the host genome disrupts the E2 repressor, driving unregulated E6/E7 expression.",
           disease: "**Low-risk (6, 11):** condylomata acuminata (anogenital warts), recurrent respiratory papillomatosis. **High-risk (16, 18):** cervical carcinoma, oropharyngeal carcinoma (tonsils, base of tongue), anal carcinoma. **CIN:** precursor to invasive cervical cancer.",
@@ -668,7 +668,7 @@ viruses: [
         },
         {
           name: "Parvovirus B19",
-          summary: "ssDNA, non-enveloped; smallest DNA virus; slapped cheek/erythema infectiosum; aplastic crisis in sickle cell; hydrops fetalis",
+          summary: "Smallest DNA virus; slapped cheek/erythema infectiosum in children; aplastic crisis in sickle cell; hydrops fetalis",
           gram: "ssDNA, non-enveloped (Parvoviridae)",
           virulence: "Infects **erythroid progenitor cells** via the **P antigen (globoside)** receptor. Cytopathic effect causes transient arrest of erythropoiesis.",
           disease: "**Erythema infectiosum (Fifth disease):** 'slapped cheek' facial rash followed by a lacy reticular rash on the trunk. **Adults:** symmetric polyarthropathy mimicking rheumatoid arthritis. **Sickle cell/hemolytic anemia:** **aplastic crisis** (sudden severe drop in reticulocytes). **Pregnancy:** fetal anemia leading to **hydrops fetalis**.",
@@ -678,7 +678,7 @@ viruses: [
         },
         {
           name: "Adenovirus",
-          summary: "dsDNA, non-enveloped; pharyngoconjunctival fever, epidemic keratoconjunctivitis, pneumonia in military recruits, hemorrhagic cystitis",
+          summary: "Pharyngoconjunctival fever, epidemic keratoconjunctivitis, pneumonia in military recruits, hemorrhagic cystitis",
           gram: "dsDNA, non-enveloped (Adenoviridae)",
           virulence: "**Fiber protein** binds CAR receptor. **Penton base** mediates endosome escape. Non-enveloped structure makes it highly **resistant to lipid solvents, alcohol, and desiccation**.",
           disease: "**Pharyngoconjunctival fever (PCF):** fever, pharyngitis, and follicular conjunctivitis linked to swimming pools. **Epidemic keratoconjunctivitis (EKC):** severe contagious conjunctivitis with corneal infiltrates. **Pneumonia:** severe atypical pneumonia in military recruits. **Hemorrhagic cystitis:** in immunocompromised transplant patients. **Intussusception:** in children (acts as a lead point).",
@@ -688,7 +688,7 @@ viruses: [
         },
         {
           name: "Poxvirus (Smallpox & Molluscum Contagiosum)",
-          summary: "dsDNA, enveloped; largest/most complex; replicates in cytoplasm; smallpox (eradicated); molluscum contagiosum (umbilicated papules)",
+          summary: "Largest/most complex virus; replicates in cytoplasm; smallpox (eradicated); molluscum contagiosum (umbilicated papules)",
           gram: "dsDNA, enveloped (Poxviridae)",
           virulence: "**Replicates entirely in host cell cytoplasm** because it carries its own DNA-dependent RNA polymerase and DNA polymerase. **Guarnieri bodies:** cytoplasmic inclusion factories.",
           disease: "**Smallpox (variola):** synchronous pustular rash starting on the face and extremities and spreading to the trunk (centrifugal), involves palms and soles. **Molluscum contagiosum:** pearly, dome-shaped, **umbilicated papules** (central dimple). **Mpox (monkeypox):** zoonotic, rash similar to smallpox, prominent lymphadenopathy.",
@@ -698,7 +698,7 @@ viruses: [
         },
         {
           name: "Hepatitis B (HBV) & Hepatitis D (HDV)",
-          summary: "HBV: partially dsDNA, reverse transcriptase; chronic hepatitis → cirrhosis → HCC; HDV: defective ssRNA — requires HBsAg to package",
+          summary: "HBV: reverse transcriptase, chronic hepatitis → cirrhosis → HCC; HDV: defective — requires HBsAg; tenofovir/entecavir",
           gram: "HBV: partially dsDNA, enveloped (Hepadnaviridae). HDV: ssRNA (-), enveloped (requires HBV HBsAg)",
           virulence: "**HBV reverse transcriptase:** replicates via RNA intermediate. **cccDNA (covalently closed circular DNA):** stable nuclear reservoir that prevents total cure. **HBxAg:** promotes host gene expression and hepatocellular carcinoma (HCC). **HDV:** cannot infect cells without utilizing HBV's surface antigen for its own envelope.",
           disease: "**Acute HBV:** flu-like illness, jaundice, immune-complex arthralgias/rash. **Chronic HBV:** high risk in perinatally infected infants. **Complications:** cirrhosis, **HCC** (can develop without cirrhosis), polyarteritis nodosa (PAN), membranous nephropathy. **HDV superinfection:** chronic HBV carrier acquires HDV, leading to rapidly accelerated cirrhosis and fulminant hepatitis.",
@@ -714,7 +714,7 @@ viruses: [
     organisms: [
       {
         name: "Picornaviruses - Overview (Enteroviruses)",
-        summary: "ssRNA(+), non-enveloped; smallest RNA virus; fecal-oral (except rhinovirus); acid-stable; includes polio, coxsackie, HAV, rhinovirus, echo",
+        summary: "Smallest RNA virus; fecal-oral (except rhinovirus); acid-stable; includes polio, coxsackie, HAV, rhinovirus, echovirus",
         gram: "ssRNA (+), non-enveloped (Picornaviridae)",
         virulence: "**Non-enveloped:** acid-stable (survive stomach pH, enabling fecal-oral transmission and GI replication). **IRES (internal ribosome entry site):** cap-independent translation. Not killed by alcohol-based hand sanitizers.",
         disease: "Family includes: **Enteroviruses** (poliovirus, coxsackievirus, echovirus), **Rhinovirus** (acid-labile, respiratory), **Hepatovirus** (HAV). Diseases range from aseptic meningitis, encephalitis, myocarditis, HFMD, polio, to hepatitis A.",
@@ -724,7 +724,7 @@ viruses: [
       },
       {
         name: "Poliovirus",
-        summary: "ssRNA(+), non-enveloped, fecal-oral; infects anterior horn neurons → asymmetric flaccid paralysis; IPV (Salk, injected) vs OPV (Sabin, oral)",
+        summary: "Fecal-oral; infects anterior horn neurons → asymmetric flaccid paralysis; IPV (Salk, injected) vs OPV (Sabin, oral)",
         gram: "ssRNA (+), non-enveloped (Enterovirus)",
         virulence: "Fecal-oral transmission → replicates in oropharynx and GI mucosa → viremia → CNS spread → destroys **anterior horn motor neurons**.",
         disease: "**Abortive polio:** fever, GI symptoms. **Non-paralytic aseptic meningitis:** headache, meningismus. **Paralytic polio:** asymmetric flaccid paralysis (areflexia, hypotonia, muscle atrophy, **NO sensory deficit**). **Post-polio syndrome:** progressive new muscle weakness decades later.",
@@ -734,7 +734,7 @@ viruses: [
       },
       {
         name: "Coxsackievirus",
-        summary: "ssRNA(+), non-enveloped; Group A: hand-foot-mouth, herpangina; Group B: myocarditis, pericarditis, pleurodynia (devil's grip)",
+        summary: "Group A: hand-foot-mouth disease, herpangina; Group B: myocarditis, pericarditis, pleurodynia (devil's grip)",
         gram: "ssRNA (+), non-enveloped (Enterovirus)",
         virulence: "**Group B:** uses **CAR (coxsackievirus-adenovirus receptor)**. Infects myocardial cells. **Group A:** tropism for skin and oral mucosa.",
         disease: "**Group A:** Hand-foot-mouth disease (vesicles/ulcers in mouth + rash on palms, soles, buttocks). Herpangina (vesicles/ulcers on soft palate and uvula only). **Group B:** Myocarditis/pericarditis (pleuritic chest pain, elevated troponin, dilated cardiomyopathy). Pleurodynia (Bornholm disease, 'devil's grip').",
@@ -744,7 +744,7 @@ viruses: [
       },
       {
         name: "Rhinovirus",
-        summary: "ssRNA(+), non-enveloped, acid-labile; #1 common cold; ICAM-1 receptor; >100 serotypes; replicates at 33°C (nasal temp)",
+        summary: "#1 common cold; ICAM-1 receptor; >100 serotypes; acid-labile; replicates at 33°C (nasal temp); no vaccine",
         gram: "ssRNA (+), non-enveloped (Enterovirus genus)",
         virulence: "Binds **ICAM-1**. **Acid-labile** (pH <6 destroys it, preventing fecal-oral transmission). Optimal replication at **33°C** (nasal cavity temperature).",
         disease: "**Common cold:** rhinorrhea, nasal congestion, sore throat. Low-grade or no fever. **Complications:** secondary bacterial sinusitis or otitis media. Most common precipitant of asthma exacerbations.",
@@ -754,7 +754,7 @@ viruses: [
       },
       {
         name: "Hepatitis A Virus (HAV)",
-        summary: "ssRNA(+), non-enveloped, fecal-oral; acute self-limited hepatitis; never chronic; shellfish/travel; vaccine available",
+        summary: "Fecal-oral; acute self-limited hepatitis; never chronic; shellfish/travel endemic; vaccine available; no treatment",
         gram: "ssRNA (+), non-enveloped (Hepatovirus)",
         virulence: "Non-enveloped, making it highly **acid-stable and environmentally stable**. Liver injury is primarily immune-mediated (CTL response). Shed in feces before symptoms appear.",
         disease: "**Acute hepatitis:** nausea, vomiting, RUQ pain, jaundice, dark urine, clay-colored stools. Markedly elevated transaminases (ALT > AST). Self-limited in 4-8 weeks. **Never causes chronic hepatitis or HCC.**",
@@ -764,7 +764,7 @@ viruses: [
       },
       {
         name: "Calicivirus (Norovirus)",
-        summary: "ssRNA(+), non-enveloped; #1 epidemic gastroenteritis (cruise ships, nursing homes); ultra-low infectious dose; no vaccine; self-limited",
+        summary: "#1 epidemic gastroenteritis (cruise ships, nursing homes); ultra-low infectious dose; vomiting + diarrhea; self-limited",
         gram: "ssRNA (+), non-enveloped (Caliciviridae)",
         virulence: "Extremely **low infectious dose** (~18 viral particles). **Alcohol-resistant**. Environmentally stable. Uses HBGA (histo-blood group antigens) as a receptor.",
         disease: "**Acute epidemic gastroenteritis:** abrupt onset projectile vomiting, watery non-bloody diarrhea, cramping. Duration is characteristically brief (24-48 hours). Epidemic clusters on cruise ships, nursing homes, schools.",
@@ -774,7 +774,7 @@ viruses: [
       },
       {
         name: "Flavivirus (Dengue, West Nile, Yellow Fever, Zika)",
-        summary: "ssRNA(+), enveloped, mosquito-borne; Dengue (breakbone fever, hemorrhagic); West Nile (encephalitis); Yellow fever (hepatitis); Zika (microcephaly)",
+        summary: "Mosquito-borne; Dengue (breakbone fever, hemorrhagic); West Nile (encephalitis); Yellow fever (hepatitis); Zika (microcephaly)",
         gram: "ssRNA (+), enveloped (Flaviviridae)",
         virulence: "**Aedes mosquito** (Dengue, Yellow Fever, Zika). **Culex mosquito** (West Nile). **Antibody-dependent enhancement (ADE):** prior dengue infection enhances macrophage uptake during secondary infection, causing hemorrhagic fever.",
         disease: "**Dengue ('breakbone fever'):** high fever, severe myalgia/arthralgia, retro-orbital pain, leukopenia, thrombocytopenia. **West Nile:** encephalitis/meningitis with flaccid paralysis in the elderly. **Yellow fever:** fever, jaundice, GI hemorrhage ('black vomit'). **Zika:** mild febrile illness, triggers Guillain-Barré, causes congenital microcephaly.",
@@ -784,7 +784,7 @@ viruses: [
       },
       {
         name: "Hepatitis C Virus (HCV)",
-        summary: "ssRNA(+), enveloped, blood-borne; 80% chronic; #1 cause cirrhosis/liver transplant in US; no vaccine; DAAs (ledipasvir/sofosbuvir)",
+        summary: "Blood-borne; 80% chronic; #1 cause cirrhosis/liver transplant in US; no vaccine; DAAs (ledipasvir/sofosbuvir)",
         gram: "ssRNA (+), enveloped (Flaviviridae)",
         virulence: "**Hypervariable region on E2 glycoprotein** drives rapid antigenic mutation, evading the immune response. **NS3/4A protease, NS5A replication complex, NS5B RNA polymerase** serve as targets for DAAs.",
         disease: "**Acute HCV:** usually asymptomatic. **Chronic HCV (80%):** asymptomatic for decades → progressive fibrosis → cirrhosis → HCC. **Extra-hepatic manifestations:** mixed cryoglobulinemia type II (palpable purpura, arthritis, glomerulonephritis), porphyria cutanea tarda, lichen planus.",
@@ -794,7 +794,7 @@ viruses: [
       },
       {
         name: "Togavirus (Rubella)",
-        summary: "ssRNA(+), enveloped; rubella: mild 3-day rash; teratogenic in 1st trimester (CRS: cataracts, deafness, cardiac); MMR vaccine",
+        summary: "Rubella: mild 3-day rash, posterior cervical LAD; teratogenic in 1st trimester (CRS: cataracts, deafness, cardiac); MMR",
         gram: "ssRNA (+), enveloped (Togaviridae)",
         virulence: "Respiratory droplet transmission → viremia → rash (immune-mediated). Crosses the placenta during maternal viremia, becoming highly teratogenic during early fetal organogenesis.",
         disease: "**Postnatal rubella:** mild low-grade fever, **posterior auricular and occipital lymphadenopathy**, maculopapular rash (face to trunk, resolves in 3 days). **Congenital rubella syndrome (CRS):** classic triad of cataracts, sensorineural deafness, and congenital heart disease (PDA, pulmonary artery stenosis). Also causes 'blueberry muffin' rash.",
@@ -804,7 +804,7 @@ viruses: [
       },
       {
         name: "Coronavirus (COVID-19 / SARS-CoV-2)",
-        summary: "ssRNA(+), enveloped; spike binds ACE2; COVID-19: anosmia, respiratory failure, cytokine storm; largest RNA genome; nirmatrelvir",
+        summary: "Spike binds ACE2; COVID-19: anosmia, respiratory failure, cytokine storm; largest RNA genome; nirmatrelvir/ritonavir",
         gram: "ssRNA (+), enveloped (Coronaviridae)",
         virulence: "**Spike protein (S)** binds **ACE2 receptor**. Large 30 kb genome includes a **proofreading exonuclease (nsp14)**, granting a lower mutation rate than influenza. Triggers profound cytokine storm (IL-6, TNF-alpha).",
         disease: "**COVID-19:** fever, cough, **anosmia/ageusia**, dyspnea. **Severe disease:** ARDS, cytokine storm, hypercoagulability (PE, stroke), myocarditis. **SARS-CoV-1 and MERS:** highly lethal respiratory syndromes. **Common cold coronaviruses:** cause 10-30% of standard common colds.",
@@ -820,7 +820,7 @@ viruses: [
     organisms: [
       {
         name: "Influenza (Orthomyxovirus)",
-        summary: "ssRNA(−), segmented (8 segments); drift → annual epidemics; shift → pandemics; oseltamivir; killed vaccine annually",
+        summary: "8 segments; antigenic drift → annual epidemics; antigenic shift → pandemics; oseltamivir; annual killed vaccine",
         gram: "ssRNA (-), segmented (8 segments), enveloped (Orthomyxoviridae)",
         virulence: "**Hemagglutinin (HA):** binds sialic acid receptors on respiratory epithelium → cell entry. **Neuraminidase (NA):** cleaves sialic acid → releases new virions. **Antigenic drift:** point mutations in HA/NA → annual epidemics (vaccine must be updated yearly). **Antigenic shift:** reassortment of gene segments between human and animal strains (e.g., avian, swine) → novel HA/NA subtypes → pandemic potential (no pre-existing immunity). **M2 ion channel:** required for viral uncoating.",
         disease: "**Influenza A & B:** abrupt onset fever, **myalgias** (hallmark — severe, diffuse), headache, dry cough, malaise. Rhinorrhea is mild. **Complications:** primary viral pneumonia, secondary bacterial pneumonia (S. aureus, S. pneumoniae, H. influenzae), otitis media. **Reye syndrome:** aspirin use in children with influenza or VZV → acute encephalopathy + hepatic failure. **High-risk groups:** elderly, immunocompromised, pregnant, cardiac/pulmonary disease. **Influenza C:** mild, no epidemics.",
@@ -830,7 +830,7 @@ viruses: [
       },
       {
         name: "Rhabdovirus (Rabies)",
-        summary: "ssRNA(−), enveloped, bullet-shaped; bite → retrograde axonal transport → encephalitis, hydrophobia; Negri bodies; post-exposure PEP",
+        summary: "Bullet-shaped; bite → retrograde axonal transport → encephalitis, hydrophobia, aerophobia; Negri bodies; post-exposure PEP",
         gram: "ssRNA (-), enveloped (bullet-shaped virion - Rhabdoviridae)",
         virulence: "**G protein** binds the acetylcholine receptor at the neuromuscular junction → entry into peripheral nerves → **retrograde axonal transport** to the CNS. Incubation is inversely proportional to the distance from the brain.",
         disease: "**Prodrome:** fever, headache, paresthesia at the wound site (pathognomonic). **Furious rabies (80%):** agitation, **hydrophobia** (painful pharyngeal spasms triggered by swallowing), **aerophobia**, autonomic instability. **Paralytic rabies (20%):** ascending flaccid paralysis. Coma and death follow rapidly.",
@@ -840,7 +840,7 @@ viruses: [
       },
       {
         name: "Filovirus (Ebola & Marburg)",
-        summary: "ssRNA(−), enveloped, filamentous; viral hemorrhagic fever; high CFR; fruit bat reservoir; person-to-person via body fluids",
+        summary: "Long filamentous; viral hemorrhagic fever; high CFR; fruit bat reservoir; person-to-person via body fluids; supportive care",
         gram: "ssRNA (-), enveloped (Filoviridae longest human pathogenic virion)",
         virulence: "**NPC1 receptor** mediates endosomal entry. **GP (glycoprotein)** mediates cell attachment. Causes a massive cytokine storm and direct endothelial damage, leading to extreme vascular permeability and DIC.",
         disease: "**Viral hemorrhagic fever:** sudden fever, severe headache, myalgia → nausea/vomiting, maculopapular rash → hemorrhagic phase (bleeding from mucous membranes, GI tract, injection sites). High case fatality rate. Transmitted strictly via direct contact with infected blood or body fluids.",
@@ -850,7 +850,7 @@ viruses: [
       },
       {
         name: "Bunyavirus (La Crosse Encephalitis & Hantavirus)",
-        summary: "ssRNA(−), segmented; La Crosse: Aedes → encephalitis in children; Hantavirus: deer mouse droppings → HPS (ARDS)",
+        summary: "La Crosse: Aedes → encephalitis in children; Hantavirus: deer mouse droppings → HPS (ARDS, no person-to-person)",
         gram: "ssRNA (-), enveloped, segmented (tripartite genome - Bunyaviridae/Hantaviridae)",
         virulence: "Segmented genome allows reassortment. **La Crosse virus:** Aedes triseriatus (treehole mosquito) vector. **Hantavirus:** inhaled aerosolized deer mouse urine, feces, and saliva. Neither disease spreads person-to-person.",
         disease: "**La Crosse encephalitis:** most common arboviral encephalitis in children in the US Midwest. **Hantavirus Pulmonary Syndrome (HCPS):** abrupt ARDS and cardiogenic shock after a flu-like prodrome. Exposure often involves cleaning sheds or cabins in the American Southwest.",
@@ -860,7 +860,7 @@ viruses: [
       },
       {
         name: "Arenavirus (LCMV & Lassa Fever)",
-        summary: "ssRNA(−), bisegmented; LCMV: house mouse → aseptic meningitis, teratogenic; Lassa fever: Mastomys rat → hemorrhagic fever; ribavirin",
+        summary: "LCMV: house mouse → aseptic meningitis, teratogenic; Lassa fever: Mastomys rat → hemorrhagic fever; ribavirin",
         gram: "ssRNA (-), enveloped, bisegmented (Arenaviridae)",
         virulence: "Bisegmented genome with ambisense coding. Binds the alpha-dystroglycan receptor. Transmitted via rodent urine, feces, and saliva.",
         disease: "**LCMV:** aseptic meningitis in young adults. Highly teratogenic in pregnancy (hydrocephalus, chorioretinitis). **Lassa fever:** West African hemorrhagic fever featuring facial edema, hemorrhage, and **sensorineural hearing loss** in a high percentage of survivors.",
@@ -870,7 +870,7 @@ viruses: [
       },
       {
         name: "Reovirus (Rotavirus)",
-        summary: "dsRNA, non-enveloped, 11 segments; #1 severe viral gastroenteritis in infants; NSP4 enterotoxin; oral rotavirus vaccine",
+        summary: "#1 severe viral gastroenteritis in infants worldwide; NSP4 enterotoxin; watery diarrhea; oral rotavirus vaccine",
         gram: "dsRNA, non-enveloped (Reoviridae - Rotavirus genus)",
         virulence: "**Double-layered icosahedral capsid** provides environmental stability. **NSP4** acts as a viral enterotoxin, causing cAMP-independent chloride secretion.",
         disease: "**Acute gastroenteritis:** fever and vomiting followed by profuse watery, non-bloody diarrhea. Leading cause of diarrhea-related death in children under 5 globally. Peaks in winter months.",
@@ -880,7 +880,7 @@ viruses: [
       },
       {
         name: "Measles (Rubeola)",
-        summary: "ssRNA(−), enveloped Paramyxovirus; 4 Cs prodrome → Koplik spots → cephalocaudal rash; SSPE late complication; MMR vaccine",
+        summary: "4 Cs prodrome (cough, coryza, conjunctivitis, Koplik spots) → cephalocaudal rash; SSPE late complication; MMR vaccine",
         gram: "ssRNA (-), non-segmented, enveloped (Paramyxoviridae)",
         virulence: "**Fusion protein** forms syncytia. **H protein** binds CD150 (SLAM receptor) on lymphocytes, causing profound immune suppression ('immune amnesia'). Highly contagious via respiratory droplets.",
         disease: "**Prodrome:** Cough, Coryza, Conjunctivitis, and fever. **Koplik spots** appear on the buccal mucosa. **Rash:** Maculopapular rash starts at the hairline and spreads head-to-toe, sparing the palms and soles. **Complications:** pneumonia, encephalitis, **SSPE** (subacute sclerosing panencephalitis).",
@@ -890,7 +890,7 @@ viruses: [
       },
       {
         name: "Mumps",
-        summary: "ssRNA(−), enveloped Paramyxovirus; parotitis, orchitis (post-pubertal → infertility), aseptic meningitis; MMR vaccine",
+        summary: "Parotitis, orchitis (post-pubertal → infertility risk), aseptic meningitis, pancreatitis; MMR vaccine",
         gram: "ssRNA (-), non-segmented, enveloped (Paramyxoviridae)",
         virulence: "**HN protein (hemagglutinin-neuraminidase)** and **Fusion protein**. Strong tropism for salivary glands, testes, meninges, and the cochlea.",
         disease: "**Parotitis:** painful bilateral or unilateral swelling. **Orchitis:** occurs in post-pubertal males, carrying a significant risk of infertility if bilateral. **Aseptic meningitis:** the most common complication overall. **Sensorineural deafness:** usually unilateral and abrupt.",
@@ -900,7 +900,7 @@ viruses: [
       },
       {
         name: "Hepatitis E Virus (HEV)",
-        summary: "ssRNA(+), non-enveloped, fecal-oral; self-limited in immunocompetent; 15–25% mortality in pregnancy; no chronic disease (except transplant)",
+        summary: "Fecal-oral; self-limited in immunocompetent; 15–25% mortality in pregnancy; no chronic disease (except transplant)",
         gram: "ssRNA (+), non-enveloped (Hepeviridae)",
         virulence: "Environmentally stable. Genotypes 3 and 4 are zoonotic (pigs, deer) and acquired from undercooked meat. Genotypes 1 and 2 are restricted to humans and spread via contaminated water.",
         disease: "**Acute hepatitis:** indistinguishable from HAV in the immunocompetent; entirely self-limited. **Pregnant women:** 15-25 percent mortality in the third trimester due to fulminant hepatic failure. **Immunocompromised:** can develop chronic HEV leading to cirrhosis.",
@@ -916,7 +916,7 @@ viruses: [
       organisms: [
         {
           name: "HIV (Human Immunodeficiency Virus)",
-          summary: "ssRNA(+) retrovirus; gp120/gp41 binds CD4+CCR5/CXCR4; reverse transcriptase; AIDS: CD4 <200; HAART; opportunistic infections",
+          summary: "gp120/gp41 binds CD4+CCR5/CXCR4; reverse transcriptase integrates provirus; AIDS: CD4 <200; HAART; opportunistic infections",
           gram: "ssRNA (+), retrovirus, enveloped (Retroviridae)",
           virulence: "**gp120:** binds **CD4** (primary receptor) and **CCR5** (macrophage-tropic, early strains) or **CXCR4** (T-tropic, late strains). **gp41:** mediates membrane fusion. **Reverse transcriptase:** error-prone RNA to DNA synthesis leading to rapid mutation. **Integrase:** integrates provirus into host genome.",
           disease: "**Acute HIV:** mononucleosis-like syndrome (fever, LAD, pharyngitis, rash). **AIDS (CD4 <200):** opportunistic infections. **<500:** TB reactivation. **<200:** PCP, Toxoplasma encephalitis, Cryptococcal meningitis. **<100:** CNS lymphoma, MAC. **<50:** CMV retinitis.",
