@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<title>Drug Facts · Step 1 Hub</title>
+<style>
+:root { --nav-active-color: var(--sakura2); }
+:root {
+  --accent:       var(--sakura2);
+  --accent-light: var(--sakura-light);
+  --accent-glow:  rgba(196,80,94,.10);
+}
+</style>
+
+<style>
+/* ══════════════════════════════════════════════
+   FLASHCARD QUIZ — REDESIGNED
+   ══════════════════════════════════════════════ */
+
+/* ── Quiz layout: sidebar + card area ── */
+.quiz-layout {
+  display: flex; gap: 20px; align-items: flex-start;
+}
+
+/* Sidebar */
+.quiz-sidebar {
+  width: 0; overflow: hidden; flex-shrink: 0;
+  transition: width .2s ease;
+}
+.quiz-sidebar.open { width: 220px; }
+.qsb-inner {
+  width: 220px; padding: 16px 14px;
+  border: 1.5px solid var(--border); border-radius: 14px;
+  background: var(--surface); display: flex; flex-direction: column; gap: 14px;
+}
+.qsb-section { display: flex; flex-direction: column; gap: 6px; }
+.qsb-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--dim);
+}
+.qsb-pill-group { display: flex; gap: 5px; flex-wrap: wrap; }
+.qsb-pill {
+  padding: 4px 11px; border-radius: 99px; font-size: 11px; font-weight: 500;
+  border: 1.5px solid var(--border); background: transparent; color: var(--dim);
+  cursor: pointer; transition: all .15s;
+}
+.qsb-pill:hover { color: var(--ink2); border-color: var(--border2); }
+.qsb-pill.active { background: var(--surface2); border-color: var(--border2); color: var(--ink2); font-weight: 600; }
+
+.qsb-scope-group { display: flex; flex-direction: column; gap: 4px; }
+.qsb-scope-btn {
+  padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; text-align: left;
+  border: 1.5px solid var(--border); background: transparent; color: var(--dim);
+  cursor: pointer; transition: all .15s;
+}
+.qsb-scope-btn:hover { color: var(--ink2); border-color: var(--border2); }
+.qsb-scope-btn.active { background: var(--surface2); border-color: var(--border2); color: var(--ink2); font-weight: 600; }
+
+.qsb-actions { display: flex; flex-direction: column; gap: 5px; border-top: 1px solid var(--border); padding-top: 10px; }
+.qsb-action-btn {
+  padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; text-align: left;
+  border: 1.5px solid var(--border); background: transparent; color: var(--dim);
+  cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 6px;
+}
+.qsb-action-btn:hover { color: var(--ink2); border-color: var(--border2); }
+.qsb-action-danger:hover { color: var(--sakura2) !important; border-color: var(--sakura2) !important; }
+
+/* Card main area grows to fill */
+.quiz-main { flex: 1; min-width: 0; }
+
+/* ── Quiz top strip (SR pills + progress) ── */
+.quiz-strip-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0 0; gap: 12px;
+}
+.quiz-strip-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.sr-deck-pills { display: flex; gap: 6px; align-items: center; }
+
+/* SR deck pills — smaller, more refined */
+.sr-deck-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 11px; border-radius: 99px;
+  border: 1.5px solid var(--border); background: var(--surface);
+  font-size: 11px; font-weight: 600; color: var(--dim);
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.sr-deck-pill:hover { border-color: var(--sakura2); color: var(--ink2); }
+.sr-deck-pill.active { background: var(--sakura-light); border-color: var(--sakura2); color: var(--sakura2); }
+.sr-deck-pill.sr-pill-new.active { background: var(--gold-light); border-color: var(--gold); color: var(--gold); }
+.sr-deck-pill.sr-pill-all.active { background: var(--surface2); border-color: var(--border2); color: var(--ink2); }
+.sr-pill-num { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 700; }
+
+/* Divider */
+.quiz-topbar-divider { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
+
+/* Settings toggle button */
+.quiz-settings-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 11px; border-radius: 99px; font-size: 11px; font-weight: 600;
+  border: 1.5px solid var(--border); background: var(--surface); color: var(--dim);
+  cursor: pointer; transition: all .15s;
+}
+.quiz-settings-btn:hover { border-color: var(--border2); color: var(--ink2); }
+.quiz-settings-btn.active { background: var(--surface2); border-color: var(--border2); color: var(--ink2); }
+
+/* ── Progress bar ── */
+.quiz-progress-wrap {
+  height: 3px; background: var(--border); border-radius: 99px;
+  margin-bottom: 6px; overflow: hidden;
+}
+.quiz-progress-fill {
+  height: 100%; border-radius: 99px;
+  background: linear-gradient(90deg, var(--sakura2), color-mix(in srgb, var(--sakura2) 60%, var(--gold)));
+  transition: width .4s ease;
+}
+
+/* ── Quiz stat line ── */
+.quiz-stat-line {
+  font-size: 11px; color: var(--dim); font-family: 'DM Mono', monospace;
+  padding-bottom: 10px; letter-spacing: 0.2px;
+}
+.quiz-stat-line strong { color: var(--ink2); }
+.quiz-stat-line .qs-good  { color: var(--sage); }
+.quiz-stat-line .qs-again { color: var(--sakura2); }
+
+/* ── Custom category picker ── */
+.quiz-cat-picker {
+  display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 0 4px;
+}
+.quiz-cat-chip {
+  padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+  border: 1.5px solid color-mix(in srgb, var(--chip-color) 40%, transparent);
+  background: color-mix(in srgb, var(--chip-color) 8%, transparent);
+  color: var(--chip-color); cursor: pointer; transition: all .15s;
+}
+.quiz-cat-chip.active {
+  background: color-mix(in srgb, var(--chip-color) 18%, transparent);
+  border-color: var(--chip-color);
+}
+
+/* ── Keyboard hint ── */
+.quiz-kbd-hint {
+  font-size: 10.5px; color: var(--dim); font-family: 'DM Mono', monospace;
+  opacity: .8; white-space: nowrap;
+}
+
+/* ══ CARD ══ */
+.quiz-card-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 14px; padding: 8px 0 32px;
+}
+
+/* Nav row */
+.quiz-nav-row {
+  width: 100%; max-width: 600px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.quiz-nav-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 12px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: transparent;
+  font-size: 12px; font-weight: 500; color: var(--dim);
+  cursor: pointer; transition: all .15s;
+}
+.quiz-nav-btn:hover:not(:disabled) { color: var(--ink2); border-color: var(--border2); }
+.quiz-nav-btn:disabled { opacity: .35; cursor: default; }
+.quiz-nav-center { display: flex; align-items: center; gap: 8px; }
+.quiz-card-counter { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--dim); }
+
+/* Bookmark button */
+.fc-star-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 16px; color: var(--dim); padding: 2px 4px; line-height: 1;
+  transition: color .15s, transform .1s;
+}
+.fc-star-btn:hover { color: var(--gold); transform: scale(1.15); }
+.fc-star-btn.starred { color: var(--gold); }
+
+/* ── THE CARD ── */
+.fc-card {
+  width: 100%; max-width: 600px;
+  border-radius: 16px; border: 1.5px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 2px 16px rgba(0,0,0,.06), 0 0 0 1px rgba(0,0,0,.03);
+  overflow: hidden;
+  animation: cardIn .25s cubic-bezier(.22,1,.36,1);
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Front face */
+.fc-front {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 40px 32px 32px;
+  cursor: pointer; user-select: none;
+  position: relative; min-height: 220px; justify-content: center;
+  gap: 0;
+}
+.fc-front::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--cat-color);
+}
+.fc-front-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--cat-color);
+  margin-bottom: 16px; opacity: .85;
+}
+.fc-front-q {
+  font-size: clamp(20px, 4vw, 28px); font-weight: 700;
+  font-family: 'Playfair Display', Georgia, serif; line-height: 1.25;
+  color: var(--ink); margin-bottom: 10px; letter-spacing: -0.3px;
+}
+.fc-front-hint {
+  font-size: 12px; color: var(--dim); margin-bottom: 28px;
+  font-weight: 500;
+}
+.fc-reveal-btn {
+  padding: 9px 24px; border-radius: 99px; font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--cat-color);
+  background: color-mix(in srgb, var(--cat-color) 8%, transparent);
+  color: var(--cat-color); cursor: pointer; transition: all .15s;
+  letter-spacing: .2px;
+}
+.fc-reveal-btn:hover {
+  background: color-mix(in srgb, var(--cat-color) 16%, transparent);
+  transform: translateY(-1px);
+}
+
+/* Back face */
+.fc-back { display: none; }
+.fc-back-header {
+  padding: 20px 24px 14px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.fc-back-header::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--cat-color);
+}
+.fc-back-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--cat-color);
+  margin-bottom: 6px; opacity: .85;
+}
+.fc-back-title {
+  font-size: clamp(18px, 3.5vw, 24px); font-weight: 700;
+  font-family: 'Playfair Display', Georgia, serif; color: var(--ink);
+  line-height: 1.2; letter-spacing: -0.2px;
+}
+.fc-aka {
+  margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
+}
+.fc-aka-token {
+  display: inline-block; font-size: 11px; font-weight: 500;
+  padding: 1px 8px; border-radius: 99px;
+  background: color-mix(in srgb, var(--cat-color) 10%, transparent);
+  color: var(--cat-color); border: 1px solid color-mix(in srgb, var(--cat-color) 25%, transparent);
+}
+.fc-aka-dot { font-size: 10px; color: var(--dim); margin: 0 1px; }
+
+/* Back fields */
+.fc-back-fields { padding: 16px 24px 20px; }
+.fc-fields-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px;
+  margin-bottom: 10px;
+}
+@media (max-width: 500px) { .fc-fields-grid { grid-template-columns: 1fr; } }
+.fc-field { display: flex; flex-direction: column; gap: 3px; }
+.fc-field-lbl {
+  font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--cat-color); opacity: .8;
+}
+.fc-field-val {
+  font-size: 13px; color: var(--ink2); line-height: 1.5;
+}
+.fc-field-val strong { color: var(--ink); }
+/* Pearl field — full width, highlighted */
+.fc-field-pearl {
+  grid-column: 1 / -1;
+  margin-top: 4px; padding: 10px 14px; border-radius: 10px;
+  background: color-mix(in srgb, var(--cat-color) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cat-color) 20%, transparent);
+}
+.fc-field-pearl .fc-field-lbl { color: var(--cat-color); opacity: 1; }
+
+/* ── Rating buttons (2-button: Again / Got it) ── */
+.fc-rating-row {
+  width: 100%; max-width: 600px;
+  display: none; gap: 10px;
+}
+.fc-rating-row.visible { display: flex; }
+.fc-rate-btn {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 16px; border-radius: 12px; font-size: 15px; font-weight: 700;
+  border: 1.5px solid var(--border); background: var(--surface);
+  cursor: pointer; transition: all .15s; letter-spacing: .2px;
+}
+.fc-rate-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,.1); }
+.fc-rate-btn .fc-rate-key {
+  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 600;
+  opacity: .45; padding: 1px 5px; border-radius: 4px;
+  border: 1px solid currentColor; line-height: 1.4;
+}
+.fc-rate-again { border-color: color-mix(in srgb, var(--sakura2) 40%, transparent); color: var(--sakura2); }
+.fc-rate-again:hover { background: color-mix(in srgb, var(--sakura2) 10%, transparent); border-color: var(--sakura2); }
+.fc-rate-good  { border-color: color-mix(in srgb, var(--sage) 50%, transparent); color: var(--sage); }
+.fc-rate-good:hover  { background: color-mix(in srgb, var(--sage) 10%, transparent); border-color: var(--sage); }
+
+/* ── Complete screen ── */
+.quiz-complete {
+  display: none; flex-direction: column; align-items: center;
+  text-align: center; padding: 48px 24px; gap: 8px;
+  max-width: 520px; margin: 0 auto;
+}
+.quiz-complete.visible { display: flex; }
+.quiz-complete-icon { font-size: 40px; margin-bottom: 4px; }
+.quiz-complete-title { font-size: 22px; font-weight: 700; font-family: 'Playfair Display', serif; color: var(--ink); }
+.quiz-complete-sub { font-size: 14px; color: var(--dim); margin-bottom: 8px; }
+.quiz-complete-stats { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 12px 0; }
+.qc-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.qc-stat-num { font-size: 28px; font-weight: 700; font-family: 'Playfair Display', serif; }
+.qc-stat-lbl { font-size: 11px; color: var(--dim); font-weight: 500; }
+.quiz-restart-btn {
+  padding: 9px 22px; border-radius: 99px; font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--sakura2); background: var(--sakura-light); color: var(--sakura2);
+  cursor: pointer; transition: all .15s;
+}
+.quiz-restart-btn:hover { background: color-mix(in srgb, var(--sakura2) 20%, transparent); }
+.quiz-restart-outline { background: transparent; }
+</style>
+</head>
+<body>
+
+<div class="petals" aria-hidden="true">
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div>
+</div>
+
+<script src="nav.js"></script>
+
+<div class="wrap">
+
+  <div class="ref-page-header">
+    <div>
+      <div class="ref-page-eyebrow">Pharmacology Reference</div>
+      <h1 class="ref-page-title">Drug <em>Facts</em></h1>
+      <p class="ref-page-sub">MOA · Uses · Side Effects · PK · Clinical Pearls</p>
+    </div>
+    <div class="ref-count" id="results-meta"></div>
+  </div>
+
+  <!-- Search row -->
+  <div class="ref-search-row">
+    <div class="ref-search-wrap">
+      <span class="ref-search-icon">
+        <svg class="ref-search-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/>
+        </svg>
+      </span>
+      <input class="ref-search-input" type="text" id="drug-search"
+             placeholder="Search drug, class, mechanism, side effect…"
+             oninput="onSearch()" autocomplete="off"/>
+      <button class="ref-search-clear" id="search-clear-btn" title="Clear search" onclick="clearSearch()">✕</button>
+    </div>
+    <button class="bookmark-filter-btn" id="bookmark-filter-btn" onclick="toggleBookmarkFilter()">
+      ★ Bookmarked <span class="bk-count" id="bk-count">0</span>
+    </button>
+  </div>
+
+  <!-- View mode bar -->
+  <div class="view-mode-bar">
+    <button class="mode-btn active" id="mode-browse" onclick="setMode('browse')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/>
+        <rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/>
+      </svg>
+      Browse
+    </button>
+    <button class="mode-btn" id="mode-quiz" onclick="setMode('quiz')">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <rect x="1" y="2" width="14" height="12" rx="2"/>
+        <line x1="5" y1="8" x2="11" y2="8"/><line x1="8" y1="5" x2="8" y2="11"/>
+      </svg>
+      Flashcard Quiz
+    </button>
+  </div>
+
+  <!-- Quiz strip: SR stats + progress -->
+  <div id="quiz-strip" style="display:none;">
+    <div class="quiz-strip-top">
+      <div class="sr-deck-pills">
+        <button class="sr-deck-pill sr-pill-due active" id="sr-pill-due" onclick="setSRMode('due')">
+          <span class="sr-pill-num" id="sr-due-count">0</span> Due
+        </button>
+        <button class="sr-deck-pill sr-pill-new" id="sr-pill-new" onclick="setSRMode('new')">
+          <span class="sr-pill-num" id="sr-new-count">0</span> New
+        </button>
+        <button class="sr-deck-pill sr-pill-all" id="sr-pill-all" onclick="setSRMode('all')">All</button>
+      </div>
+      <div class="quiz-strip-right">
+        <span class="quiz-kbd-hint">Space=flip · 1=Missed · 2=Got it</span>
+        <button class="quiz-settings-btn" id="quiz-settings-btn" onclick="toggleQuizSidebar()">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="8" cy="8" r="2.2"/>
+            <path d="M8 1.5v1.8M8 12.7v1.8M1.5 8h1.8M12.7 8h1.8M3.4 3.4l1.27 1.27M11.33 11.33l1.27 1.27M3.4 12.6l1.27-1.27M11.33 4.67l1.27-1.27"/>
+          </svg>
+          Settings
+        </button>
+      </div>
+    </div>
+    <div class="quiz-progress-wrap">
+      <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:0%"></div>
+    </div>
+    <div class="quiz-stat-line" id="quiz-stat"></div>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="cat-tab-bar" id="cat-tabs" role="tablist"></div>
+
+  <!-- Browse panels -->
+  <div id="panels-container"></div>
+
+  <!-- Quiz layout: sidebar + card area -->
+  <div class="quiz-layout" id="quiz-layout" style="display:none;">
+
+    <!-- Settings sidebar -->
+    <aside class="quiz-sidebar" id="quiz-sidebar">
+      <div class="qsb-inner">
+
+        <div class="qsb-section">
+          <div class="qsb-label">Direction</div>
+          <div class="qsb-pill-group">
+            <button class="qsb-pill active" id="dir-name" onclick="setQuizDir('name-to-facts')">Drug → Facts</button>
+            <button class="qsb-pill" id="dir-guess" onclick="setQuizDir('facts-to-name')">Facts → Drug</button>
+          </div>
+        </div>
+
+        <div class="qsb-section">
+          <div class="qsb-label">Scope</div>
+          <div class="qsb-scope-group">
+            <button class="qsb-scope-btn active" data-scope="current" onclick="setQuizScope('current')">Current tab</button>
+            <button class="qsb-scope-btn" data-scope="all" onclick="setQuizScope('all')">All drugs</button>
+            <button class="qsb-scope-btn" data-scope="custom" onclick="setQuizScope('custom')">Choose…</button>
+          </div>
+          <div class="quiz-cat-picker" id="quiz-cat-picker" style="display:none; margin-top:8px;"></div>
+        </div>
+
+        <div class="qsb-actions">
+          <button class="qsb-action-btn" onclick="shuffleQuiz()">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 4h2.5a4 4 0 013.2 1.6L8 7M15 4h-2.5a4 4 0 00-3.2 1.6L8 7m0 0l1.3 1.7A4 4 0 0012.5 10H15M1 12h2.5a4 4 0 003.2-1.6L8 9"/><path d="M13 2l2 2-2 2M13 8l2 2-2 2"/></svg>
+            Shuffle
+          </button>
+          <button class="qsb-action-btn" onclick="resetQuiz()">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8a6 6 0 106-6H4m0 0L2 4m2-2v4"/></svg>
+            Reset deck
+          </button>
+          <button class="qsb-action-btn qsb-action-danger" onclick="confirmResetSR()">
+            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
+            Reset SR progress
+          </button>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- Card area -->
+    <div class="quiz-main" id="quiz-container"></div>
+
+  </div>
+
+</div>
+
+<!-- Drug detail modal -->
+<div class="drug-modal-overlay" id="drug-modal-overlay" onclick="handleModalOverlayClick(event)">
+  <div class="drug-modal" id="drug-modal">
+
+    <div class="drug-modal-topbar" id="modal-banner">
+      <div class="drug-modal-breadcrumb" id="modal-breadcrumb"></div>
+      <div class="drug-modal-topbar-right">
+        <button id="modal-star-btn" class="rcard-star" style="font-size:16px;padding:4px 8px;" onclick="toggleModalBookmark()" title="Bookmark (S)">☆</button>
+        <span class="drug-modal-counter" id="modal-counter"></span>
+        <button class="drug-modal-nav-btn" id="modal-prev" onclick="modalNav(-1)" title="Previous">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 2L4 6l4 4"/></svg>
+          Prev
+        </button>
+        <button class="drug-modal-nav-btn" id="modal-next" onclick="modalNav(1)" title="Next">
+          Next
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 2l4 4-4 4"/></svg>
+        </button>
+        <button class="drug-modal-close" onclick="closeModal()" title="Close (Esc)">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="drug-modal-header" id="modal-header">
+      <div class="drug-modal-title" id="modal-title"></div>
+      <div class="drug-modal-aka" id="modal-aka"></div>
+    </div>
+
+    <div class="drug-modal-summary" id="modal-summary"></div>
+    <div class="drug-modal-body" id="modal-body"></div>
+
+  </div>
+</div>
+
+<script src="drug_data.js"></script>
+<script src="app.js"></script>
+<script>
+/* ============================================================
+   DRUG FACTS PAGE LOGIC
+   ============================================================ */
+
+// CAT_META is defined in drug_data.js — edit labels, colors,
+// and descriptions there. Add new categories to that file only;
+// this HTML will pick them up automatically.
+
+// ── State ──────────────────────────────────────────────────
+let allDrugs = [];
+let activeTab = 'autonomic';
+let searchQ = '';
+let currentMode = 'browse';
+let quizDir = 'name-to-facts';
+let quizScope = 'current';       // 'current' | 'all' | 'custom'
+let quizCustomCats = new Set();  // active when quizScope === 'custom'
+let quizDrugs = [];
+let quizIdx = 0;
+let quizResults = { again: 0, good: 0 };
+let bookmarkFilter = false;
+let bookmarks = new Set();
+// which back-of-card fields are visible; pearl is always shown if present
+let quizVisibleFields = new Set(['moa','use','se','ci','pk']);
+
+// ── SM-2 Spaced Repetition Engine ─────────────────────────
+// Stores per-drug: { interval, easeFactor, dueDate, reps, lapses }
+const SR_KEY = 'df-sr-data';
+let srData = {};
+
+function srLoad() {
+  try { srData = JSON.parse(localStorage.getItem(SR_KEY) || '{}'); } catch(e) { srData = {}; }
+}
+
+function srSave() {
+  localStorage.setItem(SR_KEY, JSON.stringify(srData));
+  // Sync to cloud if signed in
+  if (window.db && window.currentUser) {
+    window.db.collection('users').doc(window.currentUser.uid)
+      .collection('data').doc(SR_KEY)
+      .set({ payload: JSON.stringify(srData), updatedAt: Date.now() })
+      .catch(e => console.warn('SR cloud save failed:', e));
+  }
+}
+
+async function srLoadCloud() {
+  if (!window.db || !window.currentUser) return;
+  try {
+    const doc = await window.db.collection('users').doc(window.currentUser.uid)
+      .collection('data').doc(SR_KEY).get();
+    if (doc.exists) {
+      const cloud = JSON.parse(doc.data().payload || '{}');
+      // Merge: prefer the entry with the more recent review
+      for (const [k, v] of Object.entries(cloud)) {
+        if (!srData[k] || (v.lastReview || 0) > (srData[k].lastReview || 0)) {
+          srData[k] = v;
+        }
+      }
+      localStorage.setItem(SR_KEY, JSON.stringify(srData));
+    }
+  } catch(e) { console.warn('SR cloud load failed:', e); }
+}
+
+// SM-2 algorithm: rating 0=Again, 3=Hard, 4=Good, 5=Easy
+function srRate(drugName, rating) {
+  const today = todayStr();
+  let c = srData[drugName] || { interval: 0, easeFactor: 2.5, reps: 0, lapses: 0, dueDate: today, lastReview: null };
+
+  if (rating === 0) {
+    // Again — reset to relearn
+    c.reps = 0;
+    c.lapses = (c.lapses || 0) + 1;
+    c.interval = 1;
+  } else {
+    // Update ease factor: EF' = EF + (0.1 - (5-q)*(0.08 + (5-q)*0.02))
+    c.easeFactor = Math.max(1.3, c.easeFactor + 0.1 - (5 - rating) * (0.08 + (5 - rating) * 0.02));
+    if (c.reps === 0) {
+      c.interval = 1;
+    } else if (c.reps === 1) {
+      c.interval = 6;
+    } else {
+      c.interval = Math.round(c.interval * c.easeFactor);
+    }
+    c.reps++;
+  }
+
+  const due = new Date();
+  due.setDate(due.getDate() + c.interval);
+  c.dueDate = due.toISOString().split('T')[0];
+  c.lastReview = today;
+  srData[drugName] = c;
+  srSave();
+}
+
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function srGetDue(drugs) {
+  const today = todayStr();
+  return drugs.filter(d => {
+    const c = srData[d.name];
+    return !c || c.dueDate <= today;
+  });
+}
+
+function srGetStats(drugs) {
+  const today = todayStr();
+  let due = 0, learning = 0, known = 0, newCards = 0;
+  for (const d of drugs) {
+    const c = srData[d.name];
+    if (!c) { newCards++; continue; }
+    if (c.dueDate <= today) due++;
+    else if (c.interval <= 7) learning++;
+    else known++;
+  }
+  return { due, learning, known, newCards };
+}
+
+// ── Bookmarks (localStorage + Firebase sync) ──────────────
+const BK_LS_KEY = 'df-bookmarks';
+const BK_FS_KEY = 'df-bookmarks';
+
+function loadBookmarks() {
+  try {
+    const saved = localStorage.getItem(BK_LS_KEY);
+    bookmarks = saved ? new Set(JSON.parse(saved)) : new Set();
+  } catch { bookmarks = new Set(); }
+}
+
+function saveBookmarks() {
+  const arr = [...bookmarks];
+  localStorage.setItem(BK_LS_KEY, JSON.stringify(arr));
+  syncBookmarkCount();
+  // Push to Firestore if signed in
+  if (window.db && window.currentUser) {
+    window.db.collection('users').doc(window.currentUser.uid)
+      .collection('data').doc(BK_FS_KEY)
+      .set({ payload: JSON.stringify(arr), updatedAt: Date.now() })
+      .catch(e => console.warn('Bookmark sync failed:', e));
+  }
+}
+
+async function loadBookmarksFromCloud() {
+  if (!window.db || !window.currentUser) return;
+  try {
+    const doc = await window.db.collection('users').doc(window.currentUser.uid)
+      .collection('data').doc(BK_FS_KEY).get();
+    if (doc.exists) {
+      const cloud = JSON.parse(doc.data().payload || '[]');
+      // Merge: union of local + cloud
+      cloud.forEach(n => bookmarks.add(n));
+      localStorage.setItem(BK_LS_KEY, JSON.stringify([...bookmarks]));
+      syncBookmarkCount();
+      render();
+    }
+  } catch(e) { console.warn('Cloud bookmark load failed:', e); }
+}
+function syncBookmarkCount() {
+  const cnt = document.getElementById('bk-count');
+  const btn = document.getElementById('bookmark-filter-btn');
+  if (cnt) cnt.textContent = bookmarks.size;
+  if (btn) btn.classList.toggle('active', bookmarkFilter);
+}
+function toggleBookmark(name) {
+  if (bookmarks.has(name)) bookmarks.delete(name);
+  else bookmarks.add(name);
+  saveBookmarks();
+}
+function toggleBookmarkFilter() {
+  bookmarkFilter = !bookmarkFilter;
+  document.getElementById('bookmark-filter-btn').classList.toggle('active', bookmarkFilter);
+  render();
+}
+function toggleModalBookmark() {
+  const d = modalDrugs[modalIdx];
+  if (!d) return;
+  toggleBookmark(d.name);
+  updateModalStarBtn(d.name);
+  refreshCardStar(d.name);
+}
+function updateModalStarBtn(name) {
+  const btn = document.getElementById('modal-star-btn');
+  if (!btn) return;
+  const starred = bookmarks.has(name);
+  btn.textContent = starred ? '★' : '☆';
+  btn.classList.toggle('starred', starred);
+  btn.title = starred ? 'Remove bookmark (S)' : 'Bookmark (S)';
+}
+function refreshCardStar(name) {
+  document.querySelectorAll('.rcard').forEach(c => {
+    if (c.dataset.drugName === name) {
+      const star = c.querySelector('.rcard-star');
+      if (star) {
+        const s = bookmarks.has(name);
+        star.textContent = s ? '★' : '☆';
+        star.classList.toggle('starred', s);
+      }
+    }
+  });
+}
+
+// ── Build drug list ────────────────────────────────────────
+function buildDrugList() {
+  const list = [];
+  Object.entries(DRUGS).forEach(([cat, groups]) =>
+    groups.forEach(grp =>
+      grp.drugs.forEach(d => list.push({ ...d, category: cat, groupName: grp.group }))
+    )
+  );
+  return list;
+}
+
+function getFiltered() {
+  let drugs = allDrugs;
+  if (bookmarkFilter) drugs = drugs.filter(d => bookmarks.has(d.name));
+  if (searchQ) {
+    return drugs.filter(d => {
+      const blob = [d.name, d.aka, d.summary, d.moa, d.use, d.se, d.ci, d.pk, d.pearl]
+        .filter(Boolean).join(' ').toLowerCase();
+      return blob.includes(searchQ);
+    });
+  }
+  if (bookmarkFilter) return drugs;
+  return drugs.filter(d => d.category === activeTab);
+}
+
+// ── Text helpers ───────────────────────────────────────────
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fmt(text, q) {
+  if (!text) return '';
+  let out = esc(text);
+  out = out.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  if (q) {
+    const sq = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    out = out.replace(new RegExp(`(${sq})(?![^<]*>)`, 'gi'), '<mark class="search-hl">$1</mark>');
+  }
+  return out;
+}
+function fmtLines(text, q) {
+  if (!text) return '';
+  const parts = text.split('\n').map(s => s.trim()).filter(Boolean);
+  if (parts.length <= 1) return `<div class="info-line">${fmt(text, q)}</div>`;
+  return parts.map(p => `<div class="info-line">${fmt(p, q)}</div>`).join('');
+}
+function stripMd(text) {
+  return (text||'').replace(/\*\*(.*?)\*\*/g, '$1');
+}
+
+// ── Mode switching ─────────────────────────────────────────
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('mode-browse').classList.toggle('active', mode === 'browse');
+  document.getElementById('mode-quiz').classList.toggle('active', mode === 'quiz');
+  const isQuiz = mode === 'quiz';
+  document.getElementById('quiz-strip').style.display   = isQuiz ? 'block' : 'none';
+  document.getElementById('quiz-layout').style.display  = isQuiz ? 'flex' : 'none';
+  document.getElementById('panels-container').style.display = isQuiz ? 'none' : '';
+  document.getElementById('cat-tabs').style.display     = isQuiz ? 'none' : '';
+  if (isQuiz) {
+    const sidebar = document.getElementById('quiz-sidebar');
+    const btn = document.getElementById('quiz-settings-btn');
+    if (sidebar && !sidebar.classList.contains('open')) {
+      sidebar.classList.add('open');
+      if (btn) btn.classList.add('active');
+    }
+    startQuiz();
+  }
+}
+
+// ── Main render ────────────────────────────────────────────
+function render() {
+  const filtered = getFiltered();
+  const isSearch = searchQ.length > 0;
+  const isBmFilter = bookmarkFilter;
+
+  document.getElementById('results-meta').innerHTML = (isSearch || isBmFilter)
+    ? `<strong>${filtered.length}</strong> of ${allDrugs.length} drugs`
+    : `<strong>${allDrugs.length}</strong> drugs`;
+
+  document.getElementById('search-clear-btn').classList.toggle('visible', searchQ.length > 0);
+  syncBookmarkCount();
+  renderTabs();
+  if (currentMode === 'browse') renderPanels(filtered, isSearch || isBmFilter);
+}
+
+function renderTabs() {
+  let html = '';
+  Object.entries(CAT_META).forEach(([cat, meta]) => {
+    const isActive = (activeTab === cat && !searchQ && !bookmarkFilter);
+    html += `<button class="cat-tab${isActive ? ' active' : ''}"
+      onclick="switchTab('${cat}')" role="tab">
+      <span class="tab-dot" style="background:${meta.color}"></span>${meta.label}
+    </button>`;
+  });
+  document.getElementById('cat-tabs').innerHTML = html;
+}
+
+function renderPanels(filtered, isSearch) {
+  const container = document.getElementById('panels-container');
+
+  if (isSearch) {
+    if (!filtered.length) {
+      container.innerHTML = `<div class="cards-grid" style="margin-top:16px;">
+        <div class="ref-empty">
+          <div class="ref-empty-title">No results</div>
+          <div class="ref-empty-sub">Try a different search term.</div>
+        </div></div>`;
+      return;
+    }
+    const cats = Object.keys(CAT_META).filter(c => filtered.some(d => d.category === c));
+    container.innerHTML = cats.map(cat => {
+      const catDrugs = filtered.filter(d => d.category === cat);
+      if (!catDrugs.length) return '';
+      const meta = CAT_META[cat];
+      return `<div class="ref-panel" id="panel-${cat}">
+        <div class="search-cat-label" style="color:${meta.color}">${meta.label}</div>
+        <div class="cards-grid">${catDrugs.map(d => renderCard(d, meta.color)).join('')}</div>
+      </div>`;
+    }).join('');
+    return;
+  }
+
+  if (!filtered.length) {
+    container.innerHTML = `<div class="cards-grid" style="margin-top:16px;">
+      <div class="ref-empty">
+        <div class="ref-empty-title">${bookmarkFilter ? 'No bookmarks yet' : 'Nothing here yet'}</div>
+        <div class="ref-empty-sub">${bookmarkFilter ? 'Click ☆ on any drug card to save it here.' : 'This category has no entries.'}</div>
+      </div></div>`;
+    return;
+  }
+
+  const cat = activeTab;
+  const meta = CAT_META[cat];
+  const groups = [...new Set(filtered.map(d => d.groupName))];
+
+  const introHtml = `
+    <div class="cat-intro" style="--cat-color:${meta.color}">
+      <div class="cat-intro-title" style="color:${meta.color}">${meta.label}</div>
+      <div class="cat-intro-desc">${meta.desc}</div>
+    </div>`;
+
+  const groupsHtml = groups.map((grp, gi) => {
+    const grpDrugs = filtered.filter(d => d.groupName === grp);
+    const gid = `grp-${cat}-${gi}`;
+    return `<div class="group-section">
+      <div class="class-group-header">
+        <span class="class-label" style="color:${meta.color};border-color:${meta.color}40;background:${meta.color}12;">
+          <span style="font-size:7px;">◆</span> ${grp}
+        </span>
+        <button class="group-expand-btn" style="--cat-color:${meta.color}" onclick="toggleGroup('${gid}',this)">▲ Collapse</button>
+      </div>
+      <div class="cards-grid" id="${gid}" style="display:grid;">
+        ${grpDrugs.map(d => renderCard(d, meta.color)).join('')}
+      </div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = `<div class="ref-panel" id="panel-${cat}">${introHtml}${groupsHtml}</div>`;
+}
+
+function renderCard(d, catColor) {
+  const color = catColor || CAT_META[d.category]?.color || 'var(--accent)';
+  const q = searchQ;
+  const isStarred = bookmarks.has(d.name);
+  const akaHtml = d.aka
+    ? d.aka.replace(/\|/g,'·').replace(/·+/g,'·').split('·')
+        .map(s => s.trim()).filter(Boolean)
+        .map(s => `<span class="aka-token">${s}</span>`)
+        .join('<span class="dot-sep">·</span>')
+    : '';
+
+  return `<div class="rcard" data-cat="${d.category}" data-drug-name="${esc(d.name)}"
+    style="--cat-color:${color};border-left-color:${color}"
+    tabindex="0" role="button" aria-label="${esc(d.name)}"
+    onclick="openCardModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCardModal(this);}">
+    <div class="rcard-header">
+      <div class="rcard-header-left">
+        <div class="rcard-name">${fmt(d.name, q)}</div>
+        ${akaHtml ? `<div class="rcard-aka">${akaHtml}</div>` : ''}
+      </div>
+      <button class="rcard-star${isStarred ? ' starred' : ''}" tabindex="0"
+        aria-label="Bookmark ${esc(d.name)}"
+        onclick="event.stopPropagation();toggleCardBookmark(this,'${esc(d.name)}')">${isStarred ? '★' : '☆'}</button>
+    </div>
+    <div class="rcard-summary">${fmt(d.summary, q)}</div>
+  </div>`;
+}
+
+function toggleCardBookmark(btn, name) {
+  // decode HTML entities that esc() may have added
+  const decoded = name.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"');
+  toggleBookmark(decoded);
+  const isStarred = bookmarks.has(decoded);
+  btn.textContent = isStarred ? '★' : '☆';
+  btn.classList.toggle('starred', isStarred);
+  syncBookmarkCount();
+  if (bookmarkFilter && !isStarred) render();
+}
+
+// ── Modal ──────────────────────────────────────────────────
+let modalDrugs = [], modalIdx = 0;
+
+function openCardModal(cardEl) {
+  if (window.getSelection().toString().length > 0) return;
+  const filtered = getFiltered();
+  modalDrugs = filtered;
+  const cat = cardEl.dataset.cat;
+  const name = cardEl.dataset.drugName;
+  const idx = modalDrugs.findIndex(d => d.category === cat && d.name === name);
+  modalIdx = idx >= 0 ? idx : 0;
+  showModal();
+}
+
+function showModal() {
+  const d = modalDrugs[modalIdx];
+  if (!d) return;
+  const color = CAT_META[d.category]?.color || 'var(--accent)';
+  const catLabel = CAT_META[d.category]?.label || d.category;
+  const q = searchQ;
+
+  document.getElementById('modal-breadcrumb').innerHTML = `
+    <span class="drug-modal-banner-cat" style="color:${color};border-color:${color}50;background:${color}12;">${catLabel}</span>
+    <span class="drug-modal-banner-sep">›</span>
+    <span class="drug-modal-banner-grp">${d.groupName || ''}</span>
+  `;
+  document.getElementById('drug-modal').style.setProperty('--cat-color', color);
+  document.getElementById('modal-banner').style.borderBottom = `1px solid ${color}20`;
+  document.getElementById('modal-banner').style.borderTop = `3px solid ${color}`;
+  document.getElementById('modal-header').style.borderTop = 'none';
+  document.getElementById('modal-title').innerHTML = fmt(d.name, q);
+
+  const akaHtml = d.aka
+    ? d.aka.replace(/\|/g,'·').replace(/·+/g,'·').split('·')
+        .map(s => s.trim()).filter(Boolean)
+        .map(s => `<span class="aka-token">${s}</span>`)
+        .join('<span class="dot-sep">·</span>')
+    : '';
+  const akaEl = document.getElementById('modal-aka');
+  akaEl.innerHTML = akaHtml;
+  akaEl.style.display = akaHtml ? '' : 'none';
+
+  document.getElementById('modal-summary').innerHTML = fmt(d.summary, q);
+  document.getElementById('modal-counter').textContent = `${modalIdx + 1} / ${modalDrugs.length}`;
+
+  const sections = [
+    { label: 'Mechanism',         cls: 'lbl-moa', val: d.moa },
+    { label: 'Clinical Use',      cls: 'lbl-use', val: d.use },
+    { label: 'Side Effects',      cls: 'lbl-se',  val: d.se  },
+    { label: 'Contraindications', cls: 'lbl-ci',  val: d.ci  },
+    { label: 'Pharmacokinetics',  cls: 'lbl-pk',  val: d.pk  },
+  ].filter(s => s.val);
+
+  document.getElementById('modal-body').innerHTML = `
+    ${sections.map(s => `
+      <div class="rcard-field">
+        <span class="rcard-field-label ${s.cls}">${s.label}</span>
+        <div class="rcard-field-text">${fmtLines(s.val, q)}</div>
+      </div>`).join('')}
+    ${d.pearl ? `
+      <div class="rcard-pearl">
+        <span class="pearl-diamond" style="color:${color}">◆</span>
+        <div class="pearl-body">
+          <div class="pearl-text"><span class="pearl-label" style="color:${color}">Step 1 Pearl:</span> ${fmt(d.pearl, q)}</div>
+        </div>
+      </div>` : ''}
+  `;
+
+  document.getElementById('modal-prev').disabled = modalIdx === 0;
+  document.getElementById('modal-next').disabled = modalIdx === modalDrugs.length - 1;
+  document.getElementById('modal-body').scrollTop = 0;
+  document.getElementById('drug-modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  updateModalStarBtn(d.name);
+}
+
+function closeModal() {
+  document.getElementById('drug-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function modalNav(dir) {
+  const next = modalIdx + dir;
+  if (next >= 0 && next < modalDrugs.length) { modalIdx = next; showModal(); }
+}
+function handleModalOverlayClick(e) {
+  if (e.target === document.getElementById('drug-modal-overlay')) closeModal();
+}
+
+// ── Browse helpers ─────────────────────────────────────────
+function toggleGroup(gid, btn) {
+  const grid = document.getElementById(gid);
+  const isHidden = grid.style.display === 'none';
+  grid.style.display = isHidden ? 'grid' : 'none';
+  btn.textContent = isHidden ? '▲ Collapse' : '▼ Expand';
+}
+
+function switchTab(cat) {
+  activeTab = cat;
+  searchQ = '';
+  bookmarkFilter = false;
+  document.getElementById('drug-search').value = '';
+  document.getElementById('bookmark-filter-btn').classList.remove('active');
+  render();
+  if (currentMode === 'quiz') startQuiz();
+}
+
+function onSearch() {
+  searchQ = document.getElementById('drug-search').value.toLowerCase().trim();
+  render();
+}
+
+function clearSearch() {
+  document.getElementById('drug-search').value = '';
+  searchQ = '';
+  render();
+  document.getElementById('drug-search').focus();
+}
+
+// ── Quiz logic ─────────────────────────────────────────────
+function setQuizDir(dir) {
+  quizDir = dir;
+  document.getElementById('dir-name').classList.toggle('active', dir === 'name-to-facts');
+  document.getElementById('dir-guess').classList.toggle('active', dir === 'facts-to-name');
+  startQuiz();
+}
+
+function getQuizDrugs() {
+  if (quizScope === 'all') return [...allDrugs];
+  if (quizScope === 'custom' && quizCustomCats.size > 0)
+    return allDrugs.filter(d => quizCustomCats.has(d.category));
+  // 'current' — respect search/bookmark filter, fall back to active tab
+  return [...getFiltered()];
+}
+
+let srMode = 'due'; // 'due' | 'new' | 'all'
+
+function setSRMode(mode) {
+  srMode = mode;
+  document.querySelectorAll('.sr-deck-pill').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('sr-pill-' + mode);
+  if (btn) btn.classList.add('active');
+  startQuiz();
+}
+
+function startQuiz() {
+  srLoad();
+  const allForScope = getQuizDrugs();
+  const today = todayStr();
+
+  if (srMode === 'due') {
+    // Due cards first (overdue sorted oldest first), then new cards
+    const due = allForScope.filter(d => srData[d.name] && srData[d.name].dueDate <= today)
+      .sort((a,b) => (srData[a.name].dueDate > srData[b.name].dueDate ? 1 : -1));
+    const newCards = allForScope.filter(d => !srData[d.name]);
+    quizDrugs = [...due, ...newCards];
+  } else if (srMode === 'new') {
+    quizDrugs = allForScope.filter(d => !srData[d.name]);
+  } else {
+    // All — due/overdue first, then by next due date
+    quizDrugs = [...allForScope].sort((a,b) => {
+      const da = srData[a.name]?.dueDate || '0000-00-00';
+      const db2 = srData[b.name]?.dueDate || '0000-00-00';
+      return da > db2 ? 1 : -1;
+    });
+  }
+
+  quizIdx = 0;
+  quizResults = { again: 0, good: 0 };
+  updateSRPills(allForScope);
+  renderQuizCard();
+  updateQuizProgress();
+}
+
+function updateSRPills(drugs) {
+  const stats = srGetStats(drugs || getQuizDrugs());
+  const dueEl = document.getElementById('sr-due-count');
+  const newEl = document.getElementById('sr-new-count');
+  if (dueEl) dueEl.textContent = stats.due + stats.newCards > 0 ? stats.due + stats.newCards : '0';
+  if (newEl) newEl.textContent = stats.newCards;
+}
+
+function confirmResetSR() {
+  if (confirm('Reset ALL spaced repetition progress? This cannot be undone.')) {
+    srData = {};
+    srSave();
+    startQuiz();
+  }
+}
+
+function setQuizScope(scope) {
+  quizScope = scope;
+  document.querySelectorAll('[data-scope]').forEach(b => {
+    b.classList.toggle('active', b.dataset.scope === scope);
+  });
+  const picker = document.getElementById('quiz-cat-picker');
+  if (picker) picker.style.display = scope === 'custom' ? 'flex' : 'none';
+  startQuiz();
+}
+
+function toggleQuizSidebar() {
+  const sidebar = document.getElementById('quiz-sidebar');
+  const btn = document.getElementById('quiz-settings-btn');
+  sidebar.classList.toggle('open');
+  btn.classList.toggle('active', sidebar.classList.contains('open'));
+}
+
+function toggleFieldVis(field, checkbox) {
+  if (checkbox.checked) quizVisibleFields.add(field);
+  else quizVisibleFields.delete(field);
+  // Re-render back face if currently showing
+  const back = document.getElementById('fc-back');
+  if (back && back.style.display !== 'none') renderBackFields();
+}
+
+function toggleQuizCat(cat, el) {
+  if (quizCustomCats.has(cat)) {
+    quizCustomCats.delete(cat);
+    el.classList.remove('active');
+  } else {
+    quizCustomCats.add(cat);
+    el.classList.add('active');
+  }
+  startQuiz();
+}
+
+function shuffleQuiz() {
+  quizDrugs = getQuizDrugs();
+  for (let i = quizDrugs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [quizDrugs[i], quizDrugs[j]] = [quizDrugs[j], quizDrugs[i]];
+  }
+  quizIdx = 0;
+  quizResults = { again: 0, good: 0 };
+  renderQuizCard();
+  updateQuizProgress();
+}
+
+function buildCatPicker() {
+  const picker = document.getElementById('quiz-cat-picker');
+  if (!picker) return;
+  picker.innerHTML = Object.entries(CAT_META).map(([cat, meta]) =>
+    `<button class="quiz-cat-chip" data-cat="${cat}" style="--chip-color:${meta.color}" onclick="toggleQuizCat('${cat}',this)">${meta.label}</button>`
+  ).join('');
+}
+
+function resetQuiz() { startQuiz(); }
+
+function updateQuizProgress() {
+  const done = quizIdx;
+  const total = quizDrugs.length;
+  const pct = total ? (done / total) * 100 : 0;
+  document.getElementById('quiz-progress-fill').style.width = pct + '%';
+  const stat = document.getElementById('quiz-stat');
+  if (stat) {
+    stat.innerHTML = total
+      ? `<strong>${done}/${total}</strong> &nbsp;·&nbsp; <span class="qs-good">✓ ${quizResults.good}</span> &nbsp; <span class="qs-again">✗ ${quizResults.again}</span>`
+      : quizScope === 'custom' && quizCustomCats.size === 0
+        ? 'Pick a category above'
+        : 'No drugs';
+  }
+}
+
+function renderQuizCard() {
+  const container = document.getElementById('quiz-container');
+
+  if (!quizDrugs.length) {
+    container.innerHTML = `<div class="quiz-complete visible">
+      <div class="quiz-complete-icon">🌸</div>
+      <div class="quiz-complete-title">No drugs to quiz</div>
+      <div class="quiz-complete-sub">${quizScope === 'custom' && quizCustomCats.size === 0 ? 'Select at least one category above.' : 'Adjust your tab, search, or bookmarks filter.'}</div>
+    </div>`;
+    return;
+  }
+
+  if (quizIdx >= quizDrugs.length) {
+    const total = quizDrugs.length;
+    const pct = total ? Math.round((quizResults.good / total) * 100) : 0;
+    container.innerHTML = `<div class="quiz-complete visible">
+      <div class="quiz-complete-icon">🎉</div>
+      <div class="quiz-complete-title">Round Complete!</div>
+      <div class="quiz-complete-sub">You reviewed all ${total} drug${total !== 1 ? 's' : ''}. <strong>${pct}%</strong> correct.</div>
+      <div class="quiz-complete-stats">
+        <div class="qc-stat"><div class="qc-stat-num" style="color:var(--sage)">${quizResults.good}</div><div class="qc-stat-lbl">✓ Got it</div></div>
+        <div class="qc-stat"><div class="qc-stat-num" style="color:var(--sakura2)">${quizResults.again}</div><div class="qc-stat-lbl">✗ Missed</div></div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+        <button class="quiz-restart-btn" onclick="resetQuiz()">↺ Review Again</button>
+        <button class="quiz-restart-btn quiz-restart-outline" onclick="shuffleQuiz()">⇄ New Shuffle</button>
+      </div>
+    </div>`;
+    return;
+  }
+
+  const d = quizDrugs[quizIdx];
+  const color = CAT_META[d.category]?.color || 'var(--sakura2)';
+  const catLabel = CAT_META[d.category]?.label || d.category;
+  const isNameToFacts = quizDir === 'name-to-facts';
+
+  const frontQ  = isNameToFacts ? d.name : stripMd(d.summary || d.moa || '').substring(0, 180) + (stripMd(d.summary||'').length > 180 ? '…' : '');
+  const frontHint = isNameToFacts ? `${d.groupName ? d.groupName + ' · ' : ''}${catLabel}` : catLabel;
+
+  const akaTokens = d.aka
+    ? d.aka.replace(/\|/g,'·').replace(/·+/g,'·').split('·').map(s => s.trim()).filter(Boolean)
+    : [];
+  const akaHtml = akaTokens.length
+    ? `<div class="fc-aka">${akaTokens.map(s=>`<span class="fc-aka-token">${s}</span>`).join('<span class="fc-aka-dot">·</span>')}</div>`
+    : '';
+
+  const ALL_BACK_FIELDS = [
+    isNameToFacts ? null : { key: 'sum', lbl: 'Summary',         val: d.summary },
+    { key: 'moa', lbl: 'Mechanism',         val: d.moa },
+    { key: 'use', lbl: 'Clinical Use',      val: d.use },
+    { key: 'se',  lbl: 'Side Effects',      val: d.se  },
+    { key: 'ci',  lbl: 'Contraindications', val: d.ci  },
+    { key: 'pk',  lbl: 'Pharmacokinetics',  val: d.pk  },
+    d.pearl ? { key: 'pearl', lbl: '★ Step 1 Pearl', val: d.pearl, isPearl: true } : null,
+  ].filter(f => f && f.val);
+
+  const visFields = ALL_BACK_FIELDS.filter(f => f.isPearl || f.key === 'sum' || quizVisibleFields.has(f.key));
+  const isStarred = bookmarks.has(d.name);
+
+  container.innerHTML = `
+    <div class="quiz-card-wrap">
+      <div class="quiz-nav-row">
+        <button class="quiz-nav-btn" onclick="quizNavBack()" ${quizIdx === 0 ? 'disabled' : ''}>
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 2L4 6l4 4"/></svg>
+          Prev
+        </button>
+        <div class="quiz-nav-center">
+          <span class="quiz-card-counter">${quizIdx + 1} <span style="opacity:.4">/</span> ${quizDrugs.length}</span>
+          <button class="fc-star-btn ${isStarred ? 'starred' : ''}"
+            onclick="quizToggleStar(this,'${d.name.replace(/'/g,"&#39;")}')"
+            title="Bookmark">${isStarred ? '★' : '☆'}</button>
+        </div>
+        <button class="quiz-nav-btn" onclick="rateCard('skip')">
+          Skip
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 2l4 4-4 4"/></svg>
+        </button>
+      </div>
+
+      <div class="fc-card fc-front" id="fc-front" style="--cat-color:${color}" onclick="flipCard()">
+        <div class="fc-front-eyebrow">${isNameToFacts ? 'Name this drug\u2019s facts' : 'Identify this drug'}</div>
+        <div class="fc-front-q">${frontQ}</div>
+        <div class="fc-front-hint">${frontHint}</div>
+        <button class="fc-reveal-btn" style="--cat-color:${color}" onclick="event.stopPropagation();flipCard()">
+          Reveal Answer
+        </button>
+      </div>
+
+      <div class="fc-card fc-back" id="fc-back" style="--cat-color:${color}">
+        <div class="fc-back-header">
+          <div class="fc-back-eyebrow">${catLabel}${d.groupName ? ' · ' + d.groupName : ''}</div>
+          <div class="fc-back-title">${isNameToFacts ? d.name : 'Answer'}</div>
+          ${akaHtml}
+        </div>
+        <div class="fc-back-fields" id="fc-back-fields">
+          ${buildFieldsHtml(visFields, color)}
+        </div>
+      </div>
+
+      <div class="fc-rating-row" id="fc-actions">
+        <button class="fc-rate-btn fc-rate-again" onclick="rateCard('again')" title="Missed it (1)">
+          ✗ <span class="fc-rate-label">Missed</span>
+          <span class="fc-rate-key">1</span>
+        </button>
+        <button class="fc-rate-btn fc-rate-good" onclick="rateCard('good')" title="Got it (2)">
+          ✓ <span class="fc-rate-label">Got it</span>
+          <span class="fc-rate-key">2</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function buildFieldsHtml(fields, color) {
+  const mdFmt = v => v.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  const regular = fields.filter(f => !f.isPearl);
+  const pearl   = fields.find(f => f.isPearl);
+  let html = '';
+  if (regular.length) {
+    html += `<div class="fc-fields-grid" style="--cat-color:${color}">
+      ${regular.map(f => `<div class="fc-field">
+        <div class="fc-field-lbl">${f.lbl}</div>
+        <div class="fc-field-val">${mdFmt(f.val)}</div>
+      </div>`).join('')}
+    </div>`;
+  }
+  if (pearl) {
+    html += `<div class="fc-field fc-field-pearl" style="--cat-color:${color}">
+      <div class="fc-field-lbl">${pearl.lbl}</div>
+      <div class="fc-field-val">${mdFmt(pearl.val)}</div>
+    </div>`;
+  }
+  return html;
+}
+
+function renderBackFields() {
+  const fieldsEl = document.getElementById('fc-back-fields');
+  if (!fieldsEl) return;
+  const idx = document.getElementById('fc-front') ? quizIdx : quizIdx - 1;
+  const d = quizDrugs[quizIdx];
+  if (!d) return;
+  const color = CAT_META[d.category]?.color || 'var(--sakura2)';
+  const isNameToFacts = quizDir === 'name-to-facts';
+  const ALL = [
+    isNameToFacts ? null : { key: 'sum', lbl: 'Summary', val: d.summary },
+    { key: 'moa', lbl: 'Mechanism',         val: d.moa },
+    { key: 'use', lbl: 'Clinical Use',      val: d.use },
+    { key: 'se',  lbl: 'Side Effects',      val: d.se  },
+    { key: 'ci',  lbl: 'Contraindications', val: d.ci  },
+    { key: 'pk',  lbl: 'Pharmacokinetics',  val: d.pk  },
+    d.pearl ? { key: 'pearl', lbl: '★ Step 1 Pearl', val: d.pearl, isPearl: true } : null,
+  ].filter(f => f && f.val).filter(f => f.isPearl || f.key === 'sum' || quizVisibleFields.has(f.key));
+  fieldsEl.innerHTML = buildFieldsHtml(ALL, color);
+}
+
+function flipCard() {
+  const front = document.getElementById('fc-front');
+  const back  = document.getElementById('fc-back');
+  const actions = document.getElementById('fc-actions');
+  if (!front || !back) return;
+  if (front.style.display !== 'none') {
+    front.style.display = 'none';
+    back.style.display  = 'block';
+    if (actions) actions.classList.add('visible');
+  }
+}
+
+function renderIntervalPreview() {
+  const d = quizDrugs[quizIdx];
+  if (!d) return;
+  const c = srData[d.name] || { interval: 0, easeFactor: 2.5, reps: 0 };
+  function calcInterval(smScore) {
+    const ef = Math.max(1.3, c.easeFactor + 0.1 - (5-smScore)*(0.08 + (5-smScore)*0.02));
+    if (smScore === 0) return 1;
+    if (c.reps === 0) return 1;
+    if (c.reps === 1) return 6;
+    return Math.round(c.interval * ef);
+  }
+  function fmtDays(n) {
+    if (n <= 1) return '1d';
+    if (n < 30) return n + 'd';
+    if (n < 365) return Math.round(n/30) + 'mo';
+    return (n/365).toFixed(1) + 'y';
+  }
+  [['again',0],['hard',3],['good',4],['easy',5]].forEach(([r,s]) => {
+    const el = document.getElementById('ri-' + r);
+    if (el) el.textContent = fmtDays(calcInterval(s));
+  });
+}
+
+function rateCard(rating) {
+  if (rating !== 'skip') {
+    const d = quizDrugs[quizIdx];
+    if (d) {
+      const smScore = rating === 'again' ? 0 : 4;
+      srRate(d.name, smScore);
+      quizResults[rating] = (quizResults[rating] || 0) + 1;
+
+      if (rating === 'again') {
+        const remaining = quizDrugs.length - quizIdx - 1;
+        quizDrugs.splice(quizIdx + 1 + Math.min(5, Math.floor(remaining * 0.4)), 0, quizDrugs.splice(quizIdx, 1)[0]);
+        updateQuizProgress();
+        renderQuizCard();
+        return;
+      }
+    }
+  }
+  quizIdx++;
+  updateQuizProgress();
+  renderQuizCard();
+  updateSRPills();
+}
+
+function startQuizAgainOnly() {
+  resetQuiz();
+}
+
+function quizNavBack() {
+  if (quizIdx > 0) {
+    quizIdx--;
+    renderQuizCard();
+    updateQuizProgress();
+  }
+}
+
+function quizToggleStar(btn, name) {
+  toggleBookmark(name);
+  const isStarred = bookmarks.has(name);
+  btn.textContent = isStarred ? '★' : '☆';
+  btn.classList.toggle('starred', isStarred);
+  syncBookmarkCount();
+}
+
+// ── Keyboard shortcuts ─────────────────────────────────────
+document.addEventListener('keydown', e => {
+  const search = document.getElementById('drug-search');
+  const modalOpen = document.getElementById('drug-modal-overlay').classList.contains('open');
+
+  if (modalOpen) {
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); modalNav(1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); modalNav(-1); }
+    if (e.key === 's' || e.key === 'S') toggleModalBookmark();
+    return;
+  }
+
+  if (currentMode === 'quiz') {
+    const front = document.getElementById('fc-front');
+    const isFlipped = !front || front.style.display === 'none';
+    if (e.key === ' ') {
+      e.preventDefault();
+      if (!isFlipped) flipCard();
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!isFlipped) flipCard(); else rateCard('good');
+    }
+    if (isFlipped) {
+      if (e.key === '1') { e.preventDefault(); rateCard('again'); }
+      if (e.key === '2') { e.preventDefault(); rateCard('good'); }
+    }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); quizNavBack(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); rateCard('skip'); }
+    return;
+  }
+
+  if (e.key === '/' && document.activeElement !== search) {
+    e.preventDefault(); search.focus(); search.select();
+  }
+  if (e.key === 'Escape' && searchQ) clearSearch();
+});
+
+window.addEventListener('appAuthStateChanged', (e) => {
+  if (e.detail?.user) {
+    Promise.all([loadBookmarksFromCloud(), srLoadCloud()]).then(() => { if (allDrugs.length) render(); if (currentMode === 'quiz') startQuiz(); });
+  } else {
+    bookmarks = new Set();
+    localStorage.removeItem(BK_LS_KEY);
+    syncBookmarkCount();
+    if (allDrugs.length) render();
+  }
+});
+
+// Called by app.js after full cloud sync completes on sign-in
+window.onCloudSyncComplete = function() {
+  loadBookmarks(); // reload from updated localStorage
+  syncBookmarkCount();
+  if (allDrugs.length) render();
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  srLoad();
+  loadBookmarks();
+  allDrugs = buildDrugList();
+  activeTab = 'autonomic';
+  buildCatPicker();
+  render();
+});
+</script>
+</body>
+</html>
