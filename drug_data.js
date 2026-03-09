@@ -1557,4 +1557,6 @@ toxicology: [
       }
     ]
   }
-],
+]; // Closes the toxicology group array
+
+}; // Closes the entire DRUGS object
