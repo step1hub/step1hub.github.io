@@ -1085,38 +1085,42 @@ mark.search-hl {
   .rcard-field-text { font-size: 12px; }
 
   /* ── Video rows: restructure for mobile ── */
-  /* Hide desktop column header row entirely */
   .video-header-row { display: none; }
 
-  /* Stack name above time, push buttons to right */
   .video-row {
+    display: flex;
+    align-items: center;
     flex-wrap: wrap;
     padding: 10px 14px;
-    gap: 6px;
-    align-items: center;
+    gap: 4px 12px;
   }
-  /* Hide number — redundant on mobile */
   .video-num { display: none; }
-  /* Name takes full width minus buttons */
+
+  /* Name spans most of the row, stops before buttons */
   .video-name {
-    flex: 1 1 auto;
+    flex: 1 1 60%;
     min-width: 0;
     font-size: 13px;
   }
-  /* Time moves inline after name on same row */
+  /* Buttons on the right of the name row */
+  .check-btns {
+    flex-shrink: 0;
+    display: flex; gap: 8px;
+    margin-left: auto;
+  }
+  /* Time drops to its own line, under the name, before the buttons space */
   .video-time {
-    font-size: 11px; color: var(--dim);
+    flex: 0 0 100%;
+    font-size: 10px; color: var(--dim);
     margin-right: 0; min-width: auto;
     text-align: left;
-    order: 3; flex: 0 0 auto;
-  }
-  /* Buttons right-aligned, larger touch targets */
-  .check-btns {
-    margin-left: auto; gap: 8px; order: 2; flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    padding-left: 0;
+    order: 10; /* after name and buttons */
   }
   .icon-btn {
-    width: 40px; height: 40px;
-    border-radius: 10px;
+    width: 42px; height: 42px;
+    border-radius: 10px; font-size: 16px;
   }
 
   /* Hide mini progress bar in category header — too small to be useful */
@@ -1134,10 +1138,7 @@ mark.search-hl {
   .overall-top { flex-direction: column; align-items: flex-start; gap: 8px; }
   .overall-stats { gap: 14px; }
 
-  /* Tracker toolbar */
-  .tracker-toolbar { gap: 8px; }
-  .toolbar-right { margin-left: 0; width: 100%; }
-  .toolbar-btn { flex: 1; text-align: center; padding: 9px 10px; min-height: 40px; }
+  /* Tracker toolbar handled at 700px */
 
   /* Import modal: stack steps vertically */
   .ti-steps { flex-direction: column; align-items: flex-start; gap: 6px; }
@@ -1670,14 +1671,38 @@ mark.search-hl {
   .uw-stats { flex-wrap: wrap; margin-right: 0; gap: 0; }
   .uw-stat { padding: 0 14px; }
 
-  /* ── Pixorize tab bar: allow scroll ── */
+  /* ── Pixorize tab bar: horizontally scrollable ── */
   .tab-bar {
     overflow-x: auto; flex-wrap: nowrap;
-    scrollbar-width: none; padding: 4px;
+    scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
+    /* Remove the background pill so it doesn't look clipped when scrolling */
+    background: transparent; border: none; padding: 0;
+    gap: 6px; margin-bottom: 12px;
   }
   .tab-bar::-webkit-scrollbar { display: none; }
-  .tab-btn { flex: 0 0 auto; min-width: 70px; padding: 8px 12px; min-height: 44px; }
+  .tab-btn {
+    flex: 0 0 auto;
+    min-width: 120px; /* wide enough for "Genetics & Disease" */
+    padding: 10px 14px; min-height: 44px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+  }
+  .tab-btn.active {
+    border-color: var(--tracker-accent, var(--sky));
+    background: color-mix(in srgb, var(--tracker-accent, var(--sky)) 8%, var(--surface));
+    box-shadow: none;
+  }
+
+  /* ── Tracker toolbar: stack search above chips ── */
+  .tracker-toolbar {
+    flex-direction: column; align-items: stretch; gap: 8px;
+  }
+  .tracker-search { min-width: 0; }
+  .filter-chips { gap: 6px; }
+  .toolbar-right { margin-left: 0; }
+  .toolbar-btn { width: 100%; text-align: center; padding: 9px 10px; min-height: 40px; }
 
   /* ── Import modal ── */
   .ti-modal { max-height: 96vh; }
