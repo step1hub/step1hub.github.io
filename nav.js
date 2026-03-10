@@ -86,10 +86,25 @@
         <button id="auth-btn" class="nav-auth-btn" onclick="handleAuthClick()">
           <span id="auth-btn-label">Sign In</span>
         </button>
+        <button class="nav-hamburger" id="nav-hamburger-btn" aria-label="Open navigation menu" aria-expanded="false" onclick="toggleMobileNav()">
+          <span></span><span></span><span></span>
+        </button>
       </div>
 
     </div>
-  </nav>`;
+  </nav>
+
+  <div class="nav-drawer" id="nav-drawer" onclick="closeMobileNav()">
+    <div class="nav-drawer-inner" onclick="event.stopPropagation()">
+      ${navLink('index.html',         'Home')}
+      ${navLink('drugfacts.html',     'Drug Facts')}
+      ${navLink('microfacts.html',    'Micro Facts')}
+      ${navLink('sketchy-pharm.html', 'Sk. Pharm')}
+      ${navLink('sketchy-micro.html', 'Sk. Micro')}
+      ${navLink('pixorize.html',      'Pixorize')}
+      ${navLink('dashboard.html',     'UWorld')}
+    </div>
+  </div>`;
 
   const dateModal = `
   <div class="modal-overlay" id="date-modal">
@@ -111,6 +126,30 @@
   </div>`;
 
   document.body.insertAdjacentHTML('afterbegin', nav + dateModal);
+
+  // ── Mobile nav drawer ────────────────────────────────────────
+  window.toggleMobileNav = function () {
+    const drawer = document.getElementById('nav-drawer');
+    const btn    = document.getElementById('nav-hamburger-btn');
+    if (!drawer || !btn) return;
+    const open = drawer.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  window.closeMobileNav = function () {
+    const drawer = document.getElementById('nav-drawer');
+    const btn    = document.getElementById('nav-hamburger-btn');
+    if (drawer) drawer.classList.remove('open');
+    if (btn)    { btn.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+    document.body.style.overflow = '';
+  };
+
+  // Close drawer on ESC
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') window.closeMobileNav();
+  });
 
   // Update auth button state — called from app.js via updateNavAuth()
   window.updateNavAuth = function (user) {
