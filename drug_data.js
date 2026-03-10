@@ -1338,7 +1338,7 @@ gi: [
 
 endo: [
   {
-    group: "Diabetes",
+    group: "Diabetes & Metabolic",
     drugs: [
       {
         name: "Insulin & Insulin Secretagogues",
@@ -1409,68 +1409,8 @@ endo: [
     ]
   },
   {
-    group: "Endocrine — Bone / Mineral",
+    group: "Thyroid & Adrenal",
     drugs: [
-      {
-        name: "Calcitonin",
-        aka: "Calcitonin-Salmon (Miacalcin, Fortical) · Calcitonin nasal spray",
-        summary: "Polypeptide hormone that inhibits osteoclast activity to lower serum calcium. Used for hypercalcemia, Paget disease, and osteoporosis; weaker than bisphosphonates for chronic use.",
-        moa: "Binds **calcitonin receptors** on **osteoclasts** → ↓ osteoclast activity + ↓ bone resorption → ↓ serum Ca²⁺; also ↑ renal Ca²⁺ excretion; central analgesic effect (endorphin-mediated)",
-        use: "**Acute hypercalcemia:** IV/IM — rapid onset (2–4 hr); bridge until bisphosphonates take effect\nPaget disease of bone (↓ bone turnover, pain relief)\nOsteoporosis (nasal spray — third-line; analgesic for acute vertebral fractures)",
-        se: "Nausea, flushing; hypocalcemia (excess); nasal irritation (spray)\n**Tachyphylaxis** (resistance within days — limits usefulness for chronic hypercalcemia)\nPossible ↑ malignancy risk with long-term nasal spray (FDA label change 2013)",
-        ci: "Hypocalcemia (worsens); allergy to salmon calcitonin\nLong-term osteoporosis use in patients with cancer history (malignancy signal)",
-        pk: "IM/SC (most potent) or intranasal (200 IU alternating nostrils daily)\nt½ ~1 hr; renal/peripheral metabolism\nOnset of Ca²⁺ lowering within 2–4 hr (faster than bisphosphonates — clinical advantage in acute hypercalcemia)",
-        pearl: "**Calcitonin's major advantage over bisphosphonates in acute hypercalcemia is speed of onset** (hours vs. 2–4 days for IV bisphosphonates) — use calcitonin + IV saline acutely, then continue with bisphosphonate for sustained effect. Tachyphylaxis means calcitonin is a bridge therapy, not a long-term solution. The nasal spray's analgesic effect on vertebral fracture pain is a unique property."
-      },
-      {
-        name: "Cinacalcet & Sevelamer",
-        aka: "Cinacalcet (Sensipar) — Calcimimetic | Sevelamer (Renvela, Renagel) — Phosphate binder | Calcium Carbonate · Calcium Acetate · Lanthanum Carbonate — other phosphate binders",
-        summary: "Agents managing mineral metabolism in CKD. Cinacalcet sensitizes the calcium-sensing receptor to reduce PTH; sevelamer binds dietary phosphate in the gut to prevent hyperphosphatemia without adding calcium load.",
-        moa: "**Cinacalcet:** positive allosteric modulator of **calcium-sensing receptor (CaSR)** on parathyroid chief cells → CaSR senses Ca²⁺ at lower concentrations → ↓ PTH secretion → ↓ bone resorption. **Sevelamer:** non-absorbed polymer → binds **dietary phosphate** in the GI tract → prevents intestinal phosphate absorption → ↓ serum phosphorus (without adding calcium load; also binds bile acids → ↓ LDL)",
-        use: "**Cinacalcet:** secondary hyperparathyroidism in dialysis; primary hyperparathyroidism (non-surgical); parathyroid carcinoma\n**Sevelamer:** hyperphosphatemia in CKD/dialysis (preferred over Ca-based binders in vascular calcification or hypercalcemia — no calcium load)\n**Calcium carbonate/acetate:** less expensive phosphate binders (add calcium — caution in hypercalcemia)",
-        se: "**Cinacalcet:** hypocalcemia (most important — monitor Ca²⁺; QTc with severe hypocalcemia), nausea/vomiting, adynamic bone disease (PTH over-suppression)\n**Sevelamer:** constipation, nausea, flatulence; ↓ fat-soluble vitamin absorption (A/D/E/K); binds co-administered drugs (separate by 1–2 hr)",
-        ci: "Cinacalcet: hypocalcemia (Ca²⁺ <8.4 mg/dL)\nSevelamer: bowel obstruction, dysphagia\nCalcium-based binders: hypercalcemia, significant vascular calcification",
-        pk: "**Cinacalcet:** oral, t½ ~30–40 hr, hepatic (CYP3A4/1A2/2D6) — take with food\n**Sevelamer:** not absorbed (polymer — acts in GI lumen); take with meals (must be present with dietary phosphate)",
-        pearl: "**Cinacalcet 'tricks' the parathyroid gland into thinking calcium is already high** — it allosterically enhances the calcium-sensing receptor sensitivity. This reduces PTH without actually raising calcium. **Sevelamer is calcium-free and bile-acid binding** — it is preferred in dialysis patients with hypercalcemia or cardiovascular calcification because calcium-based binders would worsen vascular calcium deposition."
-      },
-      {
-        name: "Bisphosphonates & Osteoporosis Drugs",
-        aka: "Alendronate (Fosamax) · Risedronate · Ibandronate · Zoledronic Acid (Reclast, Zometa IV) — Bisphosphonates | Denosumab (Prolia, Xgeva) — RANK-L inhibitor | Teriparatide (Forteo) — PTH analog | Romosozumab (Evenity) — Sclerostin inhibitor",
-        summary: "Anti-resorptive and anabolic agents for osteoporosis and hypercalcemia of malignancy. Bisphosphonates are first-line for osteoporosis; denosumab is an alternative; teriparatide and romosozumab are anabolic agents for severe osteoporosis.",
-        moa: "**Bisphosphonates:** incorporate into bone matrix → ingested by osteoclasts → inhibit **farnesyl pyrophosphate synthase** (mevalonate pathway) → ↓ osteoclast activity/survival → ↓ bone resorption. **Denosumab:** monoclonal antibody against **RANK-L** → ↓ RANK-L/RANK signaling → ↓ osteoclast differentiation/activation → ↓ bone resorption. **Teriparatide (PTH 1-34):** intermittent subcutaneous PTH → anabolic effect (↑ osteoblast activity > osteoclast when pulsed). **Romosozumab:** anti-sclerostin antibody → ↓ sclerostin → ↑ Wnt signaling → ↑ bone formation + ↓ bone resorption (dual mechanism)",
-        use: "**Bisphosphonates:** osteoporosis (first-line); hypercalcemia of malignancy (IV zoledronic acid); Paget disease; bone metastases (↓ skeletal-related events)\n**Denosumab:** osteoporosis (especially in renal failure — not renally cleared); bone metastases (Xgeva — higher dose)\n**Teriparatide/abaloparatide:** severe osteoporosis with high fracture risk (≥2 fragility fractures; max 2-year lifetime course)\n**Romosozumab:** severe osteoporosis (1-year course — dual anabolic + anti-resorptive)",
-        se: "**Bisphosphonates (oral):** esophageal irritation/ulceration (take with full glass of water, remain upright ≥30 min)\n**ONJ** (osteonecrosis of jaw — especially IV/denosumab in cancer; dental eval before starting)\n**Atypical femoral fractures** (subtrochanteric — risk ↑ >5 years; prodrome: thigh pain)\n**IV bisphosphonate:** acute phase reaction (fever, myalgia — first dose especially)\n**Denosumab:** hypocalcemia (ensure Ca²⁺/vitamin D adequate); rebound hypercalcemia on discontinuation (→ must transition to bisphosphonate)\n**Teriparatide:** osteosarcoma (rodent data — black box)",
-        ci: "Oral bisphosphonates: esophageal disorders; hypocalcemia; CrCl <35 mL/min (IV zoledronic acid — nephrotoxic)\nTeriparatide: prior skeletal radiation, Paget disease, ↑ ALP, pediatric patients, prior osteosarcoma\nRomosozumab: MI or stroke within 1 year (↑ CV events — black box)",
-        pk: "**Oral bisphosphonates:** take on empty stomach (food/Ca²⁺/Mg²⁺ → absorption >99% reduced); bioavailability ~0.7%; bone t½ = years (long-term effect persists after stopping)\n**Zoledronic acid:** IV once yearly (osteoporosis) or q3–4 weeks (bone mets)\n**Denosumab:** SC q6 months (osteoporosis) or monthly (bone mets)\n**Teriparatide:** SC daily × max 2 years\n**Romosozumab:** SC monthly × 12 months",
-        pearl: "**Bisphosphonate drug holiday after 5 years** — benefit persists in bone matrix years after stopping (very long bone t½); holiday reduces atypical femoral fracture risk (cumulative suppression of osteoclast remodeling). However, high-risk patients benefit from continued therapy. **Denosumab should NOT be stopped abruptly** without transitioning to a bisphosphonate — discontinuation causes RANK-L rebound with rapid bone loss and vertebral fractures within months."
-      },
-    ]
-  },
-  {
-    group: "Endocrine — Hormones",
-    drugs: [
-      {
-        name: "ADH / Desmopressin (DDAVP) & Vaptans",
-        aka: "Desmopressin (DDAVP, Stimate) — V2 agonist | Vasopressin (Pitressin) — V1+V2 agonist | Tolvaptan (Samsca) · Conivaptan — V2 antagonists (Vaptans)",
-        summary: "ADH analogs increase water reabsorption in the collecting duct to concentrate urine; vaptans block V2 receptors to promote aquaresis. Used for diabetes insipidus, hyponatremia (SIADH), von Willebrand disease, and hemostasis.",
-        moa: "**Desmopressin (DDAVP):** selective **V2 receptor agonist** on renal collecting duct → ↑ cAMP → ↑ AQP2 insertion → ↑ water reabsorption (antidiuresis); also stimulates endothelial vWF/Factor VIII release. **Vasopressin:** V1 (vascular smooth muscle → vasoconstriction) + V2 (kidney → antidiuresis). **Vaptans (tolvaptan, conivaptan):** competitive **V2 receptor antagonists** → block ADH → ↑ free water excretion without electrolyte loss (aquaresis)",
-        use: "**Desmopressin:** central diabetes insipidus (first-line); von Willebrand disease type 1 (↑ vWF + Factor VIII release — pre-procedural); hemophilia A (mild-moderate); nocturnal enuresis\n**Vasopressin:** vasodilatory shock (V1), variceal bleeding (splanchnic vasoconstriction), cardiac arrest (ACLS)\n**Tolvaptan:** euvolemic/hypervolemic hyponatremia (SIADH, HF, cirrhosis — corrects Na⁺ by free water excretion); ADPKD (slows cyst growth)",
-        se: "**Desmopressin:** hyponatremia/water intoxication (excess water retention — monitor Na⁺ in elderly/children/postoperative), headache, rhinitis\n**Vasopressin:** mesenteric/coronary ischemia (V1 vasoconstriction), hypertension\n**Tolvaptan:** overly rapid Na⁺ correction (osmotic demyelination syndrome — limit <10–12 mEq/L per 24 hr); hepatotoxicity (ADPKD indication — FDA black box)",
-        ci: "Desmopressin: hyponatremia (will worsen); type IIb or platelet-type vWD (thrombocytopenia)\nTolvaptan: hypovolemic hyponatremia (aquaresis worsens depletion); inability to respond to thirst; hepatic impairment (ADPKD); potent CYP3A4 inhibitors",
-        pk: "**Desmopressin:** intranasal/oral/SQ/IV; t½ ~75 min (IV), 3 hr (oral); V2-selective (no vasoconstriction)\n**Vasopressin:** IV infusion, t½ ~10–20 min; renal/hepatic\n**Tolvaptan:** oral, t½ ~8–12 hr, CYP3A4 — must initiate in hospital (monitor Na⁺ correction rate)",
-        pearl: "**Vaptans correct SIADH hyponatremia by aquaresis** — they remove free water without sodium loss, unlike loop diuretics which remove both. The danger is **overly rapid sodium correction → osmotic demyelination syndrome (central pontine myelinolysis)** — Na⁺ must not rise >10–12 mEq/L in 24 hours. If correction is too rapid, give D5W to intentionally lower Na⁺ (relowering strategy)."
-      },
-      {
-        name: "Growth Hormone Axis Drugs",
-        aka: "Somatropin (Genotropin, Humatrope) — rhGH | Somatostatin Analogs: Octreotide (Sandostatin) · Lanreotide · Pasireotide | Pegvisomant — GH receptor antagonist | Mecasermin — IGF-1",
-        summary: "Recombinant GH and somatostatin analogs modulate the GH-IGF-1 axis. Octreotide is widely used for acromegaly, carcinoid syndrome, and variceal bleeding; somatropin for GH deficiency.",
-        moa: "**Somatropin:** recombinant **GH** → binds GH receptor → ↑ IGF-1 synthesis → anabolic effects (↑ protein synthesis, ↑ lipolysis, ↑ linear growth). **Octreotide:** somatostatin analog → activates **somatostatin receptors (SSTR2/5)** → ↓ GH, ↓ TSH, ↓ glucagon, ↓ insulin, ↓ VIP, ↓ GI secretions → ↓ splanchnic blood flow (variceal bleeding). **Pegvisomant:** pegylated GH receptor antagonist → blocks GH action → ↓ IGF-1 synthesis",
-        use: "**Somatropin:** GH deficiency (children — linear growth; adults — muscle/fat); Turner, Prader-Willi syndromes\n**Octreotide:** acromegaly (↓ GH/IGF-1), carcinoid syndrome (↓ flushing/diarrhea), VIPoma, variceal bleeding (↓ splanchnic flow — adjunct to endoscopy), thyrotropinoma\n**Pegvisomant:** acromegaly (when somatostatin analogs fail)\n**Pasireotide:** Cushing disease (↓ ACTH — SSTR5 selectivity)",
-        se: "**Somatropin:** glucose intolerance/insulin resistance, edema, arthralgias; ↑ malignancy risk (do not use in active cancer); intracranial hypertension (children)\n**Octreotide:** cholelithiasis (↓ CCK → bile stasis — stone surveillance for long-term use), GI upset, bradycardia, hyperglycemia\n**Pasireotide:** significant hyperglycemia (less insulin selectivity)",
-        ci: "Somatropin: active malignancy; closed epiphyses; Prader-Willi + severe obesity/sleep apnea (respiratory failure)\nOctreotide: relative CI in poorly controlled diabetes\nPegvisomant: hepatic disease",
-        pk: "**Somatropin:** SC daily, t½ ~2–3 hr, hepatic/renal\n**Octreotide:** SC 3× daily (immediate release) or IM monthly (Sandostatin LAR); t½ ~1.5 hr (SC)\n**Pasireotide:** SC twice daily or IM monthly\n**Pegvisomant:** SC daily, t½ ~6 days (pegylation prolongs)",
-        pearl: "**Octreotide for variceal bleeding** — reduces portal pressure by decreasing splanchnic blood flow via somatostatin receptors on mesenteric vessels. Used as adjunct to endoscopic band ligation; start before endoscopy to improve visibility. **Octreotide causes cholelithiasis** via inhibition of gallbladder-stimulating CCK — gallstone surveillance recommended with long-term use."
-      },
       {
         name: "Levothyroxine (T4)",
         aka: "Levothyroxine (Synthroid, Levoxyl, Tirosint) · Liothyronine (T3, Cytomel) · Desiccated Thyroid (Armour Thyroid)",
@@ -1505,6 +1445,98 @@ endo: [
         pearl: "**Never abruptly stop corticosteroids** after >2–3 weeks of therapy — HPA axis is suppressed and cannot produce adequate cortisol for physiologic stress. **Taper slowly** (schedule depends on dose and duration) to allow adrenal recovery. **Dexamethasone is the only glucocorticoid** that does not interfere with 8 AM serum cortisol measurements — used for overnight dexamethasone suppression test in Cushing syndrome evaluation."
       },
       {
+        name: "Fludrocortisone & Mineralocorticoid Axis",
+        aka: "Fludrocortisone (Florinef) · Aldosterone (endogenous) · Eplerenone / Spironolactone (antagonists — see K⁺-Sparing Diuretics entry)",
+        summary: "Fludrocortisone is the primary synthetic mineralocorticoid used for adrenal insufficiency and orthostatic hypotension. It acts on renal collecting duct to retain sodium and excrete potassium.",
+        moa: "Binds **mineralocorticoid receptor (MR)** in principal cells of the distal nephron → ↑ transcription of ENaC (epithelial Na⁺ channel) and Na⁺/K⁺-ATPase → ↑ Na⁺ reabsorption + ↑ K⁺/H⁺ excretion → ↑ plasma volume → ↑ blood pressure; also sensitizes vascular smooth muscle to catecholamines",
+        use: "**Primary adrenal insufficiency (Addison disease):** combined with hydrocortisone (fludrocortisone = mineralocorticoid; hydrocortisone = glucocorticoid)\nCongenital adrenal hyperplasia (+ hydrocortisone)\nOrthostatic hypotension (POTS, autonomic failure — expands intravascular volume)\nSalt-losing nephropathy",
+        se: "**Hypertension** (excess Na⁺ retention + volume expansion)\n**Hypokalemia** (↑ K⁺ excretion)\nEdema, headache, cardiac enlargement (excess dosing)\nSuppression of renin/aldosterone",
+        ci: "Uncontrolled hypertension; CHF (volume overload)\nRenal failure (↑ K⁺ secretion impaired — hyperkalemia risk at high dose)\nSystemic fungal infections",
+        pk: "Oral, t½ ~18–36 hr; hepatic → inactive metabolites; renal excretion\nPotency: ~125× hydrocortisone for Na⁺ retention; modest glucocorticoid activity (~10× hydrocortisone)\nUsual dose 0.05–0.1 mg daily; titrate by BP, K⁺, renin, and symptoms",
+        pearl: "**In Addison disease, BOTH glucocorticoid and mineralocorticoid replacement are required** — hydrocortisone alone is insufficient because it lacks adequate mineralocorticoid activity at physiologic doses. The clinical clue that mineralocorticoid is missing: postural hypotension + salt craving + hyperkalemia. Hydrocortisone at high doses (stress dosing) provides enough mineralocorticoid activity transiently, but chronic maintenance requires fludrocortisone."
+      },
+    ]
+  },
+  {
+    group: "Bone & Mineral Metabolism",
+    drugs: [
+      {
+        name: "Bisphosphonates & Osteoporosis Drugs",
+        aka: "Alendronate (Fosamax) · Risedronate · Ibandronate · Zoledronic Acid (Reclast, Zometa IV) — Bisphosphonates | Denosumab (Prolia, Xgeva) — RANK-L inhibitor | Teriparatide (Forteo) — PTH analog | Romosozumab (Evenity) — Sclerostin inhibitor",
+        summary: "Anti-resorptive and anabolic agents for osteoporosis and hypercalcemia of malignancy. Bisphosphonates are first-line for osteoporosis; denosumab is an alternative; teriparatide and romosozumab are anabolic agents for severe osteoporosis.",
+        moa: "**Bisphosphonates:** incorporate into bone matrix → ingested by osteoclasts → inhibit **farnesyl pyrophosphate synthase** (mevalonate pathway) → ↓ osteoclast activity/survival → ↓ bone resorption. **Denosumab:** monoclonal antibody against **RANK-L** → ↓ RANK-L/RANK signaling → ↓ osteoclast differentiation/activation → ↓ bone resorption. **Teriparatide (PTH 1-34):** intermittent subcutaneous PTH → anabolic effect (↑ osteoblast activity > osteoclast when pulsed). **Romosozumab:** anti-sclerostin antibody → ↓ sclerostin → ↑ Wnt signaling → ↑ bone formation + ↓ bone resorption (dual mechanism)",
+        use: "**Bisphosphonates:** osteoporosis (first-line); hypercalcemia of malignancy (IV zoledronic acid); Paget disease; bone metastases (↓ skeletal-related events)\n**Denosumab:** osteoporosis (especially in renal failure — not renally cleared); bone metastases (Xgeva — higher dose)\n**Teriparatide/abaloparatide:** severe osteoporosis with high fracture risk (≥2 fragility fractures; max 2-year lifetime course)\n**Romosozumab:** severe osteoporosis (1-year course — dual anabolic + anti-resorptive)",
+        se: "**Bisphosphonates (oral):** esophageal irritation/ulceration (take with full glass of water, remain upright ≥30 min)\n**ONJ** (osteonecrosis of jaw — especially IV/denosumab in cancer; dental eval before starting)\n**Atypical femoral fractures** (subtrochanteric — risk ↑ >5 years; prodrome: thigh pain)\n**IV bisphosphonate:** acute phase reaction (fever, myalgia — first dose especially)\n**Denosumab:** hypocalcemia (ensure Ca²⁺/vitamin D adequate); rebound hypercalcemia on discontinuation (→ must transition to bisphosphonate)\n**Teriparatide:** osteosarcoma (rodent data — black box)",
+        ci: "Oral bisphosphonates: esophageal disorders; hypocalcemia; CrCl <35 mL/min (IV zoledronic acid — nephrotoxic)\nTeriparatide: prior skeletal radiation, Paget disease, ↑ ALP, pediatric patients, prior osteosarcoma\nRomosozumab: MI or stroke within 1 year (↑ CV events — black box)",
+        pk: "**Oral bisphosphonates:** take on empty stomach (food/Ca²⁺/Mg²⁺ → absorption >99% reduced); bioavailability ~0.7%; bone t½ = years (long-term effect persists after stopping)\n**Zoledronic acid:** IV once yearly (osteoporosis) or q3–4 weeks (bone mets)\n**Denosumab:** SC q6 months (osteoporosis) or monthly (bone mets)\n**Teriparatide:** SC daily × max 2 years\n**Romosozumab:** SC monthly × 12 months",
+        pearl: "**Bisphosphonate drug holiday after 5 years** — benefit persists in bone matrix years after stopping (very long bone t½); holiday reduces atypical femoral fracture risk (cumulative suppression of osteoclast remodeling). However, high-risk patients benefit from continued therapy. **Denosumab should NOT be stopped abruptly** without transitioning to a bisphosphonate — discontinuation causes RANK-L rebound with rapid bone loss and vertebral fractures within months."
+      },
+      {
+        name: "Calcitonin",
+        aka: "Calcitonin-Salmon (Miacalcin, Fortical) · Calcitonin nasal spray",
+        summary: "Polypeptide hormone that inhibits osteoclast activity to lower serum calcium. Used for hypercalcemia, Paget disease, and osteoporosis; weaker than bisphosphonates for chronic use.",
+        moa: "Binds **calcitonin receptors** on **osteoclasts** → ↓ osteoclast activity + ↓ bone resorption → ↓ serum Ca²⁺; also ↑ renal Ca²⁺ excretion; central analgesic effect (endorphin-mediated)",
+        use: "**Acute hypercalcemia:** IV/IM — rapid onset (2–4 hr); bridge until bisphosphonates take effect\nPaget disease of bone (↓ bone turnover, pain relief)\nOsteoporosis (nasal spray — third-line; analgesic for acute vertebral fractures)",
+        se: "Nausea, flushing; hypocalcemia (excess); nasal irritation (spray)\n**Tachyphylaxis** (resistance within days — limits usefulness for chronic hypercalcemia)\nPossible ↑ malignancy risk with long-term nasal spray (FDA label change 2013)",
+        ci: "Hypocalcemia (worsens); allergy to salmon calcitonin\nLong-term osteoporosis use in patients with cancer history (malignancy signal)",
+        pk: "IM/SC (most potent) or intranasal (200 IU alternating nostrils daily)\nt½ ~1 hr; renal/peripheral metabolism\nOnset of Ca²⁺ lowering within 2–4 hr (faster than bisphosphonates — clinical advantage in acute hypercalcemia)",
+        pearl: "**Calcitonin's major advantage over bisphosphonates in acute hypercalcemia is speed of onset** (hours vs. 2–4 days for IV bisphosphonates) — use calcitonin + IV saline acutely, then continue with bisphosphonate for sustained effect. Tachyphylaxis means calcitonin is a bridge therapy, not a long-term solution. The nasal spray's analgesic effect on vertebral fracture pain is a unique property."
+      },
+      {
+        name: "Cinacalcet & Sevelamer",
+        aka: "Cinacalcet (Sensipar) — Calcimimetic | Sevelamer (Renvela, Renagel) — Phosphate binder | Calcium Carbonate · Calcium Acetate · Lanthanum Carbonate — other phosphate binders",
+        summary: "Agents managing mineral metabolism in CKD. Cinacalcet sensitizes the calcium-sensing receptor to reduce PTH; sevelamer binds dietary phosphate in the gut to prevent hyperphosphatemia without adding calcium load.",
+        moa: "**Cinacalcet:** positive allosteric modulator of **calcium-sensing receptor (CaSR)** on parathyroid chief cells → CaSR senses Ca²⁺ at lower concentrations → ↓ PTH secretion → ↓ bone resorption. **Sevelamer:** non-absorbed polymer → binds **dietary phosphate** in the GI tract → prevents intestinal phosphate absorption → ↓ serum phosphorus (without adding calcium load; also binds bile acids → ↓ LDL)",
+        use: "**Cinacalcet:** secondary hyperparathyroidism in dialysis; primary hyperparathyroidism (non-surgical); parathyroid carcinoma\n**Sevelamer:** hyperphosphatemia in CKD/dialysis (preferred over Ca-based binders in vascular calcification or hypercalcemia — no calcium load)\n**Calcium carbonate/acetate:** less expensive phosphate binders (add calcium — caution in hypercalcemia)",
+        se: "**Cinacalcet:** hypocalcemia (most important — monitor Ca²⁺; QTc with severe hypocalcemia), nausea/vomiting, adynamic bone disease (PTH over-suppression)\n**Sevelamer:** constipation, nausea, flatulence; ↓ fat-soluble vitamin absorption (A/D/E/K); binds co-administered drugs (separate by 1–2 hr)",
+        ci: "Cinacalcet: hypocalcemia (Ca²⁺ <8.4 mg/dL)\nSevelamer: bowel obstruction, dysphagia\nCalcium-based binders: hypercalcemia, significant vascular calcification",
+        pk: "**Cinacalcet:** oral, t½ ~30–40 hr, hepatic (CYP3A4/1A2/2D6) — take with food\n**Sevelamer:** not absorbed (polymer — acts in GI lumen); take with meals (must be present with dietary phosphate)",
+        pearl: "**Cinacalcet 'tricks' the parathyroid gland into thinking calcium is already high** — it allosterically enhances the calcium-sensing receptor sensitivity. This reduces PTH without actually raising calcium. **Sevelamer is calcium-free and bile-acid binding** — it is preferred in dialysis patients with hypercalcemia or cardiovascular calcification because calcium-based binders would worsen vascular calcium deposition."
+      },
+    ]
+  },
+  {
+    group: "Pituitary & Hypothalamic",
+    drugs: [
+      {
+        name: "ADH / Desmopressin (DDAVP) & Vaptans",
+        aka: "Desmopressin (DDAVP, Stimate) — V2 agonist | Vasopressin (Pitressin) — V1+V2 agonist | Tolvaptan (Samsca) · Conivaptan — V2 antagonists (Vaptans)",
+        summary: "ADH analogs increase water reabsorption in the collecting duct to concentrate urine; vaptans block V2 receptors to promote aquaresis. Used for diabetes insipidus, hyponatremia (SIADH), von Willebrand disease, and hemostasis.",
+        moa: "**Desmopressin (DDAVP):** selective **V2 receptor agonist** on renal collecting duct → ↑ cAMP → ↑ AQP2 insertion → ↑ water reabsorption (antidiuresis); also stimulates endothelial vWF/Factor VIII release. **Vasopressin:** V1 (vascular smooth muscle → vasoconstriction) + V2 (kidney → antidiuresis). **Vaptans (tolvaptan, conivaptan):** competitive **V2 receptor antagonists** → block ADH → ↑ free water excretion without electrolyte loss (aquaresis)",
+        use: "**Desmopressin:** central diabetes insipidus (first-line); von Willebrand disease type 1 (↑ vWF + Factor VIII release — pre-procedural); hemophilia A (mild-moderate); nocturnal enuresis\n**Vasopressin:** vasodilatory shock (V1), variceal bleeding (splanchnic vasoconstriction), cardiac arrest (ACLS)\n**Tolvaptan:** euvolemic/hypervolemic hyponatremia (SIADH, HF, cirrhosis — corrects Na⁺ by free water excretion); ADPKD (slows cyst growth)",
+        se: "**Desmopressin:** hyponatremia/water intoxication (excess water retention — monitor Na⁺ in elderly/children/postoperative), headache, rhinitis\n**Vasopressin:** mesenteric/coronary ischemia (V1 vasoconstriction), hypertension\n**Tolvaptan:** overly rapid Na⁺ correction (osmotic demyelination syndrome — limit <10–12 mEq/L per 24 hr); hepatotoxicity (ADPKD indication — FDA black box)",
+        ci: "Desmopressin: hyponatremia (will worsen); type IIb or platelet-type vWD (thrombocytopenia)\nTolvaptan: hypovolemic hyponatremia (aquaresis worsens depletion); inability to respond to thirst; hepatic impairment (ADPKD); potent CYP3A4 inhibitors",
+        pk: "**Desmopressin:** intranasal/oral/SQ/IV; t½ ~75 min (IV), 3 hr (oral); V2-selective (no vasoconstriction)\n**Vasopressin:** IV infusion, t½ ~10–20 min; renal/hepatic\n**Tolvaptan:** oral, t½ ~8–12 hr, CYP3A4 — must initiate in hospital (monitor Na⁺ correction rate)",
+        pearl: "**Vaptans correct SIADH hyponatremia by aquaresis** — they remove free water without sodium loss, unlike loop diuretics which remove both. The danger is **overly rapid sodium correction → osmotic demyelination syndrome (central pontine myelinolysis)** — Na⁺ must not rise >10–12 mEq/L in 24 hours. If correction is too rapid, give D5W to intentionally lower Na⁺ (relowering strategy)."
+      },
+      {
+        name: "Growth Hormone Axis Drugs",
+        aka: "Somatropin (Genotropin, Humatrope) — rhGH | Somatostatin Analogs: Octreotide (Sandostatin) · Lanreotide · Pasireotide | Pegvisomant — GH receptor antagonist | Mecasermin — IGF-1",
+        summary: "Recombinant GH and somatostatin analogs modulate the GH-IGF-1 axis. Octreotide is widely used for acromegaly, carcinoid syndrome, and variceal bleeding; somatropin for GH deficiency.",
+        moa: "**Somatropin:** recombinant **GH** → binds GH receptor → ↑ IGF-1 synthesis → anabolic effects (↑ protein synthesis, ↑ lipolysis, ↑ linear growth). **Octreotide:** somatostatin analog → activates **somatostatin receptors (SSTR2/5)** → ↓ GH, ↓ TSH, ↓ glucagon, ↓ insulin, ↓ VIP, ↓ GI secretions → ↓ splanchnic blood flow (variceal bleeding). **Pegvisomant:** pegylated GH receptor antagonist → blocks GH action → ↓ IGF-1 synthesis",
+        use: "**Somatropin:** GH deficiency (children — linear growth; adults — muscle/fat); Turner, Prader-Willi syndromes\n**Octreotide:** acromegaly (↓ GH/IGF-1), carcinoid syndrome (↓ flushing/diarrhea), VIPoma, variceal bleeding (↓ splanchnic flow — adjunct to endoscopy), thyrotropinoma\n**Pegvisomant:** acromegaly (when somatostatin analogs fail)\n**Pasireotide:** Cushing disease (↓ ACTH — SSTR5 selectivity)",
+        se: "**Somatropin:** glucose intolerance/insulin resistance, edema, arthralgias; ↑ malignancy risk (do not use in active cancer); intracranial hypertension (children)\n**Octreotide:** cholelithiasis (↓ CCK → bile stasis — stone surveillance for long-term use), GI upset, bradycardia, hyperglycemia\n**Pasireotide:** significant hyperglycemia (less insulin selectivity)",
+        ci: "Somatropin: active malignancy; closed epiphyses; Prader-Willi + severe obesity/sleep apnea (respiratory failure)\nOctreotide: relative CI in poorly controlled diabetes\nPegvisomant: hepatic disease",
+        pk: "**Somatropin:** SC daily, t½ ~2–3 hr, hepatic/renal\n**Octreotide:** SC 3× daily (immediate release) or IM monthly (Sandostatin LAR); t½ ~1.5 hr (SC)\n**Pasireotide:** SC twice daily or IM monthly\n**Pegvisomant:** SC daily, t½ ~6 days (pegylation prolongs)",
+        pearl: "**Octreotide for variceal bleeding** — reduces portal pressure by decreasing splanchnic blood flow via somatostatin receptors on mesenteric vessels. Used as adjunct to endoscopic band ligation; start before endoscopy to improve visibility. **Octreotide causes cholelithiasis** via inhibition of gallbladder-stimulating CCK — gallstone surveillance recommended with long-term use."
+      },
+      {
+        name: "GnRH Agonists & Antagonists",
+        aka: "GnRH Agonists (long-acting): Leuprolide (Lupron) · Goserelin · Triptorelin · Histrelin | GnRH Antagonists: Degarelix · Relugolix · Cetrorelix · Ganirelix",
+        summary: "GnRH agonists paradoxically suppress gonadotropins after initial flare when given continuously; GnRH antagonists produce immediate suppression without flare. Used for prostate cancer, endometriosis, uterine fibroids, and ART.",
+        moa: "**GnRH agonists (continuous):** initially stimulate LH/FSH (first 1–2 weeks — 'flare') → receptor desensitization and downregulation → ↓ LH/FSH → ↓ testosterone (castrate levels) / ↓ estrogen ('chemical castration'). **GnRH antagonists:** competitive antagonism at GnRH receptors → immediate ↓ LH/FSH → immediate ↓ sex steroids (no initial flare)",
+        use: "**GnRH agonists (continuous):** prostate cancer (medical castration — ADT); endometriosis (↓ estrogen → lesion regression); uterine fibroids (preoperative shrinkage); central precocious puberty; IVF ovulation suppression\n**GnRH antagonists (degarelix, relugolix):** prostate cancer (immediate castration — no flare); IVF (prevent premature LH surge — shorter protocol)",
+        se: "**Both (↓ sex steroids):** hot flashes (most common), osteoporosis, sexual dysfunction, fatigue/depression, metabolic syndrome\n**GnRH agonists:** tumor flare (initial testosterone spike — bone pain, urinary obstruction, cord compression — prevent with anti-androgen for first 4 weeks)\n**GnRH antagonists:** injection site reactions; no tumor flare",
+        ci: "GnRH agonist without anti-androgen co-prescription: spinal cord metastases (tumor flare → cord compression — use GnRH antagonist instead OR start anti-androgen first)\nGnRH agonists for precocious puberty: organic CNS lesion (treat underlying cause)",
+        pk: "**Leuprolide:** SC/IM; depot formulations (monthly, 3-monthly, 4-monthly, 12-monthly implant)\n**Degarelix:** SC monthly; no depot available\n**Relugolix:** oral GnRH antagonist (Orgovyx) — first oral option for prostate cancer; t½ ~25 hr; CYP3A4/P-gp substrate",
+        pearl: "**GnRH agonist tumor flare** is predictable and potentially devastating in patients with spinal metastases — cord compression can cause permanent paralysis. **Always start an androgen receptor antagonist** (bicalutamide) 7–14 days before and for 4 weeks after initiating a GnRH agonist in patients with metastatic prostate cancer. GnRH antagonists bypass this risk entirely (no flare) — preferred in patients with bone metastases."
+      },
+    ]
+  },
+  {
+    group: "Reproductive & Obstetric",
+    drugs: [
+      {
         name: "Oral Contraceptives & Hormonal Contraception",
         aka: "Combined OCP (Estrogen + Progestin): Lo Loestrin · Ortho Tri-Cyclen · Seasonique | Progestin-only: Norethindrone (Micronor) · Depo-Provera (DMPA) · Nexplanon (implant) | IUD: Mirena (LNG-IUD) | Emergency: Plan B (levonorgestrel) · Ella (ulipristal) · Copper IUD",
         summary: "Hormonal contraceptives prevent ovulation (combined OCP, implant, DMPA), alter cervical mucus/endometrium, or act as spermicides (copper IUD). Non-contraceptive benefits include acne, dysmenorrhea, and PCOS management.",
@@ -1527,17 +1559,6 @@ endo: [
         pearl: "**Finasteride reduces PSA by ~50%** — a patient on finasteride with a PSA of 2 ng/mL should be interpreted as having a PSA equivalent of 4 ng/mL for prostate cancer screening purposes. Failure to account for this correction may miss cancer. **Dutasteride inhibits both isoforms of 5α-reductase** (type 1 in scalp/liver + type 2 in prostate) while finasteride inhibits only type 2 — dutasteride has potentially broader efficacy for hair loss and BPH."
       },
       {
-        name: "GnRH Agonists & Antagonists",
-        aka: "GnRH Agonists (long-acting): Leuprolide (Lupron) · Goserelin · Triptorelin · Histrelin | GnRH Antagonists: Degarelix · Relugolix · Cetrorelix · Ganirelix",
-        summary: "GnRH agonists paradoxically suppress gonadotropins after initial flare when given continuously; GnRH antagonists produce immediate suppression without flare. Used for prostate cancer, endometriosis, uterine fibroids, and ART.",
-        moa: "**GnRH agonists (continuous):** initially stimulate LH/FSH (first 1–2 weeks — 'flare') → receptor desensitization and downregulation → ↓ LH/FSH → ↓ testosterone (castrate levels) / ↓ estrogen ('chemical castration'). **GnRH antagonists:** competitive antagonism at GnRH receptors → immediate ↓ LH/FSH → immediate ↓ sex steroids (no initial flare)",
-        use: "**GnRH agonists (continuous):** prostate cancer (medical castration — ADT); endometriosis (↓ estrogen → lesion regression); uterine fibroids (preoperative shrinkage); central precocious puberty; IVF ovulation suppression\n**GnRH antagonists (degarelix, relugolix):** prostate cancer (immediate castration — no flare); IVF (prevent premature LH surge — shorter protocol)",
-        se: "**Both (↓ sex steroids):** hot flashes (most common), osteoporosis, sexual dysfunction, fatigue/depression, metabolic syndrome\n**GnRH agonists:** tumor flare (initial testosterone spike — bone pain, urinary obstruction, cord compression — prevent with anti-androgen for first 4 weeks)\n**GnRH antagonists:** injection site reactions; no tumor flare",
-        ci: "GnRH agonist without anti-androgen co-prescription: spinal cord metastases (tumor flare → cord compression — use GnRH antagonist instead OR start anti-androgen first)\nGnRH agonists for precocious puberty: organic CNS lesion (treat underlying cause)",
-        pk: "**Leuprolide:** SC/IM; depot formulations (monthly, 3-monthly, 4-monthly, 12-monthly implant)\n**Degarelix:** SC monthly; no depot available\n**Relugolix:** oral GnRH antagonist (Orgovyx) — first oral option for prostate cancer; t½ ~25 hr; CYP3A4/P-gp substrate",
-        pearl: "**GnRH agonist tumor flare** is predictable and potentially devastating in patients with spinal metastases — cord compression can cause permanent paralysis. **Always start an androgen receptor antagonist** (bicalutamide) 7–14 days before and for 4 weeks after initiating a GnRH agonist in patients with metastatic prostate cancer. GnRH antagonists bypass this risk entirely (no flare) — preferred in patients with bone metastases."
-      },
-      {
         name: "Oxytocin & Tocolytics",
         aka: "Oxytocin (Pitocin) — Uterotonic | Terbutaline · Ritodrine — β2-agonist tocolytics | Indomethacin — COX inhibitor tocolytic | Nifedipine — CCB tocolytic | Magnesium Sulfate — tocolytic/neuroprotection",
         summary: "Uterotonics (oxytocin) stimulate uterine contractions for labor induction and postpartum hemorrhage; tocolytics suppress preterm contractions to delay delivery and allow corticosteroid administration for fetal lung maturity.",
@@ -1547,17 +1568,6 @@ endo: [
         ci: "Oxytocin: unfavorable fetal position, prior classical uterine incision, active genital herpes\nβ2-tocolytics: diabetes, cardiac disease\nIndomethacin: >32 weeks, renal disease, oligohydramnios\nMagnesium tocolysis: myasthenia gravis (NMJ blockade)",
         pk: "**Oxytocin:** IV infusion (titrated); t½ ~1–6 min; hepatic/renal inactivation\n**Terbutaline:** SC for acute tocolysis; oral avoided (FDA warning)\n**Indomethacin:** oral/rectal, onset ~30 min\n**Nifedipine:** oral immediate release; t½ ~2 hr\n**Magnesium:** IV loading dose (4–6 g over 20 min) → maintenance infusion; renal excretion",
         pearl: "**Oxytocin is structurally related to vasopressin (ADH)** — at high doses/infusion rates, it binds V2 receptors → antidiuretic effect → free water retention → dilutional hyponatremia. Always monitor fluid balance and Na⁺ with prolonged oxytocin infusions. **Indomethacin is the most effective tocolytic** but the ductus arteriosus risk limits use to <32 weeks and short courses — consider serial fetal echocardiography for DA flow during treatment."
-      },
-      {
-        name: "Fludrocortisone & Mineralocorticoid Axis",
-        aka: "Fludrocortisone (Florinef) · Aldosterone (endogenous) · Eplerenone / Spironolactone (antagonists — see K⁺-Sparing Diuretics entry)",
-        summary: "Fludrocortisone is the primary synthetic mineralocorticoid used for adrenal insufficiency and orthostatic hypotension. It acts on renal collecting duct to retain sodium and excrete potassium.",
-        moa: "Binds **mineralocorticoid receptor (MR)** in principal cells of the distal nephron → ↑ transcription of ENaC (epithelial Na⁺ channel) and Na⁺/K⁺-ATPase → ↑ Na⁺ reabsorption + ↑ K⁺/H⁺ excretion → ↑ plasma volume → ↑ blood pressure; also sensitizes vascular smooth muscle to catecholamines",
-        use: "**Primary adrenal insufficiency (Addison disease):** combined with hydrocortisone (fludrocortisone = mineralocorticoid; hydrocortisone = glucocorticoid)\nCongenital adrenal hyperplasia (+ hydrocortisone)\nOrthostatic hypotension (POTS, autonomic failure — expands intravascular volume)\nSalt-losing nephropathy",
-        se: "**Hypertension** (excess Na⁺ retention + volume expansion)\n**Hypokalemia** (↑ K⁺ excretion)\nEdema, headache, cardiac enlargement (excess dosing)\nSuppression of renin/aldosterone",
-        ci: "Uncontrolled hypertension; CHF (volume overload)\nRenal failure (↑ K⁺ secretion impaired — hyperkalemia risk at high dose)\nSystemic fungal infections",
-        pk: "Oral, t½ ~18–36 hr; hepatic → inactive metabolites; renal excretion\nPotency: ~125× hydrocortisone for Na⁺ retention; modest glucocorticoid activity (~10× hydrocortisone)\nUsual dose 0.05–0.1 mg daily; titrate by BP, K⁺, renin, and symptoms",
-        pearl: "**In Addison disease, BOTH glucocorticoid and mineralocorticoid replacement are required** — hydrocortisone alone is insufficient because it lacks adequate mineralocorticoid activity at physiologic doses. The clinical clue that mineralocorticoid is missing: postural hypotension + salt craving + hyperkalemia. Hydrocortisone at high doses (stress dosing) provides enough mineralocorticoid activity transiently, but chronic maintenance requires fludrocortisone."
       },
     ]
   },
