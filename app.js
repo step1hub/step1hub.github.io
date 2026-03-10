@@ -17,10 +17,16 @@ function setNavActive() {
 function getExamDate() { return localStorage.getItem('step1-exam-date'); }
 function setExamDate(d) { localStorage.setItem('step1-exam-date', d); }
 
+function parseLocalDate(s) {
+  // Parse "YYYY-MM-DD" as local midnight, avoiding UTC interpretation
+  const [y, m, d] = s.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
 function getDaysRemaining() {
   const s = getExamDate();
   if (!s) return null;
-  const exam = new Date(s + 'T12:00:00');
+  const exam = parseLocalDate(s);
   const now = new Date(); now.setHours(0,0,0,0);
   return Math.max(0, Math.round((exam - now) / (1000*60*60*24)));
 }
@@ -39,7 +45,7 @@ function renderCountdown() {
   }
   daysEl.textContent = days;
   if (dateEl) {
-    const exam = new Date(s + 'T12:00:00');
+    const exam = parseLocalDate(s);
     dateEl.textContent = exam.toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'});
   }
   updateNavPill();
