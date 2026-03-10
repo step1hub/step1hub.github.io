@@ -1496,6 +1496,232 @@ pulm: [
     ]
   }
 ],
+endo: [
+  {
+    group: "Diabetes",
+    drugs: [
+      {
+        name: "Insulin & Insulin Secretagogues",
+        aka: "Lispro · Aspart · Glulisine (Rapid) | Regular (Short) | NPH (Intermediate) | Glargine · Detemir · Degludec (Long) | Glipizide · Glyburide (Sulfonylureas) | Repaglinide (Meglitinides)",
+        summary: "Direct hormone replacement or stimulation of endogenous insulin release.\nPrimary risk across all agents is hypoglycemia.",
+        moa: "**Insulin**: Binds **insulin receptor (tyrosine kinase)** → ↑ **GLUT4** translocation (muscle/fat) → ↑ glucose uptake.\n**Sulfonylureas/Meglitinides**: Bind and close **ATP-sensitive K+ channels (KATP)** on beta cells → depolarization → Ca2+ influx → **insulin release** (independent of glucose).",
+        use: "**Type 1 DM**: Essential replacement.\n**Type 2 DM**: When oral agents fail or during acute illness/pregnancy.\n**DKA/HHS**: Regular insulin (IV).\n**Hyperkalemia**: Insulin + Dextrose → shifts K+ intracellularly.",
+        se: "**Hypoglycemia**: Highest risk with Sulfonylureas (glucose-independent secretion).\n**Weight gain**.\n**Lipodystrophy**: Seen at injection sites; prevented by rotating sites.\n**Hypokalemia**.",
+        ci: "**Type 1 DM**: Contraindicated for Sulfonylureas/Meglitinides (require functional beta cells).\n**Glyburide**: Avoid in renal failure (accumulates).",
+        pk: "**Rapid-acting**: Onset 15 min; inject immediately before meals.\n**Glargine**: Peakless; duration ~24 hr.\n**Glyburide**: Longest half-life and active metabolites.",
+        pearl: "**Sulfonylurea Hypoglycemia**: Can last 24–48 hours; requires IV dextrose infusion, not just a one-time glucose correction."
+      },
+      {
+        name: "Metformin",
+        aka: "Metformin (Glucophage)",
+        summary: "Biguanide reducing hepatic glucose production and improving sensitivity.\nFirst-line oral agent for Type 2 DM; only oral agent proven to reduce CV mortality (UKPDS).",
+        moa: "Activates **AMP-activated protein kinase (AMPK)** via inhibition of **mitochondrial complex I**.\n↓ hepatic gluconeogenesis (primary) → ↑ peripheral insulin sensitivity → ↓ intestinal glucose absorption.",
+        use: "**Type 2 DM**: First-line regardless of HbA1c.\n**PCOS**: Improves insulin resistance and menstrual regularity.",
+        se: "**GI intolerance**: Nausea/diarrhea (dose-dependent; improves with ER formulation).\n**Vitamin B12 deficiency**: Check levels annually.\n**Lactic acidosis**: Rare but serious risk in renal/hepatic failure.",
+        ci: "**eGFR <30 mL/min**: Absolute contraindication (accumulation risk).\n**IV Contrast**: Hold 24–48 hr before/after to prevent AKI-induced lactic acidosis.",
+        pk: "Renally eliminated unchanged (not metabolized).\nNo hypoglycemia as monotherapy (does not stimulate insulin secretion).",
+        pearl: "Metformin is weight-neutral to modest weight loss and does NOT cause hypoglycemia as a monotherapy."
+      },
+      {
+        name: "GLP-1 Agonists & DPP-4 Inhibitors",
+        aka: "GLP-1: Semaglutide (Ozempic) · Liraglutide · Tirzepatide (GIP+GLP-1) | DPP-4: Sitagliptin (Januvia) · Linagliptin",
+        summary: "Incretin-based therapies that enhance glucose-dependent insulin secretion.\nGLP-1 agonists provide major CV and weight-loss benefits.",
+        moa: "**GLP-1 Agonists**: Mimic **GLP-1** → ↑ glucose-dependent insulin + ↓ glucagon + ↓ gastric emptying + ↑ satiety.\n**DPP-4 Inhibitors**: Inhibit **dipeptidyl peptidase-4 (DPP-4)** → ↓ GLP-1/GIP degradation → ↑ endogenous incretins.",
+        use: "**Type 2 DM**: Add-on therapy.\n**CV Risk Reduction**: Liraglutide/Semaglutide reduce MACE.\n**Obesity**: High-dose Semaglutide (Wegovy) or Tirzepatide.",
+        se: "**GLP-1**: GI upset (nausea/vomiting/diarrhea); Rare **Pancreatitis**.\n**DPP-4**: Joint pain and nasopharyngitis.\n**Saxagliptin/Alogliptin**: ↑ heart failure hospitalizations (SAVOR-TIMI).",
+        ci: "**GLP-1**: Medullary thyroid carcinoma or **MEN2** history (Black box).\n**Severe Gastroparesis**: Due to slowed gastric emptying.",
+        pk: "**GLP-1**: Mostly SC (daily or weekly); Semaglutide also oral.\n**Linagliptin**: Hepatic elimination (no renal adjustment needed).",
+        pearl: "**Semaglutide**: Produces the largest weight loss of any non-surgical intervention (~15% body weight)."
+      },
+      {
+        name: "SGLT2 Inhibitors",
+        aka: "Empagliflozin (Jardiance) · Dapagliflozin · Canagliflozin",
+        summary: "Block renal glucose reabsorption to cause glycosuria.\nFirst-line for T2DM with HFrEF or CKD due to proven protection.",
+        moa: "Inhibit **SGLT2 (sodium-glucose cotransporter 2)** in the proximal tubule.\n↓ renal glucose reabsorption → ↑ urinary glucose excretion (insulin-independent).\n↓ hyperfiltration → **nephroprotection** + mild osmotic diuresis.",
+        use: "**Type 2 DM**: Insulin-independent add-on.\n**HFrEF**: ↓ CV mortality/hospitalizations (EMPA-REG, DAPA-HF).\n**CKD with proteinuria**: Slows progression (CREDENCE).",
+        se: "**Genital mycotic infections**: Glucosuria → fungal growth.\n**UTIs**.\n**Euglycemic DKA**: Near-normal glucose masks DKA; hold before surgery.\n**Volume depletion** and hypotension.",
+        ci: "**Type 1 DM**: High euglycemic DKA risk.\n**eGFR <20–30**: Reduced efficacy (though cardio/renal benefits persist).",
+        pk: "Oral once daily; hepatic glucuronidation.",
+        pearl: "**Euglycemic DKA**: Most dangerous complication. Always hold SGLT2 inhibitors ≥3 days before elective surgery."
+      },
+      {
+        name: "Pramlintide",
+        aka: "Pramlintide (Symlin) — Amylin analog",
+        summary: "Synthetic amylin analog suppressing glucagon and slowing gastric emptying.\nAdjunct to mealtime insulin in both T1DM and T2DM.",
+        moa: "Mimics **amylin** → (1) suppresses **glucagon**; (2) **slows gastric emptying**; (3) promotes **satiety** (hypothalamic).",
+        use: "**Adjunct to insulin**: For patients unable to achieve glycemic control.",
+        se: "**Severe Hypoglycemia**: When combined with insulin.\n**Nausea**: Most common dose-limiting effect.",
+        ci: "**Gastroparesis**.\n**Hypoglycemia unawareness**.",
+        pk: "SC injection only; take immediately before each major meal.\nDo NOT mix with insulin in the same syringe.",
+        pearl: "**Dose Adjustment**: Must reduce mealtime insulin dose by 50% at initiation to prevent severe hypoglycemia."
+      },
+      {
+        name: "Thiazolidinediones (TZDs)",
+        aka: "Pioglitazone (Actos) · Rosiglitazone",
+        summary: "PPARγ agonists improving peripheral insulin sensitivity.\nEffective for insulin resistance but limited by fluid retention and weight gain.",
+        moa: "Bind and activate **PPARγ** in adipose tissue.\n↑ transcription of **GLUT4** and adiponectin → ↑ insulin sensitivity in muscle/fat/liver.",
+        use: "**Type 2 DM**: Add-on or monotherapy.\n**NASH**: Off-label application.",
+        se: "**Weight gain** (adipocyte differentiation + fluid).\n**Fluid retention/edema**: Worsens heart failure (Black box).\n**Fractures**: Increased risk in women.",
+        ci: "**Heart Failure (any class)**: Absolute contraindication due to edema risk.\n**Bladder Cancer**: History or active (Pioglitazone).",
+        pk: "Oral; requires 4–12 weeks for full effect (gene transcription mechanism).",
+        pearl: "**Slowest Onset**: Because they work via nuclear receptor gene transcription, TZDs take the longest to show clinical results."
+      }
+    ]
+  },
+  {
+    group: "Endocrine — Bone / Mineral",
+    drugs: [
+      {
+        name: "Calcitonin",
+        aka: "Calcitonin-Salmon (Miacalcin)",
+        summary: "Hormone inhibiting osteoclast activity to lower serum calcium.\nBridging agent for acute hypercalcemia.",
+        moa: "Binds **calcitonin receptors** on **osteoclasts**.\n↓ osteoclast activity → ↓ bone resorption → ↓ serum Ca2+.\n↑ renal Ca2+ excretion.",
+        use: "**Acute Hypercalcemia**: IV/IM for rapid onset (2–4 hr).\n**Paget disease** of bone.\n**Osteoporosis**: Analgesic for acute vertebral fractures (nasal spray).",
+        se: "Nausea and flushing.\n**Tachyphylaxis**: Resistance develops within days, limiting chronic use.",
+        ci: "**Hypocalcemia**.",
+        pk: "Onset of Ca2+ lowering is faster than bisphosphonates (hours vs. days).",
+        pearl: "Use calcitonin to bridge acute hypercalcemia until IV bisphosphonates take effect (which takes 2–4 days)."
+      },
+      {
+        name: "Cinacalcet & Sevelamer",
+        aka: "Cinacalcet (Sensipar) | Sevelamer (Renvela)",
+        summary: "Manage mineral metabolism in CKD.\nCinacalcet targets PTH; Sevelamer targets dietary phosphate.",
+        moa: "**Cinacalcet**: Allosteric modulator of **calcium-sensing receptor (CaSR)** → parathyroid chief cells sense Ca2+ at lower levels → ↓ PTH secretion.\n**Sevelamer**: Non-absorbed polymer binds **dietary phosphate** in the GI tract → prevents absorption.",
+        use: "**Secondary Hyperparathyroidism**: In dialysis patients.\n**Hyperphosphatemia**: CKD/dialysis (Sevelamer preferred when Ca2+ is high).",
+        se: "**Cinacalcet**: **Hypocalcemia** and QTc prolongation.\n**Sevelamer**: Constipation and ↓ fat-soluble vitamin absorption (A/D/E/K).",
+        ci: "**Cinacalcet**: Pre-existing hypocalcemia (Ca2+ <8.4).",
+        pk: "**Sevelamer**: Not absorbed; must be taken with meals to bind food phosphate.",
+        pearl: "**Cinacalcet 'Tricks' the parathyroid**: It makes the gland think calcium is high even when it is low, effectively lowering PTH."
+      },
+      {
+        name: "Bisphosphonates & Osteoporosis Drugs",
+        aka: "Alendronate (Fosamax) · Zoledronic Acid (IV) | Denosumab (RANK-L inhibitor) | Teriparatide (PTH analog)",
+        summary: "Anti-resorptive (Bisphosphonates/Denosumab) or anabolic (Teriparatide) agents for bone density.\nBisphosphonates are first-line for osteoporosis.",
+        moa: "**Bisphosphonates**: Inhibit **farnesyl pyrophosphate synthase** in osteoclasts → ↓ osteoclast survival/resorption.\n**Denosumab**: Antibody against **RANK-L** → ↓ osteoclast activation.\n**Teriparatide**: Intermittent PTH pulses → **↑ osteoblast** activity > osteoclast.",
+        use: "**Osteoporosis**: First-line (Bisphosphonates).\n**Hypercalcemia of Malignancy**: IV Zoledronic acid.\n**Bone Metastases**.",
+        se: "**Bisphosphonates**: Esophageal irritation (oral); **ONJ (Osteonecrosis of jaw)**; Atypical femoral fractures (>5 yr use).\n**Denosumab**: Hypocalcemia.\n**Teriparatide**: **Osteosarcoma** risk (Black box).",
+        ci: "**Oral Bisphosphonates**: Esophageal disorders; CrCl <35.\n**Teriparatide**: Prior skeletal radiation or Paget disease.",
+        pk: "**Oral Bisphosphonates**: Bioavailability <1%; take on empty stomach with full glass of water; remain upright ≥30 min.",
+        pearl: "**Rebound Risk**: Never stop Denosumab abruptly without transitioning to a bisphosphonate; it causes rapid bone loss and vertebral fractures."
+      }
+    ]
+  },
+  {
+    group: "Endocrine — Hormones",
+    drugs: [
+      {
+        name: "ADH / Desmopressin (DDAVP) & Vaptans",
+        aka: "Desmopressin (DDAVP) — V2 agonist | Tolvaptan — V2 antagonist",
+        summary: "Modulate water reabsorption in the collecting duct.\nDDAVP is for DI; Vaptans are for SIADH.",
+        moa: "**Desmopressin**: Selective **V2 receptor agonist** → ↑ **AQP2** insertion → ↑ water reabsorption.\n**Tolvaptan**: Competitive **V2 receptor antagonist** → blocks ADH → ↑ free water excretion (aquaresis).",
+        use: "**Desmopressin**: Central DI (first-line); **von Willebrand Disease** (↑ vWF/Factor VIII release).\n**Tolvaptan**: Euvolemic hyponatremia (**SIADH**).",
+        se: "**Desmopressin**: Hyponatremia and water intoxication.\n**Tolvaptan**: Overly rapid Na+ correction → **Osmotic Demyelination Syndrome**.",
+        ci: "**Tolvaptan**: Hypovolemic hyponatremia (worsens depletion).",
+        pk: "**Desmopressin**: V2-selective (lacks the V1 vasoconstriction of vasopressin).",
+        pearl: "**Sodium Rule**: Na+ must not rise >10–12 mEq/L in 24 hours with Tolvaptan to avoid central pontine myelinolysis."
+      },
+      {
+        name: "Growth Hormone Axis Drugs",
+        aka: "Somatropin (rhGH) | Octreotide (Somatostatin analog) | Pegvisomant (GH antagonist)",
+        summary: "Octreotide is versatile for acromegaly, carcinoid, and variceal bleeds.\nSomatropin treats GH deficiency.",
+        moa: "**Somatropin**: Binds GH receptor → ↑ **IGF-1** synthesis.\n**Octreotide**: Activates **Somatostatin receptors (SSTR2/5)** → ↓ GH, TSH, glucagon, and VIP.\n**Pegvisomant**: Blocks GH action directly.",
+        use: "**Octreotide**: Acromegaly; **Carcinoid Syndrome** (↓ flushing/diarrhea); **Variceal bleeding** (↓ splanchnic flow).\n**Somatropin**: GH deficiency (linear growth in children).",
+        se: "**Octreotide**: **Cholelithiasis** (↓ CCK → bile stasis); GI upset.\n**Somatropin**: Glucose intolerance and edema.",
+        ci: "**Somatropin**: Active malignancy.",
+        pk: "**Octreotide**: SC/IM; t½ short unless LAR formulation used.",
+        pearl: "**Octreotide for Bleeding**: Reduces portal pressure by decreasing splanchnic blood flow; used as adjunct to endoscopy."
+      },
+      {
+        name: "Levothyroxine (T4)",
+        aka: "Levothyroxine (Synthroid)",
+        summary: "Synthetic T4 replacement for hypothyroidism.\nPeripheral conversion to active T3 occurs in target tissues.",
+        moa: "Synthetic **T4** → peripherally deiodinated to active **T3** → binds nuclear **thyroid hormone receptors** → ↑ BMR and cardiac output.",
+        use: "**Hypothyroidism**: Primary/Secondary/Tertiary replacement.\n**Myxedema Coma**: Emergent IV T4.",
+        se: "**Hyperthyroidism symptoms**: Tachycardia, heat intolerance, weight loss.\n**AF** and **Bone loss** (especially in elderly with suppressive doses).",
+        ci: "**Uncorrected Adrenal Insufficiency**: Must treat cortisol first (replacement ↑ cortisol clearance).",
+        pk: "T½ ~7 days (steady state takes weeks).\nAbsorption is ↓ by: Ca2+, Iron, Mg2+, and food (take on empty stomach).",
+        pearl: "**The 'Cortisol First' Rule**: In combined deficiency, always give cortisol before T4 to prevent precipitating an adrenal crisis."
+      },
+      {
+        name: "Methimazole / PTU (Antithyroid Drugs)",
+        aka: "Methimazole (MMI) · Propylthiouracil (PTU)",
+        summary: "Block thyroid peroxidase to inhibit hormone synthesis.\nPTU is preferred in thyroid storm and 1st trimester pregnancy.",
+        moa: "Inhibit **thyroid peroxidase (TPO)** → ↓ iodine organification.\n**PTU additionally**: Inhibits **peripheral 5'-deiodinase** → ↓ T4 to active T3 conversion.",
+        use: "**Hyperthyroidism** (Graves disease).\n**Thyroid Storm**: PTU preferred.\n**1st Trimester Pregnancy**: PTU preferred (MMI causes aplasia cutis).",
+        se: "**Agranulocytosis**: Fever/sore throat is an emergency (Stop drug immediately).\n**Hepatotoxicity**: Severe with PTU (Black box).\n**ANCA-positive vasculitis** (PTU).",
+        ci: "**MMI**: 1st trimester pregnancy.\n**PTU**: Long-term maintenance (due to liver risk; prefer MMI).",
+        pk: "**Methimazole**: Longer t½; once daily dosing.",
+        pearl: "**MMI vs. PTU**: Switch PTU (1st trimester) to MMI (2nd/3rd trimester) to balance embryopathy vs. hepatotoxicity risks."
+      },
+      {
+        name: "Corticosteroids (Glucocorticoids)",
+        aka: "Prednisone · Methylprednisolone · Dexamethasone · Hydrocortisone",
+        summary: "Potent anti-inflammatory and immunosuppressive agents.\nChronic use carries massive multi-system toxicity.",
+        moa: "Activate **glucocorticoid receptor (GR)**.\n(1) **Inhibit NF-κB** → ↓ COX-2/cytokines;\n(2) **Inhibit Phospholipase A2** → ↓ LTs/Prostaglandins.",
+        use: "**Autoimmune disease**; Asthma/COPD; Organ transplant.\n**Meningitis**: Dexamethasone (↓ hearing loss in children).\n**Replacement**: Hydrocortisone for adrenal insufficiency.",
+        se: "**Metabolic**: Hyperglycemia, central obesity, dyslipidemia.\n**Endocrine**: HPA axis suppression; **Cushingoid features**.\n**Bone/Muscle**: Osteoporosis and proximal myopathy.\n**Psych**: Mood changes and insomnia.",
+        ci: "**Live vaccines** (immunosuppressive doses).\n**Systemic fungal infections**.",
+        pk: "Relative potency: Hydrocortisone 1x < Prednisone 4x < Dexamethasone 25-30x.\nMust taper after >2–3 weeks to avoid adrenal crisis.",
+        pearl: "**Dexamethasone**: Does not interfere with cortisol assays; used for overnight suppression testing in Cushing evaluation."
+      },
+      {
+        name: "Oral Contraceptives & Hormonal Contraception",
+        aka: "Combined OCP (Estrogen + Progestin) | Progestin-only (Minipill) | Plan B (Levonorgestrel)",
+        summary: "Prevent ovulation and alter cervical mucus.\nOCPs provide non-contraceptive benefits for PCOS and acne.",
+        moa: "**Combined OCP**: Negative feedback on hypothalamus/pituitary → **↓ LH surge** → no ovulation.\n**Progestin**: Thickens cervical mucus + thins endometrium.\n**Copper IUD**: Cu2+ ions are toxic to sperm.",
+        use: "**Contraception**.\n**PCOS**: Regulate cycles and ↓ androgens.\n**Emergency Contraception**: Plan B (within 72 hr); Copper IUD (within 5 days).",
+        se: "**Combined OCP**: VTE/DVT risk (Estrogen ↑ clotting factors); Hypertension.\n**Copper IUD**: ↑ menstrual bleeding/cramping.",
+        ci: "**Smokers ≥35 yr** (↑↑ stroke/MI).\n**Migraine with Aura** (↑ stroke risk).\n**Personal history of VTE**.",
+        pk: "**CYP3A4 Inducers** (Rifampin, Phenytoin) → massive ↓ OCP efficacy (Use backup).",
+        pearl: "**Rifampin Interaction**: Rifampin is the most important inducer to watch for; it destroys OCP efficacy via >90% estrogen/progestin reduction."
+      },
+      {
+        name: "Androgens, Anti-Androgens & 5α-Reductase Inhibitors",
+        aka: "Testosterone | Anti-Androgens: Spironolactone · Bicalutamide | 5α-Reductase: Finasteride",
+        summary: "Modulate androgen signaling for hypogonadism, BPH, or prostate cancer.",
+        moa: "**Testosterone**: Binds **Androgen Receptor (AR)**.\n**Bicalutamide**: Competitive **AR antagonist**.\n**Finasteride**: Blocks **5α-reductase** → ↓ conversion of Testosterone to **DHT**.",
+        use: "**Testosterone**: Hypogonadism; Gender-affirming therapy.\n**Finasteride**: **BPH** (↓ prostate size); Androgenic alopecia.\n**Spironolactone**: PCOS (hirsutism/acne) and transgender female therapy.",
+        se: "**Testosterone**: **Erythrocytosis** (↑ Hct); Testicular atrophy (negative feedback).\n**Finasteride**: Sexual dysfunction; **↓ PSA ~50%** (Must double observed PSA for screening).",
+        ci: "**Testosterone**: Prostate cancer.\n**Finasteride**: Pregnancy/women of childbearing age (Teratogenic to male fetus).",
+        pk: "**Finasteride**: Detectable in semen for months; t½ ~5–6 hr.",
+        pearl: "**PSA Correction**: If a patient is on Finasteride, a PSA of 2.0 should be interpreted as 4.0 for cancer screening."
+      },
+      {
+        name: "GnRH Agonists & Antagonists",
+        aka: "GnRH Agonists: Leuprolide · Goserelin | GnRH Antagonists: Degarelix · Relugolix",
+        summary: "Agonists paradoxically suppress gonadotropins with continuous use.\nAntagonists provide immediate suppression without initial flare.",
+        moa: "**GnRH Agonists (Continuous)**: Initial LH/FSH stimulation ('Flare') → receptor downregulation → ↓ Testosterone/Estrogen ('Chemical Castration').\n**GnRH Antagonists**: Competitive **GnRH receptor block** → immediate ↓ LH/FSH.",
+        use: "**Prostate Cancer**: Medical castration (ADT).\n**Endometriosis** and Uterine fibroids.",
+        se: "**Flare Effect**: GnRH agonists only (Bone pain/urinary obstruction in prostate cancer).\n**Both**: Hot flashes, osteoporosis, and sexual dysfunction.",
+        ci: "**Spinal Cord Metastases**: High risk with agonists (Flare → cord compression; use antagonists instead).",
+        pk: "Leuprolide: Depot formulations (monthly up to 12-monthly).",
+        pearl: "**Tumor Flare**: Prevent by starting an AR antagonist (Bicalutamide) 1 week before and for 4 weeks after initiating a GnRH agonist."
+      },
+      {
+        name: "Oxytocin & Tocolytics",
+        aka: "Oxytocin (Pitocin) | Tocolytics: Terbutaline (β2) · Indomethacin (COX) · Nifedipine (CCB)",
+        summary: "Uterotonics stimulate contractions; Tocolytics suppress them to delay delivery.",
+        moa: "**Oxytocin**: Binds **Gq-coupled receptors** → ↑ IP3/DAG → ↑ Ca2+ → uterine contraction.\n**Tocolytics**: Relax myometrium via β2 signaling (Terbutaline) or Ca2+ block (Nifedipine).\n**Magnesium Sulfate**: Fetal **neuroprotection** (<32 weeks).",
+        use: "**Oxytocin**: Labor induction and **PPH** (Postpartum Hemorrhage).\n**Tocolytics**: Delay delivery for 48 hr to allow corticosteroid (lung maturity) administration.",
+        se: "**Oxytocin**: Hyponatremia (V2-like effect at high doses); Uterine hyperstimulation.\n**Indomethacin**: Premature closure of **ductus arteriosus** (Avoid >32 weeks).",
+        ci: "**Indomethacin**: >32 weeks gestation or renal disease.",
+        pk: "Oxytocin: IV infusion (titrated); t½ ~1–6 min.",
+        pearl: "**Oxytocin Hyponatremia**: Structurally related to ADH; high-dose infusions cause free water retention and dilutional hyponatremia."
+      },
+      {
+        name: "Fludrocortisone & Mineralocorticoid Axis",
+        aka: "Fludrocortisone (Florinef)",
+        summary: "Synthetic mineralocorticoid for volume expansion and adrenal replacement.",
+        moa: "Binds **mineralocorticoid receptor (MR)** in renal principal cells.\n↑ **ENaC** and Na+/K+-ATPase → ↑ Na+ reabsorption + ↑ K+/H+ excretion → ↑ plasma volume.",
+        use: "**Primary Adrenal Insufficiency (Addison)**: Combined with hydrocortisone.\n**Orthostatic Hypotension**: Expands intravascular volume.",
+        se: "**Hypertension** and **Hypokalemia**.\nEdema and cardiac enlargement.",
+        ci: "**Congestive Heart Failure** (Volume overload risk).",
+        pk: "Oral; potency ~125x hydrocortisone for sodium retention.",
+        pearl: "**Replacement Rule**: In Addison disease, hydrocortisone provides glucocorticoids but Fludrocortisone is needed for mineralocorticoids."
+      }
+    ]
+  }
+],
 onco: [
   {
     group: "Chemotherapy",
