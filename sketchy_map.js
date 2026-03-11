@@ -206,6 +206,8 @@ const SKETCHY_MAP = {
   "Carbapenems & Monobactams": { scenes: [{ img: "sketchy_images/antimicrobials/1.5 - Monobactams & carbapenems.png", title: "Carbapenems & Monobactams" }] },
   "Vancomycin": { scenes: [{ img: "sketchy_images/antimicrobials/1.6 - Vancomycin.png", title: "Vancomycin" }] },
   "Misc. Antibacterials": { scenes: [{ img: "sketchy_images/antimicrobials/1.7 - Daptomycin.png", title: "Daptomycin" }, { img: "sketchy_images/antimicrobials/2.4 - Chloramphenicol.png", title: "Chloramphenicol" }, { img: "sketchy_images/antimicrobials/2.5 - Linezolid.png", title: "Linezolid" }] },
+  "Linezolid & Daptomycin": { scenes: [{ img: "sketchy_images/antimicrobials/1.7 - Daptomycin.png", title: "Daptomycin" }, { img: "sketchy_images/antimicrobials/2.5 - Linezolid.png", title: "Linezolid" }] },
+  "Polymyxins, Nitrofurantoin & Fosfomycin": { scenes: [{ img: "sketchy_images/antimicrobials/2.4 - Chloramphenicol.png", title: "Chloramphenicol" }] },
   "Tetracyclines": { scenes: [{ img: "sketchy_images/antimicrobials/2.1 - Tetracyclines.png", title: "Tetracyclines" }] },
   "Macrolides": { scenes: [{ img: "sketchy_images/antimicrobials/2.2 - Macrolides.png", title: "Macrolides" }] },
   "Clindamycin": { scenes: [{ img: "sketchy_images/antimicrobials/2.3 - Clindamycin.png", title: "Clindamycin" }] },
@@ -213,6 +215,7 @@ const SKETCHY_MAP = {
   "Tuberculosis Drugs (RIPE)": { scenes: [{ img: "sketchy_images/antimicrobials/3.1 - Tuberculosis Drugs.png", title: "TB Drugs" }] },
   "Leprosy Drugs": { scenes: [{ img: "sketchy_images/antimicrobials/3.2 - Leprosy drugs.png", title: "Leprosy Drugs" }] },
   "TMP-SMX (Trimethoprim-Sulfamethoxazole)": { scenes: [{ img: "sketchy_images/antimicrobials/4.1 - Trimethoprim:sulfamethoxazole.png", title: "TMP-SMX" }] },
+  "TMP-SMX": { scenes: [{ img: "sketchy_images/antimicrobials/4.1 - Trimethoprim:sulfamethoxazole.png", title: "TMP-SMX" }] },
   "Fluoroquinolones": { scenes: [{ img: "sketchy_images/antimicrobials/4.2 - Fluoroquinolones.png", title: "Fluoroquinolones" }] },
   "Metronidazole": { scenes: [{ img: "sketchy_images/antimicrobials/4.3 - Metronidazole.png", title: "Metronidazole" }] },
   "Amphotericin B": { scenes: [{ img: "sketchy_images/antimicrobials/5.1 - Amphotericin, flucytosine.png", title: "Amphotericin / Flucytosine" }] },
@@ -224,6 +227,9 @@ const SKETCHY_MAP = {
   "HIV Entry Inhibitors": { scenes: [{ img: "sketchy_images/antimicrobials/6.4 - Maraviroc, fusion inhibitors, integrase inhibitors.png", title: "Entry / Fusion / Integrase Inhibitors" }] },
   "Ribavirin & Interferons": { scenes: [{ img: "sketchy_images/antimicrobials/7.1 - Interferon α, β, γ.png", title: "Interferons" }, { img: "sketchy_images/antimicrobials/7.2 - Ribavirin, sofosbuvir, simeprevir.png", title: "Ribavirin / Sofosbuvir" }] },
   "Herpes & CMV Antivirals": { scenes: [{ img: "sketchy_images/antimicrobials/8.1 - Acyclovir, valacyclovir, famciclovir.png", title: "Acyclovir / Valacyclovir" }, { img: "sketchy_images/antimicrobials/8.2 - Ganciclovir, valganciclovir, foscarnet, cidofovir.png", title: "Ganciclovir / Foscarnet" }] },
+  "Influenza Antivirals": { scenes: [{ img: "sketchy_images/viruses/2.1 - Orthomyxovirus.png", title: "Orthomyxovirus / Influenza (Micro)" }] },
+  "Antimalarials": { scenes: [{ img: "sketchy_images/parasites/3.3 - Plasmodium species.png", title: "Plasmodium / Malaria (Micro)" }] },
+  "Anti-helminthics": { scenes: [{ img: "sketchy_images/parasites/5.1 - Intestinal nematodes.png", title: "Intestinal Nematodes (Micro)" }, { img: "sketchy_images/parasites/5.2 - Tissue Nematodes.png", title: "Tissue Nematodes (Micro)" }, { img: "sketchy_images/parasites/6.2 - Trematodes.png", title: "Trematodes (Micro)" }, { img: "sketchy_images/parasites/6.1 - Cestodes.png", title: "Cestodes (Micro)" }] },
 
   // ════════════════════════════════════════════════════════
   // GI & ENDOCRINE
@@ -244,11 +250,40 @@ const SKETCHY_MAP = {
   "Methimazole / PTU (Antithyroid Drugs)": { scenes: [{ img: "sketchy_images/GI & endocrine/3.1 - Propylthiouracil, methimazole, levothyroxine.png", title: "Thyroid Drugs" }] },
   "Levothyroxine (T4)": { scenes: [{ img: "sketchy_images/GI & endocrine/3.1 - Propylthiouracil, methimazole, levothyroxine.png", title: "Thyroid Drugs" }] },
   "Bisphosphonates & Osteoporosis Drugs": { scenes: [{ img: "sketchy_images/GI & endocrine/3.2 - Bisphosphonates, raloxifene, denosumab, calcitonin.png", title: "Bisphosphonates / Raloxifene" }] },
+  "SERMs (Selective Estrogen Receptor Modulators)": { scenes: [{ img: "sketchy_images/GI & endocrine/3.2 - Bisphosphonates, raloxifene, denosumab, calcitonin.png", title: "Bisphosphonates / Raloxifene (covers raloxifene)" }] },
   "Calcitonin": { scenes: [{ img: "sketchy_images/GI & endocrine/3.2 - Bisphosphonates, raloxifene, denosumab, calcitonin.png", title: "Bisphosphonates / Raloxifene" }] },
   "Cinacalcet & Sevelamer": { scenes: [{ img: "sketchy_images/GI & endocrine/3.3 - Teriparatide, vitamin D, cinacalcet, sevelamer.png", title: "Cinacalcet / Vit D / Teriparatide" }] },
   "Corticosteroids (Glucocorticoids)": { scenes: [{ img: "sketchy_images/GI & endocrine/3.4 - Glucocorticoids.png", title: "Glucocorticoids" }] },
+  "Fludrocortisone & Mineralocorticoid Axis": { scenes: [{ img: "sketchy_images/GI & endocrine/3.4 - Glucocorticoids.png", title: "Glucocorticoids (partial — mineralocorticoids)" }] },
   "ADH / Desmopressin (DDAVP) & Vaptans": { scenes: [{ img: "sketchy_images/GI & endocrine/4.1 - ADH, DDAVP, ADH receptor antagonists.png", title: "ADH / DDAVP / Vaptans" }] },
   "Growth Hormone Axis Drugs": { scenes: [{ img: "sketchy_images/GI & endocrine/4.2 - Growth hormone, mecasermin, octreotide, pegvisomant.png", title: "GH Axis Drugs" }] },
+
+  // ════════════════════════════════════════════════════════
+  // REPRODUCTIVE ENDOCRINOLOGY (cross-linked placeholders)
+  // ════════════════════════════════════════════════════════
+
+  "GnRH Agonists & Antagonists": { scenes: [{ img: "sketchy_images/GI & endocrine/4.2 - Growth hormone, mecasermin, octreotide, pegvisomant.png", title: "GH Axis Drugs (partial — hypothalamic axis)" }] },
+  "Oral Contraceptives & Hormonal Contraception": { scenes: [{ img: "sketchy_images/GI & endocrine/3.2 - Bisphosphonates, raloxifene, denosumab, calcitonin.png", title: "Bisphosphonates / Raloxifene (partial — estrogen axis)" }] },
+  "Androgens, Anti-Androgens & 5α-Reductase Inhibitors": { scenes: [{ img: "sketchy_images/GI & endocrine/3.2 - Bisphosphonates, raloxifene, denosumab, calcitonin.png", title: "Bisphosphonates / Raloxifene (partial — sex hormone axis)" }] },
+  "Oxytocin & Tocolytics": { scenes: [{ img: "sketchy_images/GI & endocrine/4.1 - ADH, DDAVP, ADH receptor antagonists.png", title: "ADH / DDAVP (partial — posterior pituitary)" }] },
+
+  // ════════════════════════════════════════════════════════
+  // ONCOLOGY / HORMONAL (cross-linked placeholders)
+  // ════════════════════════════════════════════════════════
+
+  "Abiraterone": { scenes: [{ img: "sketchy_images/antineoplastics/3.1 - Imatinib, erlotinib, sorafenib, sunitinib, vemurafenib.png", title: "TKIs (partial — targeted oncology)" }] },
+  "Aromatase Inhibitors (AIs)": { scenes: [{ img: "sketchy_images/GI & endocrine/3.2 - Bisphosphonates, raloxifene, denosumab, calcitonin.png", title: "Bisphosphonates / Raloxifene (partial — estrogen synthesis)" }] },
+  "mTOR Inhibitors (Sirolimus & Everolimus)": { scenes: [{ img: "sketchy_images/antineoplastics/1.2 - Azathioprine, 6-mercaptopurine, mycophenolate mofetil.png", title: "Azathioprine / 6-MP / MMF (partial — immunosuppressants)" }] },
+
+  // ════════════════════════════════════════════════════════
+  // TOXICOLOGY / ANTIDOTES (cross-linked placeholders)
+  // ════════════════════════════════════════════════════════
+
+  "Drug Antidotes (High-Yield Pairs)": { scenes: [{ img: "sketchy_images/antimicrobials/3.1 - Tuberculosis Drugs.png", title: "TB Drugs (partial — INH/pyridoxine antidote)" }] },
+  "Acetaminophen Toxicity & N-Acetylcysteine": { scenes: [{ img: "sketchy_images/blood & inflammation/3.1 - NSAIDs.png", title: "NSAIDs (partial — acetaminophen adjacent)" }] },
+  "Ethanol Metabolism, Disulfiram & Alcohol Antidotes": { scenes: [{ img: "sketchy_images/neuro & psych/3.3 - MAO inhibitors.png", title: "MAOIs (partial — disulfiram-like reactions)" }] },
+
+};
 
   // ════════════════════════════════════════════════════════
   // SMOOTH MUSCLE
