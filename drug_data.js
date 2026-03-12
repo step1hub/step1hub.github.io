@@ -1582,6 +1582,17 @@ endo: [
         pk: "**Oxytocin:** IV infusion (titrated); t½ ~1–6 min; hepatic/renal inactivation\n**Terbutaline:** SC for acute tocolysis; oral avoided (FDA warning)\n**Indomethacin:** oral/rectal, onset ~30 min\n**Nifedipine:** oral immediate release; t½ ~2 hr\n**Magnesium:** IV loading dose (4–6 g over 20 min) → maintenance infusion; renal excretion",
         pearl: "**Oxytocin is structurally related to vasopressin (ADH)** — at high doses/infusion rates, it binds V2 receptors → antidiuretic effect → free water retention → dilutional hyponatremia. Always monitor fluid balance and Na⁺ with prolonged oxytocin infusions. **Indomethacin is the most effective tocolytic** but the ductus arteriosus risk limits use to <32 weeks and short courses — consider serial fetal echocardiography for DA flow during treatment."
       },
+      {
+        name: "Mifepristone & Medication Abortion",
+        aka: "Mifepristone (Mifeprex, RU-486) | Always paired with: Misoprostol (Cytotec)",
+        summary: "Competitive **progesterone receptor antagonist** (also blocks GRs) used for medication abortion ≤10 weeks, early pregnancy loss, and Cushing syndrome. Combined with misoprostol it is ~95–98% effective.",
+        moa: "Blocks **progesterone receptors (PRs)** → decidual breakdown + cervical softening + sensitizes myometrium to prostaglandins.\nAlso blocks **glucocorticoid receptors (GRs)** — basis for Cushing use.\n**Misoprostol (PGE1 analog)** given 24–48 hr later → uterine contractions → expulsion.",
+        use: "**Medication abortion** (≤10 weeks; mifepristone 200 mg PO → misoprostol 800 mcg buccal 24–48 hr later)\n**Early pregnancy loss** (missed/incomplete abortion — same regimen)\n**Cushing syndrome** (300–1200 mg/day — blocks GR effects; does NOT lower cortisol levels)\n**Cervical ripening** (pre-D&C dilation)",
+        se: "**Bleeding and cramping** (expected — indicates efficacy)\n**Incomplete abortion** (~2–5% — may need surgical completion)\n**GI effects** (nausea, diarrhea — misoprostol prostaglandin effect)\n**GR blockade** → ↑ ACTH → adrenal insufficiency risk in HPA-compromised patients",
+        ci: "**Ectopic pregnancy** (always exclude first — ineffective + rupture risk)\n**IUD in place** (remove before use)\n**Chronic adrenal failure / long-term corticosteroids** (GR blockade → adrenal crisis)\n**Coagulopathy / anticoagulation** (↑ bleeding)",
+        pk: "**Mifepristone:** oral 200 mg; t½ ~18 hr; CYP3A4 metabolism; REMS program required (certified providers only)\n**Regimen:** mifepristone Day 1 → misoprostol 24–48 hr later; follow-up to confirm complete expulsion",
+        pearl: "**Mifepristone does NOT lower cortisol in Cushing syndrome** — cortisol rises due to lost negative feedback; monitor clinically (glucose, BP), NOT serum cortisol. Classic Step 1 trap. **Always exclude ectopic pregnancy first** — mifepristone will not treat an ectopic and rupture is fatal."
+      },
     ]
   },
 ],
